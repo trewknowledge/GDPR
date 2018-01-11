@@ -1,0 +1,16 @@
+#gdpr-requests-table {}
+#gdpr-requests-table td { vertical-align: middle }
+#gdpr-requests-table .text-center { text-align: center }
+#gdpr-requests-table p {margin: 0}
+.gdpr-urgent{ background: #ffaaaa }
+.gdpr-warning{ background: #fff5aa }
+div[class^="gdpr-review-table-"] { display:none; }
+.spinner{
+	visibility: visible;
+	float: none;
+	display: none;
+	margin: 0 auto;
+}
+.gdpr-audit-log-result, .gdpr-audit-log-error {
+	display: none;
+}

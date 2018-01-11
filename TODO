@@ -1,0 +1,60 @@
+#DEFINITIONS
+  #PROCESSOR: The user responsible for processing the data on behalf of the controller.
+  #CONTROLLER: Usually the owner of the site. The person or organization that holds the users data.
+
+
+TODO:
+  ☐ Check if we need the deactivator or the uninstall file
+
+
+Road Map:
+  Registration / Consent:
+    ☐ Hook into the registration form and display a TOS and Privacy Policy consent text.
+    ☐ On registration success, save the user TOS and Privacy Policy consent to true.
+    ☐ Log to Audit Log
+
+  TOS / PP:
+    ☐ On page update, display dismissable admin notice alerting the admin that the page has been updated and that he should trigger the reconsent request of his users.
+    ☐ On button click ( seek reconsent ), should add a user meta to all users. Something like `gdpr_tos_updated` or `gdpr_pp_updated`.
+    ☐ On redirection, check if the TOS/PP meta updated exist.
+    ☐ In case it's positive, display a modal with the new TOS and a agree or disagree button.
+    ☐ On agree, update this usermeta, update the TOS/PP consent meta.
+    ☐ On disagree, log the user out.
+
+  Right to Access:
+    ☐ Get all user meta.
+    ☐ Remove wp default meta.
+    ☐ Include consent log.
+    ☐ Download
+
+  Audit Log:
+    ✔ Log everything the user do as a user_meta. @done(18-01-11 13:32)
+    ✔ Keep all this data encrypted. The key to decrypt is the user email. @done(18-01-11 13:32)
+
+  Settings Pages:
+    General Options:
+      ✔ TOS Page Selector @done(18-01-11 13:31)
+      ✔ Privacy Policy Page Selector @done(18-01-11 13:31)
+      ✔ Controller / Processor contact information. ( Either an admin user or a simple email field. ) @done(18-01-11 13:31)
+    Right to Access:
+      ☐ Email lookup. If finds a user, download his information.
+    Right to Forget:
+      ☐ Email lookup. If finds a user, add this user to the review table.
+      ☐ Review table. This table contains a list of post types and the amount of posts assigned to this user.
+      ☐ You can reassign things on the review table. That way you might want to assign USER-A posts to USER-B and pages to USER-C
+      ☐ Admins have 30 days to process the request.
+    Audit Log:
+      ✔ Email Lookup. If finds a user, displays the log on screen. @done(18-01-11 13:31)
+      ☐ Add a download and print button to the found log.
+    Support:
+      ☐ A way to contact support. Like a form or something.
+
+  Front:
+    ☐ Forget me button
+      ☐ Get user confirmation.
+      ☐ Run function that checks if any content on the site is assigned to this user.
+      ☐ Positive case: add user to the review table.
+      ☐ Negative case: remove the user from the site.
+    ☐ Request Data button
+      ☐ Get user confirmation.
+      ☐ Run function that gets all user data and generates an XML file and download.
