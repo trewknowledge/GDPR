@@ -79,4 +79,4 @@ function run_GDPR() {
 	$plugin->run();
 
 }
-run_GDPR();
+add_action( 'plugins_loaded', 'run_GDPR' );
