@@ -9,12 +9,12 @@ TODO:
 
 Road Map:
   Registration / Consent:
-    ☐ Hook into the registration form and display a TOS and Privacy Policy consent text.
-    ☐ On registration success, save the user TOS and Privacy Policy consent to true.
-    ☐ Log to Audit Log
+    ✔ Hook into the registration form and display a TOS and Privacy Policy consent text. @done(18-01-15 17:38)
+    ✔ On registration success, save the user TOS and Privacy Policy consent to true. @done(18-01-15 17:38)
+    ✔ Log to Audit Log @done(18-01-15 17:38)
 
   TOS / PP:
-    ☐ On page update, display dismissable admin notice alerting the admin that the page has been updated and that he should trigger the reconsent request of his users.
+    ✔ On page update, display dismissable admin notice alerting the admin that the page has been updated and that he should trigger the reconsent request of his users. @done(18-01-15 10:27) @lasted(37 seconds)
     ☐ On button click ( seek reconsent ), should add a user meta to all users. Something like `gdpr_tos_updated` or `gdpr_pp_updated`.
     ☐ On redirection, check if the TOS/PP meta updated exist.
     ☐ In case it's positive, display a modal with the new TOS and a agree or disagree button.
@@ -36,6 +36,7 @@ Road Map:
       ✔ TOS Page Selector @done(18-01-11 13:31)
       ✔ Privacy Policy Page Selector @done(18-01-11 13:31)
       ✔ Controller / Processor contact information. ( Either an admin user or a simple email field. ) @done(18-01-11 13:31)
+      ☐ Add repeater fields for a consent list
     Right to Access:
       ☐ Email lookup. If finds a user, download his information.
     Right to Forget:
@@ -50,11 +51,13 @@ Road Map:
       ☐ A way to contact support. Like a form or something.
 
   Front:
-    ☐ Forget me button
-      ☐ Get user confirmation.
-      ☐ Run function that checks if any content on the site is assigned to this user.
-      ☐ Positive case: add user to the review table.
-      ☐ Negative case: remove the user from the site.
-    ☐ Request Data button
-      ☐ Get user confirmation.
-      ☐ Run function that gets all user data and generates an XML file and download.
+    ✔ Forget me button @done(18-01-15 10:30)
+      ✔ Get user confirmation on an alert. @done(18-01-15 10:30)
+      ✔ Get user confirmation on an email. @done(18-01-15 10:30)
+      ✔ Run function that checks if any content on the site is assigned to this user. @done(18-01-15 10:30)
+        ✔ Positive case: add user to the review table. @done(18-01-15 10:30)
+        ✔ Negative case: remove the user from the site. @done(18-01-15 10:30)
+    ✔ Request Data button @done(18-01-15 17:37)
+      ✔ Get user confirmation on an alert. @done(18-01-15 17:37)
+      ✔ Run function that gets all user data and generates an XML file and download. @done(18-01-15 17:37)
+      ☐ Add more information to the generated file.
