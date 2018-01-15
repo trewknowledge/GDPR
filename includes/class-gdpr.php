@@ -78,6 +78,7 @@ class GDPR {
 		$this->set_locale();
 		$this->define_admin_hooks();
 		$this->define_public_hooks();
+		$this->define_common_hooks();
 
 	}
 
@@ -106,6 +107,11 @@ class GDPR {
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/class-gdpr-loader.php';
 
 		/**
+		 * The class responsible for sending notifications to users.
+		 */
+		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/class-gdpr-notifications.php';
+
+		/**
 		 * The class responsible for defining internationalization functionality
 		 * of the plugin.
 		 */
@@ -128,6 +134,7 @@ class GDPR {
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'public/class-gdpr-public.php';
 
 		$this->loader = new GDPR_Loader();
+		$this->notifications = new GDPR_Notification();
 
 	}
 
@@ -166,13 +173,14 @@ class GDPR {
 		$this->loader->add_action( 'publish_page', $plugin_admin, 'check_tos_pp_pages_updated', 10, 2 );
 		$this->loader->add_action( 'register_form', $plugin_admin, 'register_form' );
 		$this->loader->add_action( 'user_register', $plugin_admin, 'user_register' );
+		$this->loader->add_action( 'template_redirect', $plugin_admin, 'forget_user' );
 		$this->loader->add_action( 'delete_user', $plugin_admin, 'export_audit_log' );
 		$this->loader->add_action( 'wp_ajax_gdpr_audit_log_email_lookup', $plugin_admin, 'gdpr_audit_log_email_lookup' );
 
 		// Admin Notices
-		$options = get_option( $this->plugin_name . '-options' );
-		$tos = get_option( $this->plugin_name . '-tos-updated' );
-		$pp = get_option( $this->plugin_name . '-pp-updated' );
+		$options = get_option( $this->plugin_name . '_options' );
+		$tos = get_option( $this->plugin_name . '_tos_updated' );
+		$pp = get_option( $this->plugin_name . '_pp_updated' );
 		if ( empty( $options['tos-page'] ) ) {
 			$this->loader->add_action( 'admin_notices', $plugin_notices, 'tos_missing' );
 		}
@@ -205,6 +213,57 @@ class GDPR {
 		$this->loader->add_action( 'wp_enqueue_scripts', $plugin_public, 'enqueue_styles' );
 		$this->loader->add_action( 'wp_enqueue_scripts', $plugin_public, 'enqueue_scripts' );
 
+	}
+
+	/**
+	 * Register all of the hooks related to both admin and public facing functionality.
+	 *
+	 * @since    1.0.0
+	 * @access   private
+	 */
+	private function define_common_hooks() {
+		$this->loader->add_action( 'wp_ajax_process_right_to_be_forgotten', $this, 'process_right_to_be_forgotten' );
+		$this->loader->add_action( 'wp_ajax_nopriv_process_right_to_be_forgotten', $this, 'process_right_to_be_forgotten' );
+		$this->loader->add_action( 'wp_ajax_process_right_to_access', $this, 'process_right_to_access' );
+		$this->loader->add_action( 'wp_ajax_nopriv_process_right_to_access', $this, 'process_right_to_access' );
+	}
+
+	function process_right_to_be_forgotten() {
+		if ( ! wp_verify_nonce( sanitize_text_field( wp_unslash( $_POST['nonce'] ) ), 'request_to_be_forgotten' )) {
+			wp_send_json_error( __( 'Invalid or expired nonce.', 'gdpr' ) );
+		}
+
+		$user = wp_get_current_user();
+		$key = wp_generate_password( 20 );
+		update_user_meta( $user->ID, $this->get_plugin_name() . '_delete_key', $key );
+		if ( $this->notifications->send( $user, 'forget', array( 'key' => $key, 'user' => $user ) ) ) {
+			wp_send_json_success();
+		}
+
+		wp_send_json_error();
+	}
+
+	function process_right_to_access() {
+		if ( ! wp_verify_nonce( sanitize_text_field( wp_unslash( $_POST['nonce'] ) ), 'request_personal_data' )) {
+			wp_send_json_error( __( 'Invalid or expired nonce.', 'gdpr' ) );
+		}
+
+		$user = wp_get_current_user();
+		$dom = new DomDocument( "1.0", "ISO-8859-1" );
+		$personal_info = $dom->createElement('Personal_Information');
+		$dom->appendChild( $personal_info );
+		$personal_info->appendChild( $dom->createElement( 'First_Name', $user->first_name ) );
+		$personal_info->appendChild( $dom->createElement( 'Last_Name', $user->last_name ) );
+		$personal_info->appendChild( $dom->createElement( 'Email', $user->user_email ) );
+
+		$dom->preserveWhiteSpace = false;
+		$dom->formatOutput = true;
+		// $result = $dom->save( plugin_dir_path( dirname( __FILE__ ) ) . 'logs/test.xml' );
+		$result = $dom->saveXML();
+		wp_send_json_success( $result );
+
+
+		wp_send_json_error();
 	}
 
 	/**
