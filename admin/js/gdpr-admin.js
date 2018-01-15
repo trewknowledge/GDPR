@@ -3,6 +3,27 @@
 
 	$(function(){
 
+		$('.add-another-consent').click(function(e){
+			e.preventDefault();
+			var i = $('.postbox.repeater').length;
+			var source = $('.postbox.repeater:eq(0)').clone();
+			source.find('input, textarea').val('');
+			source.find('input').attr('name', 'gdpr_options[consents][' + i + '][title]').prop('readonly', '');
+			source.find('textarea').attr('name', 'gdpr_options[consents][' + i + '][description]');
+			$('.postbox.repeater:last').after( source );
+		});
+
+		$(document).on('click', '.delete-consent', function(e){
+			e.preventDefault();
+			$(this).closest('.repeater').remove();
+			var i = 0;
+			$('.postbox.repeater').each(function(){
+				$(this).find('input').attr('name', 'gdpr_options[consents][' + i + '][title]')
+				$(this).find('textarea').attr('name', 'gdpr_options[consents][' + i + '][description]')
+				i++;
+			});
+		});
+
 		$('.gdpr-audit-log-email-lookup').submit(function(e){
 			e.preventDefault();
 

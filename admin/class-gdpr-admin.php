@@ -59,6 +59,15 @@ class GDPR_Admin {
 	private $audit_log;
 
 	/**
+	 * The Notifications Class.
+	 *
+	 * @since 		1.0.0
+	 * @access 		private
+	 * @var 	  	string 	 $audit_log    The plugin Notifications Class.
+	 */
+	private $notifications;
+
+	/**
 	 * Initialize the class and set its properties.
 	 *
 	 * @since    1.0.0
@@ -71,7 +80,38 @@ class GDPR_Admin {
 		$this->version = $version;
 		$this->set_options();
 		$this->load_dependencies();
+		self::save();
 
+	}
+
+	private static function save() {
+		if (
+			! is_admin() ||
+			! current_user_can( 'manage_options' ) ||
+			! isset( $_POST['gdpr_options'], $_POST['_wpnonce'] ) ||
+			! wp_verify_nonce( sanitize_text_field( wp_unslash( $_POST['_wpnonce'] ) ), 'gdpr_options_save' )
+		) {
+			return;
+		}
+
+		$settings = get_option( 'gdpr_options', array() );
+		$consents = array();
+		if ( isset( $_POST['gdpr_options']['consents'] ) ) {
+			foreach ( wp_unslash( $_POST['gdpr_options']['consents'] ) as $consent ) {
+				$consents[] = array(
+					'title' => sanitize_text_field( $consent['title'] ),
+					'description' => sanitize_text_field( $consent['description'] ),
+				);
+			}
+		}
+		$settings = array(
+			'pp-page' => ( isset( $_POST['gdpr_options']['pp-page'] ) ) ? sanitize_text_field( wp_unslash( absint( $_POST['gdpr_options']['pp-page'] ) ) ) : '',
+			'tos-page' => ( isset( $_POST['gdpr_options']['tos-page'] ) ) ? sanitize_text_field( wp_unslash( absint( $_POST['gdpr_options']['tos-page'] ) ) ) : '',
+			'processor-contact-info' => ( isset( $_POST['gdpr_options']['processor-contact-info'] ) ) ? sanitize_email( wp_unslash( $_POST['gdpr_options']['processor-contact-info'] ) ) : '',
+			'consents' => $consents,
+		);
+
+		update_option( 'gdpr_options', $settings );
 	}
 
 	/**
@@ -96,8 +136,10 @@ class GDPR_Admin {
 		 * The class responsible for controlling the Audit Log and hashing of information.
 		 */
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/class-gdpr-audit-log.php';
+		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/class-gdpr-notifications.php';
 
 		$this->audit_log = new GDPR_Audit_Log( $this->plugin_name, $this->version );
+		$this->notifications = new GDPR_Notification();
 
 	}
 
@@ -133,10 +175,10 @@ class GDPR_Admin {
 	 * @since 1.0.0
 	 */
 	public function user_register( $user_id ) {
-		$meta_value = array(
-			'tos' => 1,
-			'pp' => 1,
-		);
+		$meta_value = array();
+		foreach ( $this->options['consents'] as $consent ) {
+			$meta_value[$consent['title']] = $consent['description'];
+		}
 		$user = get_user_by( 'ID', $user_id );
 		add_user_meta( $user_id, $this->plugin_name . '_consents', $meta_value, true );
 
@@ -144,7 +186,79 @@ class GDPR_Admin {
 		$this->audit_log->log( $user_id, sprintf( esc_html__( 'Last name: %s', 'gdpr' ), $user->last_name ) );
 		$this->audit_log->log( $user_id, sprintf( esc_html__( "Email: %s \n", 'gdpr' ), $user->user_email ) );
 		$this->audit_log->log( $user_id, esc_html__( 'User registered to the site.', 'gdpr' ) );
-		$this->audit_log->log( $user_id, esc_html__( 'User gave explicit consent to the site Privacy Policy and Terms of Service.', 'gdpr' ) );
+		foreach ( $this->options['consents'] as $consent ) {
+			$this->audit_log->log( $user_id, sprintf( esc_html__( 'User gave explicit consent to %s', 'gdpr' ), $consent['title'] ) );
+		}
+
+	}
+
+	/**
+	 * Function that runs when user confirms deletion from the site.
+	 *
+	 * @since 1.0.0
+	 */
+	public function forget_user() {
+		if ( ! is_home() || ! is_front_page() || ! isset( $_GET['action'] ) ) {
+			return;
+		}
+
+		if ( 'delete' === $_GET['action'] ) {
+			if ( ! isset( $_GET['key'], $_GET['login'] ) ) {
+				return;
+			}
+			$key = sanitize_text_field( wp_unslash( $_GET['key'] ) );
+			$login = sanitize_text_field( wp_unslash( $_GET['login'] ) );
+
+			$user = get_user_by( 'login', $login );
+			if ( ! $user ) {
+				return;
+			}
+
+			$meta_key = get_user_meta( $user->ID, $this->plugin_name . '_delete_key', true );
+			if ( empty( $meta_key ) ) {
+				return;
+			}
+			if ( $key === $meta_key ) {
+				$post_types = get_post_types( array( 'public' => true ) );
+				$found_posts = false;
+				foreach ( $post_types as $pt ) {
+					$post_count = count_user_posts( $user->ID, $pt);
+					if ( $post_count > 0 ) {
+						$found_posts = true;
+						break;
+					}
+				}
+				if ( $found_posts ) {
+					self::add_to_requests( $user );
+				} else {
+					require_once( ABSPATH.'wp-admin/includes/user.php' );
+					if ( wp_delete_user( $user->ID ) ) {
+						$this->notifications->send( $user, 'forgot', array( 'processor' => $this->options['processor-contact-info'] ) );
+						wp_logout();
+					}
+				}
+			}
+		}
+	}
+
+	private static function add_to_requests( $user ) {
+		if ( ! is_a( $user, 'WP_User' ) ) {
+			if ( ! is_int( $user ) ) {
+				return;
+			}
+			$user = get_user_by( 'ID', $user );
+		}
+
+		$requests = get_option( 'gdpr_requests' ) ? get_option( 'gdpr_requests' ) : array();
+		if ( array_key_exists( $user->ID, $requests ) ) {
+			return;
+		}
+
+		$requests[$user->ID]['full_name'] = $user->user_firstname . ' ' . $user->user_lastname;
+		$requests[$user->ID]['email'] = $user->user_email;
+		$requests[$user->ID]['requested_on'] = date('Y/m/d');
+
+		update_option( 'gdpr_requests', $requests );
 	}
 
 	/**
@@ -190,10 +304,10 @@ class GDPR_Admin {
 	 */
 	public function check_tos_pp_pages_updated( $ID, $post ) {
 		if ( $ID == $this->options['tos-page'] ) {
-			update_option( $this->plugin_name . '-tos-updated', 1 );
+			update_option( $this->plugin_name . '_tos_updated', 1 );
 		}
 		if ( $ID == $this->options['pp-page'] ) {
-			update_option( $this->plugin_name . '-pp-updated', 1 );
+			update_option( $this->plugin_name . '_pp_updated', 1 );
 		}
 	}
 
@@ -202,7 +316,7 @@ class GDPR_Admin {
 	 */
 	private function set_options() {
 
-		$this->options = get_option( $this->plugin_name . '-options' );
+		$this->options = get_option( $this->plugin_name . '_options' );
 
 	} // set_options()
 
@@ -218,44 +332,36 @@ class GDPR_Admin {
 		$requests_title = esc_attr( sprintf( esc_html__( '%d requests', 'gdpr' ), $requests ) );
 
 		$badge = '<span class="update-plugins count-' . $requests . '" title="' . $requests_title . '">' . number_format_i18n( $requests ) . '</span>';
-		$menu_label = sprintf( __( 'GDPR %s', 'gdpr' ), $badge );
 
-		add_menu_page(
-			esc_html__( 'GDPR', 'gdpr' ),
-			$menu_label,
-			'manage_options',
-			'gdpr',
-			array( $this, 'gdpr_requests_page_template' ),
-			'dashicons-id'
-		);
+		$parent_slug = 'gdpr';
+		$page_title = esc_html__( 'GDPR', 'gdpr' );
+		$menu_title = sprintf( __( 'GDPR %s', 'gdpr' ), $badge );
+		$capability = 'manage_options';
+		$menu_slug = 'gdpr';
+		$function = array( $this, 'gdpr_requests_page_template' );
+		$icon_url = 'dashicons-id';
 
-		$menu_label = sprintf( esc_html__( 'Requests %s', 'gdpr' ), $badge );
-		add_submenu_page(
-			'gdpr',
-			esc_html__( 'Requests', 'gdpr' ),
-			$menu_label,
-			'manage_options',
-			'gdpr',
-			array( $this, 'gdpr_requests_page_template' )
-		);
+		add_menu_page( $page_title, $menu_title, $capability, $menu_slug, $function, $icon_url );
 
-		add_submenu_page(
-			'gdpr',
-			esc_html__( 'Settings', 'gdpr' ),
-			esc_html__( 'Settings', 'gdpr' ),
-			'manage_options',
-			'gdpr-settings',
-			array( $this, 'gdpr_settings_page_template' )
-		);
+		$page_title = esc_html__( 'Requests', 'gdpr' );
+		$menu_title = sprintf( esc_html__( 'Requests %s', 'gdpr' ), $badge );
+		$function = array( $this, 'gdpr_requests_page_template' );
 
-		add_submenu_page(
-			'gdpr',
-			esc_html__( 'Audit Log', 'gdpr' ),
-			esc_html__( 'Audit Log', 'gdpr' ),
-			'manage_options',
-			'gdpr-audit-log',
-			array( $this, 'gdpr_audit_log_page_template' )
-		);
+		add_submenu_page( $parent_slug, $page_title, $menu_title, $capability, $menu_slug, $function );
+
+		$page_title = esc_html__( 'Settings', 'gdpr' );
+		$menu_title = esc_html__( 'Settings', 'gdpr' );
+		$menu_slug = 'gdpr-settings';
+		$function = array( $this, 'gdpr_settings_page_template' );
+
+		add_submenu_page( $parent_slug, $page_title, $menu_title, $capability, $menu_slug, $function );
+
+		$page_title = esc_html__( 'Audit Log', 'gdpr' );
+		$menu_title = esc_html__( 'Audit Log', 'gdpr' );
+		$menu_slug = 'gdpr-audit-log';
+		$function = array( $this, 'gdpr_audit_log_page_template' );
+
+		add_submenu_page( $parent_slug, $page_title, $menu_title, $capability, $menu_slug, $function );
 
 	} // add_menu()
 
@@ -284,199 +390,6 @@ class GDPR_Admin {
 	 */
 	public function gdpr_audit_log_page_template() {
 		include	plugin_dir_path( __FILE__ ) . 'partials/audit-log.php';
-	}
-
-	/**
-	 * Registers all the settings
-	 *
-	 * @since 1.0.0
-	 */
-	public function register_settings() {
-		register_setting(
-			$this->plugin_name,
-			$this->plugin_name . '-options',
-			array( $this, 'sanitize_options' )
-		);
-	}
-
-
-	/**
-	 * Sanitizes the saved options
-	 *
-	 * @since 1.0.0
-	 */
-	public function sanitize_options( $input ) {
-
-		$input['tos-page'] = intval( $input['tos-page'] );
-		$input['pp-page'] = intval( $input['pp-page'] );
-
-		return $input;
-	}
-
-	/**
-	 * Register settings API sections
-	 *
-	 * @since 1.0.0
-	 */
-	public function register_sections() {
-		add_settings_section(
-			$this->plugin_name . '-section-settings',
-			esc_html__( 'General', 'gdpr' ),
-			array( $this, 'section_settings' ),
-			$this->plugin_name . '-settings'
-		);
-
-		add_settings_section(
-			$this->plugin_name . '-section-audit-log',
-			esc_html__( 'Audit Log', 'gdpr' ),
-			array( $this, 'section_audit_log' ),
-			$this->plugin_name . '-audit-log'
-		);
-	}
-
-	/**
-	 * Register settings API fields
-	 *
-	 * @since 1.0.0
-	 */
-	public function register_fields() {
-		$pages = get_pages();
-		$selections = array();
-		foreach ( $pages as $page ) {
-			$selections[] = array(
-				'label' => $page->post_title,
-				'value' => $page->ID,
-			);
-		}
-		add_settings_field(
-			'pp-page',
-			esc_html__( 'Privacy Policy', 'gdpr' ),
-			array( $this, 'select_field' ),
-			$this->plugin_name . '-settings',
-			$this->plugin_name . '-section-settings',
-			array(
-				'label_for' => 'pp-page',
-				'blank' => esc_html__( 'Select your Privacy Policy Page', 'gdpr' ),
-				'label' => esc_html__( 'Privacy Policy', 'gdpr' ),
-				'description' => esc_html__( 'If this page is updated, you must notify users and ask for their consent again.', 'gdpr' ),
-				'class' => '',
-				'required' => true,
-				'selections' => $selections,
-			)
-		);
-		add_settings_field(
-			'tos-page',
-			esc_html__( 'Terms of Service', 'gdpr' ),
-			array( $this, 'select_field' ),
-			$this->plugin_name . '-settings',
-			$this->plugin_name . '-section-settings',
-			array(
-				'label_for' => 'tos-page',
-				'blank' => esc_html__( 'Select your Terms of Service Page', 'gdpr' ),
-				'label' => esc_html__( 'Terms of Service', 'gdpr' ),
-				'description' => esc_html__( 'If this page is updated, you must notify users and ask for their consent again.', 'gdpr' ),
-				'class' => '',
-				'required' => true,
-				'selections' => $selections,
-			)
-		);
-		add_settings_field(
-			'processor-contact-info',
-			esc_html__( 'Processor Contact Information', 'gdpr' ),
-			array( $this, 'input_field' ),
-			$this->plugin_name . '-settings',
-			$this->plugin_name . '-section-settings',
-			array(
-				'label_for' => 'processor-contact-info',
-				'label' => esc_html__( 'Processor Contact Information', 'gdpr' ),
-				'description' => sprintf( __( '<a href="%s" target="_blank" rel="nofollow">What is this?</a>', 'gdpr' ), esc_url( 'https://gdpr-info.eu/art-28-gdpr/' ) ) ,
-				'class' => 'regular-text',
-				'required' => true,
-				'type' => 'email',
-			)
-		);
-	}
-
-	public function section_settings() {
-		include	plugin_dir_path( __FILE__ ) . 'partials/sections/settings.php';
-	}
-
-	public function section_audit_log() {
-		include	plugin_dir_path( __FILE__ ) . 'partials/sections/audit-log.php';
-	}
-
-	/**
-	 * Creates a text field
-	 *
-	 * @param 	array 		$args 			The arguments for the field
-	 * @return 	string 								The HTML field
-	 */
-	public function input_field( $args ) {
-
-		$defaults['class'] 			= 'text widefat';
-		$defaults['description'] 	= '';
-		$defaults['label'] 			= '';
-		$defaults['name'] 			= $this->plugin_name . '-options[' . $args['label_for'] . ']';
-		$defaults['placeholder'] 	= '';
-		$defaults['type'] 			= 'text';
-		$defaults['value'] 			= '';
-		$defaults['required'] 	= false;
-
-		apply_filters( $this->plugin_name . '-field-text-options-defaults', $defaults );
-
-		$atts = wp_parse_args( $args, $defaults );
-
-		if ( ! empty( $this->options[$atts['label_for']] ) ) {
-
-			$atts['value'] = $this->options[$atts['label_for']];
-
-		}
-
-		include( plugin_dir_path( __FILE__ ) . 'partials/fields/text.php' );
-
-	} // field_text()
-
-	/**
-	 * Creates a select field
-	 *
-	 * Note: label is blank since its created in the Settings API
-	 *
-	 * @param 	array 		$args 			The arguments for the field
-	 * @return 	string 								The HTML field
-	 */
-	public function select_field( $args ) {
-
-		$defaults['aria'] 			= '';
-		$defaults['blank'] 			= '';
-		$defaults['class'] 			= 'widefat';
-		$defaults['description'] 	= '';
-		$defaults['label'] 			= '';
-		$defaults['name'] 			= $this->plugin_name . '-options[' . $args['label_for'] . ']';
-		$defaults['selections'] 	= array();
-		$defaults['value'] 			= '';
-		$defaults['required']		= false;
-
-		apply_filters( $this->plugin_name . '-field-select-options-defaults', $defaults );
-
-		$atts = wp_parse_args( $args, $defaults );
-
-		if ( ! empty( $this->options[$atts['label_for']] ) ) {
-
-			$atts['value'] = $this->options[$atts['label_for']];
-
-		}
-
-		if ( empty( $atts['aria'] ) && ! empty( $atts['description'] ) ) {
-
-			$atts['aria'] = $atts['description'];
-
-		} elseif ( empty( $atts['aria'] ) && ! empty( $atts['label'] ) ) {
-
-			$atts['aria'] = $atts['label'];
-
-		}
-
-		include	plugin_dir_path( __FILE__ ) . 'partials/fields/select.php';
 	}
 
 	/**
