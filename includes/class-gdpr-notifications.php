@@ -24,24 +24,6 @@
 class GDPR_Notification {
 
 	/**
-	 * The unique identifier of this plugin.
-	 *
-	 * @since    1.0.0
-	 * @access   protected
-	 * @var      string    $plugin_name    The string used to uniquely identify this plugin.
-	 */
-	protected $plugin_name;
-
-	/**
-	 * The current version of the plugin.
-	 *
-	 * @since    1.0.0
-	 * @access   protected
-	 * @var      string    $version    The current version of the plugin.
-	 */
-	protected $version;
-
-	/**
 	 * The template class instance.
 	 *
 	 * @since    1.0.0
@@ -57,12 +39,8 @@ class GDPR_Notification {
 	 *
 	 * @since    1.0.0
 	 */
-	public function __construct( $plugin_name, $version ) {
-
-		$this->plugin_name = $plugin_name;
-		$this->version = $version;
+	public function __construct() {
 		$this->load_dependencies();
-
 	}
 
 	/**
@@ -93,7 +71,7 @@ class GDPR_Notification {
 
 	}
 
-	public function notify( $user, $type = null ) {
+	public function send( $user, $type, $args = array() ) {
 		if ( ! is_a( $user, 'WP_User' ) ) {
 			if ( ! is_int( $user ) ) {
 				return;
@@ -101,15 +79,24 @@ class GDPR_Notification {
 			$user = get_user_by( 'ID', $user );
 		}
 
-		$content = $this->template::get_template_html( 'email/request-to-be-forgotten.php', array(
-			'user' => $user,
+		$possible_types = apply_filters( 'gdpr_notification_types', array(
+			'forget' => esc_html__( 'Confirm account deletion', 'gdpr' ),
+			'forgot' => esc_html__( 'You account has been deleted', 'gdpr' ),
+			'tos_updated' => esc_html__( 'Our terms of service have been updated', 'gdpr' ),
+			'pp_updated' => esc_html__( 'Our privacy policy have been updated', 'gdpr' ),
 		) );
-		error_log($content);
 
-		wp_mail( $user->user_email,
-			'Your preferences have been changed',
+		if ( ! in_array( $type, array_keys( $possible_types ), true ) ) {
+			return;
+		}
+
+		$args = apply_filters( 'gdpr_notification_args', $args );
+		$content = $this->template::get_template_html( 'email/' . $type . '.php', $args );
+
+		return wp_mail( $user->user_email,
+			$possible_types[$type],
 			$content,
-			array('Content-Type: text/html; charset=UTF-8')
+			array( 'Content-Type: text/html; charset=UTF-8' )
 		);
 	}
 

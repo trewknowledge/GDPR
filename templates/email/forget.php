@@ -10,7 +10,7 @@
     <title>My Password Email Template Subject</title>
     <style>
       body {
-        background: #d5d6d7 url(/wp-content/themes/pub/kubrick/images/kubrickbgcolor.jpg);
+        background: #d5d6d7;
       }
       #body{
         background: #fff;
@@ -49,7 +49,7 @@
     <table id="body">
       <thead>
         <tr>
-          <th><h1>Gigya</h1></th>
+        <th><h1><?php echo esc_html( get_bloginfo( 'name' ) ); ?></h1></th>
         </tr>
       </thead>
       <tr class="spacer"></tr>
@@ -58,7 +58,7 @@
           <td>
             <h4>Someone placed a request for your information to be removed from our site.</h4>
             <p>By clicking confirm your account will be removed from our site and all data we collected over time will be erased from our database. It will be impossible for us to retrieve that information in the future. </p>
-            <p align="center" class="button"><a href="<?php echo esc_url( plugin_dir_url( dirname( __FILE__ ) ) . '' ); ?>">Confirm</a></p>
+            <p align="center" class="button"><a href="<?php echo esc_url( home_url( '?action=delete&key=' . $args['key'] . '&login=' . $args['user']->user_login ) ); ?>">Confirm</a></p>
             <p>If that wasn't you, <a href="<?php echo esc_url( wp_login_url() . '?action=rp&key=' . get_password_reset_key( $args['user'] ) . '&login=' . $args['user']->user_login ); ?>">reset your password</a>.</p>
           </td>
         </tr>
