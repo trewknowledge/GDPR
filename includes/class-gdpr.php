@@ -163,15 +163,11 @@ class GDPR {
 		$this->loader->add_action( 'admin_enqueue_scripts', $plugin_admin, 'enqueue_styles' );
 		$this->loader->add_action( 'admin_enqueue_scripts', $plugin_admin, 'enqueue_scripts' );
 		$this->loader->add_action( 'admin_menu', $plugin_admin, 'add_menu' );
-		$this->loader->add_action( 'admin_init', $plugin_admin, 'register_settings' );
-		$this->loader->add_action( 'admin_init', $plugin_admin, 'register_sections' );
-		$this->loader->add_action( 'admin_init', $plugin_admin, 'register_fields' );
 		$this->loader->add_action( 'publish_page', $plugin_admin, 'check_tos_pp_pages_updated', 10, 2 );
 		$this->loader->add_action( 'register_form', $plugin_admin, 'register_form' );
 		$this->loader->add_action( 'user_register', $plugin_admin, 'user_register' );
 		$this->loader->add_action( 'delete_user', $plugin_admin, 'export_audit_log' );
 		$this->loader->add_action( 'wp_ajax_gdpr_audit_log_email_lookup', $plugin_admin, 'gdpr_audit_log_email_lookup' );
-
 
 		// Admin Notices
 		$options = get_option( $this->plugin_name . '-options' );
