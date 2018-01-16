@@ -37,17 +37,48 @@
 			}
 
 			$('.gdpr-audit-log-error').hide();
-			$('.gdpr-audit-log-success').hide();
+			$('.gdpr-audit-log-result').hide();
 			$.post(
 				ajaxurl,
 				data,
 				function( res ) {
 					if ( ! res.success ) {
-						$('.gdpr-audit-log-result').hide();
 						$('.gdpr-audit-log-error').show();
 					} else {
 						$('.gdpr-audit-log-result').show();
 						$('.gdpr-audit-log-result textarea').text( res.data );
+					}
+				}
+			)
+
+		});
+
+		$('.gdpr-right-to-access-email-lookup').submit(function(e){
+			e.preventDefault();
+
+			const nonce = $(this).find('#_gdpr_email_lookup').val();
+			const email = $(this).find('#gdpr-email-lookup-field').val();
+
+			const data = {
+				action: 'gdpr_right_to_access_email_lookup',
+				nonce: nonce,
+				email: email
+			}
+
+			$('.gdpr-right-to-access-error').hide();
+			$('.gdpr-right-to-access-result').hide();
+			$.post(
+				ajaxurl,
+				data,
+				function( res ) {
+					if ( ! res.success ) {
+						$('.gdpr-right-to-access-error').show();
+					} else {
+						$('.gdpr-right-to-access-result').show();
+						$('.gdpr-right-to-access-result textarea').text( res.data );
+						$('.download-data')
+							.attr('href', 'data:text/plain;charset=utf-8,' + encodeURIComponent(res.data))
+							.prop('download', email + '.xml');
 					}
 				}
 			)

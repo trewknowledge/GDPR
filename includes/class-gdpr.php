@@ -226,6 +226,7 @@ class GDPR {
 		$this->loader->add_action( 'wp_ajax_nopriv_process_right_to_be_forgotten', $this, 'process_right_to_be_forgotten' );
 		$this->loader->add_action( 'wp_ajax_process_right_to_access', $this, 'process_right_to_access' );
 		$this->loader->add_action( 'wp_ajax_nopriv_process_right_to_access', $this, 'process_right_to_access' );
+		$this->loader->add_action( 'wp_ajax_gdpr_right_to_access_email_lookup', $this, 'process_right_to_access' );
 	}
 
 	function process_right_to_be_forgotten() {
@@ -248,7 +249,9 @@ class GDPR {
 			wp_send_json_error( __( 'Invalid or expired nonce.', 'gdpr' ) );
 		}
 
-		$result = $this->generate_xml();
+		$email = ( isset( $_POST['email'] ) ) ? sanitize_email( wp_unslash( $_POST['email'] ) ) : '';
+
+		$result = $this->generate_xml( $email );
 		if ( $result ) {
 			wp_send_json_success( $result );
 		}
@@ -256,12 +259,21 @@ class GDPR {
 		wp_send_json_error();
 	}
 
-	private function generate_xml() {
-		if ( ! is_user_logged_in() ) {
+	private function generate_xml( $email = '' ) {
+
+		if ( empty( $email ) ) {
+			if ( ! is_user_logged_in() ) {
+				return false;
+			}
+			$user = wp_get_current_user();
+		} else {
+			$user = get_user_by( 'email', $email );
+		}
+
+		if ( ! is_a( $user, 'WP_User' ) ) {
 			return false;
 		}
 
-		$user = wp_get_current_user();
 		$usermeta = get_user_meta( $user->ID );
 		$remove_metadata = array(
 			'nickname',
