@@ -22,10 +22,10 @@ Road Map:
     ☐ On disagree, log the user out.
 
   Right to Access:
-    ☐ Get all user meta.
-    ☐ Remove wp default meta.
-    ☐ Include consent log.
-    ☐ Download
+    ✔ Get all user meta. @done(18-01-16 14:13)
+    ✔ Remove wp default meta. @done(18-01-16 14:13)
+    ✔ Include consent log. @done(18-01-16 14:13)
+    ✔ Download @done(18-01-16 14:13)
 
   Audit Log:
     ✔ Log everything the user do as a user_meta. @done(18-01-11 13:32)
@@ -36,9 +36,9 @@ Road Map:
       ✔ TOS Page Selector @done(18-01-11 13:31)
       ✔ Privacy Policy Page Selector @done(18-01-11 13:31)
       ✔ Controller / Processor contact information. ( Either an admin user or a simple email field. ) @done(18-01-11 13:31)
-      ☐ Add repeater fields for a consent list
+      ✔ Add repeater fields for a consent list @done(18-01-16 13:00)
     Right to Access:
-      ☐ Email lookup. If finds a user, download his information.
+      ✔ Email lookup. If finds a user, download his information. @done(18-01-16 14:13)
     Right to Forget:
       ☐ Email lookup. If finds a user, add this user to the review table.
       ☐ Review table. This table contains a list of post types and the amount of posts assigned to this user.
@@ -60,4 +60,4 @@ Road Map:
     ✔ Request Data button @done(18-01-15 17:37)
       ✔ Get user confirmation on an alert. @done(18-01-15 17:37)
       ✔ Run function that gets all user data and generates an XML file and download. @done(18-01-15 17:37)
-      ☐ Add more information to the generated file.
+      ✔ Add more information to the generated file. @done(18-01-16 12:59)
