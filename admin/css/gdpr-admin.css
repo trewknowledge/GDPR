@@ -11,6 +11,6 @@ div[class^="gdpr-review-table-"] { display:none; }
 	display: none;
 	margin: 0 auto;
 }
-.gdpr-audit-log-result, .gdpr-audit-log-error {
+.gdpr-audit-log-result, .gdpr-audit-log-error, .gdpr-right-to-access-error, .gdpr-right-to-access-result {
 	display: none;
 }
