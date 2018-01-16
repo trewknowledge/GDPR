@@ -363,6 +363,13 @@ class GDPR_Admin {
 
 		add_submenu_page( $parent_slug, $page_title, $menu_title, $capability, $menu_slug, $function );
 
+		$page_title = esc_html__( 'Right to Access', 'gdpr' );
+		$menu_title = esc_html__( 'Right to Access', 'gdpr' );
+		$menu_slug = 'gdpr-right-to-access';
+		$function = array( $this, 'gdpr_right_to_access_page_template' );
+
+		add_submenu_page( $parent_slug, $page_title, $menu_title, $capability, $menu_slug, $function );
+
 	} // add_menu()
 
 	/**
@@ -390,6 +397,15 @@ class GDPR_Admin {
 	 */
 	public function gdpr_audit_log_page_template() {
 		include	plugin_dir_path( __FILE__ ) . 'partials/audit-log.php';
+	}
+
+	/**
+	 * Right to access page template.
+	 *
+	 * @since 1.0.0
+	 */
+	public function gdpr_right_to_access_page_template() {
+		include	plugin_dir_path( __FILE__ ) . 'partials/right-to-access.php';
 	}
 
 	/**
