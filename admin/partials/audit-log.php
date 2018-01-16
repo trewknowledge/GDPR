@@ -35,7 +35,6 @@
 					<h2><?php echo _e( 'Email Lookup', 'gdpr' ); ?></h2>
 					<div class="inside">
 						<form class="gdpr-audit-log-email-lookup" method="post" action="">
-							<input type="hidden" name="gdpr_action" value="email_lookup">
 							<?php wp_nonce_field( 'gdpr-request-email-lookup', '_gdpr_email_lookup' ); ?>
 							<input type="email" name="email" class="regular-text" id="gdpr-email-lookup-field" placeholder="<?php esc_attr_e( 'email@domain.com', 'gdpr' ); ?>" required>
 							<span class="spinner"></span>
@@ -53,7 +52,7 @@
 				<div class="postbox gdpr-audit-log-error">
 					<h2><?php echo _e( 'Error', 'gdpr' ); ?></h2>
 					<div class="inside">
-						<p><?php esc_html_e( 'We could not find a user with that email. If this user was already removed from the database, check on the logs folder for this user email and use the field below to decrypt the contents.', 'gdpr' ); ?></p>
+						<p><?php esc_html_e( 'We could not find a user with that email.', 'gdpr' ); ?></p>
 					</div>
 				</div>
 			</div>
