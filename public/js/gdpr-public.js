@@ -44,7 +44,6 @@
 					nonce: $(this).data('nonce')
 				},
 				function(res) {
-					// $('body').append('<a href="data:text/plain;charset=utf-8,' + encodeURIComponent(res.data) + '" download="data.xml">download</a>').click();
 					$('<a />', {
 						'href': 'data:text/plain;charset=utf-8,' + encodeURIComponent(res.data),
 						'download': 'data.xml',
