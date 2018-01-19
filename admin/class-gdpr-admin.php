@@ -235,6 +235,8 @@ class GDPR_Admin {
 					if ( wp_delete_user( $user->ID ) ) {
 						$this->notifications->send( $user, 'forgot', array( 'processor' => $this->options['processor-contact-info'] ) );
 						wp_logout();
+						wp_safe_redirect( home_url() );
+						exit;
 					}
 				}
 			}
