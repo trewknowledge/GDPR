@@ -263,6 +263,24 @@ class GDPR_Admin {
 		update_option( 'gdpr_requests', $requests );
 	}
 
+	function admin_forget_user() {
+		if ( ! wp_verify_nonce( sanitize_text_field( wp_unslash( $_POST['nonce'] ) ), 'gdpr-process-request-delete-action' ) ) {
+			wp_send_json_error( __( 'Invalid or expired nonce.', 'gdpr' ) );
+		}
+
+		$uid = absint( sanitize_text_field( wp_unslash( $_POST['uid'] ) ) );
+
+		require_once( ABSPATH.'wp-admin/includes/user.php' );
+		if ( get_user_by( 'ID', $uid ) ) {
+			wp_delete_user( $uid );
+		}
+		$requests = get_option( 'gdpr_requests' );
+		unset( $requests[$uid] );
+		update_option( 'gdpr_requests', $requests );
+
+		wp_send_json_success();
+	}
+
 	public function ignore_updated_page() {
 		if ( ! wp_verify_nonce( sanitize_text_field( wp_unslash( $_POST['nonce'] ) ), 'ignore-page-updated' ) ) {
 			wp_send_json_error( __( 'Invalid or expired nonce.', 'gdpr' ) );
