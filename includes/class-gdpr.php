@@ -176,8 +176,13 @@ class GDPR {
 		$this->loader->add_action( 'template_redirect', $plugin_admin, 'forget_user' );
 		$this->loader->add_action( 'delete_user', $plugin_admin, 'export_audit_log' );
 		$this->loader->add_action( 'wp_ajax_gdpr_audit_log_email_lookup', $plugin_admin, 'gdpr_audit_log_email_lookup' );
+		$this->loader->add_action( 'wp_ajax_gdpr_forget_user', $plugin_admin, 'admin_forget_user' );
+		$this->loader->add_action( 'wp_ajax_gdpr_reassign_content', $plugin_admin, 'reassign_content_ajax_callback' );
+		$this->loader->add_action( 'wp_ajax_gdpr_ignore_updated_page', $plugin_admin, 'ignore_updated_page' );
+		$this->loader->add_action( 'wp_ajax_gdpr_notify_updated_page', $plugin_admin, 'notify_updated_page' );
 
 		// Admin Notices
+
 		$options = get_option( $this->plugin_name . '_options' );
 		$tos = get_option( $this->plugin_name . '_tos_updated' );
 		$pp = get_option( $this->plugin_name . '_pp_updated' );
@@ -212,6 +217,9 @@ class GDPR {
 
 		$this->loader->add_action( 'wp_enqueue_scripts', $plugin_public, 'enqueue_styles' );
 		$this->loader->add_action( 'wp_enqueue_scripts', $plugin_public, 'enqueue_scripts' );
+		$this->loader->add_action( 'wp_footer', $plugin_public, 'consent_modal' );
+		$this->loader->add_action( 'wp_ajax_disagree_with_terms', $plugin_public, 'logout' );
+		$this->loader->add_action( 'wp_ajax_agree_with_terms', $plugin_public, 'agree_with_terms' );
 
 	}
 
@@ -223,9 +231,7 @@ class GDPR {
 	 */
 	private function define_common_hooks() {
 		$this->loader->add_action( 'wp_ajax_process_right_to_be_forgotten', $this, 'process_right_to_be_forgotten' );
-		$this->loader->add_action( 'wp_ajax_nopriv_process_right_to_be_forgotten', $this, 'process_right_to_be_forgotten' );
 		$this->loader->add_action( 'wp_ajax_process_right_to_access', $this, 'process_right_to_access' );
-		$this->loader->add_action( 'wp_ajax_nopriv_process_right_to_access', $this, 'process_right_to_access' );
 		$this->loader->add_action( 'wp_ajax_gdpr_right_to_access_email_lookup', $this, 'process_right_to_access' );
 	}
 
