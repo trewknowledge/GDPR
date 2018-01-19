@@ -50,7 +50,7 @@
 						<tbody>
 							<?php foreach ($requests as $ID => $user ): ?>
 								<?php
-									$diff = GDPR::get_days_left( $user['requested_on'], 30 );
+									$diff = self::get_days_left( $user['requested_on'], 30 );
 									$class = '';
 									if ( $diff <= 7 ) {
 										$class = 'gdpr-urgent';
