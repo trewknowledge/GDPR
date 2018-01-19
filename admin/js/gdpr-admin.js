@@ -8,8 +8,10 @@
 			var i = $('.postbox.repeater').length;
 			var source = $('.postbox.repeater:eq(0)').clone();
 			source.find('input, textarea').val('');
-			source.find('input').attr('name', 'gdpr_options[consents][' + i + '][title]').prop('readonly', '');
+			source.find('input[data-id="title"]').attr('name', 'gdpr_options[consents][' + i + '][title]').prop('readonly', '');
+			source.find('input[data-id="id"]').attr('name', 'gdpr_options[consents][' + i + '][id]').prop('readonly', '');
 			source.find('textarea').attr('name', 'gdpr_options[consents][' + i + '][description]');
+			source.find('table').after('<button class="button delete-consent">' + gdpr.delete_text + '</button>')
 			$('.postbox.repeater:last').after( source );
 		});
 
@@ -18,7 +20,8 @@
 			$(this).closest('.repeater').remove();
 			var i = 0;
 			$('.postbox.repeater').each(function(){
-				$(this).find('input').attr('name', 'gdpr_options[consents][' + i + '][title]')
+				$(this).find('input[data-id="title"]').attr('name', 'gdpr_options[consents][' + i + '][title]')
+				$(this).find('input[data-id="id"]').attr('name', 'gdpr_options[consents][' + i + '][id]')
 				$(this).find('textarea').attr('name', 'gdpr_options[consents][' + i + '][description]')
 				i++;
 			});
