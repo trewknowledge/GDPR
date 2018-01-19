@@ -30,18 +30,21 @@ class GDPR_Activator {
 	 * @since    1.0.0
 	 */
 	public static function activate() {
-		$forget_me = get_option( 'gdpr_forget_me_requests', array() );
-		$data_portability = get_option( 'gdpr_data_portability', array() );
-		$consents = get_option( 'gdpr_consents', array() );
+		$options = get_option( 'gdpr_options' );
 
-		if ( empty( $forget_me ) ) {
-			update_option( 'gdpr_forget_me_requests', array() );
-		}
-		if ( empty( $data_portability ) ) {
-			update_option( 'gdpr_data_portability_requests', array() );
-		}
-		if ( empty( $consents ) ) {
-			update_option( 'gdpr_consents', array() );
+		if ( ! isset( $options['consents'] ) || empty( $options['consents'] ) ) {
+			update_option( 'gdpr_options', array(
+				'consents' => array(
+					'terms_of_service' => array(
+						'title' => esc_html__( 'Terms of Service', 'gdpr' ),
+						'description' => '',
+					),
+					'privacy_policy' => array(
+						'title' => esc_html__( 'Privacy Policy', 'gdpr' ),
+						'description' => '',
+					),
+				),
+			) );
 		}
 	}
 
