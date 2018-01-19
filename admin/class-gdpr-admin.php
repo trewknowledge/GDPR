@@ -281,6 +281,38 @@ class GDPR_Admin {
 		wp_send_json_success();
 	}
 
+	function reassign_content_ajax_callback() {
+		if ( ! wp_verify_nonce( sanitize_text_field( wp_unslash( $_POST['nonce'] ) ), 'gdpr-process-request-reassign-action' ) ) {
+			wp_send_json_error( __( 'Invalid or expired nonce.', 'gdpr' ) );
+		}
+
+		$uid = absint( sanitize_text_field( wp_unslash( $_POST['uid'] ) ) );
+		$reassign_to = absint( sanitize_text_field( wp_unslash( $_POST['reassign_to'] ) ) );
+		$pt = sanitize_text_field( wp_unslash( $_POST['pt'] ) );
+		$post_count = absint( sanitize_text_field( wp_unslash( $_POST['post_count'] ) ) );
+
+		$args = array(
+			'author' => $uid,
+			'post_type' => $pt,
+			'posts_per_page' => $post_count,
+		);
+
+		$posts = get_posts( $args );
+
+		if ( ! empty( $posts ) ) {
+			foreach ( $posts as $post ) {
+				wp_update_post( array(
+					'ID' => $post->ID,
+					'post_author' => $reassign_to,
+				) );
+				$new_author = get_user_by( 'ID', $reassign_to );
+				$this->audit_log->log( $uid, sprintf( esc_html__( '(%s) Post %s reassigned to %s.', 'gdpr' ), $pt, get_the_title( $post->ID ), $new_author->first_name . ' ' . $new_author->last_name  ) );
+			}
+			wp_send_json_success();
+		}
+		wp_send_json_error();
+	}
+
 	public function ignore_updated_page() {
 		if ( ! wp_verify_nonce( sanitize_text_field( wp_unslash( $_POST['nonce'] ) ), 'ignore-page-updated' ) ) {
 			wp_send_json_error( __( 'Invalid or expired nonce.', 'gdpr' ) );
