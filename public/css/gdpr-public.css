@@ -2,3 +2,49 @@
  * All of the CSS for your public-facing functionality should be
  * included in this file.
  */
+
+.gdpr-consent-modal{
+	width: 100%;
+	height: 100%;
+	position: fixed;
+	top: 0;
+	left: 0;
+	background: #fff;
+	z-index: 999999;
+}
+
+.gdpr-consent-modal-content{
+	width: 90%;
+	margin: 0 auto;
+	position: absolute;
+	top: 50%;
+	left: 50%;
+	transform: translate(-50%, -50%);
+}
+.gdpr-consent-modal-content textarea {
+	height: 50vh;
+	resize: none;
+}
+.gdpr-consent-modal-content .gdpr-consent-buttons {
+	text-align: center;
+	margin: 15px 0;
+}
+.gdpr-consent-modal-content .gdpr-consent-buttons a {
+	padding: 10px 20px;
+	display: inline-block;
+	margin: 0 10px;
+	color: #fff;
+	border-radius: 5px;
+}
+.gdpr-consent-modal-content .gdpr-consent-buttons a.gdpr-agree {
+	background: #28a745;
+}
+.gdpr-consent-modal-content .gdpr-consent-buttons a.gdpr-disagree {
+	background: #dc3545;
+}
+
+@media only screen and (min-width: 769px) {
+	.gdpr-consent-modal-content{
+		width: 50%;
+	}
+}
