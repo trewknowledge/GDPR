@@ -176,5 +176,50 @@
 				}
 			);
 		});
+
+		$('.gdpr-page-updated-ignore').click(function(e){
+			e.preventDefault();
+
+			const that = $(this);
+
+			const data = {
+				action: 'gdpr_ignore_updated_page',
+				nonce: $(this).data('nonce'),
+				page: $(this).data('page')
+			};
+
+			$.post(
+				ajaxurl,
+				data,
+				function( res ){
+					if ( res.success ) {
+						that.closest('.page-updated-notice').remove();
+					}
+				}
+			);
+
+		});
+
+		$('.gdpr-page-updated-notify').click(function(e){
+			e.preventDefault();
+
+			const that = $(this);
+
+			const data = {
+				action: 'gdpr_notify_updated_page',
+				nonce: $(this).data('nonce'),
+				page: $(this).data('page')
+			};
+
+			$.post(
+				ajaxurl,
+				data,
+				function( res ){
+					if ( res.success ) {
+						that.closest('.page-updated-notice').remove();
+					}
+				}
+			);
+		});
 	});
 })( jQuery );

@@ -261,6 +261,52 @@ class GDPR_Admin {
 		update_option( 'gdpr_requests', $requests );
 	}
 
+	public function ignore_updated_page() {
+		if ( ! wp_verify_nonce( sanitize_text_field( wp_unslash( $_POST['nonce'] ) ), 'ignore-page-updated' ) ) {
+			wp_send_json_error( __( 'Invalid or expired nonce.', 'gdpr' ) );
+		}
+		$page = isset( $_POST['page'] ) ? sanitize_text_field( wp_unslash( $_POST['page'] ) ) : '';
+		if ( ! $page || ! in_array( $page, array( 'tos', 'pp' ) ) ) {
+			wp_send_json_error();
+		}
+
+		$option = "gdpr_{$page}_updated";
+
+		update_option( $option, 0 );
+		wp_send_json_success();
+	}
+
+	public function notify_updated_page() {
+		if ( ! wp_verify_nonce( sanitize_text_field( wp_unslash( $_POST['nonce'] ) ), 'notify-page-updated' ) ) {
+			wp_send_json_error( __( 'Invalid or expired nonce.', 'gdpr' ) );
+		}
+
+		$page = isset( $_POST['page'] ) ? sanitize_text_field( wp_unslash( $_POST['page'] ) ) : '';
+		if ( ! $page || ! in_array( $page, array( 'tos', 'pp' ) ) ) {
+			wp_send_json_error();
+		}
+
+		$users = get_users( array( 'role__not_in' => 'administrator' ) );
+
+		foreach ( $users as $user ) {
+			update_user_meta( $user->ID, "gdpr_{$page}_consent_needed", 1 );
+			$consents = get_user_meta( $user->ID, 'gdpr_consents', true );
+			if ( 'tos' === $page ) {
+				unset( $consents['terms_of_service'] );
+				$this->audit_log->log( $user->ID, esc_html__( 'The Terms of Service have been updated. All consents given by user were revoked until they accept the changes.', 'gdpr' ) );
+			} elseif ( 'pp' === $page ) {
+				unset( $consents['privacy_policy'] );
+				$this->audit_log->log( $user->ID, esc_html__( 'The Privacy Policy have been updated. All consents given by user were revoked until they accept the changes.', 'gdpr' ) );
+			}
+			update_user_meta( $user->ID, 'gdpr_consents', $consents );
+		}
+
+		$option = "gdpr_{$page}_updated";
+
+		update_option( $option, 0 );
+		wp_send_json_success();
+	}
+
 	/**
 	 * Hooks to the Wordpress Core registration form and add the consent text.
 	 *
