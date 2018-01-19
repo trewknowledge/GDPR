@@ -329,14 +329,14 @@ class GDPR {
 			}
 		}
 
-		$consents = $dom->createElement('Consents');
+		$consents = $dom->createElement( 'Consents' );
 		$dom->appendChild( $consents );
 		$gdpr_consents = get_user_meta( $user->ID, 'gdpr_consents', true);
-		foreach ( $gdpr_consents as $title => $description ) {
-			$consent = $dom->createElement('Consent');
+		foreach ( $gdpr_consents as $consent_item ) {
+			$consent = $dom->createElement( 'Consent' );
 			$consents->appendChild( $consent );
-			$consent->appendChild( $dom->createElement('Title', $title) );
-			$consent->appendChild( $dom->createElement('Description', $description) );
+			$consent->appendChild( $dom->createElement( 'Title', $consent_item['title'] ) );
+			$consent->appendChild( $dom->createElement( 'Description', $consent_item['description'] ) );
 		}
 
 
