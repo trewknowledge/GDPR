@@ -97,9 +97,18 @@ class GDPR_Admin_Notices {
 	 */
 	public function tos_updated() {
 		?>
-			<div class="notice error tos-updated-notice is-dismissible">
+			<div class="notice error page-updated-notice is-dismissible">
 				<p>
-					<strong><?php _e( 'Your Terms of Service have been updated. In case this was not a small typo fix, you must ask users for explicit consent again. <a href="#" class="button-primary tos-updated-notify">Ask for consent</a> <a href="#" class="button tos-updated-ignore">Ignore</a>', 'gdpr' ); ?></strong>
+					<?php
+						$format = __(
+							'Your Terms of Service have been updated.
+							In case this was not a small typo fix, you must ask users for explicit consent again.
+							<a href="#" class="button-primary gdpr-page-updated-notify" data-page="%1$s" data-nonce="%2$s">Ask for consent</a>
+							<a href="#" class="button gdpr-page-updated-ignore" data-page="%1$s" data-nonce="%3$s">Ignore</a>',
+							'gdpr'
+						);
+					?>
+					<strong><?php echo sprintf( $format, 'tos', wp_create_nonce( 'notify-page-updated' ), wp_create_nonce( 'ignore-page-updated' ) ); ?></strong>
 				</p>
 			</div>
 		<?php
@@ -127,10 +136,19 @@ class GDPR_Admin_Notices {
 	 */
 	public function pp_updated() {
 		?>
-			<div class="notice error pp-updated-notice is-dismissible">
-				<p>
-					<strong><?php _e( 'Your Privacy Policy have been updated. In case this was not a small typo fix, you must ask users for explicit consent again. <a href="#" class="button-primary pp-updated-notify">Ask for consent</a> <a href="#" class="button pp-updated-ignore">Ignore</a>', 'gdpr' ); ?></strong>
-				</p>
+			<div class="notice error page-updated-notice is-dismissible">
+			<p>
+			<?php
+				$format = __(
+					'Your Privacy Policy have been updated.
+					In case this was not a small typo fix, you must ask users for explicit consent again.
+					<a href="#" class="button-primary gdpr-page-updated-notify" data-page="%1$s" data-nonce="%2$s">Ask for consent</a>
+					<a href="#" class="button gdpr-page-updated-ignore" data-page="%1$s" data-nonce="%3$s">Ignore</a>',
+					'gdpr'
+				);
+			?>
+			<strong><?php echo sprintf( $format, 'pp', wp_create_nonce( 'notify-page-updated' ), wp_create_nonce( 'ignore-page-updated' ) ); ?></strong>
+		</p>
 			</div>
 		<?php
 	}

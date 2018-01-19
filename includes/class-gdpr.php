@@ -190,10 +190,10 @@ class GDPR {
 		if ( empty( $options['processor-contact-info'] ) ) {
 			$this->loader->add_action( 'admin_notices', $plugin_notices, 'processor_contact_missing' );
 		}
-		if ( $tos ) {
+		if ( $tos && current_user_can( 'manage_options' ) ) {
 			$this->loader->add_action( 'admin_notices', $plugin_notices, 'tos_updated' );
 		}
-		if ( $pp ) {
+		if ( $pp && current_user_can( 'manage_options' ) ) {
 			$this->loader->add_action( 'admin_notices', $plugin_notices, 'pp_updated' );
 		}
 
