@@ -409,6 +409,16 @@ class GDPR_Admin {
 		}
 	}
 
+	static function get_days_left( $date, $deadline ) {
+		$interval = date_diff( date_create( $date ), date_create( date('Y/m/d') ) );
+
+		if ( $interval->format('%a') > 30 ) {
+			return '-' . $interval->format('%a') + $deadline;
+		}
+
+		return absint( $deadline - $interval->format('%a') );
+	}
+
 	/**
 	 * Sets the class variable $options
 	 */
