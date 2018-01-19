@@ -98,7 +98,7 @@ class GDPR_Admin {
 		$consents = array();
 		if ( isset( $_POST['gdpr_options']['consents'] ) ) {
 			foreach ( wp_unslash( $_POST['gdpr_options']['consents'] ) as $consent ) {
-				$consents[] = array(
+				$consents[sanitize_text_field( $consent['id'] )] = array(
 					'title' => sanitize_text_field( $consent['title'] ),
 					'description' => sanitize_text_field( $consent['description'] ),
 				);
@@ -176,8 +176,8 @@ class GDPR_Admin {
 	 */
 	public function user_register( $user_id ) {
 		$meta_value = array();
-		foreach ( $this->options['consents'] as $consent ) {
-			$meta_value[$consent['title']] = $consent['description'];
+		foreach ( $this->options['consents'] as $k => $consent ) {
+			$meta_value[$k] = $consent;
 		}
 		$user = get_user_by( 'ID', $user_id );
 		add_user_meta( $user_id, $this->plugin_name . '_consents', $meta_value, true );
