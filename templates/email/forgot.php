@@ -4,7 +4,6 @@
 
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
   <head>
-    <link rel="stylesheet" type="text/css" href="css/app.css">
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
     <meta name="viewport" content="width=device-width">
     <title><?php esc_html_e( 'We are sorry to see you go.', 'gdpr' ); ?></title>
@@ -57,7 +56,13 @@
         <tr>
           <td>
             <h4><?php esc_html_e( 'Your account has been closed.', 'gdpr' ); ?></h4>
-            <p><?php echo sprintf( esc_html__( 'We no longer hold any information about you. If you ever need to make a complain you can email %s and we will try to help you.', 'gdpr' ), $args['processor'] ); ?></p>
+            <p><?php echo sprintf( esc_html__( 'We no longer hold any information about you. If you ever need to make a complaint you can email %s and we will try to help you.', 'gdpr' ), $args['processor'] ); ?></p>
+            <p><?php esc_html_e( 'To be able to make a complaint you will be requested to provide your email address and the token below.', 'gdpr' ); ?></p>
+          </td>
+        </tr>
+        <tr>
+          <td>
+            <h1 align="center"><?php echo esc_html( $args['token'] ); ?></h1>
           </td>
         </tr>
       </tbody>

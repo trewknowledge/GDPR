@@ -77,7 +77,7 @@ class GDPR_Audit_Log {
 		add_user_meta( $user_id, $this->plugin_name . '_audit_log', $encrypted );
 	}
 
-	public function get_log( $email ) {
+	public function get_log( $email, $token = null ) {
 		// Try getting an existing user
 		$user = get_user_by( 'email', $email );
 		if ( is_a( $user , 'WP_User') ) {
@@ -89,7 +89,7 @@ class GDPR_Audit_Log {
 			$log = ob_get_clean();
 		} else {
 			$path = plugin_dir_path( dirname( __FILE__ ) ) . 'logs/';
-			$email_masked = $this->email_mask( $email );
+			$email_masked = $this->email_mask( $email . $token );
 			$filename = base64_encode( $email_masked );
 			$file_found = file_exists( $path . $filename );
 			if ( ! $file_found ) {
@@ -117,7 +117,7 @@ class GDPR_Audit_Log {
 		return $username . '@' . $domain;
 	}
 
-	public function export_log( $user_id ) {
+	public function export_log( $user_id, $token ) {
 		$user = get_user_by( 'ID', $user_id );
 		if ( ! is_a( $user , 'WP_User') ) {
 			return;
@@ -126,7 +126,7 @@ class GDPR_Audit_Log {
 		$path = plugin_dir_path( dirname( __FILE__ ) ) . 'logs/';
 
 		$log = $this->get_log( $user->user_email );
-		$filename = $this->email_mask( $user->user_email );
+		$filename = $this->email_mask( $user->user_email . $token );
 		$filename = base64_encode( $filename );
 
 		file_put_contents( $path . $filename, $this->crypt( $user->user_email, $log ) );

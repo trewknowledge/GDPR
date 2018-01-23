@@ -32,11 +32,13 @@
 
 			const nonce = $(this).find('#_gdpr_email_lookup').val();
 			const email = $(this).find('#gdpr-email-lookup-field').val();
+			const token = $(this).find('#gdpr-token-lookup-field').val();
 
 			const data = {
 				action: 'gdpr_audit_log_email_lookup',
 				nonce: nonce,
-				email: email
+				email: email,
+				token: token
 			}
 
 			$('.gdpr-audit-log-error').hide();
