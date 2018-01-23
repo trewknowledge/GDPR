@@ -174,7 +174,7 @@ class GDPR {
 		$this->loader->add_action( 'register_form', $plugin_admin, 'register_form' );
 		$this->loader->add_action( 'user_register', $plugin_admin, 'user_register' );
 		$this->loader->add_action( 'template_redirect', $plugin_admin, 'forget_user' );
-		$this->loader->add_action( 'delete_user', $plugin_admin, 'export_audit_log' );
+		$this->loader->add_action( 'delete_user', $plugin_admin, 'delete_user' );
 		$this->loader->add_action( 'wp_ajax_gdpr_audit_log_email_lookup', $plugin_admin, 'gdpr_audit_log_email_lookup' );
 		$this->loader->add_action( 'wp_ajax_gdpr_forget_user', $plugin_admin, 'admin_forget_user' );
 		$this->loader->add_action( 'wp_ajax_gdpr_reassign_content', $plugin_admin, 'reassign_content_ajax_callback' );
