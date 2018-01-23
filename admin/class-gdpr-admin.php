@@ -81,6 +81,35 @@ class GDPR_Admin {
 		$this->set_options();
 		$this->load_dependencies();
 		self::save();
+		self::check_requests_email_lookup();
+		$this->check_data_breach_key();
+	}
+
+	private static function check_requests_email_lookup() {
+		if (
+			! is_admin() ||
+			! current_user_can( 'manage_options' ) ||
+			! isset( $_POST['gdpr_action'], $_POST['email'], $_POST['_gdpr_email_lookup'] ) ||
+			! wp_verify_nonce( sanitize_text_field( wp_unslash( $_POST['_gdpr_email_lookup'] ) ), 'gdpr-request-email-lookup' )
+		) {
+			return;
+		}
+
+
+		$action = sanitize_text_field( wp_unslash( $_POST['gdpr_action'] ) );
+
+		if ( 'requests_email_lookup' !== $action ) {
+			return;
+		}
+
+		$email = sanitize_email( wp_unslash( $_POST['email'] ) );
+		$user = get_user_by( 'email', $email );
+
+		if ( ! is_a( $user, 'WP_User' ) ) {
+			return;
+		}
+
+		self::add_to_requests( $user );
 
 	}
 
