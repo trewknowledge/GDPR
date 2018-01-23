@@ -223,5 +223,23 @@
 				}
 			);
 		});
+
+		$('.gdpr-data-breach-email').submit(function(e){
+			e.preventDefault();
+
+			const data = {
+				action: 'gdpr_send_confirmation_email_data_breach',
+				nonce: $(this).find('#_gdpr_data_breach').val(),
+				nature: $(this).find('textarea[name="gdpr-data-breach-nature"]').val(),
+				contact: $(this).find('textarea[name="gdpr-name-contact-details-protection-officer"]').val(),
+				consequences: $(this).find('textarea[name="gdpr-likely-consequences"]').val(),
+				measures: $(this).find('textarea[name="gdpr-measures-taken"]').val()
+			};
+
+			$.post(
+				ajaxurl,
+				data
+			);
+		});
 	});
 })( jQuery );

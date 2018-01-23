@@ -180,6 +180,7 @@ class GDPR {
 		$this->loader->add_action( 'wp_ajax_gdpr_reassign_content', $plugin_admin, 'reassign_content_ajax_callback' );
 		$this->loader->add_action( 'wp_ajax_gdpr_ignore_updated_page', $plugin_admin, 'ignore_updated_page' );
 		$this->loader->add_action( 'wp_ajax_gdpr_notify_updated_page', $plugin_admin, 'notify_updated_page' );
+		$this->loader->add_action( 'wp_ajax_gdpr_send_confirmation_email_data_breach', $plugin_admin, 'send_confirmation_email_data_breach' );
 
 		// Admin Notices
 

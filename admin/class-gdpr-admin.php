@@ -302,6 +302,105 @@ class GDPR_Admin {
 		wp_send_json_success();
 	}
 
+	function send_confirmation_email_data_breach() {
+		if ( ! wp_verify_nonce( sanitize_text_field( wp_unslash( $_POST['nonce'] ) ), 'gdpr-data-breach-request' ) ) {
+			wp_send_json_error( __( 'Invalid or expired nonce.', 'gdpr' ) );
+		}
+
+		if ( ! isset( $_POST['nature'], $_POST['contact'], $_POST['consequences'], $_POST['measures'] ) ) {
+			wp_send_json_error();
+		}
+
+		$nature = sanitize_text_field( wp_unslash( $_POST['nature'] ) );
+		$contact = sanitize_text_field( wp_unslash( $_POST['contact'] ) );
+		$consequences = sanitize_text_field( wp_unslash( $_POST['consequences'] ) );
+		$measures = sanitize_text_field( wp_unslash( $_POST['measures'] ) );
+
+		$user = wp_get_current_user();
+		$key  = wp_generate_password( 20 );
+
+		$data[ $key ] = array(
+			'nature'       => $nature,
+			'contact'      => $contact,
+			'consequences' => $consequences,
+			'measures'     => $measures,
+		);
+
+		update_option( $this->plugin_name . '_data_breach_key', $data );
+
+		if ( $this->notifications->send( $user, 'data-breach', array(
+			'user'         => $user,
+			'key'          => $key,
+			'nature'       => $nature,
+			'contact'      => $contact,
+			'consequences' => $consequences,
+			'measures'     => $measures,
+		) ) ) {
+			wp_send_json_success();
+		}
+
+		wp_send_json_error();
+
+	}
+
+	private function check_data_breach_key() {
+		if (
+			! is_admin() ||
+			! current_user_can( 'manage_options' ) ||
+			! isset( $_GET['action'], $_GET['key'] )
+		) {
+			return;
+		}
+
+
+		$action = sanitize_text_field( wp_unslash( $_GET['action'] ) );
+		$key = sanitize_text_field( wp_unslash( $_GET['key'] ) );
+
+		if ( 'data-breach' !== $action ) {
+			return;
+		}
+
+		$stored_key = get_option( $this->plugin_name . '_data_breach_key' );
+		if ( ! in_array( $key, array_keys( $stored_key ) ) ) {
+			return;
+		}
+
+		$nature = $stored_key[ $key ]['nature'];
+		$contact = $stored_key[ $key ]['contact'];
+		$consequences = $stored_key[ $key ]['consequences'];
+		$measures = $stored_key[ $key ]['measures'];
+
+		$emails = array();
+		$users = get_users( array( 'fields' => array( 'ID', 'user_email' ) ) );
+		foreach ( $users as $user ) {
+			$emails[] = $user->user_email;
+			$this->audit_log->log( $user->ID, '#################' );
+			$this->audit_log->log( $user->ID, esc_html__( 'DATA BREACH EVENT', 'gdpr' ) );
+			$this->audit_log->log( $user->ID, '#################' );
+			$this->audit_log->log( $user->ID, esc_html__( '#### Nature of the personal data breach ####', 'gdpr' ) );
+			$this->audit_log->log( $user->ID, esc_html( $nature ) );
+			$this->audit_log->log( $user->ID, esc_html__( '#### Name and contact details of the data protection officer ####', 'gdpr' ) );
+			$this->audit_log->log( $user->ID, esc_html( $contact ) );
+			$this->audit_log->log( $user->ID, esc_html__( '#### Likely consequences of the personal data breach ####', 'gdpr' ) );
+			$this->audit_log->log( $user->ID, esc_html( $consequences ) );
+			$this->audit_log->log( $user->ID, esc_html__( '#### Measures taken or proposed to be taken ####', 'gdpr' ) );
+			$this->audit_log->log( $user->ID, esc_html( $measures ) );
+			$this->audit_log->log( $user->ID, esc_html__( 'Controller/Processor requested all users emails in order to notify everyone of the breach.', 'gdpr' ) );
+		}
+
+		// generate and download file with all users emails.
+		ob_start();
+		foreach ( $emails as $email ) {
+			echo "$email \n";
+		}
+		$filename = plugin_dir_path( __FILE__ ) . 'data-breach-users-export.txt';
+		if ( file_put_contents( $filename, ob_get_clean() ) ) {
+			$user = wp_get_current_user();
+			$this->notifications->send( $user, 'data-breach-export', array(), array( $filename ) );
+			unlink( $filename );
+		}
+	}
+
 	function reassign_content_ajax_callback() {
 		if ( ! wp_verify_nonce( sanitize_text_field( wp_unslash( $_POST['nonce'] ) ), 'gdpr-process-request-reassign-action' ) ) {
 			wp_send_json_error( __( 'Invalid or expired nonce.', 'gdpr' ) );
@@ -499,6 +598,13 @@ class GDPR_Admin {
 
 		add_submenu_page( $parent_slug, $page_title, $menu_title, $capability, $menu_slug, $function );
 
+		$page_title = esc_html__( 'Data Breach', 'gdpr' );
+		$menu_title = esc_html__( 'Data Breach', 'gdpr' );
+		$menu_slug = 'gdpr-data-breach';
+		$function = array( $this, 'gdpr_data_breach_page_template' );
+
+		add_submenu_page( $parent_slug, $page_title, $menu_title, $capability, $menu_slug, $function );
+
 	} // add_menu()
 
 	/**
@@ -535,6 +641,15 @@ class GDPR_Admin {
 	 */
 	public function gdpr_right_to_access_page_template() {
 		include	plugin_dir_path( __FILE__ ) . 'partials/right-to-access.php';
+	}
+
+	/**
+	 * Right to access page template.
+	 *
+	 * @since 1.0.0
+	 */
+	public function gdpr_data_breach_page_template() {
+		include	plugin_dir_path( __FILE__ ) . 'partials/data-breach.php';
 	}
 
 	/**

@@ -71,7 +71,7 @@ class GDPR_Notification {
 
 	}
 
-	public function send( $user, $type, $args = array() ) {
+	public function send( $user, $type, $args = array(), $attachments = array() ) {
 		if ( ! is_a( $user, 'WP_User' ) ) {
 			if ( ! is_int( $user ) ) {
 				return;
@@ -82,8 +82,8 @@ class GDPR_Notification {
 		$possible_types = apply_filters( 'gdpr_notification_types', array(
 			'forget' => esc_html__( 'Confirm account deletion', 'gdpr' ),
 			'forgot' => esc_html__( 'You account has been deleted', 'gdpr' ),
-			'tos_updated' => esc_html__( 'Our terms of service have been updated', 'gdpr' ),
-			'pp_updated' => esc_html__( 'Our privacy policy have been updated', 'gdpr' ),
+			'data-breach' => esc_html__( 'Confirm Data Breach Request', 'gdpr' ),
+			'data-breach-export' => esc_html__( 'Data Breach Export', 'gdpr' ),
 		) );
 
 		if ( ! in_array( $type, array_keys( $possible_types ), true ) ) {
@@ -92,11 +92,11 @@ class GDPR_Notification {
 
 		$args = apply_filters( 'gdpr_notification_args', $args );
 		$content = $this->template::get_template_html( 'email/' . $type . '.php', $args );
-
 		return wp_mail( $user->user_email,
 			$possible_types[$type],
 			$content,
-			array( 'Content-Type: text/html; charset=UTF-8' )
+			array( 'Content-Type: text/html; charset=UTF-8' ),
+			( ! empty( $attachments ) ) ? $attachments : array()
 		);
 	}
 
