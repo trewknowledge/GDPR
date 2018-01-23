@@ -142,6 +142,40 @@
 			);
 		});
 
+		$('.gdpr-anonymize-button').click(function(e) {
+			e.preventDefault();
+
+			const form = $(this).parent();
+			const uid = parseInt( form.data('uid') );
+			const comment_count = form.data('count');
+			const nonce = form.find('#_anonymize-nonce').val();
+
+			const data = {
+				action: 'gdpr_anonymize_content',
+				nonce: nonce,
+				uid: uid,
+				comment_count: comment_count,
+			};
+
+			$(this).hide();
+			form.find('.spinner').css('display', 'block');
+
+			$.post(
+				ajaxurl,
+				data,
+				function( res ){
+					if ( res.success ) {
+						form.find('button').remove();
+						form.find('p').show();
+					} else {
+						$(this).show();
+					}
+
+					form.find('.spinner').hide();
+				}
+			);
+		});
+
 		$('.gdpr-request-delete').click(function(e){
 			e.preventDefault();
 

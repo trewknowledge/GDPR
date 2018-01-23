@@ -244,6 +244,7 @@ class GDPR_Admin {
 			'author_email' => $user->user_email,
 			'include_unapproved' => true,
 			'number' => 1,
+			'count' => true,
 		) );
 
 		if ( $comments ) {
@@ -251,6 +252,37 @@ class GDPR_Admin {
 		}
 
 		return false;
+	}
+
+	function anonymize_content() {
+		if ( ! wp_verify_nonce( sanitize_text_field( wp_unslash( $_POST['nonce'] ) ), 'gdpr-anonymize-comments-action' ) ) {
+			wp_send_json_error( esc_html__( 'Invalid or expired nonce.', 'gdpr' ) );
+		}
+
+		$uid = absint( sanitize_text_field( wp_unslash( $_POST['uid'] ) ) );
+		$comment_count = absint( sanitize_text_field( wp_unslash( $_POST['comment_count'] ) ) );
+
+		$user = get_user_by( 'ID', $uid );
+		if ( ! $user ) {
+			wp_send_json_error( esc_html__( 'User does not exist', 'gdpr' ) );
+		}
+
+		$comments = get_comments( array(
+			'author_email' => $user->user_email,
+			'include_unapproved' => true,
+			'number' => $comment_count,
+		) );
+		error_log(print_r($comments, true));
+
+		foreach ( $comments as $comment ) {
+			$new_comment = array();
+			$new_comment['comment_ID'] = $comment->comment_ID;
+			$new_comment['comment_author_IP'] = '0.0.0.0';
+			$new_comment['comment_author_email'] = '';
+			$new_comment['comment_author'] = esc_html__( 'Guest', 'gdpr' );
+			wp_update_comment( $new_comment );
+		}
+		wp_send_json_success();
 	}
 
 	/**

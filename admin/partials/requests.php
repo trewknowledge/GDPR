@@ -80,7 +80,7 @@
 												<table class="widefat">
 													<thead>
 														<tr>
-															<th><?php _e( 'Post Type', 'gdpr' ); ?></th>
+															<th><?php esc_html_e( 'Content Type', 'gdpr' ); ?></th>
 															<th class="text-center"><?php _e( 'Count', 'gdpr' ); ?></th>
 															<th class="text-center"><?php _e( 'Review', 'gdpr' ); ?></th>
 															<th class="text-center"><?php _e( 'Reassign to', 'gdpr' ); ?></th>
@@ -112,7 +112,6 @@
 																<td class="text-center">
 																	<form method="post" class="gdpr-form-process-request" data-uid="<?php echo esc_attr( $ID ) ?>" data-pt="<?php echo esc_attr( $pt ); ?>" data-reassign="" data-count="<?php echo esc_attr( $count ) ?>">
 																		<?php wp_nonce_field( 'gdpr-process-request-reassign-action', '_reassign-nonce' ) ?>
-																		<?php wp_nonce_field( 'gdpr-process-request-delete-action', '_delete-nonce' ) ?>
 																		<button class="button-primary gdpr-reassign-button" data-pt="<?php echo esc_attr( $pt ) ?>" data-uid="<?php echo esc_attr( $ID ); ?>"><?php _e( 'Reassign', 'gdpr' ); ?></button>
 																		<span class="spinner"></span>
 																		<p style="display:none;"><strong><?php _e('Resolved', 'gdpr'); ?></strong></p>
@@ -120,6 +119,32 @@
 																</td>
 															</tr>
 														<?php endforeach; ?>
+														<?php
+															$comment_count = get_comments( array(
+																'author_email' => $user['email'],
+																'include_unapproved' => true,
+																'count' => true,
+															) );
+
+															if ( $comment_count ) {
+																?>
+																	<tr data-pt="comments" data-uid="<?php echo esc_attr( $ID ) ?>">
+																		<td class="row-title"><?php esc_html_e( 'Comments', 'gdpr' ); ?></td>
+																		<td class="text-center"><?php echo esc_html( $comment_count ); ?></td>
+																		<td class="text-center"><a href="<?php echo admin_url( 'edit-comments.php?comment_status=all&s=' . urlencode( $user['email'] ) ); ?>" target="_blank" class="button"><?php _e( 'Review', 'gdpr' ); ?></a></td>
+																		<td class="text-center"></td>
+																		<td class="text-center">
+																			<form method="post" class="gdpr-form-process-request" data-uid="<?php echo esc_attr( $ID ) ?>" data-pt="<?php echo esc_attr( $pt ); ?>" data-count="<?php echo esc_attr( $comment_count ) ?>">
+																				<?php wp_nonce_field( 'gdpr-anonymize-comments-action', '_anonymize-nonce' ) ?>
+																				<button class="button-primary gdpr-anonymize-button" data-uid="<?php echo esc_attr( $ID ); ?>"><?php _e( 'Anonymize', 'gdpr' ); ?></button>
+																				<span class="spinner"></span>
+																				<p style="display:none;"><strong><?php _e('Resolved', 'gdpr'); ?></strong></p>
+																			</form>
+																		</td>
+																	</tr>
+																<?php
+															}
+														?>
 													</tbody>
 												</table>
 											</div>
