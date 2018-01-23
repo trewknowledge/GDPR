@@ -263,6 +263,20 @@ class GDPR_Admin {
 			return;
 		}
 
+		$post_types = get_post_types( array( 'public' => true ) );
+		$found_posts = false;
+		foreach ( $post_types as $pt ) {
+			$post_count = count_user_posts( $user->ID, $pt );
+			if ( $post_count > 0 ) {
+				$found_posts = true;
+				break;
+			}
+		}
+
+		if ( ! $found_posts ) {
+			return;
+		}
+
 		$requests[$user->ID]['full_name'] = $user->user_firstname . ' ' . $user->user_lastname;
 		$requests[$user->ID]['email'] = $user->user_email;
 		$requests[$user->ID]['requested_on'] = date('Y/m/d');
