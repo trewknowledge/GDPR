@@ -4,7 +4,6 @@
 
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
   <head>
-    <link rel="stylesheet" type="text/css" href="css/app.css">
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
     <meta name="viewport" content="width=device-width">
     <title>My Password Email Template Subject</title>
