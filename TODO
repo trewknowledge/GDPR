@@ -5,6 +5,8 @@
 
 TODO:
   ☐ Check if we need the deactivator or the uninstall file
+  ☐ Display a consent checkbox on the comment form if the user is logged out.
+  ☐ On deletion, remove comments
 
 
 Road Map:
@@ -15,11 +17,11 @@ Road Map:
 
   TOS / PP:
     ✔ On page update, display dismissable admin notice alerting the admin that the page has been updated and that he should trigger the reconsent request of his users. @done(18-01-15 10:27) @lasted(37 seconds)
-    ☐ On button click ( seek reconsent ), should add a user meta to all users. Something like `gdpr_tos_updated` or `gdpr_pp_updated`.
-    ☐ On redirection, check if the TOS/PP meta updated exist.
-    ☐ In case it's positive, display a modal with the new TOS and a agree or disagree button.
-    ☐ On agree, update this usermeta, update the TOS/PP consent meta.
-    ☐ On disagree, log the user out.
+    ✔ On button click ( seek reconsent ), should add a user meta to all users. Something like `gdpr_tos_updated` or `gdpr_pp_updated`. @done(18-01-22 12:51)
+    ✔ On redirection, check if the TOS/PP meta updated exist. @done(18-01-22 12:52)
+    ✔ In case it's positive, display a modal with the new TOS and a agree or disagree button. @done(18-01-22 12:52)
+    ✔ On agree, update this usermeta, update the TOS/PP consent meta. @done(18-01-22 12:52)
+    ✔ On disagree, log the user out. @done(18-01-22 12:52)
 
   Right to Access:
     ✔ Get all user meta. @done(18-01-16 14:13)
@@ -40,13 +42,13 @@ Road Map:
     Right to Access:
       ✔ Email lookup. If finds a user, download his information. @done(18-01-16 14:13)
     Right to Forget:
-      ☐ Email lookup. If finds a user, add this user to the review table.
-      ☐ Review table. This table contains a list of post types and the amount of posts assigned to this user.
-      ☐ You can reassign things on the review table. That way you might want to assign USER-A posts to USER-B and pages to USER-C
-      ☐ Admins have 30 days to process the request.
+      ✔ Email lookup. If finds a user, add this user to the review table. @done(18-01-22 12:52)
+      ✔ Review table. This table contains a list of post types and the amount of posts assigned to this user. @done(18-01-22 12:52)
+      ✔ You can reassign things on the review table. That way you might want to assign USER-A posts to USER-B and pages to USER-C @done(18-01-22 12:52)
+      ✔ Admins have 30 days to process the request. @done(18-01-22 12:52)
     Audit Log:
       ✔ Email Lookup. If finds a user, displays the log on screen. @done(18-01-11 13:31)
-      ☐ Add a download and print button to the found log.
+      ✘ Add a download and print button to the found log. @cancelled(18-01-23 14:34)
     Support:
       ☐ A way to contact support. Like a form or something.
 
