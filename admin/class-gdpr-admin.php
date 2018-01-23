@@ -224,6 +224,35 @@ class GDPR_Admin {
 
 	}
 
+	private function _should_add_to_requests( $user ) {
+		if ( ! is_a( $user, 'WP_User' ) ) {
+			if ( ! is_int( $user ) ) {
+				return;
+			}
+			$user = get_user_by( 'ID', $user );
+		}
+
+		$post_types = get_post_types( array( 'public' => true ) );
+		foreach ( $post_types as $pt ) {
+			$post_count = count_user_posts( $user->ID, $pt);
+			if ( $post_count > 0 ) {
+				return true;
+			}
+		}
+
+		$comments = get_comments( array(
+			'author_email' => $user->user_email,
+			'include_unapproved' => true,
+			'number' => 1,
+		) );
+
+		if ( $comments ) {
+			return true;
+		}
+
+		return false;
+	}
+
 	/**
 	 * Function that runs when user confirms deletion from the site.
 	 *
@@ -251,15 +280,8 @@ class GDPR_Admin {
 				return;
 			}
 			if ( $key === $meta_key ) {
-				$post_types = get_post_types( array( 'public' => true ) );
-				$found_posts = false;
-				foreach ( $post_types as $pt ) {
-					$post_count = count_user_posts( $user->ID, $pt);
-					if ( $post_count > 0 ) {
-						$found_posts = true;
-						break;
-					}
-				}
+				$found_posts = $this->_should_add_to_requests( $user );
+
 				if ( $found_posts ) {
 					self::add_to_requests( $user );
 				} else {
@@ -292,15 +314,8 @@ class GDPR_Admin {
 			return;
 		}
 
-		$post_types = get_post_types( array( 'public' => true ) );
-		$found_posts = false;
-		foreach ( $post_types as $pt ) {
-			$post_count = count_user_posts( $user->ID, $pt );
-			if ( $post_count > 0 ) {
-				$found_posts = true;
-				break;
-			}
-		}
+
+		$found_posts = $this->_should_add_to_requests( $user );
 
 		if ( ! $found_posts ) {
 			return;
