@@ -107,12 +107,14 @@ class GDPR_Audit_Log {
 		$email_arr = explode( '@', $email, 2 );
 
 		$length = strlen( $email_arr[0] );
-		$length = ceil( $length / 2 );
-		$username = substr( $email_arr[0], 0, $length ) . str_repeat( $character, $length );
+		$suplement = ( 0 !== $length % 2) ? 1 : 0;
+		$length = floor( $length / 2 );
+		$username = substr( $email_arr[0], 0, $length ) . str_repeat( $character, $length + $suplement );
 
 		$length = strlen( $email_arr[1] );
-		$length = ceil( $length / 2 );
-		$domain = str_repeat( $character, $length ) . substr( $email_arr[1], $length - 1 , $length );
+		$suplement = ( 0 !== $length % 2) ? 1 : 0;
+		$length = floor( $length / 2 );
+		$domain = str_repeat( $character, $length + $suplement ) . substr( $email_arr[1], -$length, $length );
 
 		return $username . '@' . $domain;
 	}
