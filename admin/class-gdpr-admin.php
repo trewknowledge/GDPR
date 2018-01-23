@@ -143,14 +143,16 @@ class GDPR_Admin {
 
 	}
 
-	public function export_audit_log( $user_id ) {
+	public function delete_user( $user_id ) {
+		$token = $this->generate_pin();
+		$this->notifications->send( $user_id, 'forgot', array( 'processor' => $this->options['processor-contact-info'], 'token' => $token ) );
 		$this->audit_log->log( $user_id, esc_html__( 'User was removed from the site', 'gdpr') );
-		$this->audit_log->export_log( $user_id );
+		$this->audit_log->export_log( $user_id, $token );
 	}
 
 	public function gdpr_audit_log_email_lookup() {
-		if ( ! isset( $_POST['email'], $_POST['nonce'] ) ) {
-			wp_send_json_error( esc_html__( 'Missing email or nonce values.', 'gdpr' ) );
+		if ( ! isset( $_POST['email'], $_POST['token'], $_POST['nonce'] ) ) {
+			wp_send_json_error( esc_html__( 'Missing email, token or nonce values.', 'gdpr' ) );
 		}
 
 		if ( ! wp_verify_nonce( sanitize_text_field( wp_unslash( $_POST['nonce'] ) ), 'gdpr-request-email-lookup' ) ) {
@@ -158,8 +160,9 @@ class GDPR_Admin {
 		}
 
 		$email = sanitize_email( wp_unslash( $_POST['email'] ) );
+		$token = sanitize_text_field( wp_unslash( $_POST['token'] ) );
 
-		$log = $this->audit_log->get_log( $email );
+		$log = $this->audit_log->get_log( $email, $token );
 
 		if ( ! $log ) {
 			wp_send_json_error( esc_html__( 'We could not find a user with that email. If this user was already removed from the database, check on the logs folder for this user email and use the field below to decrypt the contents.', 'gdpr' ) );
@@ -233,7 +236,6 @@ class GDPR_Admin {
 				} else {
 					require_once( ABSPATH.'wp-admin/includes/user.php' );
 					if ( wp_delete_user( $user->ID ) ) {
-						$this->notifications->send( $user, 'forgot', array( 'processor' => $this->options['processor-contact-info'] ) );
 						wp_logout();
 						wp_safe_redirect( home_url() );
 						exit;
@@ -241,6 +243,11 @@ class GDPR_Admin {
 				}
 			}
 		}
+	}
+
+	public function generate_pin( $length = 6 ) {
+		$bytes = openssl_random_pseudo_bytes( $length / 2 );
+		return strtoupper( bin2hex( $bytes ) );
 	}
 
 	private static function add_to_requests( $user ) {
