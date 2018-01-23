@@ -37,7 +37,7 @@
 						<form class="gdpr-audit-log-email-lookup" method="post" action="">
 							<?php wp_nonce_field( 'gdpr-request-email-lookup', '_gdpr_email_lookup' ); ?>
 							<input type="email" name="email" class="regular-text" id="gdpr-email-lookup-field" placeholder="<?php esc_attr_e( 'email@domain.com', 'gdpr' ); ?>" required>
-							<input type="text" name="token" id="gdpr-token-lookup-field">
+							<input type="text" name="token" placeholder="<?php esc_attr_e( '6 digit token', 'gdpr' ) ?>" id="gdpr-token-lookup-field">
 							<span class="spinner"></span>
 							<?php submit_button( 'Submit', 'primary', '', false ); ?>
 						</form>
