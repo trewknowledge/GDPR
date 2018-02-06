@@ -175,6 +175,8 @@ class GDPR {
 		$this->loader->add_action( 'user_register', $plugin_admin, 'user_register' );
 		$this->loader->add_action( 'template_redirect', $plugin_admin, 'forget_user' );
 		$this->loader->add_action( 'delete_user', $plugin_admin, 'delete_user' );
+		$this->loader->add_action( 'show_user_profile', $plugin_admin, 'render_gdpr_section' );
+		$this->loader->add_action( 'edit_user_profile', $plugin_admin, 'render_gdpr_section' );
 		$this->loader->add_action( 'wp_ajax_gdpr_audit_log_email_lookup', $plugin_admin, 'gdpr_audit_log_email_lookup' );
 		$this->loader->add_action( 'wp_ajax_gdpr_forget_user', $plugin_admin, 'admin_forget_user' );
 		$this->loader->add_action( 'wp_ajax_gdpr_reassign_content', $plugin_admin, 'reassign_content_ajax_callback' );
@@ -235,6 +237,19 @@ class GDPR {
 		$this->loader->add_action( 'wp_ajax_process_right_to_be_forgotten', $this, 'process_right_to_be_forgotten' );
 		$this->loader->add_action( 'wp_ajax_process_right_to_access', $this, 'process_right_to_access' );
 		$this->loader->add_action( 'wp_ajax_gdpr_right_to_access_email_lookup', $this, 'process_right_to_access' );
+		$this->loader->add_action( 'wp_enqueue_scripts', $this, 'enqueue_scripts' );
+		$this->loader->add_action( 'admin_enqueue_scripts', $this, 'enqueue_scripts' );
+	}
+
+	function enqueue_scripts() {
+		wp_enqueue_script( $this->plugin_name . '-common', plugin_dir_url( __FILE__ ) . 'js/gdpr-common.js', array( 'jquery' ), $this->version, true );
+
+		wp_localize_script( $this->plugin_name . '-common', 'gdpr', array(
+			'ajaxurl' => admin_url( 'admin-ajax.php' ),
+			'right_to_be_forgotten_confirmation_message' => esc_html__( 'Are you sure you want to remove all your personal information from our site?', 'gdpr' ),
+			'right_to_be_forgotten_confirmation_email' => esc_html__( 'A confirmation email has been sent.', 'gdpr' ),
+			'right_to_access_confirmation_message' => esc_html__( 'You are about to generate and download a file with all data we have about you. Are you sure you want to continue?', 'gdpr' ),
+		) );
 	}
 
 	function process_right_to_be_forgotten() {
