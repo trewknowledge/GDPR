@@ -204,21 +204,7 @@ class GDPR_Public {
 	 * @since    1.0.0
 	 */
 	public function enqueue_styles() {
-
-		/**
-		 * This function is provided for demonstration purposes only.
-		 *
-		 * An instance of this class should be passed to the run() function
-		 * defined in GDPR_Loader as all of the hooks are defined
-		 * in that particular class.
-		 *
-		 * The GDPR_Loader will then create the relationship
-		 * between the defined hooks and the functions defined in this
-		 * class.
-		 */
-
 		wp_enqueue_style( $this->plugin_name, plugin_dir_url( __FILE__ ) . 'css/gdpr-public.css', array(), $this->version, 'all' );
-
 	}
 
 	/**
@@ -227,25 +213,10 @@ class GDPR_Public {
 	 * @since    1.0.0
 	 */
 	public function enqueue_scripts() {
+		wp_enqueue_script( $this->plugin_name . '-public', plugin_dir_url( __FILE__ ) . 'js/gdpr-public.js', array( 'jquery' ), $this->version, true );
 
-		/**
-		 * This function is provided for demonstration purposes only.
-		 *
-		 * An instance of this class should be passed to the run() function
-		 * defined in GDPR_Loader as all of the hooks are defined
-		 * in that particular class.
-		 *
-		 * The GDPR_Loader will then create the relationship
-		 * between the defined hooks and the functions defined in this
-		 * class.
-		 */
-
-		wp_enqueue_script( $this->plugin_name, plugin_dir_url( __FILE__ ) . 'js/gdpr-public.js', array( 'jquery' ), $this->version, false );
-
-		wp_localize_script( $this->plugin_name, 'gdpr', array(
+		wp_localize_script( $this->plugin_name . '-public', 'gdpr', array(
 			'ajaxurl' => admin_url( 'admin-ajax.php' ),
-			'right_to_be_forgotten_confirmation_message' => esc_html__( 'Are you sure you want to remove all your personal information from our site?', 'gdpr' ),
-			'right_to_access_confirmation_message' => esc_html__( 'You are about to generate and download a file with all data we have about you. Are you sure you want to continue?', 'gdpr' ),
 		) );
 
 	}
