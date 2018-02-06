@@ -13,9 +13,6 @@
 /**
  * The admin-specific functionality of the plugin.
  *
- * Defines the plugin name, version, and two examples hooks for how to
- * enqueue the admin-specific stylesheet and JavaScript.
- *
  * @package    GDPR
  * @subpackage GDPR/admin
  * @author     Fernando Claussen <fernandoclaussen@gmail.com>
@@ -71,8 +68,8 @@ class GDPR_Admin {
 	 * Initialize the class and set its properties.
 	 *
 	 * @since    1.0.0
-	 * @param    string    $plugin_name       The name of this plugin.
-	 * @param    string    $version    The version of this plugin.
+	 * @param    string    $plugin_name    The name of this plugin.
+	 * @param    string    $version        The version of this plugin.
 	 */
 	public function __construct( $plugin_name, $version ) {
 
@@ -81,11 +78,26 @@ class GDPR_Admin {
 		$this->set_options();
 		$this->load_dependencies();
 		self::save();
-		self::check_requests_email_lookup();
-		$this->check_data_breach_key();
+		self::_check_requests_email_lookup();
+		$this->_check_data_breach_key();
 	}
 
-	private static function check_requests_email_lookup() {
+	function render_gdpr_section( $user ) {
+		?>
+		<h3><?php esc_html_e( 'Privacy Settings', 'gdpr' ); ?></h3>
+		<?php
+		$classes = apply_filters( 'gdpr_admin_button_class', 'gdpr-button' );
+		$text = apply_filters( 'gdpr_right_to_be_forgotten_text', __( 'Forget me', 'gdpr' ) );
+		?>
+			<button class="gdpr-right-to-be-forgotten button <?php echo esc_attr( $classes ); ?>" data-nonce="<?php echo wp_create_nonce( 'request_to_be_forgotten' ) ?>"><?php echo esc_html( $text ); ?></button>
+		<?php
+		$text = apply_filters( 'gdpr_right_to_access_text', __( 'Download data', 'gdpr' ) );
+		?>
+			<button class="gdpr-right-to-access button <?php echo esc_attr( $classes ); ?>" data-nonce="<?php echo wp_create_nonce( 'request_personal_data' ) ?>"><?php echo esc_html( $text ); ?></button>
+		<?php
+	}
+
+	private static function _check_requests_email_lookup() {
 		if (
 			! is_admin() ||
 			! current_user_can( 'manage_options' ) ||
@@ -109,7 +121,7 @@ class GDPR_Admin {
 			return;
 		}
 
-		self::add_to_requests( $user );
+		self::_add_to_requests( $user );
 
 	}
 
@@ -315,7 +327,7 @@ class GDPR_Admin {
 				$found_posts = $this->_should_add_to_requests( $user );
 
 				if ( $found_posts ) {
-					self::add_to_requests( $user );
+					self::_add_to_requests( $user );
 				} else {
 					require_once( ABSPATH.'wp-admin/includes/user.php' );
 					if ( wp_delete_user( $user->ID ) ) {
@@ -328,12 +340,29 @@ class GDPR_Admin {
 		}
 	}
 
+	/**
+	 * Generates a random 6 digit pin.
+	 * This pin is necessary to use with the audit log files.
+	 *
+	 * @since                  1.0.0
+	 *
+	 * @param  integer $length Number of digits.
+	 * @return string          Returns the generated pin
+	 */
 	public function generate_pin( $length = 6 ) {
 		$bytes = openssl_random_pseudo_bytes( $length / 2 );
 		return strtoupper( bin2hex( $bytes ) );
 	}
 
-	private static function add_to_requests( $user ) {
+	/**
+	 * Add the user to the requests table.
+	 *
+	 * @since            1.0.0
+	 *
+	 * @param WP_User/Int $user The WP_User instance or the user id.
+	 * @return void
+	 */
+	private static function _add_to_requests( $user ) {
 		if ( ! is_a( $user, 'WP_User' ) ) {
 			if ( ! is_int( $user ) ) {
 				return;
@@ -360,6 +389,14 @@ class GDPR_Admin {
 		update_option( 'gdpr_requests', $requests );
 	}
 
+	/**
+	 * Removes the user from the requests table and deletes the user from the site.
+	 * This is run from the request table delete button.
+	 *
+	 * @since 1.0.0
+	 *
+	 * @return void
+	 */
 	function admin_forget_user() {
 		if ( ! wp_verify_nonce( sanitize_text_field( wp_unslash( $_POST['nonce'] ) ), 'gdpr-process-request-delete-action' ) ) {
 			wp_send_json_error( __( 'Invalid or expired nonce.', 'gdpr' ) );
@@ -378,6 +415,13 @@ class GDPR_Admin {
 		wp_send_json_success();
 	}
 
+	/**
+	 * Sends an email confirming the request of downloading the user emails.
+	 *
+	 * @since 1.0.0
+	 *
+	 * @return void
+	 */
 	function send_confirmation_email_data_breach() {
 		if ( ! wp_verify_nonce( sanitize_text_field( wp_unslash( $_POST['nonce'] ) ), 'gdpr-data-breach-request' ) ) {
 			wp_send_json_error( __( 'Invalid or expired nonce.', 'gdpr' ) );
@@ -419,7 +463,15 @@ class GDPR_Admin {
 
 	}
 
-	private function check_data_breach_key() {
+	/**
+	 * Check if there is an action and a key query vars and if they match what is stored on the database.
+	 * If it checks out, sends another email to the requesting user with a .txt file with all users emails.
+	 *
+	 * @since 1.0.0
+	 *
+	 * @return void
+	 */
+	private function _check_data_breach_key() {
 		if (
 			! is_admin() ||
 			! current_user_can( 'manage_options' ) ||
@@ -475,8 +527,14 @@ class GDPR_Admin {
 			$this->notifications->send( $user, 'data-breach-export', array(), array( $filename ) );
 			unlink( $filename );
 		}
+		delete_option( $this->plugin_name . '_data_breach_key' );
 	}
 
+	/**
+	 * Reassigns posts from any post type to a different user.
+	 *
+	 * @return void
+	 */
 	function reassign_content_ajax_callback() {
 		if ( ! wp_verify_nonce( sanitize_text_field( wp_unslash( $_POST['nonce'] ) ), 'gdpr-process-request-reassign-action' ) ) {
 			wp_send_json_error( __( 'Invalid or expired nonce.', 'gdpr' ) );
@@ -758,21 +816,9 @@ class GDPR_Admin {
 	 */
 	public function enqueue_scripts() {
 
-		/**
-		 * This function is provided for demonstration purposes only.
-		 *
-		 * An instance of this class should be passed to the run() function
-		 * defined in GDPR_Loader as all of the hooks are defined
-		 * in that particular class.
-		 *
-		 * The GDPR_Loader will then create the relationship
-		 * between the defined hooks and the functions defined in this
-		 * class.
-		 */
+		wp_enqueue_script( $this->plugin_name . '-admin', plugin_dir_url( __FILE__ ) . 'js/gdpr-admin.js', array( 'jquery' ), $this->version, true );
 
-		wp_enqueue_script( $this->plugin_name, plugin_dir_url( __FILE__ ) . 'js/gdpr-admin.js', array( 'jquery' ), $this->version, false );
-
-		wp_localize_script( $this->plugin_name, 'gdpr', array(
+		wp_localize_script( $this->plugin_name . '-admin', 'gdpr', array(
 			'delete_text' => esc_html__( 'Delete', 'gdpr' ),
 		) );
 
