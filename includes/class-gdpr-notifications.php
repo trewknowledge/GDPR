@@ -91,7 +91,7 @@ class GDPR_Notification {
 		}
 
 		$args = apply_filters( 'gdpr_notification_args', $args );
-		$content = $this->template::get_template_html( 'email/' . $type . '.php', $args );
+		$content = $this->template->get_template_html( 'email/' . $type . '.php', $args );
 		return wp_mail( $user->user_email,
 			$possible_types[$type],
 			$content,

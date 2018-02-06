@@ -76,7 +76,7 @@ class GDPR_Templates {
 		include $template_file;
 	}
 
-	public static function get_template_html( $template_name, $args = array() ) {
+	public function get_template_html( $template_name, $args = array() ) {
 		ob_start();
 		self::get_template( $template_name, $args );
 		return ob_get_clean();
