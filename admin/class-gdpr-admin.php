@@ -60,7 +60,7 @@ class GDPR_Admin {
 	 *
 	 * @since 		1.0.0
 	 * @access 		private
-	 * @var 	  	string 	 $audit_log    The plugin Notifications Class.
+	 * @var 	  	string 	 $notifications    The plugin Notifications Class.
 	 */
 	private $notifications;
 
@@ -78,8 +78,7 @@ class GDPR_Admin {
 		$this->set_options();
 		$this->load_dependencies();
 		self::save();
-		self::_check_requests_email_lookup();
-		$this->_check_data_breach_key();
+		$this->_check_requests_email_lookup();
 	}
 
 	function render_gdpr_section( $user ) {
@@ -97,7 +96,7 @@ class GDPR_Admin {
 		<?php
 	}
 
-	private static function _check_requests_email_lookup() {
+	private function _check_requests_email_lookup() {
 		if (
 			! is_admin() ||
 			! current_user_can( 'manage_options' ) ||
@@ -121,7 +120,7 @@ class GDPR_Admin {
 			return;
 		}
 
-		self::_add_to_requests( $user );
+		$this->_add_to_requests( $user );
 
 	}
 
@@ -327,7 +326,7 @@ class GDPR_Admin {
 				$found_posts = $this->_should_add_to_requests( $user );
 
 				if ( $found_posts ) {
-					self::_add_to_requests( $user );
+					$this->_add_to_requests( $user );
 				} else {
 					require_once( ABSPATH.'wp-admin/includes/user.php' );
 					if ( wp_delete_user( $user->ID ) ) {
@@ -362,7 +361,7 @@ class GDPR_Admin {
 	 * @param WP_User/Int $user The WP_User instance or the user id.
 	 * @return void
 	 */
-	private static function _add_to_requests( $user ) {
+	private function _add_to_requests( $user ) {
 		if ( ! is_a( $user, 'WP_User' ) ) {
 			if ( ! is_int( $user ) ) {
 				return;
@@ -459,7 +458,7 @@ class GDPR_Admin {
 		$measures = sanitize_text_field( wp_unslash( $_POST['measures'] ) );
 
 		$user = wp_get_current_user();
-		$key  = wp_generate_password( 20 );
+		$key  = wp_generate_password( 20, false );
 
 		$data[ $key ] = array(
 			'nature'       => $nature,
@@ -493,7 +492,7 @@ class GDPR_Admin {
 	 *
 	 * @return void
 	 */
-	private function _check_data_breach_key() {
+	function check_data_breach_key() {
 		if (
 			! is_admin() ||
 			! current_user_can( 'manage_options' ) ||
@@ -511,6 +510,9 @@ class GDPR_Admin {
 		}
 
 		$stored_key = get_option( $this->plugin_name . '_data_breach_key' );
+		if ( ! $stored_key ) {
+			return;
+		}
 		if ( ! in_array( $key, array_keys( $stored_key ) ) ) {
 			return;
 		}
@@ -550,6 +552,7 @@ class GDPR_Admin {
 			unlink( $filename );
 		}
 		delete_option( $this->plugin_name . '_data_breach_key' );
+		return true;
 	}
 
 	/**

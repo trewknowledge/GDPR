@@ -33,6 +33,11 @@
 			const nonce = $(this).find('#_gdpr_email_lookup').val();
 			const email = $(this).find('#gdpr-email-lookup-field').val();
 			const token = $(this).find('#gdpr-token-lookup-field').val();
+			const button = $(this).find('input[type="submit"]');
+			const spinner = $(this).find('.spinner');
+
+			button.hide();
+			spinner.css('display', 'inline-block');
 
 			const data = {
 				action: 'gdpr_audit_log_email_lookup',
@@ -47,6 +52,8 @@
 				ajaxurl,
 				data,
 				function( res ) {
+					button.show();
+					spinner.hide();
 					if ( ! res.success ) {
 						$('.gdpr-audit-log-error').show();
 					} else {
@@ -63,6 +70,11 @@
 
 			const nonce = $(this).find('#_gdpr_email_lookup').val();
 			const email = $(this).find('#gdpr-email-lookup-field').val();
+			const button = $(this).find('input[type="submit"]');
+			const spinner = $(this).find('.spinner');
+
+			button.hide();
+			spinner.css('display', 'inline-block');
 
 			const data = {
 				action: 'gdpr_right_to_access_email_lookup',
@@ -76,6 +88,8 @@
 				ajaxurl,
 				data,
 				function( res ) {
+					button.show();
+					spinner.hide();
 					if ( ! res.success ) {
 						$('.gdpr-right-to-access-error').show();
 					} else {
@@ -213,6 +227,43 @@
 			);
 		});
 
+		$('.gdpr-request-cancel').click(function(e){
+			e.preventDefault();
+
+			var confirmation = confirm( 'You are about to remove a user from the reviews table. Are you sure?');
+
+			if ( ! confirmation ) {
+				return;
+			}
+
+			const form = $(this).parent();
+			const uid = parseInt( form.data('uid') );
+			const nonce = form.find('#_delete-without-review-nonce').val() || form.find('#_delete-nonce').val();
+
+			const data = {
+				action: 'gdpr_remove_user_from_review_table',
+				nonce: nonce,
+				uid: uid,
+			};
+
+			form.find('button').hide();
+			form.find('.spinner').css('display', 'block');
+
+			$.post(
+				ajaxurl,
+				data,
+				function( res ){
+					if ( res.success ) {
+						$('#gdpr-requests-table').find('tr[data-uid="' + uid + '"]').remove();
+					} else {
+						form.find('.spinner').hide();
+						form.find('button').show();
+					}
+
+				}
+			);
+		});
+
 		$('.gdpr-page-updated-ignore').click(function(e){
 			e.preventDefault();
 
@@ -261,6 +312,12 @@
 		$('.gdpr-data-breach-email').submit(function(e){
 			e.preventDefault();
 
+			const button = $(this).find('input[type="submit"]');
+			const spinner = $(this).find('.spinner');
+
+			button.hide();
+			spinner.css('display', 'inline-block');
+
 			const data = {
 				action: 'gdpr_send_confirmation_email_data_breach',
 				nonce: $(this).find('#_gdpr_data_breach').val(),
@@ -272,7 +329,11 @@
 
 			$.post(
 				ajaxurl,
-				data
+				data,
+				function( res ) {
+					spinner.hide();
+					$('.response').html('Email confirmation sent!');
+				}
 			);
 		});
 	});

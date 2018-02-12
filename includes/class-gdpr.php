@@ -179,6 +179,7 @@ class GDPR {
 		$this->loader->add_action( 'edit_user_profile', $plugin_admin, 'render_gdpr_section' );
 		$this->loader->add_action( 'wp_ajax_gdpr_audit_log_email_lookup', $plugin_admin, 'gdpr_audit_log_email_lookup' );
 		$this->loader->add_action( 'wp_ajax_gdpr_forget_user', $plugin_admin, 'admin_forget_user' );
+		$this->loader->add_action( 'wp_ajax_gdpr_remove_user_from_review_table', $plugin_admin, 'remove_user_from_review_table' );
 		$this->loader->add_action( 'wp_ajax_gdpr_reassign_content', $plugin_admin, 'reassign_content_ajax_callback' );
 		$this->loader->add_action( 'wp_ajax_gdpr_ignore_updated_page', $plugin_admin, 'ignore_updated_page' );
 		$this->loader->add_action( 'wp_ajax_gdpr_notify_updated_page', $plugin_admin, 'notify_updated_page' );
@@ -204,6 +205,10 @@ class GDPR {
 		}
 		if ( $pp && current_user_can( 'manage_options' ) ) {
 			$this->loader->add_action( 'admin_notices', $plugin_notices, 'pp_updated' );
+		}
+		if ( $plugin_admin->check_data_breach_key() ) {
+			$this->loader->add_action( 'admin_notices', $plugin_notices, 'data_breach_confirmation');
+			$this->loader->add_action( 'admin_notices', $plugin_notices, 'data_breach_confirmation_warning');
 		}
 
 	}
@@ -258,7 +263,7 @@ class GDPR {
 		}
 
 		$user = wp_get_current_user();
-		$key = wp_generate_password( 20 );
+		$key = wp_generate_password( 20, false );
 		update_user_meta( $user->ID, $this->get_plugin_name() . '_delete_key', $key );
 		if ( $this->notifications->send( $user, 'forget', array( 'key' => $key, 'user' => $user ) ) ) {
 			wp_send_json_success();
