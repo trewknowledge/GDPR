@@ -68,6 +68,7 @@
 										<td class="text-center">
 											<div data-uid="<?php echo esc_attr( $ID ); ?>">
 												<?php wp_nonce_field( 'gdpr-process-request-delete-action', '_delete-without-review-nonce' ) ?>
+												<button class="button gdpr-request-cancel"><?php _e( 'Cancel', 'gdpr' ); ?></button>
 												<button class="button gdpr-review"><?php _e( 'Review', 'gdpr' ); ?></button>
 												<button class="button-primary gdpr-request-delete"><?php _e( 'Delete', 'gdpr' ); ?></button>
 												<span class="spinner"></span>

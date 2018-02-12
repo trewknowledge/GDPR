@@ -416,6 +416,28 @@ class GDPR_Admin {
 	}
 
 	/**
+	 * Removes the user from the requests table.
+	 * This is run from the request table cancel button.
+	 *
+	 * @since 1.0.0
+	 *
+	 * @return void
+	 */
+	function remove_user_from_review_table() {
+		if ( ! wp_verify_nonce( sanitize_text_field( wp_unslash( $_POST['nonce'] ) ), 'gdpr-process-request-delete-action' ) ) {
+			wp_send_json_error( __( 'Invalid or expired nonce.', 'gdpr' ) );
+		}
+
+		$uid = absint( sanitize_text_field( wp_unslash( $_POST['uid'] ) ) );
+
+		$requests = get_option( 'gdpr_requests' );
+		unset( $requests[$uid] );
+		update_option( 'gdpr_requests', $requests );
+
+		wp_send_json_success();
+	}
+
+	/**
 	 * Sends an email confirming the request of downloading the user emails.
 	 *
 	 * @since 1.0.0
