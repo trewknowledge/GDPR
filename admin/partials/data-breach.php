@@ -58,7 +58,9 @@
 									</td>
 								</tr>
 							</table>
-							<?php submit_button( 'Send', 'primary', '', false ); ?>
+							<span class="spinner"></span>
+							<p class="response"></p>
+							<?php submit_button( 'Send Confirmation Email', 'primary', '', false ); ?>
 						</form>
 					</div>
 				</div>
