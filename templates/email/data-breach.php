@@ -65,7 +65,7 @@
             <p><?php echo wp_kses_post( $args['consequences'] ); ?></p>
             <h4><?php esc_html_e( 'Measures taken or proposed to be taken', 'gdpr' ) ?></h4>
             <p><?php echo wp_kses_post( $args['measures'] ); ?></p>
-            <p align="center" class="button"><a href="<?php echo esc_url( admin_url( 'admin.php?page=gdpr-data-breach&action=data-breach&key=' . $args['key'] ) ); ?>"><?php esc_html_e( 'Confirm', 'gdpr' ) ?></a></p>
+            <p align="center" class="button"><a href="<?php echo esc_url( admin_url( '/?action=data-breach&key=' . $args['key'] ) ); ?>"><?php esc_html_e( 'Confirm', 'gdpr' ) ?></a></p>
             <p>
               <?php
                 echo sprintf(
