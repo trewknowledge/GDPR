@@ -67,7 +67,7 @@ class GDPR_Admin_Notices {
 	 */
 	public function processor_contact_missing() {
 		?>
-			<div class="notice error tos-missing-notice is-dismissible">
+			<div class="notice notice-error tos-missing-notice is-dismissible">
 				<p>
 					<strong><?php echo sprintf( __( 'You must set the processor contact information. Click <a href="%s">here</a> to fix that.', 'gdpr' ), admin_url( 'admin.php?page=gdpr-settings' ) ); ?></strong>
 				</p>
@@ -82,7 +82,7 @@ class GDPR_Admin_Notices {
 	 */
 	public function tos_missing() {
 		?>
-			<div class="notice error tos-missing-notice is-dismissible">
+			<div class="notice notice-error tos-missing-notice is-dismissible">
 				<p>
 					<strong><?php echo sprintf( __( 'You must select a Terms of Service Page. Click <a href="%s">here</a> to fix that.', 'gdpr' ), admin_url( 'admin.php?page=gdpr-settings' ) ); ?></strong>
 				</p>
@@ -97,7 +97,7 @@ class GDPR_Admin_Notices {
 	 */
 	public function tos_updated() {
 		?>
-			<div class="notice error page-updated-notice is-dismissible">
+			<div class="notice notice-error page-updated-notice is-dismissible">
 				<p>
 					<?php
 						$format = __(
@@ -121,9 +121,9 @@ class GDPR_Admin_Notices {
 	 */
 	public function pp_missing() {
 		?>
-			<div class="notice error pp-missing-notice is-dismissible">
+			<div class="notice notice-error pp-missing-notice is-dismissible">
 				<p>
-					<strong><?php echo sprintf( __( 'You must select a Terms of Service Page. Click <a href="%s">here</a> to fix that.', 'gdpr' ), admin_url( 'admin.php?page=gdpr-settings' ) ); ?></strong>
+					<strong><?php echo sprintf( __( 'You must select a Privacy Policy Page. Click <a href="%s">here</a> to fix that.', 'gdpr' ), admin_url( 'admin.php?page=gdpr-settings' ) ); ?></strong>
 				</p>
 			</div>
 		<?php
@@ -136,7 +136,7 @@ class GDPR_Admin_Notices {
 	 */
 	public function pp_updated() {
 		?>
-			<div class="notice error page-updated-notice is-dismissible">
+			<div class="notice notice-error page-updated-notice is-dismissible">
 			<p>
 			<?php
 				$format = __(
@@ -149,6 +149,39 @@ class GDPR_Admin_Notices {
 			?>
 			<strong><?php echo sprintf( $format, 'pp', wp_create_nonce( 'notify-page-updated' ), wp_create_nonce( 'ignore-page-updated' ) ); ?></strong>
 		</p>
+			</div>
+		<?php
+	}
+
+	/**
+	 * Runs when the data breach email is confirmed.
+	 *
+	 * @since 1.0.0
+	 */
+	public function data_breach_confirmation() {
+		?>
+			<div class="notice notice-success is-dismissible">
+			<p>
+				<strong><?php esc_html_e( 'Data breach confirmed.', 'gdpr' ); ?></strong>
+			</p>
+			<p>
+				<?php esc_html_e( 'Servers usually impose email limitations on their users. That makes us unable to email all users alerting of the breach.'); ?>
+				<?php esc_html_e( 'We are instead generating a list with emails that you can add to a dedicated service like mailchimp and send the notification.', 'gpdr' ) ?>
+			</p>
+			</div>
+		<?php
+	}
+
+	/**
+	 * Runs when the data breach email is confirmed.
+	 *
+	 * @since 1.0.0
+	 */
+	public function data_breach_confirmation_warning() {
+		?>
+			<div class="notice notice-warning is-dismissible">
+			<p><?php esc_html_e( 'Servers usually impose email limitations on their users. That makes us unable to email all users alerting of the breach.'); ?></p>
+			<p><?php esc_html_e( 'We are instead generating a list with emails that you can add to a dedicated service like mailchimp and send the notification.', 'gpdr' ) ?></p>
 			</div>
 		<?php
 	}
