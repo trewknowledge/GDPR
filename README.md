@@ -19,7 +19,6 @@ On our GitHub repository, you will find 2 branches
 
 1. Due to server limitations, we can't send mass emails to everyone in the database when using the data breach notification. We are open to suggestions on how to best handle this.
 1. The download of user data should have an additional layer of confirmation. A user should receive an email confirmation before being able to download their data.
-1. When removing a consent from the settings page, it doesn't revoke that particular consent for all users.
 1. Cookie preferences ( Being worked on the rewrite branch of the plugin. )
 
 
