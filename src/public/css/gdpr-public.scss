@@ -1,0 +1,161 @@
+@import '../../utils';
+
+.gdpr {
+	button {
+		font-family: Helvetica, Arial, sans-serif !important;
+		color: #000;
+		font-weight: normal;
+		font-size:14px;
+	}
+	img {
+		width: 100% !important;
+	}
+	&.overlay{
+		position: fixed;
+		top: 0;
+		left: 0;
+		width: 100%;
+		height: 100%;
+		background: rgba(0,0,0,0.7);
+		z-index: 99999999;
+	}
+	&.cookie-bar{
+		position: fixed;
+		bottom: 0;
+		background: rgba(0,0,0,0.7);
+		width: 100%;
+		color: #fff;
+		z-index: 99999999;
+		.wrapper{
+			padding: 20px 40px;
+			&:after {
+				content: "";
+				display: table;
+				clear: both;
+			}
+			p {
+				margin: 0;
+				font-size: 14px;
+				font-weight: normal;
+			}
+			.content {
+				@include breakpoint(medium) {
+					float: left;
+					max-width: 50%;
+				}
+			}
+			.right {
+				@include breakpoint(medium) {
+					float: right;
+				}
+			}
+		}
+		.cookie-settings {
+			background: none;
+			border:none;
+			font-weight: normal;
+			font-size: 14px;
+			text-decoration: underline;
+			position: relative;
+			margin-left: 9px;
+			color: #fff;
+			float: left;
+			&:before {
+				content: '\276F';
+				font-size: 1.1em;
+				font-weight: normal;
+				padding-right: 5px;
+				color: #fff;
+				position: absolute;
+				left: -7px;
+				top: 8px;
+			}
+			&:hover,
+			&:active,
+			&:focus,
+			&:focus-within,
+			&:visited {
+				background:none;
+			}
+		}
+		button {
+			margin: 0 5px;
+			padding: 9px 10px;
+			@include breakpoint(medium) {
+				margin: 0 20px;
+			}
+		}
+		.accept-cookies {
+			background: #6cc04a;
+			font-weight: normal;
+			font-size: 16px;
+			float:right;
+			@include breakpoint(medium) {
+				padding: 9px 20px;
+			}
+			&:hover {
+				background: #63ad43;
+			}
+			&:before {
+				content: '\2713';
+				padding-right: 3px;
+			}
+		}
+	}
+	&.cookie-preferences {
+		.wrapper {
+			position: fixed;
+			top: 50%;
+			left: 50%;
+			transform: translate(-50%, -50%);
+			z-index: 999999999;
+			width: 30%;
+			background: #fff;
+			> header {
+				display: flex;
+				.logo {
+					max-width: 30%;
+					a {
+						padding: 0;
+						margin: 0;
+						img{
+							display: block;
+						}
+					}
+				}
+				.box-title {
+					background: #dedede;
+					flex-grow: 1;
+					display: flex;
+					align-items: center;
+					justify-content: center;
+					h3 {
+						margin: 0;
+						padding: 0;
+						text-align: center;
+					}
+				}
+			}
+			.content {
+				display: flex;
+				.tabs {
+					width: 30%;
+					li {
+						button{
+							width: 100%;
+							background: #dedede;
+							color: #000;
+							font-weight: normal;
+							font-size:14px;
+							text-align: left;
+							&.active {
+								background: #fff;
+
+							}
+						}
+					}
+				}
+			}
+		}
+	}
+}

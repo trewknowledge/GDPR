@@ -8,16 +8,17 @@
  * registers the activation and deactivation functions, and defines a function
  * that starts the plugin.
  *
- * @link              http://trewknowledge.com
- * @since             0.1.0
+ * @link              https://trewknowledge.com
+ * @since             1.0.0
  * @package           GDPR
  *
  * @wordpress-plugin
  * Plugin Name:       GDPR
- * Description:       **BETA** Assists with being GDPR compliant.
- * Version:           0.1.0
+ * Plugin URI:        https://trewknowledge.com
+ * Description:       This is a short description of what the plugin does. It's displayed in the WordPress admin area.
+ * Version:           1.0.0
  * Author:            Trew Knowledge
- * Author URI:        http://trewknowledge.com
+ * Author URI:        https://trewknowledge.com
  * License:           GPL-2.0+
  * License URI:       http://www.gnu.org/licenses/gpl-2.0.txt
  * Text Domain:       gdpr
@@ -30,17 +31,17 @@ if ( ! defined( 'WPINC' ) ) {
 }
 
 /**
- * Currently pligin version.
- * Start at version 0.1.0 and use SemVer - https://semver.org
+ * Currently plugin version.
+ * Start at version 1.0.0 and use SemVer - https://semver.org
  * Rename this for your plugin and update it as you release new versions.
  */
-define( 'GDPR_VERSION', '0.1.0' );
+define( 'GDPR_VERSION', '1.0.0' );
 
 /**
  * The code that runs during plugin activation.
  * This action is documented in includes/class-gdpr-activator.php
  */
-function activate_GDPR() {
+function activate_gdpr() {
 	require_once plugin_dir_path( __FILE__ ) . 'includes/class-gdpr-activator.php';
 	GDPR_Activator::activate();
 }
@@ -49,13 +50,13 @@ function activate_GDPR() {
  * The code that runs during plugin deactivation.
  * This action is documented in includes/class-gdpr-deactivator.php
  */
-function deactivate_GDPR() {
+function deactivate_gdpr() {
 	require_once plugin_dir_path( __FILE__ ) . 'includes/class-gdpr-deactivator.php';
 	GDPR_Deactivator::deactivate();
 }
 
-register_activation_hook( __FILE__, 'activate_GDPR' );
-register_deactivation_hook( __FILE__, 'deactivate_GDPR' );
+register_activation_hook( __FILE__, 'activate_gdpr' );
+register_deactivation_hook( __FILE__, 'deactivate_gdpr' );
 
 /**
  * The core plugin class that is used to define internationalization,
@@ -70,9 +71,9 @@ require plugin_dir_path( __FILE__ ) . 'includes/class-gdpr.php';
  * then kicking off the plugin from this point in the file does
  * not affect the page life cycle.
  *
- * @since    0.1.0
+ * @since    1.0.0
  */
-function run_GDPR() {
+function run_gdpr() {
 
 	$plugin = new GDPR();
 	$plugin->run();

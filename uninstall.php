@@ -19,8 +19,8 @@
  * For more information, see the following discussion:
  * https://github.com/tommcfarlin/WordPress-Plugin-Boilerplate/pull/123#issuecomment-28541913
  *
- * @link       http://trewknowledge.com
- * @since      0.1.0
+ * @link       https://trewknowledge.com
+ * @since      1.0.0
  *
  * @package    GDPR
  */

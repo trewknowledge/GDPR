@@ -1,0 +1,21 @@
+{
+  "name": "gdpr-wordpress-plugin",
+  "version": "1.0.0",
+  "description": "",
+  "themeName": "gigya",
+  "themeURI": "http://trewknowledge.com",
+  "author": "Trew Knowledge",
+  "authorURI": "http://trewknowledge.com",
+  "textDomain": "gdpr",
+  "devDependencies": {
+    "gulp": "^3.9.0",
+    "gulp-autoprefixer": "^3.1.0",
+    "gulp-concat": "^2.6.1",
+    "gulp-livereload": "^3.8.1",
+    "gulp-load-plugins": "^1.1.0",
+    "gulp-notify": "^3.0.0",
+    "gulp-rename": "^1.2.2",
+    "gulp-sass": "^2.1.0",
+    "gulp-uglify-es": "^1.0.0"
+  }
+}

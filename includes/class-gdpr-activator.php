@@ -3,8 +3,8 @@
 /**
  * Fired during plugin activation
  *
- * @link       http://trewknowledge.com
- * @since      0.1.0
+ * @link       https://trewknowledge.com
+ * @since      1.0.0
  *
  * @package    GDPR
  * @subpackage GDPR/includes
@@ -15,7 +15,7 @@
  *
  * This class defines all code necessary to run during the plugin's activation.
  *
- * @since      0.1.0
+ * @since      1.0.0
  * @package    GDPR
  * @subpackage GDPR/includes
  * @author     Fernando Claussen <fernandoclaussen@gmail.com>
@@ -27,25 +27,10 @@ class GDPR_Activator {
 	 *
 	 * Long Description.
 	 *
-	 * @since    0.1.0
+	 * @since    1.0.0
 	 */
 	public static function activate() {
-		$options = get_option( 'gdpr_options' );
 
-		if ( ! isset( $options['consents'] ) || empty( $options['consents'] ) ) {
-			update_option( 'gdpr_options', array(
-				'consents' => array(
-					'terms_of_service' => array(
-						'title' => esc_html__( 'Terms of Service', 'gdpr' ),
-						'description' => '',
-					),
-					'privacy_policy' => array(
-						'title' => esc_html__( 'Privacy Policy', 'gdpr' ),
-						'description' => '',
-					),
-				),
-			) );
-		}
 	}
 
 }
