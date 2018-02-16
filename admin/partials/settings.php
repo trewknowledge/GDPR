@@ -22,7 +22,7 @@
 <div class="wrap">
 	<h1><?php echo esc_html( get_admin_page_title() ); ?></h1>
 	<?php if ( isset( $_GET['settings-updated'] ) ) : ?>
-		<div class="notice notice-success"><p><?php esc_html_e( 'Settings Updated', 'gdpr' ); ?></p></div>
+		<div class="notice notice-success is-dismissible"><p><?php esc_html_e( 'Settings Updated', 'gdpr' ); ?></p></div>
 	<?php endif; ?>
 	<div id="poststuff">
 		<div id="post-body" class="metabox-holder columns-2">
