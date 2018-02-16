@@ -1,10 +1,10 @@
 === GDPR ===
 Contributors: fclaussen
 Tags: gdpr, compliance, privacy, law, general data protection regulation
-Requires at least: 3.0.1
+Requires at least: 4.0
 Requires PHP: 5.3
 Tested up to: 4.9
-Stable tag: 0.1.0
+Stable tag: 0.1.1
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -121,6 +121,10 @@ No. This plugin is used to assist you on being compliant. You need to know what 
 10. Data breach email confirmation.
 
 == Changelog ==
+
+= 0.1.1 =
+* Set the admin email as the default processor information on activation
+* Settings updated notice is now dismissible
 
 = 0.1.0 =
 * Beta version released to the public

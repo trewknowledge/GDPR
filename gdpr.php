@@ -15,7 +15,7 @@
  * @wordpress-plugin
  * Plugin Name:       GDPR
  * Description:       **BETA** Assists with being GDPR compliant.
- * Version:           0.1.0
+ * Version:           0.1.1
  * Author:            Trew Knowledge
  * Author URI:        http://trewknowledge.com
  * License:           GPL-2.0+
@@ -34,7 +34,7 @@ if ( ! defined( 'WPINC' ) ) {
  * Start at version 0.1.0 and use SemVer - https://semver.org
  * Rename this for your plugin and update it as you release new versions.
  */
-define( 'GDPR_VERSION', '0.1.0' );
+define( 'GDPR_VERSION', '0.1.1' );
 
 /**
  * The code that runs during plugin activation.
