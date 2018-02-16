@@ -99,9 +99,6 @@ Organizations can be fined up to 4% of annual global turnover for breaching GDPR
 
 No. This plugin is used to assist you on being compliant. You need to know what you need to do and what the law is.
 
-## Screenshots
-
-
 ## Changelog
 
 ##### 0.1.0

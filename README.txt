@@ -114,11 +114,16 @@ No. This plugin is used to assist you on being compliant. You need to know what 
 
 == Screenshots ==
 
-1. This screen shot description corresponds to screenshot-1.(png|jpg|jpeg|gif). Note that the screenshot is taken from
-the /assets directory or the directory that contains the stable readme.txt (tags or trunk). Screenshots in the /assets
-directory take precedence. For example, `/assets/screenshot-1.png` would win over `/tags/4.3/screenshot-1.png`
-(or jpg, jpeg, gif).
-2. This is the second screen shot
+1. Audit log results example.
+2. Plugin Settings.
+3. Right to access result example.
+4. Data breach request page.
+5. Right to forget requests table.
+6. Front facing buttons.
+7. Forget me confirmation.
+8. Data download confirmation.
+9. Forget me email confirmation.
+10. Data breach email confirmation.
 
 == Changelog ==
 
