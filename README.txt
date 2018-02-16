@@ -16,22 +16,20 @@ This plugin is in BETA. It is not finished and might contain bugs.
 **THIS PLUGIN IS IN BETA**
 
 This plugin is meant to assist with GDPR.
-It has a set of features that aim to website owners to be compliant and users to have easy access to it's data.
+It has a set of features that aim for data processors to be compliant and users to have easy access to its data.
 
 == Collaboration ==
 
-On our github repo you will find 2 branches
-1. master => On this branch is where you will find the code for this plugin. Feel free to help out.
-1. rewrite => It's a rewrite version of this plugin with some extra stuff. This version includes the cookie component. It is built with the same file structure. Feel free to help out there too.
-
-Whatever is submitted to the master branch will end up being used on the rewrite. The rewrite is just a polished version of this plugin. Maybe with a nicer UI.
+On our GitHub repository, you will find 2 branches
+1.  master => On this branch you will find the code for this plugin. Feel free to help out and send pull-requests.
+1.  rewrite => This branch contains a version of the plugin with additional settings, an improved UI, and additional features such as cookie preference management. This branch will soon be merged into master.
 
 == Known issues / TODO ==
 
-1. Due to server limitations we can't shoot an email to everyone when using the data breach notification. Open to suggestions.
-1. Data download should have an additional layer of confirmation. Email confirmation as all other options.
-1. When removing a consent from the settings, it doesn't revoke that particular consent for all users.
-1. Cookie preferences ( Being worked on the rewrite branch of the plugin. )
+1.  Due to server limitations, we can't send mass emails to everyone in the database when using the data breach notification. We are open to suggestions on how to best handle this.
+1.  The download of user data should have an additional layer of confirmation. A user should receive an email confirmation before being able to download their data.
+1.  When removing a consent from the settings page, it doesn't revoke that particular consent for all users.
+1.  Cookie preferences ( Being worked on the rewrite branch of the plugin. )
 
 == Features ==
 
@@ -43,66 +41,64 @@ Whatever is submitted to the master branch will end up being used on the rewrite
 *   Right to be forgotten
 
 == Privacy Policy and Terms of Service update detection ==
-If the site owner updates the privacy policy or terms of service page content, all users will be notified on login and asked to review the new policies and provide their consent again.
+
+If the data processor updates the privacy policy or terms of service page content, all users will be notified when they attempt to login and are asked to review the new policies and provide their consent again.
+
 
 == Requests Table ==
 
-1.   Here the owner can review or add a user to be reviewed.
-1.   If the user has content published on the site of any post type or comments, he will be added to this table.
-1.   His content can then be reassigned to another user or deleted.
-1.   His comments can also be anonymized.
+1.  Here the data processor can search for a user to be reviewed.
+1.  If the user has content published on the site for any post type or comments, they will be added to this table.
+1.  The users content can be reassigned to another user or deleted.
+1.  The user's comments can be anonymized.
 
 == Audit Log ==
 
-1.   Everything the user does regarding their privacy preferences and consents gets encrypted and logged in the database.
-1.   Data breach notifications are also logged to all users.
-1.   Using the user's email, we can retrieve this information and display it.
-1.   If the user has been removed from the site, this encrypted log is deleted from the database and saved as an encrypted file inside the plugin folder.
-1.   If in the future, this users makes a complaint, you need his email and a 6 digit token that he got with his deletion email. That will decrypt the file and display the data.
+1.  Everything the user does regarding their privacy preferences and consents gets encrypted and logged in the database.
+1.  Data breach notifications are also logged for all users.
+1.  Using the user's email, we can retrieve this information and display it.
+1.  If the user has been removed from the site, this encrypted log is deleted from the database and saved as an encrypted file inside the plugin folder.
+1.  If in the future this user makes a complaint, you need his email and a 6 digit token that he got with his deletion email. That will decrypt the file and display the data.
 
 == Right to access ==
 
-1.   The user can place a request to download their data. They can do this on their wp profile page or on a custom profile page with a shortcode.
-1.   After requesting his data, we generate an xml file and it gets downloaded.
-1.   There is also a email lookup on the backend so the site owner can get it to his user if the user lost access to his account or isn't tech savvy. ( This method should not be used without the user confirming that they are who they say ).
+1.  The user can place a request to download their data. They can do this on their WordPress profile page or on a custom profile page with a shortcode. [gdpr-right-to-access]
+1.  After requesting their data, the plugin generates an XML file and it gets downloaded.
+1.  If a user has lost access to their account or is requesting their information, the data processor can search for their email and download the data. The data processor should first verify that the user is indeed who they say they are.
 
 == Data Breach notification ==
 
-1.   It's possible to notify everyone of a data breach.
-1.   The owner need to fill out some information for his records.
+1.  It's possible to notify everyone of a data breach.
+1.  The data processor needs to fill out some information for his records:
     *   Nature of the personal data breach
     *   Name and contact details of the data protection officer
     *   Likely consequences of the personal data breach
-    *   Measures taken or proposed to be taken
-1.   A confirmation email is sent to the requesting user to confirm that they in fact wish to notify people of a data breach.
-1.   The data breach event and information provided are logged to all users audit logs.
-1.   After confirming the email, the owner gets another email with a simple list of user emails. He can then put that into a mailing service and notify his users.
+    *   Measures taken or proposed to be taken to prevent another data breach
+1.  A confirmation email is sent to the data processor to confirm that they, in fact, wish to notify users of the data breach.
+1.  After the data processor confirms they want to notify users of the data breach, the data processor gets another email with a simple list of user emails. They can then put that into an emailing service and notify the users.
+1.  The data breach event and information provided are logged to all users audit logs.
 
 == Right to be forgotten ==
 
-1.   The user can request that his data be removed from the site
-1.   A confirmation by email needs to happen.
-1.   After confirmation, we analyze that user data. If he have any posts or comments on the site, he goes to the Requests Table, otherwise he is removed form the site and his data deleted.
+1.  The user can request that their data be removed from the site
+1.  A confirmation by email needs to happen.
+1.  After confirmation, the data processor can analyze that user data. If the user has any posts or comments on the site, the data processor goes to the Requests Table to take action, otherwise, the user is removed from the site and their data deleted.
 
 == Installation ==
 
-1. Upload the plugin to the `/wp-content/plugins/` directory
-1. Activate the plugin through the 'Plugins' menu in WordPress
-1. Fill out all sections of the settings page.
+1.  Upload the plugin to the `/wp-content/plugins/` directory
+1.  Activate the plugin through the 'Plugins' menu in WordPress
+1.  Fill out all sections of the settings page.
 
 == Frequently Asked Questions ==
 
-= What is GDPR? =
-
-An answer to that question.
-
 = When is the GDPR coming into effect? =
 
-It will be in force May 2018.
+GDPR will be enforced on May 25, 2018.
 
 = Who does the GDPR affect? =
 
-The GDPR not only applies to organisations located within the EU but it will also apply to organisations located outside of the EU if they offer goods or services to, or monitor the behaviour of, EU data subjects. It applies to all companies processing and holding the personal data of data subjects residing in the European Union, regardless of the company’s location.
+GDPR not only applies to organisations located within the EU but it will also apply to organisations located outside of the EU if they offer goods or services to, or monitor the behaviour of, EU data subjects. It applies to all companies processing and holding the personal data of data subjects residing in the European Union, regardless of the company’s location.
 
 = What are the penalties for non-compliance? =
 
