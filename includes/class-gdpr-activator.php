@@ -34,6 +34,7 @@ class GDPR_Activator {
 
 		if ( ! isset( $options['consents'] ) || empty( $options['consents'] ) ) {
 			update_option( 'gdpr_options', array(
+				'processor-contact-info' => get_option( 'admin_email' ),
 				'consents' => array(
 					'terms_of_service' => array(
 						'title' => esc_html__( 'Terms of Service', 'gdpr' ),
