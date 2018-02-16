@@ -104,10 +104,10 @@ No. This plugin is used to assist you on being compliant. You need to know what 
 
 ## Changelog
 
-= 0.1.0 =
+##### 0.1.0
 * Beta version released to the public
 
 ## Upgrade Notice
 
-= 0.1.0 =
+##### 0.1.0
 This plugin is in beta. Use it at your own discretion.
