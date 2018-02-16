@@ -7,7 +7,7 @@
  * public-facing side of the site and the admin area.
  *
  * @link       http://trewknowledge.com
- * @since      1.0.0
+ * @since      0.1.0
  *
  * @package    GDPR
  * @subpackage GDPR/includes
@@ -19,7 +19,7 @@
  * This is used to help us save all interactions from the user regarding consents.
  *
  *
- * @since      1.0.0
+ * @since      0.1.0
  * @package    GDPR
  * @subpackage GDPR/includes
  * @author     Fernando Claussen <fernandoclaussen@gmail.com>
@@ -29,7 +29,7 @@ class GDPR_Audit_Log {
 	/**
 	 * The unique identifier of this plugin.
 	 *
-	 * @since    1.0.0
+	 * @since    0.1.0
 	 * @access   protected
 	 * @var      string    $plugin_name    The string used to uniquely identify this plugin.
 	 */
@@ -38,7 +38,7 @@ class GDPR_Audit_Log {
 	/**
 	 * The current version of the plugin.
 	 *
-	 * @since    1.0.0
+	 * @since    0.1.0
 	 * @access   protected
 	 * @var      string    $version    The current version of the plugin.
 	 */
@@ -51,7 +51,7 @@ class GDPR_Audit_Log {
 	 * Load the dependencies, define the locale, and set the hooks for the admin area and
 	 * the public-facing side of the site.
 	 *
-	 * @since    1.0.0
+	 * @since    0.1.0
 	 */
 	public function __construct( $plugin_name, $version ) {
 

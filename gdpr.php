@@ -9,14 +9,13 @@
  * that starts the plugin.
  *
  * @link              http://trewknowledge.com
- * @since             1.0.0
+ * @since             0.1.0
  * @package           GDPR
  *
  * @wordpress-plugin
  * Plugin Name:       GDPR
- * Plugin URI:        http://trewknowledge.com
- * Description:       Assists with making sure your site and other plugins are GDPR compliant.
- * Version:           1.0.0
+ * Description:       **BETA** Assists with being GDPR compliant.
+ * Version:           0.1.0
  * Author:            Trew Knowledge
  * Author URI:        http://trewknowledge.com
  * License:           GPL-2.0+
@@ -32,10 +31,10 @@ if ( ! defined( 'WPINC' ) ) {
 
 /**
  * Currently pligin version.
- * Start at version 1.0.0 and use SemVer - https://semver.org
+ * Start at version 0.1.0 and use SemVer - https://semver.org
  * Rename this for your plugin and update it as you release new versions.
  */
-define( 'GDPR_VERSION', '1.0.0' );
+define( 'GDPR_VERSION', '0.1.0' );
 
 /**
  * The code that runs during plugin activation.
@@ -71,7 +70,7 @@ require plugin_dir_path( __FILE__ ) . 'includes/class-gdpr.php';
  * then kicking off the plugin from this point in the file does
  * not affect the page life cycle.
  *
- * @since    1.0.0
+ * @since    0.1.0
  */
 function run_GDPR() {
 

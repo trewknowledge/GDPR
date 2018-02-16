@@ -4,7 +4,7 @@
  * The admin notices functionality of the plugin.
  *
  * @link       http://trewknowledge.com
- * @since      1.0.0
+ * @since      0.1.0
  *
  * @package    GDPR
  * @subpackage GDPR/admin
@@ -22,7 +22,7 @@ class GDPR_Admin_Notices {
 	/**
 	 * The ID of this plugin.
 	 *
-	 * @since    1.0.0
+	 * @since    0.1.0
 	 * @access   private
 	 * @var      string    $plugin_name    The ID of this plugin.
 	 */
@@ -31,7 +31,7 @@ class GDPR_Admin_Notices {
 	/**
 	 * The version of this plugin.
 	 *
-	 * @since    1.0.0
+	 * @since    0.1.0
 	 * @access   private
 	 * @var      string    $version    The current version of this plugin.
 	 */
@@ -40,7 +40,7 @@ class GDPR_Admin_Notices {
 	/**
 	 * The plugin options.
 	 *
-	 * @since 		1.0.0
+	 * @since 		0.1.0
 	 * @access 		private
 	 * @var 	  	string 	 $options    The plugin options.
 	 */
@@ -49,7 +49,7 @@ class GDPR_Admin_Notices {
 	/**
 	 * Initialize the class and set its properties.
 	 *
-	 * @since    1.0.0
+	 * @since    0.1.0
 	 * @param    string    $plugin_name       The name of this plugin.
 	 * @param    string    $version    The version of this plugin.
 	 */
@@ -63,7 +63,7 @@ class GDPR_Admin_Notices {
 	/**
 	 * Runs when the processor contact information is missing.
 	 *
-	 * @since 1.0.0
+	 * @since 0.1.0
 	 */
 	public function processor_contact_missing() {
 		?>
@@ -78,7 +78,7 @@ class GDPR_Admin_Notices {
 	/**
 	 * Runs when the terms of service page information is missing.
 	 *
-	 * @since 1.0.0
+	 * @since 0.1.0
 	 */
 	public function tos_missing() {
 		?>
@@ -93,7 +93,7 @@ class GDPR_Admin_Notices {
 	/**
 	 * Runs when the terms of service page information has been updated.
 	 *
-	 * @since 1.0.0
+	 * @since 0.1.0
 	 */
 	public function tos_updated() {
 		?>
@@ -117,7 +117,7 @@ class GDPR_Admin_Notices {
 	/**
 	 * Runs when the privacy policy page information is missing.
 	 *
-	 * @since 1.0.0
+	 * @since 0.1.0
 	 */
 	public function pp_missing() {
 		?>
@@ -132,7 +132,7 @@ class GDPR_Admin_Notices {
 	/**
 	 * Runs when the privacy policy page information has been updated.
 	 *
-	 * @since 1.0.0
+	 * @since 0.1.0
 	 */
 	public function pp_updated() {
 		?>
@@ -156,7 +156,7 @@ class GDPR_Admin_Notices {
 	/**
 	 * Runs when the data breach email is confirmed.
 	 *
-	 * @since 1.0.0
+	 * @since 0.1.0
 	 */
 	public function data_breach_confirmation() {
 		?>
@@ -175,7 +175,7 @@ class GDPR_Admin_Notices {
 	/**
 	 * Runs when the data breach email is confirmed.
 	 *
-	 * @since 1.0.0
+	 * @since 0.1.0
 	 */
 	public function data_breach_confirmation_warning() {
 		?>

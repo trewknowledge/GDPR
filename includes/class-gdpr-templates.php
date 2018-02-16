@@ -4,7 +4,7 @@
  * The file that finds and load templates.
  *
  * @link       http://trewknowledge.com
- * @since      1.0.0
+ * @since      0.1.0
  *
  * @package    GDPR
  * @subpackage GDPR/includes
@@ -16,7 +16,7 @@
  * This is used to help us find the correct templates to load.
  *
  *
- * @since      1.0.0
+ * @since      0.1.0
  * @package    GDPR
  * @subpackage GDPR/includes
  * @author     Fernando Claussen <fernandoclaussen@gmail.com>
@@ -31,7 +31,7 @@ class GDPR_Templates {
 	 * 1. /themes/theme/gdpr/templates/$template_name
 	 * 2. /plugins/gdpr/templates/$template_name.
 	 *
-	 * @since 1.0.0
+	 * @since 0.1.0
 	 *
 	 * @param   string  $template_name    Template to load.
 	 * @return  string                    Path to the template file.
@@ -60,7 +60,7 @@ class GDPR_Templates {
 	 *
 	 * Search for the template and include the file.
 	 *
-	 * @since 1.0.0
+	 * @since 0.1.0
 	 *
 	 * @param string  $template_name    Template to load.
 	 * @param array   $args             Args passed for the template file.

@@ -4,7 +4,7 @@
  * The admin-specific functionality of the plugin.
  *
  * @link       http://trewknowledge.com
- * @since      1.0.0
+ * @since      0.1.0
  *
  * @package    GDPR
  * @subpackage GDPR/admin
@@ -22,7 +22,7 @@ class GDPR_Admin {
 	/**
 	 * The ID of this plugin.
 	 *
-	 * @since    1.0.0
+	 * @since    0.1.0
 	 * @access   private
 	 * @var      string    $plugin_name    The ID of this plugin.
 	 */
@@ -31,7 +31,7 @@ class GDPR_Admin {
 	/**
 	 * The version of this plugin.
 	 *
-	 * @since    1.0.0
+	 * @since    0.1.0
 	 * @access   private
 	 * @var      string    $version    The current version of this plugin.
 	 */
@@ -40,7 +40,7 @@ class GDPR_Admin {
 	/**
 	 * The plugin options.
 	 *
-	 * @since 		1.0.0
+	 * @since 		0.1.0
 	 * @access 		private
 	 * @var 	  	string 	 $options    The plugin options.
 	 */
@@ -49,7 +49,7 @@ class GDPR_Admin {
 	/**
 	 * The Audit Log Class.
 	 *
-	 * @since 		1.0.0
+	 * @since 		0.1.0
 	 * @access 		private
 	 * @var 	  	string 	 $audit_log    The plugin Audit Log Class.
 	 */
@@ -58,7 +58,7 @@ class GDPR_Admin {
 	/**
 	 * The Notifications Class.
 	 *
-	 * @since 		1.0.0
+	 * @since 		0.1.0
 	 * @access 		private
 	 * @var 	  	string 	 $notifications    The plugin Notifications Class.
 	 */
@@ -67,7 +67,7 @@ class GDPR_Admin {
 	/**
 	 * Initialize the class and set its properties.
 	 *
-	 * @since    1.0.0
+	 * @since    0.1.0
 	 * @param    string    $plugin_name    The name of this plugin.
 	 * @param    string    $version        The version of this plugin.
 	 */
@@ -105,7 +105,6 @@ class GDPR_Admin {
 		) {
 			return;
 		}
-
 
 		$action = sanitize_text_field( wp_unslash( $_POST['gdpr_action'] ) );
 
@@ -167,7 +166,7 @@ class GDPR_Admin {
 	 * Create an instance of the loader which will be used to register the hooks
 	 * with WordPress.
 	 *
-	 * @since    1.0.0
+	 * @since    0.1.0
 	 * @access   private
 	 */
 	private function load_dependencies() {
@@ -215,7 +214,7 @@ class GDPR_Admin {
 	/**
 	 * Hook that run when the user is first added to the database.
 	 *
-	 * @since 1.0.0
+	 * @since 0.1.0
 	 */
 	public function user_register( $user_id ) {
 		$meta_value = array();
@@ -299,7 +298,7 @@ class GDPR_Admin {
 	/**
 	 * Function that runs when user confirms deletion from the site.
 	 *
-	 * @since 1.0.0
+	 * @since 0.1.0
 	 */
 	public function forget_user() {
 		if ( ! is_home() || ! is_front_page() || ! isset( $_GET['action'] ) ) {
@@ -343,7 +342,7 @@ class GDPR_Admin {
 	 * Generates a random 6 digit pin.
 	 * This pin is necessary to use with the audit log files.
 	 *
-	 * @since                  1.0.0
+	 * @since                  0.1.0
 	 *
 	 * @param  integer $length Number of digits.
 	 * @return string          Returns the generated pin
@@ -356,7 +355,7 @@ class GDPR_Admin {
 	/**
 	 * Add the user to the requests table.
 	 *
-	 * @since            1.0.0
+	 * @since            0.1.0
 	 *
 	 * @param WP_User/Int $user The WP_User instance or the user id.
 	 * @return void
@@ -392,7 +391,7 @@ class GDPR_Admin {
 	 * Removes the user from the requests table and deletes the user from the site.
 	 * This is run from the request table delete button.
 	 *
-	 * @since 1.0.0
+	 * @since 0.1.0
 	 *
 	 * @return void
 	 */
@@ -418,7 +417,7 @@ class GDPR_Admin {
 	 * Removes the user from the requests table.
 	 * This is run from the request table cancel button.
 	 *
-	 * @since 1.0.0
+	 * @since 0.1.0
 	 *
 	 * @return void
 	 */
@@ -439,7 +438,7 @@ class GDPR_Admin {
 	/**
 	 * Sends an email confirming the request of downloading the user emails.
 	 *
-	 * @since 1.0.0
+	 * @since 0.1.0
 	 *
 	 * @return void
 	 */
@@ -488,7 +487,7 @@ class GDPR_Admin {
 	 * Check if there is an action and a key query vars and if they match what is stored on the database.
 	 * If it checks out, sends another email to the requesting user with a .txt file with all users emails.
 	 *
-	 * @since 1.0.0
+	 * @since 0.1.0
 	 *
 	 * @return void
 	 */
@@ -641,7 +640,7 @@ class GDPR_Admin {
 	/**
 	 * Hooks to the Wordpress Core registration form and add the consent text.
 	 *
-	 * @since 1.0.0
+	 * @since 0.1.0
 	 */
 	public function register_form() {
 		if ( ! isset( $this->options['tos-page'], $this->options['pp-page'] ) ) {
@@ -660,7 +659,7 @@ class GDPR_Admin {
 		/**
 		 * Filters the consent html
 		 *
-		 * @since 1.0.0
+		 * @since 0.1.0
 		 *
 		 * @param string $text The registration form consent html
 		 */
@@ -673,7 +672,7 @@ class GDPR_Admin {
 	/**
 	 * Check if the Terms of Service or Privacy Policy pages have been updated.
 	 *
-	 * @since 1.0.0
+	 * @since 0.1.0
 	 *
 	 * @param integer $ID
 	 * @param WP_Post $post
@@ -710,7 +709,7 @@ class GDPR_Admin {
 	/**
 	 * Adds a menu page for the plugin with all it's sub pages.
 	 *
-	 * @since   1.0.0
+	 * @since   0.1.0
 	 */
 	public function add_menu() {
 
@@ -769,7 +768,7 @@ class GDPR_Admin {
 	/**
 	 * Requests Page Template
 	 *
-	 * @since 1.0.0
+	 * @since 0.1.0
 	 */
 	public function gdpr_requests_page_template() {
 		include	plugin_dir_path( __FILE__ ) . 'partials/requests.php';
@@ -778,7 +777,7 @@ class GDPR_Admin {
 	/**
 	 * Settings Page Template
 	 *
-	 * @since 1.0.0
+	 * @since 0.1.0
 	 */
 	public function gdpr_settings_page_template() {
 		include	plugin_dir_path( __FILE__ ) . 'partials/settings.php';
@@ -787,7 +786,7 @@ class GDPR_Admin {
 	/**
 	 * Audit Log Page Template
 	 *
-	 * @since 1.0.0
+	 * @since 0.1.0
 	 */
 	public function gdpr_audit_log_page_template() {
 		include	plugin_dir_path( __FILE__ ) . 'partials/audit-log.php';
@@ -796,7 +795,7 @@ class GDPR_Admin {
 	/**
 	 * Right to access page template.
 	 *
-	 * @since 1.0.0
+	 * @since 0.1.0
 	 */
 	public function gdpr_right_to_access_page_template() {
 		include	plugin_dir_path( __FILE__ ) . 'partials/right-to-access.php';
@@ -805,7 +804,7 @@ class GDPR_Admin {
 	/**
 	 * Right to access page template.
 	 *
-	 * @since 1.0.0
+	 * @since 0.1.0
 	 */
 	public function gdpr_data_breach_page_template() {
 		include	plugin_dir_path( __FILE__ ) . 'partials/data-breach.php';
@@ -814,7 +813,7 @@ class GDPR_Admin {
 	/**
 	 * Register the stylesheets for the admin area.
 	 *
-	 * @since    1.0.0
+	 * @since    0.1.0
 	 */
 	public function enqueue_styles() {
 
@@ -837,7 +836,7 @@ class GDPR_Admin {
 	/**
 	 * Register the JavaScript for the admin area.
 	 *
-	 * @since    1.0.0
+	 * @since    0.1.0
 	 */
 	public function enqueue_scripts() {
 

@@ -4,7 +4,7 @@
  * The file that defines the Notification component
  *
  * @link       http://trewknowledge.com
- * @since      1.0.0
+ * @since      0.1.0
  *
  * @package    GDPR
  * @subpackage GDPR/includes
@@ -16,7 +16,7 @@
  * This is used to help us notify users of changes they've made to their profile.
  *
  *
- * @since      1.0.0
+ * @since      0.1.0
  * @package    GDPR
  * @subpackage GDPR/includes
  * @author     Fernando Claussen <fernandoclaussen@gmail.com>
@@ -26,7 +26,7 @@ class GDPR_Notification {
 	/**
 	 * The template class instance.
 	 *
-	 * @since    1.0.0
+	 * @since    0.1.0
 	 * @access   protected
 	 * @var      string    $template    The template class instance.
 	 */
@@ -37,7 +37,7 @@ class GDPR_Notification {
 	 *
 	 * Set the plugin name and the plugin version that can be used throughout the plugin.
 	 *
-	 * @since    1.0.0
+	 * @since    0.1.0
 	 */
 	public function __construct() {
 		$this->load_dependencies();
@@ -56,7 +56,7 @@ class GDPR_Notification {
 	 * Create an instance of the loader which will be used to register the hooks
 	 * with WordPress.
 	 *
-	 * @since    1.0.0
+	 * @since    0.1.0
 	 * @access   private
 	 */
 	private function load_dependencies() {
