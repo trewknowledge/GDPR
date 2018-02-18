@@ -16,6 +16,9 @@ This GitHub repository has two branches:
 1. master => This branch is where you will find the code for this plugin. Feel free to help out.
 1. rewrite => This is a rewrite version of this plugin with some additional features such as cookie preference management and control. Please feel free to help out here too.
 
+When anything is submitted to the master branch it will ultimately end up being used on the rewrite version. The rewrite is considered to be the polished version of this plugin. The goal would also be to address any UI elements that can be enhanced.
+
+
 ## Known issues / TODO
 
 1. Due to server limitations and potential for outgoing emails to be flagged as spam, we cannot send emails to everyone when using the data breach notification. Open to suggestions on best to handle mass emails and any controls required.
