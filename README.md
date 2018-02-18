@@ -5,6 +5,7 @@
 
 
 This plugin is meant to assist a Controller, Data Processor, and Data Protection Officer (DPO) with efforts to meet the obligations and rights enacted under the GDPR.
+
 ACTIVATING THIS PLUGIN DOES NOT GUARANTEE THAT AN ORGANIZATION IS SUCCESSFULLY MEETING ITS RESPONSIBILITIES AND OBLIGATIONS OF GDPR. INDIVIDUAL ORGANIZATIONS SHOULD ASSESS THEIR UNIQUE RESPONSIBILITIES AND ENSURE EXTRA MEASURES ARE TAKE TO MEET ANY OBLIGATIONS REQUIRED BY LAW AND BASED ON A DATA PROTECTION IMPACT ASSESSMENT (DPIA).
 
 
@@ -46,17 +47,21 @@ And more to come...
 ### Terms of Service & Privacy Policy consent management
 
 From the Settings options in the dashboard, the Data Processor can select the pages that will be tracked and logged for Terms of Service and Privacy Policy, then include their content. 
+
 On login, the user must consent to the Terms of Service and the Privacy Policy outlined on the site. If the user does not consent, the user will not be registered or logged in. 
+
 If the site owner updates the Privacy Policy or Terms of Service page content, the change will be logged and flagged to the admin that they must notify users on next login to seek re-consent. Additionally, the warning message can be dismissed in the event of a minor correction or mistake.
 
 ### Requests Table & Right to Erasure
 
 1. The Data User is able to submit a request to be erased from the profile using a shortcode.   
-2. When a request is made, the Data User will receive an email confirmation to confirm the deletion request.
-3. (a) after email confirmation, the user request is added to the requests table for review by the Administrator. The Administrator can also add user manually with an email look up and review. 
-3. (b) if the Data User has content published on the site for any post types, or comments, they will be added to this table. If they do not have any content, they will receive a confirmation of erasure request and be provided a 6 digit Token for safe keeping after erasure in case of recover data needs. 
-4. (a) the requests table allows the Administrator to reassign any content to another user or delete it.
-4. (b) In the event of comments, the Data User’s content would be made anonymous.
+1. When a request is made, the Data User will receive an email confirmation to confirm the deletion request.
+1.
+   1. after email confirmation, the user request is added to the requests table for review by the Administrator. The Administrator can also add user manually with an email look up and review. 
+   1. if the Data User has content published on the site for any post types, or comments, they will be added to this table. If they do not have any content, they will receive a confirmation of erasure request and be provided a 6 digit Token for safe keeping after erasure in case of recover data needs. 
+1.
+   1. the requests table allows the Administrator to reassign any content to another user or delete it.
+   1. In the event of comments, the Data User’s content would be made anonymous.
 
 ### Audit Log
 
@@ -74,14 +79,14 @@ If the site owner updates the Privacy Policy or Terms of Service page content, t
 
 ### Data Breach & Notifications
 
-1.  In case of breach, the Administrator can notify the Data Users by confirming the breach and receiving an export of user data. 
-1.  The Administrator would complete the following information which would be recorded in the audit log:
-  * Nature of the personal data breach
-  * Name and contact details of the data protection officer
-  * Likely consequences of the personal data breach
-  * Measures taken or proposed to be taken
-1.  A confirmation email is then sent to the Data Processor to confirm the breach notification and the data breach event, including information provided, are logged to all Data Users.
-1.   After email confirming, the Data Processor will receive a second email with a list of Data User emails which can be imported into an email marketing platform of email provider for bulk notifications. 
+1. In case of breach, the Administrator can notify the Data Users by confirming the breach and receiving an export of user data. 
+1. The Administrator would complete the following information which would be recorded in the audit log:
+   1. Nature of the personal data breach
+   1. Name and contact details of the data protection officer
+   1. Likely consequences of the personal data breach
+   1. Measures taken or proposed to be taken
+1. A confirmation email is then sent to the Data Processor to confirm the breach notification and the data breach event, including information provided, are logged to all Data Users.
+1. After email confirming, the Data Processor will receive a second email with a list of Data User emails which can be imported into an email marketing platform of email provider for bulk notifications. 
 
 ## Installation
 
