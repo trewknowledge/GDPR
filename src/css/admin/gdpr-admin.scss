@@ -45,19 +45,19 @@
 			}
 		}
 	}
-}
-input {
-	&:checked {
-		+.gdpr-slider {
-			background-color: #2196F3;
-			&:before {
-				transform: translateX(21px);
+	input {
+		&:checked {
+			+.slider {
+				background-color: #2196F3;
+				&:before {
+					transform: translateX(21px);
+				}
 			}
 		}
-	}
-	&:focus {
-		+.gdpr-slider {
-			box-shadow: 0 0 1px #2196F3;
+		&:focus {
+			+.slider {
+				box-shadow: 0 0 1px #2196F3;
+			}
 		}
 	}
 }
