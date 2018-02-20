@@ -1,5 +1,5 @@
 === GDPR ===
-Contributors: fclaussen
+Contributors: fclaussen, trewknowledge
 Tags: gdpr, compliance, privacy, law, general data protection regulation
 Requires at least: 4.0
 Requires PHP: 5.3
