@@ -104,9 +104,10 @@ class GDPR_Admin {
 				continue;
 			}
 			$output[ $key ] = array(
-				'name'         => sanitize_text_field( wp_unslash( $props['name'] ) ),
-				'how_we_use'   => wp_kses_post( $props['how_we_use'] ),
-				'cookies_used' => sanitize_text_field( wp_unslash( $props['cookies_used'] ) ),
+				'name'          => sanitize_text_field( wp_unslash( $props['name'] ) ),
+				'always_active' => sanitize_text_field( wp_unslash( $props['always_active'] ) ),
+				'how_we_use'    => wp_kses_post( $props['how_we_use'] ),
+				'cookies_used'  => sanitize_text_field( wp_unslash( $props['cookies_used'] ) ),
 			);
 
 			if ( isset( $props['hosts'] ) ) {
