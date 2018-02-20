@@ -95,9 +95,44 @@ class GDPR_Admin {
 
 	} // add_menu()
 
+	function cookie_tabs_sanitize( $tabs ) {
+
+		$output = array();
+
+		foreach ( $tabs as $key => $props ) {
+			if ( '' === $props['name'] || '' === $props['how_we_use'] || '' === $props['cookies_used'] ) {
+				unset( $tabs[ $key ] );
+				continue;
+			}
+			$output[ $key ] = array(
+				'name' => sanitize_text_field( wp_unslash( $props['name'] ) ),
+				'how_we_use' => wp_kses_post( $props['how_we_use'] ),
+				'cookies_used' => sanitize_text_field( wp_unslash( $props['cookies_used'] ) ),
+			);
+
+			if ( isset( $props['hosts'] ) ) {
+				foreach ( $props['hosts'] as $host_key => $host ) {
+					if ( '' === $host['name'] || '' === $host['cookies_used'] ) {
+						unset( $props['hosts'][ $host_key ] );
+						continue;
+					}
+					$output[ $key ]['hosts'][ $host_key ] = array(
+						'name' => sanitize_text_field( wp_unslash( $host['name'] ) ),
+						'cookies_used' => sanitize_text_field( wp_unslash( $host['cookies_used'] ) ),
+					);
+				}
+			}
+		}
+		return $output;
+	}
+
+	function cookie_banner_sanitize( $input ) {
+		return sanitize_text_field( wp_unslash( $input ) );
+	}
+
 	public function register_settings() {
-		register_setting( 'gdpr', 'gdpr_cookie_banner_content' );
-		register_setting( 'gdpr', 'gdpr_cookie_popup_content' );
+		register_setting( 'gdpr', 'gdpr_cookie_banner_content', array( 'sanitize_callback' => array( $this, 'cookie_banner_sanitize' ) ) );
+		register_setting( 'gdpr', 'gdpr_cookie_popup_content', array( 'sanitize_callback' => array( $this, 'cookie_tabs_sanitize' ) ) );
 
 		$section_id = 'cookie_banner_section';
 		$admin_page_title = 'Cookie Settings';
