@@ -23,15 +23,15 @@ When anything is submitted to the master branch it will ultimately end up being 
 
 1. Due to server limitations and potential for outgoing emails to be flagged as spam, we cannot send emails to everyone when using the data breach notification. Open to suggestions on best to handle mass emails and any controls required.
 1. Cookie preferences ( Being worked on the rewrite branch of the plugin. )
-1. Cookie preferences and activation control is currently being developed and will be released shortly in the rewrite branch.  This will allow for a custom banner message on the front end UI, cookie settings window with activation controls for various types of cookies being used and user acceptance/saving settings. Administrator will be able to create little or many cookie controls based on obligations. 
-1. The right to file a complaint with a supervisory authority is being developed and will be added shortly, however, open to suggestions on the best approach. 
+1. Cookie preferences and activation control is currently being developed and will be released shortly in the rewrite branch.  This will allow for a custom banner message on the front end UI, cookie settings window with activation controls for various types of cookies being used and user acceptance/saving settings. Administrator will be able to create little or many cookie controls based on obligations.
+1. The right to file a complaint with a supervisory authority is being developed and will be added shortly, however, open to suggestions on the best approach.
 1. The right to rectify an error in the data or request a correction is also being worked on to send a notification to Administrator contact info.
-1. Data residence and the storage of user data is another important concern that we are looking for a solution. 
-1. Additional, more granular consent management for the Data User to restrict personal data from processing or revoke consent form profile. 
+1. Data residence and the storage of user data is another important concern that we are looking for a solution.
+1. Additional, more granular consent management for the Data User to restrict personal data from processing or revoke consent form profile.
 1. Consent management for conditions applicable to child’s consent
 1. Scanning for personal data being collected by 3rd party WordPress plugins and notification if processing is transmitted out of a set country.
 
-And more to come... 
+And more to come...
 
 ## Features
 
@@ -49,26 +49,26 @@ And more to come...
 
 ### Terms of Service & Privacy Policy consent management
 
-From the Settings options in the dashboard, the Data Processor can select the pages that will be tracked and logged for Terms of Service and Privacy Policy, then include their content. 
+From the Settings options in the dashboard, the Data Processor can select the pages that will be tracked and logged for Terms of Service and Privacy Policy, then include their content.
 
-On login, the user must consent to the Terms of Service and the Privacy Policy outlined on the site. If the user does not consent, the user will not be registered or logged in. 
+On login, the user must consent to the Terms of Service and the Privacy Policy outlined on the site. If the user does not consent, the user will not be registered or logged in.
 
 If the site owner updates the Privacy Policy or Terms of Service page content, the change will be logged and flagged to the admin that they must notify users on next login to seek re-consent. Additionally, the warning message can be dismissed in the event of a minor correction or mistake.
 
 ### Requests Table & Right to Erasure
 
-1. The Data User is able to submit a request to be erased from the profile using a shortcode.   
+1. The Data User is able to submit a request to be erased from the profile using a shortcode.
 1. When a request is made, the Data User will receive an email confirmation to confirm the deletion request.
 1.
-   1. after email confirmation, the user request is added to the requests table for review by the Administrator. The Administrator can also add user manually with an email look up and review. 
-   1. if the Data User has content published on the site for any post types, or comments, they will be added to this table. If they do not have any content, they will receive a confirmation of erasure request and be provided a 6 digit Token for safe keeping after erasure in case of recover data needs. 
+   1. after email confirmation, the user request is added to the requests table for review by the Administrator. The Administrator can also add user manually with an email look up and review.
+   1. if the Data User has content published on the site for any post types, or comments, they will be added to this table. If they do not have any content, they will receive a confirmation of erasure request and be provided a 6 digit Token for safe keeping after erasure in case of recover data needs.
 1.
    1. the requests table allows the Administrator to reassign any content to another user or delete it.
    1. In the event of comments, the Data User’s content would be made anonymous.
 
 ### Audit Log
 
-1.   Everything the Data User does from registration, providing consent to privacy policy, terms of service and requests is logged and encrypted in a database. 
+1.   Everything the Data User does from registration, providing consent to privacy policy, terms of service and requests is logged and encrypted in a database.
 1.   Data breach notifications are also logged to all users.
 1.   Using the Data User's email, we can retrieve this information and display it.
 1.   If the Data User has been removed from the site, this encrypted log is deleted from the database and saved as an encrypted file inside the plugin folder.
@@ -82,14 +82,14 @@ If the site owner updates the Privacy Policy or Terms of Service page content, t
 
 ### Data Breach & Notifications
 
-1. In case of breach, the Administrator can notify the Data Users by confirming the breach and receiving an export of user data. 
+1. In case of breach, the Administrator can notify the Data Users by confirming the breach and receiving an export of user data.
 1. The Administrator would complete the following information which would be recorded in the audit log:
    1. Nature of the personal data breach
    1. Name and contact details of the data protection officer
    1. Likely consequences of the personal data breach
    1. Measures taken or proposed to be taken
 1. A confirmation email is then sent to the Data Processor to confirm the breach notification and the data breach event, including information provided, are logged to all Data Users.
-1. After email confirming, the Data Processor will receive a second email with a list of Data User emails which can be imported into an email marketing platform of email provider for bulk notifications. 
+1. After email confirming, the Data Processor will receive a second email with a list of Data User emails which can be imported into an email marketing platform of email provider for bulk notifications.
 
 ## Installation
 
@@ -124,19 +124,19 @@ The GDPR applies to all EU organisations – whether commercial business, charit
 The GDPR applies to all organisations located within the EU, whether you are a commercial business, charity or public authority, institution and collect, store or process EU citizen data. It also applies to any organisation located outside of the EU if they also collect store or process EU citizen data.
 
 #### What is considered personal data?
-The GDPR defines personal data as any information or type of data that can directly or indirectly identify a natural person’s identity. This can include information such as: Name, Address, Email, Photos, System Data, IP addresses, Location data, Phone numbers and Cookies. 
+The GDPR defines personal data as any information or type of data that can directly or indirectly identify a natural person’s identity. This can include information such as: Name, Address, Email, Photos, System Data, IP addresses, Location data, Phone numbers and Cookies.
 
-For other special categories of personal data, there are more strict regulations for categories such as: Race, Religion, Political Views, Sexual Orientation, Health Information, Biometric and Genetic data. 
+For other special categories of personal data, there are more strict regulations for categories such as: Race, Religion, Political Views, Sexual Orientation, Health Information, Biometric and Genetic data.
 
 #### What are the penalties for non-compliance?
-Organizations can be fined up to 4% of annual global turnover for breaching GDPR or €20 Million. This is the maximum fine that can be imposed for the most serious infringements. 
+Organizations can be fined up to 4% of annual global turnover for breaching GDPR or €20 Million. This is the maximum fine that can be imposed for the most serious infringements.
 
 There is a tiered approach to the fines whereby a company can be fined 2% for not having their records in order (Article 28), not notifying the supervising authority and Data User about a security breach or for investigating and assessing the breach.
 
 #### Am I compliant just by activating this plugin?
 NO! This plugin is meant to assist a Controller, Data Processor, and Data Protection Officer (DPO) with efforts to meet the obligations and rights enacted under the GDPR.
 
-ACTIVATING THIS PLUGIN DOES NOT GUARANTEE THAT AN ORGANIZATION IS SUCCESSFULLY MEETING ITS RESPONSIBILITIES AND OBLIGATIONS OF GDPR. INDIVIDUAL ORGANIZATIONS SHOULD ASSESS THEIR UNIQUE RESPONSIBILITIES AND ENSURE EXTRA MEASURES ARE TAKE TO MEET ANY OBLIGATIONS REQUIRED BY LAW AND BASED ON A DATA PROTECTION IMPACT ASSESSMENT (DPIA).
+ACTIVATING THIS PLUGIN DOES NOT GUARANTEE THAT AN ORGANIZATION IS SUCCESSFULLY MEETING ITS RESPONSIBILITIES AND OBLIGATIONS OF GDPR. INDIVIDUAL ORGANIZATIONS SHOULD ASSESS THEIR UNIQUE RESPONSIBILITIES AND ENSURE EXTRA MEASURES ARE TAKEN TO MEET ANY OBLIGATIONS REQUIRED BY LAW AND BASED ON A DATA PROTECTION IMPACT ASSESSMENT (DPIA).
 
 
 ## Changelog
