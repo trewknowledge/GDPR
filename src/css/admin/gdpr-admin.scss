@@ -1,5 +1,17 @@
+.gdpr-settings-form{
+	#tabs{
+		margin-top: 20px;
+		.hndle{
+			font-size: 14px;
+	    padding: 8px 12px;
+	    margin: 0;
+	    line-height: 1.4;
+		}
+	}
+}
+
 /* The switch - the box around the slider */
-.switch {
+.gdpr-switch {
   position: relative;
   display: inline-block;
   width: 45px;
@@ -7,37 +19,36 @@
 	input{
 		display: none;
 	}
-}
-/* The slider */
-.slider {
-  position: absolute;
-  cursor: pointer;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background-color: #ccc;
-	transition: .4s;
-	&:before{
-		position: absolute;
-		content: "";
-		height: 16px;
-		width: 16px;
-		left: 4px;
-		bottom: 4px;
-		background-color: white;
+	.slider {
+	  position: absolute;
+	  cursor: pointer;
+	  top: 0;
+	  left: 0;
+	  right: 0;
+	  bottom: 0;
+	  background-color: #ccc;
 		transition: .4s;
-	}
-	&.round {
-		border-radius: 34px;
-		&:before {
-			border-radius: 50%;
+		&:before{
+			position: absolute;
+			content: "";
+			height: 16px;
+			width: 16px;
+			left: 4px;
+			bottom: 4px;
+			background-color: white;
+			transition: .4s;
+		}
+		&.round {
+			border-radius: 34px;
+			&:before {
+				border-radius: 50%;
+			}
 		}
 	}
 }
 input {
 	&:checked {
-		+.slider {
+		+.gdpr-slider {
 			background-color: #2196F3;
 			&:before {
 				transform: translateX(21px);
@@ -45,7 +56,7 @@ input {
 		}
 	}
 	&:focus {
-		+.slider {
+		+.gdpr-slider {
 			box-shadow: 0 0 1px #2196F3;
 		}
 	}

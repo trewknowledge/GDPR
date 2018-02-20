@@ -95,6 +95,145 @@ class GDPR_Admin {
 
 	} // add_menu()
 
+	public function register_settings() {
+		register_setting( 'gdpr', 'gdpr_cookie_banner_content' );
+		register_setting( 'gdpr', 'gdpr_cookie_popup_content' );
+
+		$section_id = 'cookie_banner_section';
+		$admin_page_title = 'Cookie Settings';
+		$page = 'gdpr-settings';
+
+		add_settings_section(
+      $section_id,
+      $admin_page_title,
+      null,
+      $page
+    );
+
+		$option = 'gdpr_cookie_banner_content';
+		$field_title = esc_html__( 'Banner content', 'gdpr' );
+    add_settings_field(
+	    $option,
+	    $field_title,
+	    array( $this, 'field_textarea' ),
+	    $page,
+	    $section_id,
+	    array(
+	    	'label_for' => $option,
+	    )
+		);
+
+		$option = 'gdpr_cookie_popup_content';
+		$field_title = esc_html__( 'Cookie Categories', 'gdpr' );
+		add_settings_field(
+	    $option,
+	    $field_title,
+	    array( $this, 'cookie_tabs' ),
+	    $page,
+	    $section_id,
+	    array(
+	    	'label_for' => $option
+	    )
+		);
+
+	}
+
+
+	function field_textarea( $args ) {
+		if ( ! isset( $args['label_for'] ) || empty( $args['label_for'] ) ) {
+			_doing_it_wrong( 'field_textarea', 'All settings fields must have the label_for argument.', '1.0.0' );
+		}
+		ob_start();
+		$value = get_option( $args['label_for'], '' );
+		?>
+		<textarea name="<?php echo esc_attr( $args['label_for'] ); ?>" id="<?php echo esc_attr( $args['label_for'] ); ?>" cols="53" rows="5"><?php echo wp_kses_post( $value ); ?></textarea>
+	  <?php if ( isset( $args['description'] ) && ! empty( $args['description'] ) ): ?>
+	  	<span class="description"><?php echo esc_html( $args['description'] ); ?></span>
+	  <?php endif ?>
+
+		<?php
+	  echo ob_get_clean();
+	} // end sandbox_toggle_header_callback
+
+	function cookie_tabs( $args ) {
+		if ( ! isset( $args['label_for'] ) || empty( $args['label_for'] ) ) {
+			_doing_it_wrong( 'cookie_tabs', 'All settings fields must have the label_for argument.', '1.0.0' );
+		}
+		ob_start();
+		$value = get_option( $args['label_for'], array() );
+		?>
+		<input type="text" id="cookie-tabs" class="regular-text" placeholder="<?php esc_attr_e( 'Category name', 'gdpr' ); ?>">
+		<button class="button button-primary add-tab"><?php esc_html_e( 'Add', 'gdpr' ); ?></button>
+		<div id="tabs">
+			<?php if ( ! empty( $value ) ): ?>
+				<?php foreach ( $value as $tab_key => $tab ): ?>
+					<div class="postbox" id="cookie-tab-content-<?php echo esc_attr( $tab_key ); ?>">
+						<h2 class="hndle"><?php echo esc_html( $tab['name'] ) ?><button class="notice-dismiss" type="button"><span class="screen-reader-text"><?php esc_html_e( 'Remove this tab.', 'gdpr' ); ?></span></button></h2>
+						<input type="hidden" name="gdpr_cookie_popup_content[<?php echo esc_attr( $tab_key ) ?>][name]" value="<?php echo esc_attr( $tab['name'] ); ?>" />
+						<div class="inside">
+							<table class="form-table">
+								<tr>
+									<th><label for="always-active-<?php echo esc_attr( $tab_key ); ?>"><?php esc_html_e( 'Always active', 'gdpr' ); ?></label></th>
+									<td>
+										<label class="gdpr-switch">
+											<input type="checkbox" name="gdpr_cookie_popup_content[<?php echo esc_attr( $tab_key ) ?>][always_active]" <?php checked( esc_attr( $tab['always_active'] ), 'on' ); ?> id="always-active-<?php echo esc_attr( $tab_key ); ?>">
+											<span class="slider round"></span>
+										</label>
+									</td>
+								</tr>
+								<tr>
+									<th><label for="tab-how-we-use-<?php echo esc_attr( $tab_key ); ?>"><?php esc_html_e( 'How we use', 'gdpr' ); ?></label></th>
+									<td><textarea name="gdpr_cookie_popup_content[<?php echo esc_attr( $tab_key ); ?>][how_we_use]" id="tab-how-we-use-<?php echo esc_attr( $tab_key ); ?>" cols="53" rows="5"><?php echo esc_html( $tab['how_we_use'] ); ?></textarea></td>
+								</tr>
+								<tr>
+									<th><label for="cookies-used-<?php echo esc_attr( $tab_key ); ?>"><?php esc_html_e( 'Cookies used by the site', 'gdpr' ); ?></label></th>
+									<td>
+										<input type="text" name="gdpr_cookie_popup_content[<?php echo esc_attr( $tab_key ); ?>][cookies_used]" value="<?php echo esc_attr( $tab['cookies_used'] ); ?>" id="cookies-used-<?php echo esc_attr( $tab_key ); ?>" class="regular-text" />
+										<br>
+										<span class="description"><?php esc_html_e( 'Comma separated list.', 'gdpr' ); ?></span>
+									</td>
+								</tr>
+								<tr>
+									<th><label for="hosts-<?php echo esc_attr( $tab_key ); ?>"><?php esc_html_e( 'Hosts', 'gdpr' ); ?></label></th>
+									<td>
+										<input type="text" id="hosts-<?php echo esc_attr( $tab_key ); ?>" class="regular-text" />
+										<button class="button button-primary add-host" data-tabid="<?php echo esc_attr( $tab_key ); ?>"><?php esc_html_e( 'Add', 'gdpr' ); ?></button>
+										<br>
+										<span class="description"><?php esc_html_e( '3rd party cookie hosts.', 'gdpr' ); ?></span>
+									</td>
+								</tr>
+							</table>
+							<div class="tab-hosts" data-tabid="<?php echo esc_attr( $tab_key ); ?>">
+								<?php if ( $tab['hosts'] ) : ?>
+									<?php foreach( $tab['hosts'] as $host_key => $host ): ?>
+										<div class="postbox">
+											<h2 class="hndle"><?php echo esc_attr( $host_key ); ?><button class="notice-dismiss" type="button"><span class="screen-reader-text"><?php esc_html_e( 'Remove this host.', 'gdpr' ); ?></span></button></h2>
+											<input type="hidden" name="gdpr_cookie_popup_content[<?php echo esc_attr( $tab_key ); ?>][hosts][<?php echo esc_attr( $host_key ); ?>][name]" value="<?php echo esc_attr( $host_key ); ?>" />
+											<div class="inside">
+												<table class="form-table">
+													<tr>
+														<th><label for="hosts-cookies-used-<?php echo esc_attr( $host_key ); ?>">Cookies used</label></th>
+														<td>
+															<input type="text" name="gdpr_cookie_popup_content[<?php echo esc_attr( $tab_key ); ?>][hosts][<?php echo esc_attr( $host_key ); ?>][cookies_used]" value="<?php echo esc_attr( $host['cookies_used'] ); ?>" id="hosts-cookies-used-<?php echo esc_attr( $host_key ); ?>" class="regular-text" />
+															<br>
+															<span class="description">Comma separated list.</span>
+														</td>
+													</tr>
+												</table>
+											</div>
+										</div>
+									<?php endforeach; ?>
+								<?php endif; ?>
+							</div>
+						</div><!-- .inside -->
+					</div><!-- .postbox -->
+				<?php endforeach ?>
+			<?php endif ?>
+		</div>
+		<?php
+	  echo ob_get_clean();
+	} // end sandbox_toggle_header_callback
+
 	/**
 	 * Settings Page Template
 	 *
@@ -106,7 +245,7 @@ class GDPR_Admin {
 		$tabs = array(
 			'cookies' => array(
 				'name' => 'Cookies',
-				'file' => plugin_dir_path( __FILE__ ) . 'partials/settings/cookies.php'
+				'page' => 'gdpr-settings'
 			),
 		);
 

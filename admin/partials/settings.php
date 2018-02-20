@@ -25,8 +25,19 @@
 		<?php endforeach; ?>
 	</div>
 
-	<?php
-	$file = $tabs[ $current_tab ]['file'];
-	include	$file; ?>
+	<form action="options.php" method="post" class="gdpr-settings-form">
+		<?php
+		$current_tab = $tabs[ $current_tab ]['page'];
+
+		?>
+
+
+		<?php
+		settings_fields( 'gdpr' );
+		do_settings_sections( $current_tab );
+		submit_button();
+		?>
+	</form>
+
 <!-- #poststuff -->
 </div>
