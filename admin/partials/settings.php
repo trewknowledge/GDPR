@@ -33,6 +33,7 @@
 
 
 		<?php
+		include_once plugin_dir_path( __FILE__ ) . 'templates/tmpl-cookies.php';
 		settings_fields( 'gdpr' );
 		do_settings_sections( $current_tab );
 		submit_button();
