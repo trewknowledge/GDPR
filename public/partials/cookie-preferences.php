@@ -30,7 +30,7 @@
 				<?php endforeach; ?>
 			</ul>
 			<div class="tab-content">
-					<?php var_dump($tabs); ?>
+					<!-- Add the content of the tabs here -->
 			</div>
 		</div>
 	</div>

@@ -116,7 +116,7 @@ class GDPR {
 		load_plugin_textdomain(
 			'gdpr',
 			false,
-      plugin_dir_url( dirname( __FILE__ ) ) . 'languages/'
+			plugin_dir_url( dirname( __FILE__ ) ) . 'languages/'
 		);
 
 	}
@@ -134,7 +134,7 @@ class GDPR {
 
 		add_action( 'admin_enqueue_scripts', array( $plugin_admin, 'enqueue_styles' ) );
 		add_action( 'admin_enqueue_scripts', array( $plugin_admin, 'enqueue_scripts' ) );
-    add_action( 'admin_menu', array( $plugin_admin, 'add_menu' ) );
+		add_action( 'admin_menu', array( $plugin_admin, 'add_menu' ) );
 		add_action( 'admin_init', array( $plugin_admin, 'register_settings' ) );
 
 	}

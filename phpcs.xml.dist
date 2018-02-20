@@ -13,8 +13,15 @@
     <exclude name="WordPress.VIP.RestrictedFunctions" />
     <exclude name="WordPress.VIP.SlowDBQuery" />
     <exclude name="WordPress.VIP.TimezoneChange" />
+    <exclude name="WordPress.VIP.RestrictedVariables" />
 		<exclude name="WordPress.WP.I18n.TranslatorsCommentWrongStyle" />
 		<exclude name="WordPress.WP.I18n.MissingTranslatorsComment" />
 		<exclude name="WordPress.WP.AlternativeFunctions" />
 	</rule>
+
+	<arg value="ps"/>
+
+	<exclude-pattern>*/node_modules/*</exclude-pattern>
+	<exclude-pattern>*/vendor/*</exclude-pattern>
+	<exclude-pattern>*/tests/*</exclude-pattern>
 </ruleset>

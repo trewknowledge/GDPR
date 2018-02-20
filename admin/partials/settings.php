@@ -21,7 +21,7 @@
 <div class="wrap">
 	<div class="nav-tab-wrapper">
 		<?php foreach ( $tabs as $tab => $value ) : ?>
-			<a href="<?php echo esc_url( admin_url( '/admin.php?page=gdpr-settings&tab=' . $tab  ) ); ?>" class="nav-tab <?php echo ( $current_tab === $tab ) ? 'nav-tab-active' : ''; ?>"><?php echo esc_html( $value['name'] ); ?></a>
+			<a href="<?php echo esc_url( admin_url( '/admin.php?page=gdpr-settings&tab=' . $tab ) ); ?>" class="nav-tab <?php echo ( $current_tab === $tab ) ? 'nav-tab-active' : ''; ?>"><?php echo esc_html( $value['name'] ); ?></a>
 		<?php endforeach; ?>
 	</div>
 

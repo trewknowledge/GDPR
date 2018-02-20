@@ -50,7 +50,7 @@ class GDPR_Public {
 	public function __construct( $plugin_name, $version ) {
 
 		$this->plugin_name = $plugin_name;
-		$this->version = $version;
+		$this->version     = $version;
 
 	}
 
@@ -73,7 +73,7 @@ class GDPR_Public {
 	}
 
 	public function cookie_bar() {
-		if ( isset( $_COOKIE['gpdr_cookie_bar_closed'] ) ) {
+		if ( isset( $_COOKIE['gpdr_cookie_bar_closed'] ) ) { // Input var okay.
 			return;
 		}
 		$options = get_option( 'gdpr_options', array() );
@@ -85,7 +85,7 @@ class GDPR_Public {
 		}
 
 		$content = $options['cookies']['banner_content'];
-		include	plugin_dir_path( __FILE__ ) . 'partials/cookie-bar.php';
+		include plugin_dir_path( __FILE__ ) . 'partials/cookie-bar.php';
 	}
 
 	public function cookie_preferences() {
@@ -98,7 +98,7 @@ class GDPR_Public {
 		}
 
 		$tabs = $options['cookies']['tabs'];
-		include	plugin_dir_path( __FILE__ ) . 'partials/cookie-preferences.php';
+		include plugin_dir_path( __FILE__ ) . 'partials/cookie-preferences.php';
 	}
 
 }
