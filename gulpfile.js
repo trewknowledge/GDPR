@@ -5,23 +5,17 @@ var	$ = require('gulp-load-plugins')();
 var paths = {
 	src: {
 		admin: {
-			js: './src/admin/js/*.js',
-			css: './src/admin/css/*.scss'
+			js: './src/js/admin/*.js',
+			css: './src/css/admin/*.scss'
 		},
 		public: {
-			js: './src/public/js/*.js',
-			css: './src/public/css/*.scss'
+			js: './src/js/public/*.js',
+			css: './src/css/public/*.scss'
 		}
 	},
 	dest: {
-		admin: {
-			js: './admin/js/',
-			css: './admin/css/'
-		},
-		public: {
-			js: './public/js/',
-			css: './public/css/'
-		}
+		css: './assets/css/',
+		js: './assets/js/'
 	}
 };
 
@@ -38,7 +32,7 @@ gulp.task('admin-css', function() {
 		.on('error', errorLog)
 		.pipe( $.autoprefixer( 'last 4 versions' ) )
 		.pipe( $.rename( 'gdpr-admin.css' ) )
-		.pipe( gulp.dest( paths.dest.admin.css ) )
+		.pipe( gulp.dest( paths.dest.css ) )
 		.pipe( $.livereload() )
 		.pipe( $.notify( {
 			message: 'Admin SASS style task complete'
@@ -53,7 +47,7 @@ gulp.task('public-css', function() {
 		.on('error', errorLog)
 		.pipe( $.autoprefixer( 'last 4 versions' ) )
 		.pipe( $.rename( 'gdpr-public.css' ) )
-		.pipe( gulp.dest( paths.dest.public.css ) )
+		.pipe( gulp.dest( paths.dest.css ) )
 		.pipe( $.livereload() )
 		.pipe( $.notify( {
 			message: 'Admin SASS style task complete'
@@ -65,7 +59,7 @@ gulp.task('admin-js', function() {
 		.pipe( $.concat( 'gdpr-admin.js' ) )
 		.pipe( uglify() )
 		.on('error', errorLog)
-		.pipe( gulp.dest( paths.dest.admin.js ) )
+		.pipe( gulp.dest( paths.dest.js ) )
 		.pipe($.livereload())
 		.pipe( $.notify( {
 			message: 'Admin JS script task complete'
@@ -77,7 +71,7 @@ gulp.task('public-js', function() {
 		.pipe( $.concat( 'gdpr-public.js' ) )
 		.pipe( uglify() )
 		.on('error', errorLog)
-		.pipe( gulp.dest( paths.dest.public.js ) )
+		.pipe( gulp.dest( paths.dest.js ) )
 		.pipe($.livereload())
 		.pipe( $.notify( {
 			message: 'Public JS script task complete'

@@ -64,6 +64,7 @@ register_deactivation_hook( __FILE__, 'deactivate_gdpr' );
  */
 require plugin_dir_path( __FILE__ ) . 'includes/class-gdpr.php';
 
+
 /**
  * Begins execution of the plugin.
  *
@@ -71,12 +72,6 @@ require plugin_dir_path( __FILE__ ) . 'includes/class-gdpr.php';
  * then kicking off the plugin from this point in the file does
  * not affect the page life cycle.
  *
- * @since    1.0.0
+ * @since 1.0.0
  */
-function run_gdpr() {
-
-	$plugin = new GDPR();
-	$plugin->run();
-
-}
-add_action( 'plugins_loaded', 'run_GDPR' );
+new GDPR();
