@@ -51,7 +51,29 @@ class GDPR_Public {
 
 		$this->plugin_name = $plugin_name;
 		$this->version     = $version;
+		setcookie('__utma', 'fernando', 0, '/');
+		add_action('send_headers', array($this, 'block_cookies'));
+		$this->block_cookies();
+	}
 
+	function block_cookies() {
+
+		if ( ! isset( $_COOKIE['gdpr_approved_cookies'] ) ) {
+			return;
+		}
+
+		$approved_cookies = json_decode( stripslashes( $_COOKIE['gdpr_approved_cookies'] ), true );
+		error_log(print_r($approved_cookies, true));
+		foreach( headers_list() as $header ) {
+	    if ( preg_match( '/Set-Cookie/', $header ) ) {
+	    	error_log($header);
+	    	$cookie_name = explode('=', $header);
+	    	$cookie_name = str_replace( 'Set-Cookie: ', '', $cookie_name[0]);
+	    	if ( ! in_array( $cookie_name, $approved_cookies['site_cookies'] ) ) {
+		      header_remove( 'Set-Cookie' );
+	    	}
+	    }
+		}
 	}
 
 	/**
@@ -76,28 +98,22 @@ class GDPR_Public {
 		if ( isset( $_COOKIE['gpdr_cookie_bar_closed'] ) ) { // Input var okay.
 			return;
 		}
-		$options = get_option( 'gdpr_options', array() );
-		if ( empty( $options ) ) {
-			return;
-		}
-		if ( ! isset( $options['cookies']['banner_content'] ) || empty( $options['cookies']['banner_content'] ) ) {
+
+		$content = get_option( 'gdpr_cookie_banner_content', '' );
+
+		if ( empty( $content ) ) {
 			return;
 		}
 
-		$content = $options['cookies']['banner_content'];
 		include plugin_dir_path( __FILE__ ) . 'partials/cookie-bar.php';
 	}
 
 	public function cookie_preferences() {
-		$options = get_option( 'gdpr_options' );
-		if ( empty( $options ) ) {
-			return;
-		}
-		if ( ! isset( $options['cookies']['tabs'] ) || empty( $options['cookies']['tabs'] ) ) {
+		$tabs = get_option( 'gdpr_cookie_popup_content', array() );
+		if ( empty( $tabs ) ) {
 			return;
 		}
 
-		$tabs = $options['cookies']['tabs'];
 		include plugin_dir_path( __FILE__ ) . 'partials/cookie-preferences.php';
 	}
 
