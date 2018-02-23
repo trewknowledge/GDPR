@@ -26,10 +26,7 @@
 	</div>
 
 	<form action="options.php" method="post" class="gdpr-settings-form">
-		<?php
-		$current_tab = $tabs[ $current_tab ]['page'];
-
-		?>
+		<?php $current_tab = $tabs[ $current_tab ]['page']; ?>
 
 
 		<?php
