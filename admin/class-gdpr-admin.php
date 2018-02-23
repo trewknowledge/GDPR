@@ -223,7 +223,7 @@ class GDPR_Admin {
 									<td>
 										<label class="gdpr-switch">
 											<input type="checkbox" name="<?php echo esc_attr( self::$key_cookie_popup_content ); ?>[<?php echo esc_attr( $tab_key ); ?>][always_active]" <?php checked( esc_attr( $tab['always_active'] ), 'on' ); ?> id="always-active-<?php echo esc_attr( $tab_key ); ?>">
-											<span class="slider round"></span>
+											<span class="gdpr-slider round"></span>
 										</label>
 									</td>
 								</tr>
