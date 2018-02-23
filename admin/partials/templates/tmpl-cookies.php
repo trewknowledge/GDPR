@@ -9,7 +9,7 @@
 					<td>
 						<label class="gdpr-switch">
 							<input type="checkbox" name="{{data.option_name}}[{{data.key}}][always_active]" id="always-active-{{data.key}}">
-							<span class="slider round"></span>
+							<span class="gdpr-slider round"></span>
 						</label>
 					</td>
 				</tr>
@@ -46,7 +46,7 @@
 <script type="text/html" id="tmpl-cookie-tabs-hosts">
 	<div class="postbox">
 		<h2 class="hndle">{{data.host_key}}<button class="notice-dismiss" type="button"><span class="screen-reader-text"><?php esc_html_e( 'Remove this host.', 'gdpr' ); ?></span></button></h2>
-		<input type="hidden" name="{{data.option_name}}[{{data.tab_key}}][hosts][{{data.host_key}}][name]" />
+		<input type="hidden" name="{{data.option_name}}[{{data.tab_key}}][hosts][{{data.host_key}}][name]" value="{{data.host_key}}" />
 		<div class="inside">
 			<table class="form-table">
 				<tr>
