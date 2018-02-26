@@ -40,7 +40,7 @@
 							<h4><?php esc_html_e( 'Your Privacy', 'gdpr' ); ?></h4>
 						</header>
 						<div class="info">
-							<p><?php esc_html_e( 'When you visit any web site, it may store or retrieve information on your browser, mostly in the form of cookies. This information might be about you, your preferences or your device and is mostly used to make the site work as you expect it to. The information does not usually directly identify you, but it can give you a more personalized web experience. Because we respect your right to privacy, you can choose not to allow some types of cookies. Click on the different category headings to find out more and change our default settings. However, blocking some types of cookies may impact your experience of the site and the services we are able to offer.', 'gdpr' ); ?></p>
+							<p><?php esc_html_e( 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Morbi scelerisque ligula enim. Nam viverra mauris quis dolor lobortis, at accumsan sem rutrum. Morbi varius dignissim libero, ac posuere est sollicitudin eget. Donec lobortis lacinia laoreet. Pellentesque vel lacinia purus, vitae euismod dui. Vestibulum auctor ante id tempor malesuada. Aenean tincidunt neque vitae nibh feugiat, et tincidunt quam laoreet. In convallis, nunc at viverra accumsan, magna justo varius lorem, sed congue ex sem in sapien. Aliquam sollicitudin sed leo id aliquet. Nunc ac elit felis.', 'gdpr' ); ?></p>
 						</div>
 					</div>
 					<?php foreach ( $tabs as $key => $tab ) : ?>
@@ -79,7 +79,7 @@
 														$host['name'] => $host['cookies_used']
 													); ?>
 													<input type="checkbox" name="approved_cookies" value="<?php echo esc_attr( json_encode( $value ) ); ?>" checked>
-													<span class="gdpr-slider round"></span>
+												<span class="gdpr-slider round"></span>
 												</label>
 											</div>
 											<span><?php echo esc_html( $host['cookies_used'] ); ?></span>
