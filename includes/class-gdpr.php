@@ -69,6 +69,9 @@ class GDPR {
 		$this->define_admin_hooks();
 		$this->define_public_hooks();
 
+		if ( ( defined( 'DOING_AUTOSAVE' ) && DOING_AUTOSAVE ) OR ( defined( 'DOING_CRON' ) && DOING_CRON ) OR ( defined( 'DOING_AJAX' ) && DOING_AJAX ) OR ( defined( 'XMLRPC_REQUEST' ) && XMLRPC_REQUEST ) ) {
+			return;
+		}
 	}
 
 	/**
@@ -88,6 +91,11 @@ class GDPR {
 	 * @access   private
 	 */
 	private function load_dependencies() {
+
+		/**
+		 * The class responsible for defining the telemetry post type.
+		 */
+		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'admin/class-gdpr-telemetry.php';
 
 		/**
 		 * The class responsible for defining all actions that occur in the admin area.
@@ -131,11 +139,19 @@ class GDPR {
 	private function define_admin_hooks() {
 
 		$plugin_admin = new GDPR_Admin( $this->get_plugin_name(), $this->get_version() );
+		$telemetry = new GDPR_Telemetry( $this->get_plugin_name(), $this->get_version() );
 
 		add_action( 'admin_enqueue_scripts', array( $plugin_admin, 'enqueue_styles' ) );
 		add_action( 'admin_enqueue_scripts', array( $plugin_admin, 'enqueue_scripts' ) );
 		add_action( 'admin_menu', array( $plugin_admin, 'add_menu' ) );
 		add_action( 'admin_init', array( $plugin_admin, 'register_settings' ) );
+
+		add_action( 'init', array( $telemetry, 'register_post_type' ) );
+		add_filter( 'http_api_debug', array( $telemetry, 'log_request' ), 10, 5 );
+		add_filter( 'manage_telemetry_posts_columns', array( $telemetry, 'manage_columns' ) );
+		add_filter( 'manage_telemetry_posts_custom_column', array( $telemetry, 'custom_column' ), 10, 2 );
+		add_filter( 'restrict_manage_posts', array( $telemetry, 'actions_above_table' ) );
+		add_filter( 'views_edit-telemetry', '__return_null' );
 
 	}
 

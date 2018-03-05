@@ -72,6 +72,7 @@ class GDPR_Admin {
 	 * @since    1.0.0
 	 */
 	public function enqueue_styles() {
+		add_thickbox();
 		wp_enqueue_style( $this->plugin_name, plugin_dir_url( dirname( __FILE__ ) ) . 'assets/css/gdpr-admin.css', array(), $this->version, 'all' );
 	}
 
@@ -108,10 +109,16 @@ class GDPR_Admin {
 
 		add_submenu_page( $parent_slug, $menu_title, $menu_title, $capability, $menu_slug, $function );
 
+		$menu_slug  = 'edit.php?post_type=telemetry';
+
+		$cpt = 'telemetry';
+		$cpt_obj = get_post_type_object( $cpt );
+
+		add_submenu_page( $parent_slug, $cpt_obj->labels->name, $cpt_obj->labels->menu_name, $cpt_obj->cap->edit_posts, $menu_slug );
+
 	}
 
 	function cookie_tabs_sanitize( $tabs ) {
-		error_log( print_r($tabs, true) );
 
 		$output = array();
 

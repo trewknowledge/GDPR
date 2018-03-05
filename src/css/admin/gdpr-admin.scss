@@ -61,3 +61,31 @@
 		}
 	}
 }
+
+#TB_ajaxContent {
+	pre {
+		white-space: pre-wrap;
+		word-wrap: break-word;
+	}
+}
+
+.gdpr-hidden {
+	display: none;
+}
+
+.post-type-telemetry{
+	.page-title-action{
+		display: none;
+	}
+	.row-actions{
+		display: none;
+	}
+	.search-box {
+		display: none;
+	}
+	.actions{
+		#filter-by-date, #post-query-submit, &.bulkactions {
+			display: none;
+		}
+	}
+}

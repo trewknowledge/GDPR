@@ -63,10 +63,8 @@ class GDPR_Public {
 		}
 
 		$approved_cookies = json_decode( stripslashes( $_COOKIE['gdpr_approved_cookies'] ), true );
-		error_log(print_r($approved_cookies, true));
 		foreach( headers_list() as $header ) {
 	    if ( preg_match( '/Set-Cookie/', $header ) ) {
-	    	error_log($header);
 	    	$cookie_name = explode('=', $header);
 	    	$cookie_name = str_replace( 'Set-Cookie: ', '', $cookie_name[0]);
 	    	if ( ! in_array( $cookie_name, $approved_cookies['site_cookies'] ) ) {
