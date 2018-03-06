@@ -145,6 +145,8 @@ class GDPR {
 		add_action( 'admin_enqueue_scripts', array( $plugin_admin, 'enqueue_scripts' ) );
 		add_action( 'admin_menu', array( $plugin_admin, 'add_menu' ) );
 		add_action( 'admin_init', array( $plugin_admin, 'register_settings' ) );
+		add_action( 'init', array( $this, 'block_cookies' ) );
+		add_action( 'admin_init', array( $this, 'block_cookies' ) );
 
 		add_action( 'init', array( $telemetry, 'register_post_type' ) );
 		add_filter( 'http_api_debug', array( $telemetry, 'log_request' ), 10, 5 );
@@ -153,6 +155,22 @@ class GDPR {
 		add_filter( 'restrict_manage_posts', array( $telemetry, 'actions_above_table' ) );
 		add_filter( 'views_edit-telemetry', '__return_null' );
 
+	}
+
+	function block_cookies() {
+		$approved_cookies = ( isset( $_COOKIE['gdpr_approved_cookies'] ) ? json_decode( wp_unslash( $_COOKIE['gdpr_approved_cookies'] ), true ) : array() );
+		if ( ! in_array( 'comment_author', $approved_cookies ) ) {
+			remove_action( 'set_comment_cookies', 'wp_set_comment_cookies' );
+		}
+		foreach( headers_list() as $header ) {
+	    if ( preg_match( '/Set-Cookie/', $header ) ) {
+	    	$cookie_name = explode('=', $header);
+	    	$cookie_name = str_replace( 'Set-Cookie: ', '', $cookie_name[0] );
+	    	if ( ! in_array( $cookie_name, $approved_cookies ) ) {
+		      header_remove( 'Set-Cookie' );
+	    	}
+	    }
+		}
 	}
 
 	/**

@@ -48,28 +48,8 @@ class GDPR_Public {
 	 * @param    string    $version        The version of this plugin.
 	 */
 	public function __construct( $plugin_name, $version ) {
-
 		$this->plugin_name = $plugin_name;
 		$this->version     = $version;
-		add_action('send_headers', array($this, 'block_cookies'));
-	}
-
-	function block_cookies() {
-
-		if ( ! isset( $_COOKIE['gdpr_approved_cookies'] ) ) {
-			return;
-		}
-
-		$approved_cookies = json_decode( stripslashes( $_COOKIE['gdpr_approved_cookies'] ), true );
-		foreach( headers_list() as $header ) {
-	    if ( preg_match( '/Set-Cookie/', $header ) ) {
-	    	$cookie_name = explode('=', $header);
-	    	$cookie_name = str_replace( 'Set-Cookie: ', '', $cookie_name[0]);
-	    	if ( ! in_array( $cookie_name, $approved_cookies ) ) {
-		      header_remove( 'Set-Cookie' );
-	    	}
-	    }
-		}
 	}
 
 	/**
