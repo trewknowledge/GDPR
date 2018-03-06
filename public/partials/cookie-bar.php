@@ -18,8 +18,8 @@
 			<p><?php echo esc_html( $content ); ?></p>
 		</div>
 		<div class="right">
-			<button class="cookie-settings" type="button"><?php esc_html_e( 'Cookie settings', 'gdpr' ); ?></button>
-			<button class="accept-cookies" type="button"><?php esc_html_e( 'Accept cookies', 'gdpr' ); ?></button>
+			<button class="gdpr-cookie-preferences" type="button"><?php esc_html_e( 'Cookie settings', 'gdpr' ); ?></button>
+			<button class="accept-cookies" type="button"><?php esc_html_e( 'I understand', 'gdpr' ); ?></button>
 		</div>
 	</div>
 </div>

@@ -1,5 +1,8 @@
 @import '../../utils';
 
+.gdpr-hidden {
+	display: none;
+}
 .gdpr {
 	button {
 		font-family: Helvetica, Arial, sans-serif !important;
@@ -18,6 +21,7 @@
 		height: 100%;
 		background: rgba(0,0,0,0.7);
 		z-index: 99999999;
+		display: none;
 	}
 	&.cookie-bar{
 		position: fixed;
@@ -50,7 +54,8 @@
 				}
 			}
 		}
-		.cookie-settings {
+		.gdpr-cookie-preferences {
+			outline: none;
 			background: none;
 			border:none;
 			font-weight: normal;
@@ -113,6 +118,7 @@
 			background: #fff;
 			height: 470px;
 			overflow: hidden;
+			display: none;
 			form{
 				> header {
 					display: flex;

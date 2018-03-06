@@ -57,6 +57,14 @@
 						<span class="description"><?php esc_html_e( 'Comma separated list.', 'gdpr' ); ?></span>
 					</td>
 				</tr>
+				<tr>
+					<th><label for="hosts-cookies-optout-{{data.host_key}}"><?php esc_html_e( 'How to Opt Out', 'gdpr' ); ?></label></th>
+					<td>
+						<input type="text" name="{{data.option_name}}[{{data.tab_key}}][hosts][{{data.host_key}}][optout]" id="hosts-cookies-optout-{{data.host_key}}" class="regular-text" />
+						<br>
+						<span class="description"><?php esc_html_e( 'Url with instructions on how to opt out.', 'gdpr' ); ?></span>
+					</td>
+				</tr>
 			</table>
 		</div>
 	</div>

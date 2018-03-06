@@ -68,15 +68,9 @@
 		}, 1000);
 
 
-		$(document).on('click', '.gdpr-cookie-bar .cookie-settings', function() {
-			$('.gdpr-cookie-preferences').show();
-		});
-
-		$(document).on('click', '.gdpr-cookie-bar .accept-cookies', function() {
-			var date = new Date();
-			var iso_date = date.toISOString();
-			date.setFullYear(date.getFullYear() + 1);
-			document.cookie = 'gpdr_cookie_bar_closed=' + iso_date + ';expires=' + date.toGMTString() + ';';
+		$(document).on('click', '.gdpr-cookie-preferences', function() {
+			$('.gdpr.overlay').fadeIn();
+			$('.gdpr.cookie-preferences .wrapper').fadeIn();
 		});
 
 		$(document).on('click', '.gdpr.cookie-preferences .tabs button', function() {
@@ -90,15 +84,21 @@
 
 		$(document).on('submit', '.frm-gdpr-cookie-preferences', function(e) {
 			e.preventDefault();
-			var checkboxes = $('input[type="checkbox"]:checked', this);
-			var approvedCookies = {
-				"site_cookies": []
-			};
+			createApprovedCookiesCookie();
+		});
+
+		$(document).on('click', '.gdpr.cookie-bar .accept-cookies', function() {
+			createApprovedCookiesCookie();
+		});
+
+		function createApprovedCookiesCookie() {
+			var checkboxes = $('input[type="checkbox"]:checked', '.frm-gdpr-cookie-preferences');
+			var approvedCookies = [];
 			checkboxes.each(function() {
 				var value = JSON.parse( $(this).val() );
 				if ( $.isArray( value ) ) {
 					value.forEach(function( item ) {
-						approvedCookies.site_cookies.push( item );
+						approvedCookies.push( item );
 					});
 				} else {
 					var key = Object.keys( value );
@@ -111,7 +111,9 @@
 			});
 
 			createCookie("gdpr_approved_cookies", JSON.stringify( approvedCookies ));
-		});
+			$('.gdpr.cookie-preferences').fadeOut();
+			$('.gdpr.cookie-bar').fadeOut();
+		}
 	});
 
 })( jQuery );

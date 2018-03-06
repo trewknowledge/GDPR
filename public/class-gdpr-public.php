@@ -53,7 +53,6 @@ class GDPR_Public {
 		$this->version     = $version;
 		setcookie('__utma', 'fernando', 0, '/');
 		add_action('send_headers', array($this, 'block_cookies'));
-		$this->block_cookies();
 	}
 
 	function block_cookies() {
@@ -67,7 +66,7 @@ class GDPR_Public {
 	    if ( preg_match( '/Set-Cookie/', $header ) ) {
 	    	$cookie_name = explode('=', $header);
 	    	$cookie_name = str_replace( 'Set-Cookie: ', '', $cookie_name[0]);
-	    	if ( ! in_array( $cookie_name, $approved_cookies['site_cookies'] ) ) {
+	    	if ( ! in_array( $cookie_name, $approved_cookies ) ) {
 		      header_remove( 'Set-Cookie' );
 	    	}
 	    }
@@ -93,7 +92,7 @@ class GDPR_Public {
 	}
 
 	public function cookie_bar() {
-		if ( isset( $_COOKIE['gpdr_cookie_bar_closed'] ) ) { // Input var okay.
+		if ( isset( $_COOKIE['gdpr_approved_cookies'] ) ) { // Input var okay.
 			return;
 		}
 
@@ -107,6 +106,8 @@ class GDPR_Public {
 	}
 
 	public function cookie_preferences() {
+		$cookie_privacy_excerpt = get_option( 'gdpr_cookie_privacy_excerpt', '' );
+		$approved_cookies = isset( $_COOKIE['gdpr_approved_cookies'] ) ? json_decode( wp_unslash( $_COOKIE['gdpr_approved_cookies'] ) ) : array();
 		$tabs = get_option( 'gdpr_cookie_popup_content', array() );
 		if ( empty( $tabs ) ) {
 			return;

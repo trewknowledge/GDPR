@@ -53,6 +53,12 @@ class GDPR_Admin {
 	protected static $key_cookie_popup_content = 'gdpr_cookie_popup_content';
 
 	/**
+	 * Holds the option name for the cookie privacy excerpt.
+	 * @var string
+	 */
+	protected static $key_cookie_privacy_excerpt = 'gdpr_cookie_privacy_excerpt';
+
+	/**
 	 * Initialize the class and set its properties.
 	 *
 	 * @since    1.0.0
@@ -136,13 +142,14 @@ class GDPR_Admin {
 
 			if ( isset( $props['hosts'] ) ) {
 				foreach ( $props['hosts'] as $host_key => $host ) {
-					if ( '' === $host['name'] || '' === $host['cookies_used'] ) {
+					if ( empty( $host['name'] ) || empty( $host['cookies_used'] ) || empty( $host['cookies_used'] ) ) {
 						unset( $props['hosts'][ $host_key ] );
 						continue;
 					}
 					$output[ $key ]['hosts'][ $host_key ] = array(
 						'name'         => sanitize_text_field( wp_unslash( $host['name'] ) ),
 						'cookies_used' => sanitize_text_field( wp_unslash( $host['cookies_used'] ) ),
+						'optout'       => esc_url_raw( $host['optout'] ),
 					);
 				}
 			}
@@ -150,12 +157,9 @@ class GDPR_Admin {
 		return $output;
 	}
 
-	function cookie_banner_sanitize( $input ) {
-		return sanitize_text_field( wp_unslash( $input ) );
-	}
-
 	public function register_settings() {
-		register_setting( 'gdpr', self::$key_cookie_banner_content, array( 'sanitize_callback' => array( $this, 'cookie_banner_sanitize' ) ) );
+		register_setting( 'gdpr', self::$key_cookie_banner_content, array( 'sanitize_callback' => 'sanitize_text_field' ) );
+		register_setting( 'gdpr', self::$key_cookie_privacy_excerpt, array( 'sanitize_callback' => 'sanitize_text_field' ) );
 		register_setting( 'gdpr', self::$key_cookie_popup_content, array( 'sanitize_callback' => array( $this, 'cookie_tabs_sanitize' ) ) );
 
 		$section_id       = 'cookie_banner_section';
@@ -178,6 +182,18 @@ class GDPR_Admin {
 			$section_id,
 			array(
 				'label_for' => self::$key_cookie_banner_content,
+			)
+		);
+
+		$field_title = esc_html__( 'Cookie Privacy Excerpt', 'gdpr' );
+		add_settings_field(
+			self::$key_cookie_privacy_excerpt,
+			$field_title,
+			array( $this, 'field_textarea' ),
+			$page,
+			$section_id,
+			array(
+				'label_for' => self::$key_cookie_privacy_excerpt,
 			)
 		);
 
@@ -270,6 +286,14 @@ class GDPR_Admin {
 															<input type="text" name="<?php echo esc_attr( self::$key_cookie_popup_content ); ?>[<?php echo esc_attr( $tab_key ); ?>][hosts][<?php echo esc_attr( $host_key ); ?>][cookies_used]" value="<?php echo esc_attr( $host['cookies_used'] ); ?>" id="hosts-cookies-used-<?php echo esc_attr( $host_key ); ?>" class="regular-text" />
 															<br>
 															<span class="description"><?php esc_html_e( 'Comma separated list.', 'gdpr' ); ?></span>
+														</td>
+													</tr>
+													<tr>
+														<th><label for="hosts-cookies-optout-<?php echo esc_attr( $host_key ); ?>"><?php esc_html_e( 'How to Opt Out', 'gdpr' ); ?></label></th>
+														<td>
+															<input type="text" name="<?php echo esc_attr( self::$key_cookie_popup_content ); ?>[<?php echo esc_attr( $tab_key ); ?>][hosts][<?php echo esc_attr( $host_key ); ?>][optout]" value="<?php echo esc_attr( $host['optout'] ); ?>" id="hosts-cookies-optout-<?php echo esc_attr( $host_key ); ?>" class="regular-text" />
+															<br>
+															<span class="description"><?php esc_html_e( 'Url with instructions on how to opt out.', 'gdpr' ); ?></span>
 														</td>
 													</tr>
 												</table>

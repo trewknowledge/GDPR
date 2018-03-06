@@ -40,25 +40,31 @@
 							<h4><?php esc_html_e( 'Your Privacy', 'gdpr' ); ?></h4>
 						</header>
 						<div class="info">
-							<p><?php esc_html_e( 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Morbi scelerisque ligula enim. Nam viverra mauris quis dolor lobortis, at accumsan sem rutrum. Morbi varius dignissim libero, ac posuere est sollicitudin eget. Donec lobortis lacinia laoreet. Pellentesque vel lacinia purus, vitae euismod dui. Vestibulum auctor ante id tempor malesuada. Aenean tincidunt neque vitae nibh feugiat, et tincidunt quam laoreet. In convallis, nunc at viverra accumsan, magna justo varius lorem, sed congue ex sem in sapien. Aliquam sollicitudin sed leo id aliquet. Nunc ac elit felis.', 'gdpr' ); ?></p>
+							<p><?php echo nl2br( $cookie_privacy_excerpt ); ?></p>
 						</div>
 					</div>
 					<?php foreach ( $tabs as $key => $tab ) : ?>
 						<div class="<?php echo esc_attr( $key ); ?>">
+									<?php var_dump($approved_cookies); ?>
 							<header>
 								<h4><?php echo esc_html( $tab['name'] ); ?></h4>
+								<?php
+									$site_cookies = array();
+									$enabled = true;
+									$cookies_used = explode(',', $tab['cookies_used']);
+									foreach ( $cookies_used as $cookie ) {
+										$site_cookies[] = trim( $cookie );
+										if ( ! in_array( trim( $cookie ), $approved_cookies ) ) {
+											$enabled = false;
+										}
+									}
+								?>
 								<?php if ( $tab['always_active'] ): ?>
 									<span><?php esc_html_e( 'Always active', 'gdpr' ); ?></span>
+									<input type="checkbox" class="gdpr-hidden" name="approved_cookies" value="<?php echo esc_attr( json_encode( $site_cookies ) ) ?>" checked>
 								<?php else: ?>
 									<label class="gdpr-switch">
-										<?php
-											$site_cookies = array();
-											$cookies_used = explode(',', $tab['cookies_used']);
-											foreach ( $cookies_used as $cookie ) {
-												$site_cookies[] = trim( $cookie );
-											}
-										?>
-										<input type="checkbox" name="approved_cookies" value="<?php echo esc_attr( json_encode( $site_cookies ) ) ?>" checked>
+										<input type="checkbox" name="approved_cookies" value="<?php echo esc_attr( json_encode( $site_cookies ) ) ?>" <?php echo ( $enabled ? 'checked' : '' ); ?>>
 										<span class="gdpr-slider round"></span>
 									</label>
 								<?php endif; ?>
@@ -74,13 +80,7 @@
 										<div class="cookies-used">
 											<div class="space-between">
 												<p><?php echo esc_html( $host['name'] ); ?></p>
-												<label class="gdpr-switch">
-													<?php $value = array(
-														$host['name'] => $host['cookies_used']
-													); ?>
-													<input type="checkbox" name="approved_cookies" value="<?php echo esc_attr( json_encode( $value ) ); ?>" checked>
-												<span class="gdpr-slider round"></span>
-												</label>
+												<a href="<?php echo esc_url( $host['optout'] ); ?>" target="_blank" class="gdpr-button"><?php esc_html_e( 'Opt Out', 'gdpr' ); ?></a>
 											</div>
 											<span><?php echo esc_html( $host['cookies_used'] ); ?></span>
 										</div>
