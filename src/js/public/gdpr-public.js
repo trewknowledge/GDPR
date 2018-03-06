@@ -63,11 +63,6 @@
 			}
 		}
 
-		setTimeout(function(){
-			createCookie('__utma', 'juliana');
-		}, 1000);
-
-
 		$(document).on('click', '.gdpr-cookie-preferences', function() {
 			$('.gdpr.overlay').fadeIn();
 			$('.gdpr.cookie-preferences .wrapper').fadeIn();
