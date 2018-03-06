@@ -106,8 +106,7 @@
 			});
 
 			createCookie("gdpr_approved_cookies", JSON.stringify( approvedCookies ));
-			$('.gdpr.cookie-preferences').fadeOut();
-			$('.gdpr.cookie-bar').fadeOut();
+			$('.gdpr.cookie-preferences .wrapper, .gdpr.overlay, .gdpr.cookie-bar').fadeOut();
 		}
 	});
 
