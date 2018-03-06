@@ -51,7 +51,6 @@ class GDPR_Public {
 
 		$this->plugin_name = $plugin_name;
 		$this->version     = $version;
-		setcookie('__utma', 'fernando', 0, '/');
 		add_action('send_headers', array($this, 'block_cookies'));
 	}
 
