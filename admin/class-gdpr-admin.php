@@ -115,6 +115,12 @@ class GDPR_Admin {
 
 		add_submenu_page( $parent_slug, $menu_title, $menu_title, $capability, $menu_slug, $function );
 
+		$menu_title = esc_html__( 'Requests', 'gdpr' );
+		$menu_slug  = 'gdpr-requests';
+		$function   = array( $this, 'requests_page_template' );
+
+		add_submenu_page( $parent_slug, $menu_title, $menu_title, $capability, $menu_slug, $function );
+
 		$menu_slug  = 'edit.php?post_type=telemetry';
 
 		$cpt = 'telemetry';
@@ -328,6 +334,285 @@ class GDPR_Admin {
 		$tabs = apply_filters( 'gdpr_settings_pages', $tabs );
 
 		include plugin_dir_path( __FILE__ ) . 'partials/settings.php';
+	}
+
+	/**
+	 * Requests Page Template
+	 *
+	 * @since 1.0.0
+	 */
+	public function requests_page_template() {
+		$requests = ( array ) get_option( 'gdpr_requests', array() );
+		// $requests = array(
+		// 	array(
+		// 		'email' => 'fernandoclaussen@gmail.com',
+		// 		'date' =>  date( "F j, Y" ),
+		// 		'type' =>  'delete',
+		// 	),
+		// 	array(
+		// 		'email' => 'amoore@trewknowledge.com',
+		// 		'date' =>  date( "F j, Y" ),
+		// 		'type' =>  'delete',
+		// 	),
+		// 	array(
+		// 		'email' => 'amoore@trewknowledge.com',
+		// 		'date' =>  date( "F j, Y" ),
+		// 		'type' =>  'access',
+		// 	),
+		// 	array(
+		// 		'email' => 'sbarrans@trewknowledge.com',
+		// 		'date' =>  date( "F j, Y" ),
+		// 		'type' =>  'access',
+		// 	),
+		// 	array(
+		// 		'email' => 'sbarrans@trewknowledge.com',
+		// 		'date'  => date( "F j, Y" ),
+		// 		'type'  => 'rectify',
+		// 		'data'  => 'Data X is wrong. Please fix it to Y.',
+		// 	),
+		// 	array(
+		// 		'email' => 'fernandoclaussen@gmail.com',
+		// 		'date'  => date( "F j, Y" ),
+		// 		'type'  => 'portability',
+		// 	),
+		// 	array(
+		// 		'email' => 'mfarlymn@trewknowledge.com',
+		// 		'date'  => date( "F j, Y" ),
+		// 		'type'  => 'complaint',
+		// 		'data'  => 'I want to complain because of reasons.',
+		// 	),
+		// );
+
+		foreach ( $requests as $request ) {
+			${$request['type']}[] = $request;
+		}
+
+		$tabs = array(
+			'access' => array(
+				'name' => 'Access Data',
+				'count' => isset( $access ) ? count( $access ) : 0,
+			),
+			'rectify' => array(
+				'name' => 'Rectify Data',
+				'count' => isset( $rectify ) ? count( $rectify ) : 0,
+			),
+			'portability' => array(
+				'name' => 'Data Portability',
+				'count' => isset( $portability ) ? count( $portability ) : 0,
+			),
+			'complaint' => array(
+				'name' => 'Complaint',
+				'count' => isset( $complaint ) ? count( $complaint ) : 0,
+			),
+			'delete' => array(
+				'name' => 'Erasure',
+				'count' => isset( $delete ) ? count( $delete ) : 0,
+			),
+		);
+
+		include plugin_dir_path( __FILE__ ) . 'partials/requests.php';
+	}
+
+	function user_has_content( $user ) {
+		if ( ! $user instanceof WP_User ) {
+			if ( ! is_int( $user ) ) {
+				return;
+			}
+			$user = get_user_by( 'ID', $user );
+		}
+
+		$post_types = get_post_types( array( 'public' => true ) );
+		foreach ( $post_types as $pt ) {
+			$post_count = count_user_posts( $user->ID, $pt);
+			if ( $post_count > 0 ) {
+				return true;
+			}
+		}
+
+		$comments = get_comments( array(
+			'author_email' => $user->user_email,
+			'include_unapproved' => true,
+			'number' => 1,
+			'count' => true,
+		) );
+
+		if ( $comments ) {
+			return true;
+		}
+
+		$extra_checks = apply_filters( 'gdpr_user_has_content', false );
+
+		return $extra_checks;
+	}
+
+	protected function delete_user( $user ) {
+		if ( ! $user instanceof WP_User ) {
+			if ( ! is_int( $user ) ) {
+				add_settings_error( 'gdpr-requests', 'invalid-user', esc_html__( 'An invalid user was provided for deletion. It must either be a WP_User object or a user ID.', 'gdpr' ), 'error' );
+			}
+			$user = get_user_by( 'ID', $user );
+		}
+
+		do_action( 'gdpr_delete_extra_content', $user );
+
+		return wp_delete_user( $user->ID );
+	}
+
+	private function _remove_from_requests( $email, $type ) {
+		$requests = ( array ) get_option( 'gdpr_requests', array() );
+		$email = sanitize_email( $email );
+		$type = sanitize_text_field( $type );
+
+		$filtered_requests = array_filter( $requests, function( $arr ) use ( $type ) {
+			return $type === $arr['type'];
+		});
+		$index = array_search( $email, array_column( $filtered_requests, 'email' ) );
+		$request_index = array_keys( $requests, $filtered_requests[ $index ] );
+		$request_index = $request_index[0];
+
+		unset( $requests[ $request_index ] );
+		update_option( 'gdpr_requests', $requests );
+	}
+
+	function remove_from_deletion_requests() {
+		if ( ! isset( $_REQUEST['gdpr_delete_remove_user'], $_REQUEST['user_email'] ) || ! wp_verify_nonce( sanitize_key( $_REQUEST['gdpr_delete_remove_user'] ), 'gdpr-request-delete-user' ) ) {
+			wp_die( esc_html__( 'We could not verify the user email or the security token. Please try again.', 'gdpr' ) );
+		}
+
+		$email = sanitize_email( $_REQUEST['user_email'] );
+
+		$this->_remove_from_requests( $email, 'delete' );
+
+		add_settings_error( 'gdpr-requests', 'remove-request', sprintf( esc_html__( 'User %s was removed from the deletion table.', 'gdpr' ), $email ), 'updated' );
+		set_transient( 'settings_errors', get_settings_errors(), 30 );
+		wp_redirect(
+			esc_url_raw(
+				add_query_arg(
+					array(
+						'settings-updated' => true
+					),
+					wp_get_referer() . '#delete'
+				)
+			)
+		);
+	}
+
+	function add_to_deletion_requests() {
+		if ( ! isset( $_REQUEST['gdpr_delete_email_lookup'], $_REQUEST['user_email'] ) || ! wp_verify_nonce( sanitize_key( $_REQUEST['gdpr_delete_email_lookup'] ), 'gdpr-request-email-lookup' ) ) {
+			wp_die( esc_html__( 'We could not verify the user email or the security token. Please try again.', 'gdpr' ) );
+		}
+
+		$email = sanitize_email( $_REQUEST['user_email'] );
+		$user = get_user_by( 'email', $email );
+		if ( ! $user instanceof WP_User ) {
+			add_settings_error( 'gdpr-requests', 'invalid-user', esc_html__( 'User not found.', 'gdpr' ), 'error' );
+			set_transient( 'settings_errors', get_settings_errors(), 30 );
+			wp_redirect(
+				esc_url_raw(
+					add_query_arg(
+						array(
+							'settings-updated' => true
+						),
+						wp_get_referer() . '#delete'
+					)
+				)
+			);
+			exit;
+		}
+
+		$requests = ( array ) get_option( 'gdpr_requests', array() );
+
+		if ( empty( $requests ) ) {
+			$requests[] = array(
+				'email' => $email,
+				'date'  => date( "F j, Y" ),
+				'type'  => 'delete',
+			);
+			update_option( 'gdpr_requests', $requests );
+			add_settings_error( 'gdpr-requests', 'new-request', sprintf( esc_html__( 'User %s was added to the deletion table.', 'gdpr' ), $email ), 'updated' );
+			set_transient( 'settings_errors', get_settings_errors(), 30 );
+			wp_redirect(
+				esc_url_raw(
+					add_query_arg(
+						array(
+							'settings-updated' => true
+						),
+						wp_get_referer() . '#delete'
+					)
+				)
+			);
+			exit;
+		}
+
+		$deletion_requests = array_filter( $requests, function( $arr ) {
+			return 'delete' === $arr['type'];
+		});
+		$user_has_already_requested = array_search( $email, array_column( $deletion_requests, 'email' ) );
+
+		if ( false !== $user_has_already_requested ) {
+			wp_safe_redirect( home_url( esc_url( $_REQUEST['_wp_http_referer'] ) ) );
+			add_settings_error( 'gdpr-requests', 'invalid-user', esc_html__( 'User already placed a deletion request.', 'gdpr' ), 'error' );
+			set_transient( 'settings_errors', get_settings_errors(), 30 );
+			wp_redirect(
+				esc_url_raw(
+					add_query_arg(
+						array(
+							'settings-updated' => true
+						),
+						wp_get_referer() . '#delete'
+					)
+				)
+			);
+			exit;
+		}
+
+		$requests[] = array(
+			'email' => $email,
+			'date'  => date( "F j, Y" ),
+			'type'  => 'delete',
+		);
+
+		update_option( 'gdpr_requests', $requests );
+
+		add_settings_error( 'gdpr-requests', 'new-request', sprintf( esc_html__( 'User %s was added to the deletion table.', 'gdpr' ), $email ), 'updated' );
+		set_transient( 'settings_errors', get_settings_errors(), 30 );
+		wp_redirect(
+			esc_url_raw(
+				add_query_arg(
+					array(
+						'settings-updated' => true
+					),
+					wp_get_referer() . '#delete'
+				)
+			)
+		);
+		exit;
+	}
+
+	function process_user_deletion() {
+		if ( ! isset( $_REQUEST['gdpr_delete_user'], $_REQUEST['user_email'] ) || ! wp_verify_nonce( $_REQUEST['gdpr_delete_user'], 'gdpr-request-delete-user' ) ) {
+			wp_die( esc_html__( 'We could not verify the user email or the security token. Please try again.', 'gdpr' ) );
+		}
+
+		$email = sanitize_email( $_REQUEST['user_email'] );
+		$user = get_user_by( 'email', $email );
+		$this->delete_user( $user );
+
+		$this->_remove_from_requests( $email, 'delete' );
+
+		add_settings_error( 'gdpr-requests', 'new-request', sprintf( esc_html__( 'User %s was deleted from the site.', 'gdpr' ), $email ), 'updated' );
+		set_transient( 'settings_errors', get_settings_errors(), 30 );
+		wp_redirect(
+			esc_url_raw(
+				add_query_arg(
+					array(
+						'settings-updated' => true
+					),
+					wp_get_referer() . '#delete'
+				)
+			)
+		);
+		exit;
 	}
 
 }

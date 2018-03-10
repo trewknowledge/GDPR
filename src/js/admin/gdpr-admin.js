@@ -46,6 +46,32 @@
 			$(this).closest('.postbox').remove();
 		});
 
+		$(document).on('click', '.gdpr-request-table .gdpr-review', function(e) {
+			e.preventDefault();
+			var target = $(this).data('index');
+			$('tr[data-index=' + target + '] div').slideToggle();
+		});
+
+		$(document).on('click', '.gdpr_page_gdpr-requests .nav-tab-wrapper a', function(e) {
+			var target = $(this).attr('href');
+			target = target.replace('#', '');
+			$(this).addClass('nav-tab-active');
+			$(this).siblings().removeClass('nav-tab-active');
+			$('.gdpr_page_gdpr-requests .tab').addClass('hidden');
+			$('.gdpr_page_gdpr-requests .tab[data-id='+ target +']').removeClass('hidden');
+		});
+
+		var hash = window.location.hash;
+		$('.gdpr_page_gdpr-requests .nav-tab-wrapper a[href="'+ hash +'"]').addClass('nav-tab-active');
+		$('.gdpr_page_gdpr-requests .tab[data-id="'+ hash.replace('#', '') +'"]').removeClass('hidden');
+
+		$(document).on('change', '.gdpr-reassign', function() {
+			if ( $(this).val() != 0 ) {
+				$(this).closest('tr').find('td:last button').attr('disabled', false);
+			} else {
+				$(this).closest('tr').find('td:last button').attr('disabled', true);
+			}
+		});
 
 	});
 })( jQuery );

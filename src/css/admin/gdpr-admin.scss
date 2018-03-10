@@ -10,6 +10,53 @@
 	}
 }
 
+.gdpr-pending-requests-badge {
+	display: inline-block;
+  vertical-align: text-bottom;
+  margin: 1px 0 0 2px;
+  padding: 0 5px;
+  min-width: 7px;
+  height: 17px;
+  border-radius: 11px;
+  background-color: #ca4a1f;
+  color: #fff;
+  font-size: 9px;
+  line-height: 17px;
+  text-align: center;
+}
+.gdpr-request-table, .gdpr-manual-email-lookup {
+	.spinner{
+		float: none;
+		display: none;
+	}
+}
+.gdpr-manual-email-lookup {
+	.inside{
+		margin-bottom: 0;
+	}
+}
+
+.gdpr-request-table{
+	td{
+		vertical-align: middle;
+	}
+	form{
+		display: inline-block;
+	}
+	.text-center {
+		text-align: center;
+	}
+	tr.review {
+		> td{
+			padding-top: 0;
+			padding-bottom: 0;
+		}
+		table{
+			margin-bottom: 10px;
+		}
+	}
+}
+
 /* The switch - the box around the slider */
 .gdpr-switch {
   position: relative;

@@ -147,6 +147,9 @@ class GDPR {
 		add_action( 'admin_init', array( $plugin_admin, 'register_settings' ) );
 		add_action( 'init', array( $this, 'block_cookies' ) );
 		add_action( 'admin_init', array( $this, 'block_cookies' ) );
+		add_action( 'admin_post_delete_user', array( $plugin_admin, 'process_user_deletion' ) );
+		add_action( 'admin_post_add_to_deletion_requests', array( $plugin_admin, 'add_to_deletion_requests' ) );
+		add_action( 'admin_post_remove_from_deletion_requests', array( $plugin_admin, 'remove_from_deletion_requests' ) );
 
 		add_action( 'init', array( $telemetry, 'register_post_type' ) );
 		add_filter( 'http_api_debug', array( $telemetry, 'log_request' ), 10, 5 );

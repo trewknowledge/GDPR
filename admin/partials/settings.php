@@ -12,10 +12,6 @@
  * @subpackage GDPR/admin/partials
  */
 
-// check user capabilities
-// if ( ! current_user_can( 'manage_options' ) ) {
-// 	return;
-// }
 ?>
 
 <div class="wrap">
@@ -31,6 +27,7 @@
 
 		<?php
 		include_once plugin_dir_path( __FILE__ ) . 'templates/tmpl-cookies.php';
+		settings_errors();
 		settings_fields( 'gdpr' );
 		do_settings_sections( $current_tab );
 		submit_button();
