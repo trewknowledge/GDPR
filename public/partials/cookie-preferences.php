@@ -17,9 +17,6 @@
 	<div class="wrapper">
 		<form method="post" class="frm-gdpr-cookie-preferences">
 			<header>
-				<div class="logo">
-					<?php the_custom_logo(); ?>
-				</div>
 				<div class="box-title">
 					<h3><?php esc_html_e( 'Privacy Preference Center', 'gdpr' ); ?></h3>
 				</div>

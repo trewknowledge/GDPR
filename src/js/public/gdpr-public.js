@@ -108,6 +108,40 @@
 			createCookie("gdpr_approved_cookies", JSON.stringify( approvedCookies ));
 			$('.gdpr.cookie-preferences .wrapper, .gdpr.overlay, .gdpr.cookie-bar').fadeOut();
 		}
+
+		$('.confirm-delete-request-dialog').dialog({
+			resizable: false,
+			autoOpen: false,
+			height: 'auto',
+			width: 400,
+			modal: true,
+			buttons: {
+				"Close my account": function() {
+					$('form.gdpr-add-to-deletion-requests').submit();
+					$( this ).dialog( "close" );
+				},
+				Cancel: function() {
+					$( this ).dialog( "close" );
+				}
+			}
+		});
+		$(document).on('click', '.gdpr-add-to-deletion-requests-button', function() {
+			$('.confirm-delete-request-dialog').dialog('open');
+		});
+
+		if ( $('.gdpr-general-dialog').length > 0 ) {
+			$('.gdpr-general-dialog').dialog({
+				resizable: false,
+				height: 'auto',
+				width: 400,
+				modal: true,
+				buttons: {
+					"Ok": function() {
+						$( this ).dialog( "close" );
+					}
+				}
+			});
+		}
 	});
 
 })( jQuery );

@@ -48,20 +48,6 @@
 	</div>
 	<div class="tab hidden" data-id="rectify">
 		<h2><?php esc_html_e( 'Rectify Data', 'gdpr' ) ?></h2>
-		<div class="postbox">
-			<form class="gdpr-manual-email-lookup" method="post" action="">
-				<div class="inside">
-					<input type="hidden" name="gdpr_action" value="requests_email_lookup">
-					<?php wp_nonce_field( 'gdpr-request-email-lookup', 'gdpr_rectify_email_lookup' ); ?>
-					<h4>
-						<label for="gdpr-request-email-lookup"><?php esc_html_e( 'Manually add a user', 'gdpr' ); ?></label>
-					</h4>
-					<input type="email" name="email" class="gdpr-request-email-lookup regular-text" placeholder="<?php esc_attr_e( 'email@domain.com', 'gdpr' ); ?>" required>
-					<?php submit_button( 'Submit', 'primary', '', false ); ?>
-					<span class="spinner"></span>
-				</div>
-			</form>
-		</div>
 		<table class="widefat gdpr-request-table">
 			<thead>
 				<tr>
@@ -181,7 +167,7 @@
 			<form class="gdpr-manual-email-lookup" method="post" action="<?php echo esc_url( admin_url('admin-post.php') ); ?>">
 				<div class="inside">
 					<input type="hidden" name="action" value="add_to_deletion_requests">
-					<?php wp_nonce_field( 'gdpr-request-email-lookup', 'gdpr_delete_email_lookup' ); ?>
+					<?php wp_nonce_field( 'add-to-deletion-requests', 'gdpr_deletion_requests_nonce' ); ?>
 					<h4>
 						<label for="gdpr-request-email-lookup"><?php esc_html_e( 'Manually add a user', 'gdpr' ); ?></label>
 					</h4>
@@ -209,21 +195,22 @@
 							<td class="text-center"><?php echo esc_html( $request['date'] ); ?></td>
 							<td class="text-center">
 								<?php
-								if ( $this->user_has_content( $user ) ) {
+								if ( GDPR_Requests::user_has_content( $user ) ) {
 									echo '<button class="button gdpr-review" data-index="' . esc_attr( $index ) . '">' . esc_html__( 'Review', 'gdpr' ) . '</button>';
 								} else {
 									esc_html_e( 'No content to review', 'gdpr' );
 								}
 								?>
-								<?php if ( $this->user_has_content( $user ) ): ?>
+								<?php if ( GDPR_Requests::user_has_content( $user ) ): ?>
 								<?php else: ?>
 									<?php  ?>
 								<?php endif; ?>
 							</td>
 							<td class="text-center">
 								<form class="frm-process-user-deletion" action="<?php echo esc_url( admin_url('admin-post.php') ); ?>" method="post">
-									<?php wp_nonce_field( 'gdpr-request-delete-user', 'gdpr_delete_remove_user' ); ?>
-									<input type="hidden" name="action" value="remove_from_deletion_requests">
+									<?php wp_nonce_field( 'gdpr-request-nonce', 'gdpr_nonce' ); ?>
+									<input type="hidden" name="action" value="cancel_request">
+									<input type="hidden" name="type" value="delete">
 									<input type="hidden" name="user_email" value="<?php echo esc_attr( $request['email'] ) ?>">
 									<?php submit_button( esc_html__( 'Cancel Request', 'gdpr' ), 'delete', '', false ) ?>
 								</form>
@@ -235,7 +222,7 @@
 								</form>
 							</td>
 						</tr>
-						<?php if ( $this->user_has_content( $user ) ): ?>
+						<?php if ( GDPR_Requests::user_has_content( $user ) ): ?>
 							<tr class="review" data-index="<?php echo esc_attr( $index ); ?>">
 								<td colspan="4">
 									<div class="hidden">
@@ -254,7 +241,7 @@
 												<?php foreach ( $post_types as $pt ): ?>
 													<?php
 														$uid = get_user_by( 'email', $request['email'] );
-														if ( $uid && is_a( $uid, 'WP_User' ) ) {
+														if ( $uid && $uid instanceof WP_User ) {
 															$uid = $uid->ID;
 														}
 														$count = count_user_posts( $uid, $pt->name );
@@ -278,7 +265,16 @@
 															</select>
 														</td>
 														<td class="text-center">
-															<button class="button button-primary" disabled><?php esc_html_e( 'Reassign', 'gdpr' ); ?></button>
+															<form method="post" class="gdpr-reassign-content">
+																<?php wp_nonce_field( 'gdpr-reassign-content-action', 'gdpr_reassign_content_nonce' ) ?>
+																<input type="hidden" name="user_email" value="<?php echo esc_attr( $request['email'] ) ?>">
+																<input type="hidden" name="reassign_to" value="">
+																<input type="hidden" name="post_type" value="<?php echo esc_attr( $pt->name ); ?>">
+																<input type="hidden" name="post_count" value="<?php echo esc_attr( $count ); ?>">
+																<?php submit_button( esc_html__( 'Reassign', 'gdpr' ), 'primary', '', false, array( 'disabled' => true ) ); ?>
+																<span class="spinner"></span>
+																<p class="hidden"><strong><?php esc_html_e( 'Resolved', 'gdpr' ); ?></strong></p>
+															</form>
 															<span class="spinner"></span>
 														</td>
 													</tr>
@@ -298,11 +294,13 @@
 																<td class="text-center"><a href="<?php echo admin_url( 'edit-comments.php?comment_status=all&s=' . urlencode( $request['email'] ) ); ?>" target="_blank" class="button"><?php _e( 'View Comments', 'gdpr' ); ?></a></td>
 																<td></td>
 																<td class="text-center">
-																	<form method="post" class="gdpr-form-process-request">
-																		<?php wp_nonce_field( 'gdpr-anonymize-comments-action', '_anonymize-nonce' ) ?>
-																		<button class="button-primary gdpr-anonymize-button"><?php _e( 'Anonymize', 'gdpr' ); ?></button>
+																	<form method="post" class="gdpr-anonymize-comments">
+																		<?php wp_nonce_field( 'gdpr-anonymize-comments-action', 'gdpr_anonymize_comments_nonce' ) ?>
+																		<input type="hidden" name="user_email" value="<?php echo esc_attr( $request['email'] ) ?>">
+																		<input type="hidden" name="comment_count" value="<?php echo esc_attr( $comment_count ) ?>">
+																		<?php submit_button( esc_html__( 'Anonymize', 'gdpr' ), 'primary', '', false ) ?>
 																		<span class="spinner"></span>
-																		<p class="hidden"><strong><?php _e('Resolved', 'gdpr'); ?></strong></p>
+																		<p class="hidden"><strong><?php esc_html_e( 'Resolved', 'gdpr' ); ?></strong></p>
 																	</form>
 																</td>
 															</tr>

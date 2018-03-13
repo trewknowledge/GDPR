@@ -58,7 +58,7 @@ class GDPR_Public {
 	 * @since    1.0.0
 	 */
 	public function enqueue_styles() {
-		wp_enqueue_style( $this->plugin_name, plugin_dir_url( dirname( __FILE__ ) ) . 'assets/css/gdpr-public.css', array(), $this->version, 'all' );
+		wp_enqueue_style( $this->plugin_name, plugin_dir_url( dirname( __FILE__ ) ) . 'assets/css/gdpr-public.css', array( 'wp-jquery-ui-dialog' ), $this->version, 'all' );
 	}
 
 	/**
@@ -67,7 +67,10 @@ class GDPR_Public {
 	 * @since    1.0.0
 	 */
 	public function enqueue_scripts() {
-		wp_enqueue_script( $this->plugin_name, plugin_dir_url( dirname( __FILE__ ) ) . 'assets/js/gdpr-public.js', array( 'jquery' ), $this->version, false );
+		wp_enqueue_script( $this->plugin_name, plugin_dir_url( dirname( __FILE__ ) ) . 'assets/js/gdpr-public.js', array( 'jquery', 'jquery-ui-dialog' ), $this->version, false );
+		wp_localize_script( $this->plugin_name, 'GDPR', array(
+			'add_to_deletion_requests_text' => esc_html__( 'You are about to request that your account and all the data we collected of you be removed from the site. Are you sure? This can\'t be undone.', 'gdpr' ),
+		) );
 	}
 
 	public function cookie_bar() {
@@ -93,6 +96,10 @@ class GDPR_Public {
 		}
 
 		include plugin_dir_path( __FILE__ ) . 'partials/cookie-preferences.php';
+	}
+
+	public function confirmation_screens() {
+		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'public/partials/confirmation-screens.php';
 	}
 
 }

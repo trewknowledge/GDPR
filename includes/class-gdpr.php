@@ -98,6 +98,26 @@ class GDPR {
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'admin/class-gdpr-telemetry.php';
 
 		/**
+		 * The class responsible for defining the requests section of the plugin.
+		 */
+		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/class-gdpr-requests.php';
+
+		/**
+		 * The class responsible for defining the admin facing requests section of the plugin.
+		 */
+		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'admin/class-gdpr-requests-admin.php';
+
+		/**
+		 * The class responsible for defining the admin facing requests section of the plugin.
+		 */
+		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'public/class-gdpr-requests-public.php';
+
+		/**
+		 * The class responsible for locating the email templates and sending emails.
+		 */
+		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/class-gdpr-email.php';
+
+		/**
 		 * The class responsible for defining all actions that occur in the admin area.
 		 */
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'admin/class-gdpr-admin.php';
@@ -140,6 +160,8 @@ class GDPR {
 
 		$plugin_admin = new GDPR_Admin( $this->get_plugin_name(), $this->get_version() );
 		$telemetry = new GDPR_Telemetry( $this->get_plugin_name(), $this->get_version() );
+		$requests_admin = new GDPR_Requests_Admin( $this->get_plugin_name(), $this->get_version() );
+		$requests_public = new GDPR_Requests_Public( $this->get_plugin_name(), $this->get_version() );
 
 		add_action( 'admin_enqueue_scripts', array( $plugin_admin, 'enqueue_styles' ) );
 		add_action( 'admin_enqueue_scripts', array( $plugin_admin, 'enqueue_scripts' ) );
@@ -147,9 +169,16 @@ class GDPR {
 		add_action( 'admin_init', array( $plugin_admin, 'register_settings' ) );
 		add_action( 'init', array( $this, 'block_cookies' ) );
 		add_action( 'admin_init', array( $this, 'block_cookies' ) );
-		add_action( 'admin_post_delete_user', array( $plugin_admin, 'process_user_deletion' ) );
-		add_action( 'admin_post_add_to_deletion_requests', array( $plugin_admin, 'add_to_deletion_requests' ) );
-		add_action( 'admin_post_remove_from_deletion_requests', array( $plugin_admin, 'remove_from_deletion_requests' ) );
+
+		add_action( 'admin_post_delete_user', array( $requests_admin, 'delete_user' ) );
+		add_action( 'admin_post_cancel_request', array( $requests_admin, 'cancel_request' ) );
+		add_action( 'admin_post_add_to_deletion_requests', array( $requests_admin, 'add_to_deletion_requests' ) );
+		add_action( 'wp_ajax_gdpr_anonymize_comments', array( $requests_admin, 'anonymize_comments' ) );
+		add_action( 'wp_ajax_gdpr_reassign_content', array( $requests_admin, 'reassign_content' ) );
+
+		add_action( 'wp', array( $requests_public, 'request_to_delete_confirmed' ) );
+		add_action( 'admin_post_public_add_to_deletion_requests', array( $requests_public, 'add_to_deletion_requests' ) );
+
 
 		add_action( 'init', array( $telemetry, 'register_post_type' ) );
 		add_filter( 'http_api_debug', array( $telemetry, 'log_request' ), 10, 5 );
@@ -191,6 +220,7 @@ class GDPR {
 		add_action( 'wp_enqueue_scripts', array( $plugin_public, 'enqueue_scripts' ) );
 		add_action( 'wp_footer', array( $plugin_public, 'cookie_bar' ) );
 		add_action( 'wp_footer', array( $plugin_public, 'cookie_preferences' ) );
+		add_action( 'wp_footer', array( $plugin_public, 'confirmation_screens' ) );
 
 	}
 
