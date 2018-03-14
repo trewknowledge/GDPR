@@ -126,7 +126,7 @@ class GDPR_Admin {
 		$cpt = 'telemetry';
 		$cpt_obj = get_post_type_object( $cpt );
 
-		add_submenu_page( $parent_slug, $cpt_obj->labels->name, $cpt_obj->labels->menu_name, $cpt_obj->cap->edit_posts, $menu_slug );
+		add_submenu_page( $parent_slug, $cpt_obj->labels->name, $cpt_obj->labels->menu_name, $capability, $menu_slug );
 
 	}
 
