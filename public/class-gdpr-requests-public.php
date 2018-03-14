@@ -47,21 +47,11 @@ class GDPR_Requests_Public extends GDPR_Requests {
 	}
 
 	static function request_form( $type ) {
-		if ( 'delete' === $type ) {
-			if ( is_user_logged_in() ) {
-				$user = wp_get_current_user();
-				if ( in_array( 'administrator', $user->roles ) ) {
-					$admins_query = new WP_User_Query( array(
-							'role' => 'Administrator'
-					)	);
-					if ( 1 === $admins_query->get_total() ) {
-						return;
-					}
-				}
-			}
-			include plugin_dir_path( dirname( __FILE__ ) ) . 'public/partials/delete-form.php';
+		if ( ! in_array( $type, parent::$allowed_types ) ) {
 			return;
 		}
+
+		include plugin_dir_path( dirname( __FILE__ ) ) . 'public/partials/' . $type . '-form.php';
 	}
 
 	function send_deletion_request_email_confirmation() {
@@ -74,6 +64,27 @@ class GDPR_Requests_Public extends GDPR_Requests {
 		} else {
 			$user = get_user_by( 'email', sanitize_email( $_POST['user_email'] ) );
 		}
+
+		if ( in_array( 'administrator', $user->roles ) ) {
+			$admins_query = new WP_User_Query( array(
+					'role' => 'Administrator'
+			)	);
+			if ( 1 === $admins_query->get_total() ) {
+				wp_safe_redirect(
+				esc_url_raw(
+					add_query_arg(
+						array(
+							'notify' => 1,
+							'cannot_delete' => 1,
+						),
+						wp_get_referer()
+					)
+				)
+			);
+			exit;
+			}
+		}
+
 		if ( ! $user instanceof WP_User ) {
 			wp_safe_redirect(
 				esc_url_raw(

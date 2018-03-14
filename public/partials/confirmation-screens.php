@@ -27,6 +27,11 @@
 				$text = __( 'User not found.', 'gdpr' );
 			}
 		}
+		if ( isset( $_GET['cannot_delete'] ) ) {
+			if ( $_GET['cannot_delete'] ) {
+				$text = __( 'We can\'t delete this user.', 'gdpr' );
+			}
+		}
 	?>
 	<div class="gdpr-general-dialog" title="<?php echo esc_attr( $title ); ?>">
 		<p>

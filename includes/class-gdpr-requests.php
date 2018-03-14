@@ -37,6 +37,8 @@ class GDPR_Requests {
 	 */
 	protected static $version;
 
+	protected static $allowed_types = array( 'access', 'rectify', 'portability', 'complaint', 'delete' );
+
 
 	/**
 	 * Initialize the class and set its properties.
@@ -49,12 +51,7 @@ class GDPR_Requests {
 
 		self::$plugin_name = $plugin_name;
 		self::$version     = $version;
-		$this->allowed_types = array( 'access', 'rectify', 'portability', 'complaint', 'delete' );
 
-	}
-
-	protected function get_allowed_types() {
-		return $this->allowed_types;
 	}
 
 	static function user_has_content( $user ) {
@@ -113,9 +110,7 @@ class GDPR_Requests {
 		$email = sanitize_email( $email );
 		$type = sanitize_text_field( wp_unslash( $type ) );
 
-		$allowed_types = array( 'access', 'rectify', 'portability', 'complaint', 'delete' );
-
-		if ( ! in_array( $type, $allowed_types ) ) {
+		if ( ! in_array( $type, self::$allowed_types ) ) {
 			return false;
 		}
 
