@@ -183,6 +183,7 @@
 					}
 				}
 				.tab-content {
+					width: 100%;
 					> div {
 						display: none;
 						padding: 20px;
@@ -193,6 +194,9 @@
 							display: flex;
 							justify-content: space-between;
 							height: 38px;
+							h4, label{
+								margin: 0;
+							}
 						}
 						.info{
 							height: calc( 100% - 38px );

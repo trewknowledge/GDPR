@@ -15,7 +15,7 @@
 				</tr>
 				<tr>
 					<th><label for="tab-how-we-use-{{data.key}}"><?php esc_html_e( 'How we use', 'gdpr' ); ?></label></th>
-					<td><textarea name="{{data.option_name}}[{{data.key}}][how_we_use]" id="tab-how-we-use-{{data.key}}" cols="53" rows="5"></textarea></td>
+					<td><textarea name="{{data.option_name}}[{{data.key}}][how_we_use]" id="tab-how-we-use-{{data.key}}" cols="53" rows="5" required></textarea></td>
 				</tr>
 				<tr>
 					<th><label for="cookies-used-{{data.key}}"><?php esc_html_e( 'Cookies used by the site', 'gdpr' ); ?></label></th>
@@ -52,7 +52,7 @@
 				<tr>
 					<th><label for="hosts-cookies-used-{{data.host_key}}"><?php esc_html_e( 'Cookies used', 'gdpr' ); ?></label></th>
 					<td>
-						<input type="text" name="{{data.option_name}}[{{data.tab_key}}][hosts][{{data.host_key}}][cookies_used]" id="hosts-cookies-used-{{data.host_key}}" class="regular-text" />
+						<input type="text" name="{{data.option_name}}[{{data.tab_key}}][hosts][{{data.host_key}}][cookies_used]" id="hosts-cookies-used-{{data.host_key}}" class="regular-text" required />
 						<br>
 						<span class="description"><?php esc_html_e( 'Comma separated list.', 'gdpr' ); ?></span>
 					</td>
@@ -60,7 +60,7 @@
 				<tr>
 					<th><label for="hosts-cookies-optout-{{data.host_key}}"><?php esc_html_e( 'How to Opt Out', 'gdpr' ); ?></label></th>
 					<td>
-						<input type="text" name="{{data.option_name}}[{{data.tab_key}}][hosts][{{data.host_key}}][optout]" id="hosts-cookies-optout-{{data.host_key}}" class="regular-text" />
+						<input type="text" name="{{data.option_name}}[{{data.tab_key}}][hosts][{{data.host_key}}][optout]" id="hosts-cookies-optout-{{data.host_key}}" class="regular-text" required />
 						<br>
 						<span class="description"><?php esc_html_e( 'Url with instructions on how to opt out.', 'gdpr' ); ?></span>
 					</td>

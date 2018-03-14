@@ -71,10 +71,12 @@
 							</header><!-- /header -->
 							<div class="info">
 								<p><?php echo nl2br( $tab['how_we_use'] ); ?></p>
-								<strong><?php esc_html_e( 'Cookies used', 'gdpr' ); ?></strong>
-								<div class="cookies-used">
-									<span><?php echo esc_html( $tab['cookies_used'] ); ?></span>
-								</div>
+								<?php if ( isset( $tab['cookies_used'] ) && $tab['cookies_used'] ): ?>
+									<strong><?php esc_html_e( 'Cookies used', 'gdpr' ); ?></strong>
+									<div class="cookies-used">
+										<span><?php echo esc_html( $tab['cookies_used'] ); ?></span>
+									</div>
+								<?php endif ?>
 								<?php if ( isset( $tab['hosts'] ) && ! empty( $tab['hosts'] ) ): ?>
 									<?php foreach ( $tab['hosts'] as $host_key => $host ): ?>
 										<div class="cookies-used">
