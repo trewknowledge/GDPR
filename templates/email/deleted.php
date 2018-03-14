@@ -56,7 +56,7 @@
         <tr>
           <td>
             <h4><?php esc_html_e( 'Your account has been closed.', 'gdpr' ); ?></h4>
-            <p><?php echo sprintf( esc_html__( 'We no longer hold any information about you. If you ever need to make a complaint you can email %s and we will try to help you.', 'gdpr' ), $args['processor'] ); ?></p>
+            <p><?php esc_html_e( 'We no longer hold any information about you. If you ever need to make a complaint you can email us and we will try to help you.', 'gdpr' ); ?></p>
             <p><?php esc_html_e( 'To be able to make a complaint you will be requested to provide your email address and the token below.', 'gdpr' ); ?></p>
           </td>
         </tr>

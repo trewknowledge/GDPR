@@ -32,11 +32,16 @@ class GDPR_Requests_Public extends GDPR_Requests {
 
 
 	function process_user_deletion( $user ) {
-		parent::remove_from_requests( $user->user_email, 'delete' );
+		if ( ! $user instanceof WP_User ) {
+			return false;
+		}
+
 		if ( ! function_exists( 'wp_delete_user' ) ) {
 			require_once( ABSPATH . 'wp-admin/includes/user.php' );
 		}
+		GDPR_Email::send( $user->user_email, 'deleted', array( 'token' => 123456 ) );
 		wp_delete_user( $user->ID );
+		parent::remove_from_requests( $user->user_email, 'delete' );
 		wp_logout();
 		return true;
 	}
@@ -129,7 +134,7 @@ class GDPR_Requests_Public extends GDPR_Requests {
 				);
 				exit;
 			} else {
-				if ( $this->process_user_deletion( $user->ID ) ) {
+				if ( $this->process_user_deletion( $user ) ) {
 					wp_safe_redirect(
 						esc_url_raw(
 							add_query_arg(

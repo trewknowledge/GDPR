@@ -61,16 +61,17 @@ class GDPR_Email {
 
 	public static function send( $user, $type, $args = array(), $attachments = array() ) {
 		if ( ! $user instanceof WP_User ) {
-			if ( ! is_int( $user ) ) {
-				return;
+			if ( ! is_email( $user ) && is_int( $user ) ) {
+				$user = get_user_by( 'ID', $user );
 			}
-			$user = get_user_by( 'ID', $user );
 		}
+		$email = $user instanceof WP_User ? $user->user_email : $user;
 
-		$possible_types = apply_filters( 'gdpr_notification_types', array(
-			'request-to-delete' => apply_filters( 'delete-email-request-subject', esc_html__( 'Someone requested to close your account.', 'gdpr' ) ),
-			'deleted' => apply_filters( 'deleted-email', esc_html__( 'Your account has been closed.', 'gdpr' ) ),
+		$possible_types = apply_filters( 'gdpr_email_types', array(
+			'request-to-delete' => apply_filters( 'gdpr_request_to_delete_email_subject', esc_html__( 'Someone requested to close your account.', 'gdpr' ) ),
+			'deleted' => apply_filters( 'gdpr_deleted_email_subject', esc_html__( 'Your account has been closed.', 'gdpr' ) ),
 		) );
+
 
 		if ( ! in_array( $type, array_keys( $possible_types ), true ) ) {
 			return;
@@ -80,7 +81,7 @@ class GDPR_Email {
 		$args = apply_filters( 'gdpr_email_args', $args );
 
 		$content = self::get_template_html( $type . '.php', $args );
-		return wp_mail( $user->user_email,
+		return wp_mail( $email,
 			$possible_types[ $type ],
 			$content,
 			array( 'Content-Type: text/html; charset=UTF-8' ),

@@ -181,9 +181,11 @@ class GDPR_Requests_Admin extends GDPR_Requests {
 
 		$email = sanitize_email( $_REQUEST['user_email'] );
 		$user = get_user_by( 'email', $email );
+		parent::remove_from_requests( $email, 'delete' );
+
+		GDPR_Email::send( $user->user_email, 'deleted', array( 'token' => 123456 ) );
 		wp_delete_user( $user->ID );
 
-		parent::remove_from_requests( $email, 'delete' );
 
 		add_settings_error( 'gdpr-requests', 'new-request', sprintf( esc_html__( 'User %s was deleted from the site.', 'gdpr' ), $email ), 'updated' );
 		set_transient( 'settings_errors', get_settings_errors(), 30 );
