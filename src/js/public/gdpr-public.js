@@ -1,6 +1,13 @@
 (function( $ ) {
 	'use strict';
 
+	var query_args  = location.search,
+			base_url = location.protocol + '//' + location.host + location.pathname;
+
+	if ( -1 !== query_args.indexOf( 'notify=1' ) ) {
+		window.history.replaceState( {}, document.title, base_url );
+	}
+
 	$(function() {
 
 		var approvedCookies = JSON.parse( readCookie('gdpr_approved_cookies') );
