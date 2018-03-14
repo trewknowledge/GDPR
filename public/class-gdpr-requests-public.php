@@ -58,20 +58,35 @@ class GDPR_Requests_Public extends GDPR_Requests {
 						return;
 					}
 				}
-				include plugin_dir_path( dirname( __FILE__ ) ) . 'public/partials/delete-form.php';
 			}
+			include plugin_dir_path( dirname( __FILE__ ) ) . 'public/partials/delete-form.php';
 			return;
 		}
 	}
 
-	function add_to_deletion_requests() {
-		if ( ! isset( $_REQUEST['gdpr_deletion_requests_nonce'] ) || ! wp_verify_nonce( sanitize_key( $_REQUEST['gdpr_deletion_requests_nonce'] ), 'add-to-deletion-requests' ) ) {
+	function send_deletion_request_email_confirmation() {
+		if ( ! isset( $_POST['gdpr_deletion_requests_nonce'] ) || ! wp_verify_nonce( sanitize_key( $_POST['gdpr_deletion_requests_nonce'] ), 'add-to-deletion-requests' ) ) {
 			wp_die( esc_html__( 'We could not verify the security token. Please try again.', 'gdpr' ) );
 		}
 
-		$user = wp_get_current_user();
+		if ( is_user_logged_in() ) {
+			$user = wp_get_current_user();
+		} else {
+			$user = get_user_by( 'email', sanitize_email( $_POST['user_email'] ) );
+		}
 		if ( ! $user instanceof WP_User ) {
-			return;
+			wp_safe_redirect(
+				esc_url_raw(
+					add_query_arg(
+						array(
+							'notify' => 1,
+							'user_not_found' => 1,
+						),
+						wp_get_referer()
+					)
+				)
+			);
+			exit;
 		}
 
 		$key = wp_generate_password( 20, false );

@@ -11,7 +11,6 @@
 	$(function() {
 
 		var approvedCookies = JSON.parse( readCookie('gdpr_approved_cookies') );
-		console.log(approvedCookies);
 
 		function createCookie(name, value, days) {
 	    if (days) {
@@ -124,7 +123,8 @@
 			modal: true,
 			buttons: {
 				"Close my account": function() {
-					$('form.gdpr-add-to-deletion-requests').submit();
+					$('form.gdpr-add-to-deletion-requests').addClass('confirmed');
+					$('form.gdpr-add-to-deletion-requests.confirmed').submit();
 					$( this ).dialog( "close" );
 				},
 				Cancel: function() {
@@ -132,9 +132,16 @@
 				}
 			}
 		});
-		$(document).on('click', '.gdpr-add-to-deletion-requests-button', function() {
-			$('.confirm-delete-request-dialog').dialog('open');
-		});
+		// $(document).on('click', '.gdpr-add-to-deletion-requests-button', function() {
+		// 	$('.confirm-delete-request-dialog').dialog('open');
+		// });
+
+		$('form.gdpr-add-to-deletion-requests').on('submit', function(e){
+			if ( ! $(this).hasClass( 'confirmed' ) ) {
+				e.preventDefault();
+				$('.confirm-delete-request-dialog').dialog('open');
+			}
+		})
 
 		if ( $('.gdpr-general-dialog').length > 0 ) {
 			$('.gdpr-general-dialog').dialog({

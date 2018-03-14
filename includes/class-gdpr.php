@@ -177,7 +177,8 @@ class GDPR {
 		add_action( 'wp_ajax_gdpr_reassign_content', array( $requests_admin, 'reassign_content' ) );
 
 		add_action( 'wp', array( $requests_public, 'request_to_delete_confirmed' ) );
-		add_action( 'admin_post_public_add_to_deletion_requests', array( $requests_public, 'add_to_deletion_requests' ) );
+		add_action( 'admin_post_public_send_deletion_request_email_confirmation', array( $requests_public, 'send_deletion_request_email_confirmation' ) );
+		add_action( 'admin_post_nopriv_public_send_deletion_request_email_confirmation', array( $requests_public, 'send_deletion_request_email_confirmation' ) );
 
 
 		add_action( 'init', array( $telemetry, 'register_post_type' ) );

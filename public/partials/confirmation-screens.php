@@ -7,6 +7,7 @@
 
 <?php if ( isset( $_GET['notify'] ) && $_GET['notify'] ): ?>
 	<?php
+		$title = __( 'Error!', 'gdpr' );
 		if ( isset( $_GET['user_deleted'] ) ) {
 			$title = __( 'Your account', 'gdpr' );
 			if ( $_GET['user_deleted'] ) {
@@ -19,6 +20,11 @@
 			$title = __( 'Email confirmation', 'gdpr' );
 			if ( $_GET['email_sent'] ) {
 				$text = __( 'We\'ve sent you a confirmation email.', 'gdpr' );
+			}
+		}
+		if ( isset( $_GET['user_not_found'] ) ) {
+			if ( $_GET['user_not_found'] ) {
+				$text = __( 'User not found.', 'gdpr' );
 			}
 		}
 	?>
