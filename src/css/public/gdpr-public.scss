@@ -4,11 +4,39 @@
 	display: none;
 }
 .gdpr {
-	button {
+	* {
 		font-family: Helvetica, Arial, sans-serif !important;
+		text-transform: none !important;
+		letter-spacing: 0 !important;
+	}
+	button {
 		color: #000;
 		font-weight: normal;
-		font-size:14px;
+		font-size: 14px;
+		box-shadow: none;
+		text-shadow: none;
+		margin: 0;
+		transform: scale(1);
+		border: none;
+		&:before, &:after {
+			display: inline-block;
+			background: none;
+			box-shadow: none;
+			text-shadow: none;
+			margin: 0;
+			transform: scale(1);
+			top: auto;
+			right: auto;
+			bottom: auto;
+			left: auto;
+			border: none;
+		}
+		&:hover, &:active, &:focus {
+			box-shadow: none;
+			text-shadow: none;
+			border: none;
+			margin: 0;
+		}
 	}
 	img {
 		width: 100% !important;
@@ -61,18 +89,18 @@
 				}
 			}
 			.right {
+				display: flex;
+				align-items: center;
 				@include breakpoint(small-only) {
-					display: flex;
 					flex-direction: column;
 				}
 				button {
 					&:first-of-type{
 						margin-left: 10px;
 						@include breakpoint(small-only) {
-							margin-bottom: 10px;
+							margin: 0 0 10px 7px;
 							&:before {
-								left: 25px;
-								top: 10px;
+								left: -7px;
 							}
 						}
 					}
@@ -231,11 +259,15 @@
 						justify-content: center;
 						position: relative;
 						h3 {
-							margin: 0;
-							padding: 0;
-							text-align: center;
-							color: #fff;
-							font-weight: 600;
+							margin: 0 !important;
+							padding: 0 !important;
+							text-align: center !important;
+							color: #fff !important;
+							font-weight: 600 !important;
+							font-size: 22px !important;
+							@include breakpoint(small-only) {
+								font-size: 18px !important;
+							}
 						}
 						.close {
 							color: #fff;
@@ -423,6 +455,7 @@
 								margin: 0;
 							}
 							h4 {
+								font-weight: 600 !important;
 								padding-right: 10px;
 							}
 							.always-active {
@@ -462,7 +495,7 @@
 									color: #32373c;
 									p{
 										margin: 0;
-										font-weight: 600;
+										font-weight: 600 !important;
 									}
 								}
 								.cookies {

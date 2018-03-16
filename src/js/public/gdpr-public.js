@@ -100,7 +100,8 @@
 
 		$(window).resize( function() {
 			if ( $(window).width() > 640 && $('.gdpr.cookie-preferences .tabs').hasClass('mobile-expanded') ) {
-				$('.gdpr.cookie-preferences .tabs').removeClass('mobile-expanded');
+				$('.gdpr.cookie-preferences .mobile-menu button').removeClass('active');
+				$('.gdpr.cookie-preferences .tabs').removeClass('mobile-expanded').removeAttr('style');
 			}
 		});
 
