@@ -437,17 +437,14 @@
 				}
 				.tab-content {
 					width: 100%;
-					padding-bottom: 82px;
+					padding-bottom: 48px;
 					background: #f1f1f1;
 					> div {
 						display: none;
 						padding: 20px;
 						overflow-y: auto;
 						font-size: 13px;
-						height: 346px;
-						@include breakpoint(small-only) {
-							height: 302px;
-						}
+						height: 100%;
 						header{
 							display: flex;
 							justify-content: space-between;
