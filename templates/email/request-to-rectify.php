@@ -55,14 +55,19 @@
       <tbody>
         <tr>
           <td>
-            <h4>Someone placed a request for your information to be removed from our site.</h4>
-            <p>By clicking confirm your account will be removed from our site and all data we collected over time will be erased from our database. It will be impossible for us to retrieve that information in the future. </p>
+            <h4>Someone placed a request for your information to be rectified on our site.</h4>
+            <p>By clicking confirm a request will be made and we will do our best to fulfil it.</p>
+            <p><strong>This is the request</strong></p>
+            <blockquote>
+              <?php echo wp_kses( wpautop( $args['data'] ), array( 'p' => true, 'br' => true ) ); ?>
+            </blockquote>
             <?php
               $confirm_url = add_query_arg(
                 array(
-                  'action' => 'user_delete',
+                  'action' => 'add-to-rectify',
                   'key' => $args['key'],
                   'email' => $args['user']->user_email,
+                  'data' => $args['data'],
                 ),
                 home_url()
               );

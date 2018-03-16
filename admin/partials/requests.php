@@ -14,7 +14,7 @@
 
 ?>
 
-<div class="wrap">
+<div class="wrap gdpr-requests">
 	<h1><?php esc_html_e( 'Requests', 'gdpr' ); ?></h1>
 	<?php settings_errors(); ?>
 	<div class="nav-tab-wrapper">
@@ -59,13 +59,28 @@
 			</thead>
 			<tbody>
 				<?php if ( isset( $rectify ) && ! empty( $rectify ) ): ?>
-					<?php foreach ( $rectify as $request ): ?>
+					<?php foreach ( $rectify as $i => $request ): ?>
 						<tr>
 							<td class="row-title"><?php echo esc_html( $request['email'] ); ?></td>
 							<td class="text-center"><?php echo esc_html( $request['date'] ); ?></td>
 							<td class="text-center"><?php echo esc_html( $request['data'] ); ?></td>
 							<td class="text-center">
-								<button class="button button-primary"><?php esc_html_e( 'Mark as Resolved', 'gdpr' ); ?></button>
+								<form class="frm-process-rectification" action="<?php echo esc_url( admin_url('admin-post.php') ); ?>" method="post">
+									<?php wp_nonce_field( 'gdpr-request-nonce', 'gdpr_cancel_rectify_nonce' ); ?>
+									<input type="hidden" name="action" value="cancel_request">
+									<input type="hidden" name="type" value="rectify">
+									<input type="hidden" name="index" value="<?php echo esc_attr( $i ); ?>">
+									<input type="hidden" name="user_email" value="<?php echo esc_attr( $request['email'] ) ?>">
+									<?php submit_button( esc_html__( 'Cancel Request', 'gdpr' ), 'delete', '', false ) ?>
+								</form>
+								<form class="frm-process-rectification" action="<?php echo esc_url( admin_url('admin-post.php') ); ?>" method="post">
+									<?php wp_nonce_field( 'gdpr-mark-as-resolved', 'gdpr_rectify_request_nonce' ); ?>
+									<input type="hidden" name="action" value="mark_resolved">
+									<input type="hidden" name="type" value="rectify">
+									<input type="hidden" name="index" value="<?php echo esc_attr( $i ); ?>">
+									<input type="hidden" name="user_email" value="<?php echo esc_attr( $request['email'] ) ?>">
+									<?php submit_button( esc_html__( 'Mark as Resolved', 'gdpr' ), 'primary', '', false ) ?>
+								</form>
 							</td>
 						</tr>
 					<?php endforeach ?>
@@ -107,20 +122,6 @@
 
 	<div class="tab hidden" data-id="complaint">
 		<h2><?php esc_html_e( 'Complaints', 'gdpr' ) ?></h2>
-		<div class="postbox">
-			<form class="gdpr-manual-email-lookup" method="post" action="">
-				<div class="inside">
-					<input type="hidden" name="gdpr_action" value="requests_email_lookup">
-					<?php wp_nonce_field( 'gdpr-request-email-lookup', 'gdpr_complaint_email_lookup' ); ?>
-					<h4>
-						<label for="gdpr-request-email-lookup"><?php esc_html_e( 'Manually add a user', 'gdpr' ); ?></label>
-					</h4>
-					<input type="email" name="email" class="gdpr-request-email-lookup regular-text" placeholder="<?php esc_attr_e( 'email@domain.com', 'gdpr' ); ?>" required>
-					<?php submit_button( 'Submit', 'primary', '', false ); ?>
-					<span class="spinner"></span>
-				</div>
-			</form>
-		</div>
 		<table class="widefat gdpr-request-table">
 			<thead>
 				<tr>
@@ -132,13 +133,28 @@
 			</thead>
 			<tbody>
 				<?php if ( isset( $complaint ) && ! empty( $complaint ) ): ?>
-					<?php foreach ( $complaint as $request ): ?>
+					<?php foreach ( $complaint as $i => $request ): ?>
 						<tr>
 							<td class="row-title"><?php echo esc_html( $request['email'] ); ?></td>
 							<td class="text-center"><?php echo esc_html( $request['date'] ); ?></td>
 							<td class="text-center"><?php echo esc_html( $request['data'] ); ?></td>
 							<td class="text-center">
-								<button class="button button-primary"><?php esc_html_e( 'Mark as Resolved', 'gdpr' ); ?></button>
+								<form class="frm-process-rectification" action="<?php echo esc_url( admin_url('admin-post.php') ); ?>" method="post">
+									<?php wp_nonce_field( 'gdpr-request-nonce', 'gdpr_cancel_complaint_nonce' ); ?>
+									<input type="hidden" name="action" value="cancel_request">
+									<input type="hidden" name="type" value="complaint">
+									<input type="hidden" name="index" value="<?php echo esc_attr( $i ); ?>">
+									<input type="hidden" name="user_email" value="<?php echo esc_attr( $request['email'] ) ?>">
+									<?php submit_button( esc_html__( 'Cancel Request', 'gdpr' ), 'delete', '', false ) ?>
+								</form>
+								<form class="frm-process-rectification" action="<?php echo esc_url( admin_url('admin-post.php') ); ?>" method="post">
+									<?php wp_nonce_field( 'gdpr-mark-as-resolved', 'gdpr_complaint_request_nonce' ); ?>
+									<input type="hidden" name="action" value="mark_resolved">
+									<input type="hidden" name="type" value="complaint">
+									<input type="hidden" name="index" value="<?php echo esc_attr( $i ); ?>">
+									<input type="hidden" name="user_email" value="<?php echo esc_attr( $request['email'] ) ?>">
+									<?php submit_button( esc_html__( 'Mark as Resolved', 'gdpr' ), 'primary', '', false ) ?>
+								</form>
 							</td>
 						</tr>
 					<?php endforeach ?>
@@ -188,7 +204,7 @@
 			<tbody>
 				<?php if ( isset( $delete ) && ! empty( $delete ) ): ?>
 					<?php $index = 0; ?>
-					<?php foreach ( $delete as $request ): ?>
+					<?php foreach ( $delete as $i => $request ): ?>
 						<?php $user = get_user_by( 'email', $request['email'] ) ?>
 						<tr class="<?php echo ( $index % 2 == 0 ? '' : 'alternate' ); ?>">
 							<td class="row-title"><?php echo esc_html( $request['email'] ); ?></td>
@@ -208,16 +224,18 @@
 							</td>
 							<td class="text-center">
 								<form class="frm-process-user-deletion" action="<?php echo esc_url( admin_url('admin-post.php') ); ?>" method="post">
-									<?php wp_nonce_field( 'gdpr-request-nonce', 'gdpr_nonce' ); ?>
+									<?php wp_nonce_field( 'gdpr-request-nonce', 'gdpr_cancel_delete_nonce' ); ?>
 									<input type="hidden" name="action" value="cancel_request">
 									<input type="hidden" name="type" value="delete">
 									<input type="hidden" name="user_email" value="<?php echo esc_attr( $request['email'] ) ?>">
+									<input type="hidden" name="index" value="<?php echo esc_attr( $i ); ?>">
 									<?php submit_button( esc_html__( 'Cancel Request', 'gdpr' ), 'delete', '', false ) ?>
 								</form>
 								<form class="frm-process-user-deletion" action="<?php echo esc_url( admin_url('admin-post.php') ); ?>" method="post">
 									<?php wp_nonce_field( 'gdpr-request-delete-user', 'gdpr_delete_user' ); ?>
 									<input type="hidden" name="action" value="delete_user">
 									<input type="hidden" name="user_email" value="<?php echo esc_attr( $request['email'] ) ?>">
+									<input type="hidden" name="index" value="<?php echo esc_attr( $i ); ?>">
 									<?php submit_button( esc_html__( 'Delete User', 'gdpr' ), 'primary', '', false ) ?>
 								</form>
 							</td>

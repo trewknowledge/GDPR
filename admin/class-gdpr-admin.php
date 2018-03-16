@@ -101,13 +101,16 @@ class GDPR_Admin {
 	 * @since   1.0.0
 	 */
 	public function add_menu() {
-		$parent_menu_title = esc_html__( 'GDPR', 'gdpr' );
-		$capability        = 'manage_options';
-		$parent_slug       = 'gdpr-settings';
-		$function          = array( $this, 'settings_page_template' );
-		$icon_url          = 'dashicons-id';
+		$page_title  = esc_html__( 'GDPR', 'gdpr' );
+		$capability  = 'manage_options';
+		$parent_slug = 'gdpr-settings';
+		$function    = array( $this, 'settings_page_template' );
+		$icon_url    = 'dashicons-id';
 
-		add_menu_page( $parent_menu_title, $parent_menu_title, $capability, $parent_slug, $function, $icon_url );
+		$requests = get_option( 'gdpr_requests', array() );
+		$menu_title  = sprintf( esc_html__( 'GDPR %s', 'gdpr' ), '<span class="awaiting-mod">' . count( $requests ) . '</span>' );
+
+		add_menu_page( $page_title, $menu_title, $capability, $parent_slug, $function, $icon_url );
 
 		$menu_title = esc_html__( 'Settings', 'gdpr' );
 		$menu_slug  = 'gdpr-settings';
@@ -388,8 +391,8 @@ class GDPR_Admin {
 		// 	),
 		// );
 
-		foreach ( $requests as $request ) {
-			${$request['type']}[] = $request;
+		foreach ( $requests as $index => $request ) {
+			${$request['type']}[ $index ] = $request;
 		}
 
 		$tabs = array(

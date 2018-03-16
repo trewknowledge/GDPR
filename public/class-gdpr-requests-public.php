@@ -62,7 +62,7 @@ class GDPR_Requests_Public extends GDPR_Requests {
 		if ( is_user_logged_in() ) {
 			$user = wp_get_current_user();
 		} else {
-			$user = get_user_by( 'email', sanitize_email( $_POST['user_email'] ) );
+			$user = isset( $_POST['user_email'] ) ? get_user_by( 'email', sanitize_email( $_POST['user_email'] ) ) : null;
 		}
 
 		if ( in_array( 'administrator', $user->roles ) ) {
@@ -75,7 +75,7 @@ class GDPR_Requests_Public extends GDPR_Requests {
 					add_query_arg(
 						array(
 							'notify' => 1,
-							'cannot_delete' => 1,
+							'cannot-delete' => 1,
 						),
 						wp_get_referer()
 					)
@@ -91,7 +91,7 @@ class GDPR_Requests_Public extends GDPR_Requests {
 					add_query_arg(
 						array(
 							'notify' => 1,
-							'user_not_found' => 1,
+							'user-not-found' => 1,
 						),
 						wp_get_referer()
 					)
@@ -110,7 +110,7 @@ class GDPR_Requests_Public extends GDPR_Requests {
 				add_query_arg(
 					array(
 						'notify' => 1,
-						'email_sent' => 1,
+						'email-sent' => 1,
 					),
 					wp_get_referer()
 				)
@@ -151,7 +151,7 @@ class GDPR_Requests_Public extends GDPR_Requests {
 					esc_url_raw(
 						add_query_arg(
 							array(
-								'user_deleted' => 0,
+								'user-deleted' => 0,
 								'notify' => 1
 							),
 							home_url()
@@ -165,7 +165,7 @@ class GDPR_Requests_Public extends GDPR_Requests {
 						esc_url_raw(
 							add_query_arg(
 								array(
-									'user_deleted' => 1,
+									'user-deleted' => 1,
 									'notify' => 1
 								),
 								home_url()
@@ -175,6 +175,103 @@ class GDPR_Requests_Public extends GDPR_Requests {
 					exit;
 				}
 			}
+		}
+	}
+
+	function send_rectify_request_email_confirmation() {
+		if ( ! isset( $_POST['gdpr_rectify_requests_nonce'] ) || ! wp_verify_nonce( sanitize_key( $_POST['gdpr_rectify_requests_nonce'] ), 'add-to-rectify-requests' ) ) {
+			wp_die( esc_html__( 'We could not verify the security token. Please try again.', 'gdpr' ) );
+		}
+
+		if ( ! isset( $_POST['data'] ) ) {
+			wp_safe_redirect(
+				esc_url_raw(
+					add_query_arg(
+						array(
+							'notify' => 1,
+							'required-information-missing' => 1,
+						),
+						wp_get_referer()
+					)
+				)
+			);
+		}
+
+		$data = sanitize_textarea_field( $_POST['data'] );
+
+		if ( is_user_logged_in() ) {
+			$user = wp_get_current_user();
+		} else {
+			$user = isset( $_POST['user_email'] ) ? get_user_by( 'email', sanitize_email( $_POST['user_email'] ) ) : null;
+		}
+
+		if ( ! $user instanceof WP_User ) {
+			wp_safe_redirect(
+				esc_url_raw(
+					add_query_arg(
+						array(
+							'notify' => 1,
+							'user-not-found' => 1,
+						),
+						wp_get_referer()
+					)
+				)
+			);
+			exit;
+		}
+
+		$key = wp_generate_password( 20, false );
+		update_user_meta( $user->ID, parent::$plugin_name . '_rectify_key', $key );
+
+		GDPR_Email::send( $user, 'request-to-rectify', array( 'user' => $user, 'key' => $key, 'data' => $data ) );
+
+		wp_safe_redirect(
+			esc_url_raw(
+				add_query_arg(
+					array(
+						'notify' => 1,
+						'email-sent' => 1,
+					),
+					wp_get_referer()
+				)
+			)
+		);
+		exit;
+	}
+
+	public function request_to_rectify_confirmed() {
+		if ( ! is_front_page() || ! isset( $_GET['action'], $_GET['key'], $_GET['email'] ) || 'add-to-rectify' !== $_GET['action'] ) {
+			return;
+		}
+
+		$key = sanitize_text_field( wp_unslash( $_GET['key'] ) );
+		$email = sanitize_email( $_GET['email'] );
+		$data = sanitize_textarea_field( $_GET['data'] );
+
+		$user = get_user_by( 'email', $email );
+		if ( ! $user instanceof WP_User ) {
+			return;
+		}
+
+		$meta_key = get_user_meta( $user->ID, self::$plugin_name . '_rectify_key', true );
+		if ( empty( $meta_key ) ) {
+			return;
+		}
+
+		if ( $key === $meta_key ) {
+			parent::add_to_requests( $email, 'rectify', $data );
+			wp_safe_redirect(
+				esc_url_raw(
+					add_query_arg(
+						array(
+							'request-confirmed' => 1,
+							'notify' => 1
+						),
+						home_url()
+					)
+				)
+			);
+			exit;
 		}
 	}
 

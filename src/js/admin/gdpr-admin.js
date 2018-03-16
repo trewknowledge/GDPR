@@ -52,22 +52,22 @@
 			$('tr[data-index=' + target + '] div').slideToggle();
 		});
 
-		$(document).on('click', '.gdpr_page_gdpr-requests .nav-tab-wrapper a', function(e) {
+		$(document).on('click', '.gdpr-requests .nav-tab-wrapper a', function(e) {
 			var target = $(this).attr('href');
 			target = target.replace('#', '');
 			$(this).addClass('nav-tab-active');
 			$(this).siblings().removeClass('nav-tab-active');
-			$('.gdpr_page_gdpr-requests .tab').addClass('hidden');
-			$('.gdpr_page_gdpr-requests .tab[data-id='+ target +']').removeClass('hidden');
+			$('.gdpr-requests .tab').addClass('hidden');
+			$('.gdpr-requests .tab[data-id='+ target +']').removeClass('hidden');
 		});
 
 		var hash = window.location.hash;
 		if ( hash ) {
-			$('.gdpr_page_gdpr-requests .nav-tab-wrapper a[href="'+ hash +'"]').addClass('nav-tab-active');
-			$('.gdpr_page_gdpr-requests .tab[data-id="'+ hash.replace('#', '') +'"]').removeClass('hidden');
+			$('.gdpr-requests .nav-tab-wrapper a[href="'+ hash +'"]').addClass('nav-tab-active');
+			$('.gdpr-requests .tab[data-id="'+ hash.replace('#', '') +'"]').removeClass('hidden');
 		} else {
-			$('.gdpr_page_gdpr-requests .nav-tab-wrapper a:eq(0)').addClass('nav-tab-active');
-			$('.gdpr_page_gdpr-requests .tab:eq(0)').removeClass('hidden');
+			$('.gdpr-requests .nav-tab-wrapper a:eq(0)').addClass('nav-tab-active');
+			$('.gdpr-requests .tab:eq(0)').removeClass('hidden');
 		}
 
 		$(document).on('change', '.gdpr-reassign', function() {

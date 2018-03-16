@@ -39,7 +39,7 @@
 							<h4><?php esc_html_e( 'Your Privacy', 'gdpr' ); ?></h4>
 						</header>
 						<div class="info">
-							<p><?php echo nl2br( $cookie_privacy_excerpt ); ?></p>
+							<p><?php echo wpautop( $cookie_privacy_excerpt ); ?></p>
 						</div>
 					</div>
 					<?php foreach ( $tabs as $key => $tab ) : ?>

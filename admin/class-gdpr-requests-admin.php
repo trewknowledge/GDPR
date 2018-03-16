@@ -132,12 +132,20 @@ class GDPR_Requests_Admin extends GDPR_Requests {
 	}
 
 	function cancel_request() {
-		if ( ! isset( $_REQUEST['gdpr_nonce'], $_REQUEST['user_email'], $_REQUEST['type'] ) || ! wp_verify_nonce( sanitize_key( $_REQUEST['gdpr_nonce'] ), 'gdpr-request-nonce' ) ) {
+		if ( ! isset( $_POST['type'] ) ) {
+			wp_die( esc_html__( 'We could not verify the type of request you want to cancel.', 'gdpr' ) );
+		}
+
+		$type = sanitize_text_field( $_REQUEST['type'] );
+
+		$nonce_field = 'gdpr_cancel_' . $type . '_nonce';
+
+		if ( ! isset( $_POST[ $nonce_field ], $_POST['user_email'], $_POST['index'] ) || ! wp_verify_nonce( sanitize_key( $_POST[ $nonce_field ] ), 'gdpr-request-nonce' ) ) {
 			wp_die( esc_html__( 'We could not verify the user email or the security token. Please try again.', 'gdpr' ) );
 		}
 
-		$email = sanitize_email( $_REQUEST['user_email'] );
-		$type = sanitize_text_field( $_REQUEST['type'] );
+		$email = sanitize_email( $_POST['user_email'] );
+		$index = ( int ) $_POST['index'];
 
 		$allowed_types = parent::get_allowed_types();
 
@@ -157,7 +165,7 @@ class GDPR_Requests_Admin extends GDPR_Requests {
 			exit;
 		}
 
-		parent::remove_from_requests( $email, $type );
+		parent::remove_from_requests( $email, $type, $index );
 
 		add_settings_error( 'gdpr-requests', 'remove-request', sprintf( esc_html__( 'User %s was removed from this request table.', 'gdpr' ), $email ), 'updated' );
 		set_transient( 'settings_errors', get_settings_errors(), 30 );
@@ -175,13 +183,14 @@ class GDPR_Requests_Admin extends GDPR_Requests {
 	}
 
 	function delete_user() {
-		if ( ! isset( $_REQUEST['gdpr_delete_user'], $_REQUEST['user_email'] ) || ! wp_verify_nonce( $_REQUEST['gdpr_delete_user'], 'gdpr-request-delete-user' ) ) {
+		if ( ! isset( $_POST['gdpr_delete_user'], $_POST['user_email'], $_POST['index'] ) || ! wp_verify_nonce( $_POST['gdpr_delete_user'], 'gdpr-request-delete-user' ) ) {
 			wp_die( esc_html__( 'We could not verify the user email or the security token. Please try again.', 'gdpr' ) );
 		}
 
-		$email = sanitize_email( $_REQUEST['user_email'] );
+		$email = sanitize_email( $_POST['user_email'] );
 		$user = get_user_by( 'email', $email );
-		parent::remove_from_requests( $email, 'delete' );
+		$index = ( int ) $_POST['index'];
+		parent::remove_from_requests( $email, 'delete', $index );
 
 		GDPR_Email::send( $user->user_email, 'deleted', array( 'token' => 123456 ) );
 		wp_delete_user( $user->ID );
