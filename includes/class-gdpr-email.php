@@ -71,12 +71,13 @@ class GDPR_Email {
 			'request-to-delete' => apply_filters( 'gdpr_request_to_delete_email_subject', esc_html__( 'Someone requested to close your account.', 'gdpr' ) ),
 			'request-to-rectify' => apply_filters( 'gdpr_request_to_rectify_email_subject', esc_html__( 'Someone requested that we rectify data of your account.', 'gdpr' ) ),
 			'deleted' => apply_filters( 'gdpr_deleted_email_subject', esc_html__( 'Your account has been closed.', 'gdpr' ) ),
+			'rectify-resolved' => apply_filters( 'gdpr_rectify_resolved_email_subject', esc_html__( 'Your request has been completed.', 'gdpr' ) ),
 		) );
-
 
 		if ( ! in_array( $type, array_keys( $possible_types ), true ) ) {
 			return;
 		}
+
 		$args['email_title'] = $possible_types[ $type ];
 
 		$args = apply_filters( 'gdpr_email_args', $args );

@@ -90,31 +90,68 @@ class GDPR_Requests {
 		return $extra_checks;
 	}
 
-	protected function remove_from_requests( $email, $type, $index ) {
+	protected function remove_from_requests( $index ) {
 		$requests = ( array ) get_option( 'gdpr_requests', array() );
-		$email = sanitize_email( $email );
-		$type = sanitize_text_field( $type );
+		$index = sanitize_text_field( wp_unslash( $index ) );
 
-		error_log('REQUESTS');
-		error_log( print_r( $requests, true ) );
-		error_log('Index');
-		error_log( print_r( $index, true ) );
-
-		$filtered_requests = array_filter( $requests, function( $arr ) use ( $type ) {
-			return $type === $arr['type'];
-		});
-		error_log('Filtered Requests');
-		error_log( print_r( $filtered_requests, true ) );
-
-		$found = in_array( $email, array_column( $filtered_requests, 'email' ) );
-		if ( $found ) {
-
+		if ( array_key_exists( $index, $requests ) ) {
 			unset( $requests[ $index ] );
 			update_option( 'gdpr_requests', $requests );
+			return true;
+		}
+
+		return false;
+	}
+
+	protected function confirm_request( $key ) {
+		$key = sanitize_text_field( wp_unslash( $key ) );
+		$requests = ( array ) get_option( 'gdpr_requests', array() );
+
+		if ( empty( $requests ) || ! isset( $requests[ $key ] ) ) {
+			return false;
+		}
+
+		$requests[ $key ]['confirmed'] = true;
+		$type = $requests[ $key ]['type'];
+		$email = $requests[ $key ]['email'];
+
+		$user = get_user_by( 'email', $email );
+
+		if ( $user instanceof WP_User ) {
+			$meta_key = self::$plugin_name . '_' . $type . '_key';
+			delete_user_meta( $user->ID, $meta_key );
+			if ( $time = wp_next_scheduled( 'clean_gdpr_user_request_key', array( 'user_id' => $user->ID, 'meta_key' => $meta_key ) ) ) {
+				wp_unschedule_event( $time, 'clean_gdpr_user_request_key', array( 'user_id' => $user->ID, 'meta_key' => $meta_key ) );
+			}
+		}
+
+		return true;
+	}
+
+	function clean_requests( $key ) {
+		$key = sanitize_text_field( $key );
+		$requests = ( array ) get_option( 'gdpr_requests', array() );
+
+		if ( array_key_exists( $key, $requests ) ) {
+			if ( ! $requests[ $key ]['confirmed'] ) {
+				unset( $requests[ $key ] );
+				update_option( 'gdpr_requests', $requests );
+			}
 		}
 	}
 
-	protected function add_to_requests( $email, $type, $data = '' ) {
+	function clean_user_request_key( $user_id, $meta_key ) {
+		$user_id = ( int ) $user_id;
+		$meta_key = sanitize_text_field( $meta_key );
+
+		$meta = get_user_meta( $user_id, $meta_key, true );
+
+		if ( $meta ) {
+			delete_user_meta( $user_id, $meta_key );
+		}
+	}
+
+	protected function add_to_requests( $email, $type, $data = null, $confirmed = false ) {
 		$requests = ( array ) get_option( 'gdpr_requests', array() );
 
 		$email = sanitize_email( $email );
@@ -125,16 +162,31 @@ class GDPR_Requests {
 			return false;
 		}
 
-		$requests[] = array(
-			'email' => $email,
-			'date'  => date( "F j, Y" ),
-			'type'  => $type,
-			'data' => $data,
+		$key = wp_generate_password( 20, false );
+		$requests[ $key ] = array(
+			'email'     => $email,
+			'date'      => date( "F j, Y" ),
+			'type'      => $type,
+			'data'      => $data,
+			'confirmed' => $confirmed
 		);
+
+		/**
+		 * Remove user from the requests if it did not confirm in 2 days.
+		 */
+		$user = get_user_by( 'email', $email );
+		if ( $user instanceof WP_User ) {
+			$meta_key = self::$plugin_name . '_' . $type . '_key';
+			update_user_meta( $user->ID, $meta_key, $key );
+			if ( $time = wp_next_scheduled( 'clean_gdpr_user_request_key', array( 'user_id' => $user->ID, 'meta_key' => $meta_key ) ) ) {
+				wp_unschedule_event( $time, 'clean_gdpr_user_request_key', array( 'user_id' => $user->ID, 'meta_key' => $meta_key ) );
+			}
+			wp_schedule_single_event( time() + 2 * DAY_IN_SECONDS, 'clean_gdpr_user_request_key', array( 'user_id' => $user->ID, 'meta_key' => $meta_key ) );
+		}
 
 		update_option( 'gdpr_requests', $requests );
 
-		return $requests;
+		return $key;
 	}
 
 }

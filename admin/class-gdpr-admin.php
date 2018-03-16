@@ -142,7 +142,6 @@ class GDPR_Admin {
 		}
 
 		foreach ( $tabs as $key => $props ) {
-			error_log( isset( $props['hosts'] ) );
 			if ( '' === $props['name'] || '' === $props['how_we_use'] ) {
 				unset( $tabs[ $key ] );
 				continue;
@@ -351,48 +350,14 @@ class GDPR_Admin {
 	 */
 	public function requests_page_template() {
 		$requests = ( array ) get_option( 'gdpr_requests', array() );
-		// $requests = array(
-		// 	array(
-		// 		'email' => 'fernandoclaussen@gmail.com',
-		// 		'date' =>  date( "F j, Y" ),
-		// 		'type' =>  'delete',
-		// 	),
-		// 	array(
-		// 		'email' => 'amoore@trewknowledge.com',
-		// 		'date' =>  date( "F j, Y" ),
-		// 		'type' =>  'delete',
-		// 	),
-		// 	array(
-		// 		'email' => 'amoore@trewknowledge.com',
-		// 		'date' =>  date( "F j, Y" ),
-		// 		'type' =>  'access',
-		// 	),
-		// 	array(
-		// 		'email' => 'sbarrans@trewknowledge.com',
-		// 		'date' =>  date( "F j, Y" ),
-		// 		'type' =>  'access',
-		// 	),
-		// 	array(
-		// 		'email' => 'sbarrans@trewknowledge.com',
-		// 		'date'  => date( "F j, Y" ),
-		// 		'type'  => 'rectify',
-		// 		'data'  => 'Data X is wrong. Please fix it to Y.',
-		// 	),
-		// 	array(
-		// 		'email' => 'fernandoclaussen@gmail.com',
-		// 		'date'  => date( "F j, Y" ),
-		// 		'type'  => 'portability',
-		// 	),
-		// 	array(
-		// 		'email' => 'mfarlymn@trewknowledge.com',
-		// 		'date'  => date( "F j, Y" ),
-		// 		'type'  => 'complaint',
-		// 		'data'  => 'I want to complain because of reasons.',
-		// 	),
-		// );
 
-		foreach ( $requests as $index => $request ) {
-			${$request['type']}[ $index ] = $request;
+		if ( ! empty( $requests ) ) {
+			foreach ( $requests as $index => $request ) {
+				if ( ! $request['confirmed'] ) {
+					continue;
+				}
+				${$request['type']}[ $index ] = $request;
+			}
 		}
 
 		$tabs = array(

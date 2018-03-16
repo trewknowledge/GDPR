@@ -80,8 +80,8 @@
                 wp_login_url()
               );
             ?>
-            <p align="center" class="button"><a href="<?php echo esc_url( $confirm_url ); ?>">Confirm</a></p>
-            <p>If that wasn't you, <a href="<?php echo esc_url( $forgot_password_url ); ?>">reset your password</a>.</p>
+            <p align="center" class="button"><a href="<?php echo esc_url_raw( $confirm_url ); ?>">Confirm</a></p>
+            <p>If that wasn't you, <a href="<?php echo esc_url_raw( $forgot_password_url ); ?>">reset your password</a>.</p>
           </td>
         </tr>
       </tbody>

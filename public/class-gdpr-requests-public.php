@@ -31,7 +31,7 @@ class GDPR_Requests_Public extends GDPR_Requests {
 	}
 
 
-	function process_user_deletion( $user ) {
+	function delete_user( $user, $index ) {
 		if ( ! $user instanceof WP_User ) {
 			return false;
 		}
@@ -39,11 +39,12 @@ class GDPR_Requests_Public extends GDPR_Requests {
 		if ( ! function_exists( 'wp_delete_user' ) ) {
 			require_once( ABSPATH . 'wp-admin/includes/user.php' );
 		}
-		GDPR_Email::send( $user->user_email, 'deleted', array( 'token' => 123456 ) );
-		wp_delete_user( $user->ID );
-		parent::remove_from_requests( $user->user_email, 'delete' );
-		wp_logout();
-		return true;
+
+		if ( parent::remove_from_requests( $index ) ) {
+			GDPR_Email::send( $user->user_email, 'deleted', array( 'token' => 123456 ) );
+			wp_delete_user( $user->ID );
+			wp_logout();
+		}
 	}
 
 	static function request_form( $type ) {
@@ -100,9 +101,7 @@ class GDPR_Requests_Public extends GDPR_Requests {
 			exit;
 		}
 
-		$key = wp_generate_password( 20, false );
-		update_user_meta( $user->ID, parent::$plugin_name . '_delete_key', $key );
-
+		$key = parent::add_to_requests( $user->user_email, 'delete' );
 		GDPR_Email::send( $user, 'request-to-delete', array( 'user' => $user, 'key' => $key ) );
 
 		wp_safe_redirect(
@@ -144,9 +143,9 @@ class GDPR_Requests_Public extends GDPR_Requests {
 
 		if ( $key === $meta_key ) {
 			$found_posts = parent::user_has_content( $user );
-
 			if ( $found_posts ) {
-				parent::add_to_requests( $email, 'delete' );
+				delete_user_meta( $user->ID, self::$plugin_name . '_delete_key' );
+				parent::confirm_request( $key );
 				wp_safe_redirect(
 					esc_url_raw(
 						add_query_arg(
@@ -160,7 +159,7 @@ class GDPR_Requests_Public extends GDPR_Requests {
 				);
 				exit;
 			} else {
-				if ( $this->process_user_deletion( $user ) ) {
+				if ( $this->delete_user( $user, $key ) ) {
 					wp_safe_redirect(
 						esc_url_raw(
 							add_query_arg(
@@ -220,9 +219,7 @@ class GDPR_Requests_Public extends GDPR_Requests {
 			exit;
 		}
 
-		$key = wp_generate_password( 20, false );
-		update_user_meta( $user->ID, parent::$plugin_name . '_rectify_key', $key );
-
+		$key = parent::add_to_requests( $user->user_email, 'rectify' );
 		GDPR_Email::send( $user, 'request-to-rectify', array( 'user' => $user, 'key' => $key, 'data' => $data ) );
 
 		wp_safe_redirect(
@@ -259,7 +256,8 @@ class GDPR_Requests_Public extends GDPR_Requests {
 		}
 
 		if ( $key === $meta_key ) {
-			parent::add_to_requests( $email, 'rectify', $data );
+			delete_user_meta( $user->ID, self::$plugin_name . '_rectify_key' );
+			parent::confirm_request( $key );
 			wp_safe_redirect(
 				esc_url_raw(
 					add_query_arg(

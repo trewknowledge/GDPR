@@ -160,6 +160,7 @@ class GDPR {
 
 		$plugin_admin = new GDPR_Admin( $this->get_plugin_name(), $this->get_version() );
 		$telemetry = new GDPR_Telemetry( $this->get_plugin_name(), $this->get_version() );
+		$requests = new GDPR_Requests( $this->get_plugin_name(), $this->get_version() );
 		$requests_admin = new GDPR_Requests_Admin( $this->get_plugin_name(), $this->get_version() );
 		$requests_public = new GDPR_Requests_Public( $this->get_plugin_name(), $this->get_version() );
 
@@ -170,14 +171,19 @@ class GDPR {
 		add_action( 'init', array( $this, 'block_cookies' ) );
 		add_action( 'admin_init', array( $this, 'block_cookies' ) );
 
+		add_action( 'clean_gdpr_requests', array( $requests, 'clean_requests' ) );
+		add_action( 'clean_gdpr_user_request_key', array( $requests, 'clean_user_request_key' ), 10, 2 );
+
 		add_action( 'admin_post_delete_user', array( $requests_admin, 'delete_user' ) );
 		add_action( 'admin_post_cancel_request', array( $requests_admin, 'cancel_request' ) );
 		add_action( 'admin_post_add_to_deletion_requests', array( $requests_admin, 'add_to_deletion_requests' ) );
+		add_action( 'admin_post_mark_resolved', array( $requests_admin, 'mark_resolved' ) );
 		add_action( 'wp_ajax_gdpr_anonymize_comments', array( $requests_admin, 'anonymize_comments' ) );
 		add_action( 'wp_ajax_gdpr_reassign_content', array( $requests_admin, 'reassign_content' ) );
 
 		add_action( 'wp', array( $requests_public, 'request_to_delete_confirmed' ) );
 		add_action( 'wp', array( $requests_public, 'request_to_rectify_confirmed' ) );
+
 		add_action( 'admin_post_send_deletion_request_email_confirmation', array( $requests_public, 'send_deletion_request_email_confirmation' ) );
 		add_action( 'admin_post_nopriv_send_deletion_request_email_confirmation', array( $requests_public, 'send_deletion_request_email_confirmation' ) );
 
