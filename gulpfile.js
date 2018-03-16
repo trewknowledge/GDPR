@@ -4,6 +4,7 @@ var	$ = require('gulp-load-plugins')();
 
 var paths = {
 	src: {
+		php: '../**/*.php',
 		admin: {
 			js: './src/js/admin/*.js',
 			css: './src/css/admin/*.scss'
@@ -80,7 +81,7 @@ gulp.task('public-js', function() {
 
 gulp.task('watch', function(){
 	$.livereload.listen();
-
+	gulp.watch( paths.src.php, $.livereload.reload);
 	gulp.watch( paths.src.admin.css, ['admin-css']);
 	gulp.watch( paths.src.public.css, ['public-css']);
 	gulp.watch( paths.src.admin.js, ['admin-js']);
