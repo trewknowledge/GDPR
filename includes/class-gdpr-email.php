@@ -69,6 +69,7 @@ class GDPR_Email {
 
 		$possible_types = apply_filters( 'gdpr_email_types', array(
 			'request-to-delete' => apply_filters( 'gdpr_request_to_delete_email_subject', esc_html__( 'Someone requested to close your account.', 'gdpr' ) ),
+			'request-to-rectify' => apply_filters( 'gdpr_request_to_rectify_email_subject', esc_html__( 'Someone requested that we rectify data of your account.', 'gdpr' ) ),
 			'deleted' => apply_filters( 'gdpr_deleted_email_subject', esc_html__( 'Your account has been closed.', 'gdpr' ) ),
 		) );
 

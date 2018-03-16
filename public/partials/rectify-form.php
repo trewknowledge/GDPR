@@ -4,5 +4,6 @@
 	<?php if ( ! is_user_logged_in() ): ?>
 		<input type="email" name="user_email" placeholder="user@domain.com" required>
 	<?php endif ?>
-	<input type="submit" value="<?php esc_attr_e( 'Close my account', 'gdpr' ); ?>">
+	<textarea name="data" rows="5" required></textarea>
+	<input type="submit" value="<?php esc_attr_e( 'Send Request', 'gdpr' ); ?>">
 </form>

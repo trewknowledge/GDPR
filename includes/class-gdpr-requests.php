@@ -54,6 +54,10 @@ class GDPR_Requests {
 
 	}
 
+	protected function get_allowed_types() {
+    return self::$allowed_types;
+  }
+
 	static function user_has_content( $user ) {
 		if ( ! $user instanceof WP_User ) {
 			if ( ! is_int( $user ) ) {
@@ -86,29 +90,36 @@ class GDPR_Requests {
 		return $extra_checks;
 	}
 
-	protected function remove_from_requests( $email, $type ) {
+	protected function remove_from_requests( $email, $type, $index ) {
 		$requests = ( array ) get_option( 'gdpr_requests', array() );
 		$email = sanitize_email( $email );
 		$type = sanitize_text_field( $type );
 
+		error_log('REQUESTS');
+		error_log( print_r( $requests, true ) );
+		error_log('Index');
+		error_log( print_r( $index, true ) );
+
 		$filtered_requests = array_filter( $requests, function( $arr ) use ( $type ) {
 			return $type === $arr['type'];
 		});
-		$index = array_search( $email, array_column( $filtered_requests, 'email' ) );
-		if ( false !== $index ) {
-			$request_index = array_keys( $requests, $filtered_requests[ $index ] );
-			$request_index = $request_index[0];
+		error_log('Filtered Requests');
+		error_log( print_r( $filtered_requests, true ) );
 
-			unset( $requests[ $request_index ] );
+		$found = in_array( $email, array_column( $filtered_requests, 'email' ) );
+		if ( $found ) {
+
+			unset( $requests[ $index ] );
 			update_option( 'gdpr_requests', $requests );
 		}
 	}
 
-	protected function add_to_requests( $email, $type ) {
+	protected function add_to_requests( $email, $type, $data = '' ) {
 		$requests = ( array ) get_option( 'gdpr_requests', array() );
 
 		$email = sanitize_email( $email );
 		$type = sanitize_text_field( wp_unslash( $type ) );
+		$data = sanitize_textarea_field( $data );
 
 		if ( ! in_array( $type, self::$allowed_types ) ) {
 			return false;
@@ -118,6 +129,7 @@ class GDPR_Requests {
 			'email' => $email,
 			'date'  => date( "F j, Y" ),
 			'type'  => $type,
+			'data' => $data,
 		);
 
 		update_option( 'gdpr_requests', $requests );
