@@ -1,7 +1,7 @@
 <?php
 
-if ( ! function_exists( 'gdpr_cookie_preferences_trigger' ) ) {
-	function gdpr_cookie_preferences_trigger( $text ) {
+if ( ! function_exists( 'gdpr_cookie_preferences' ) ) {
+	function gdpr_cookie_preferences( $text ) {
 		echo '<button type="button" class="gdpr-cookie-preferences">' . esc_html( $text ) . '</button>';
 	}
 }
