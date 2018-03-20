@@ -8,33 +8,28 @@
 		font-family: Helvetica, Arial, sans-serif !important;
 		text-transform: none !important;
 		letter-spacing: 0 !important;
+		background: none;
+		box-shadow: none;
+		text-shadow: none;
+		outline: none;
+		border: none;
 	}
 	button {
 		color: #000;
 		font-weight: normal;
 		font-size: 14px;
-		box-shadow: none;
-		text-shadow: none;
 		margin: 0;
 		transform: scale(1);
-		border: none;
 		&:before, &:after {
 			display: inline-block;
-			background: none;
-			box-shadow: none;
-			text-shadow: none;
 			margin: 0;
 			transform: scale(1);
 			top: auto;
 			right: auto;
 			bottom: auto;
 			left: auto;
-			border: none;
 		}
 		&:hover, &:active, &:focus {
-			box-shadow: none;
-			text-shadow: none;
-			border: none;
 			margin: 0;
 		}
 	}
@@ -115,9 +110,6 @@
 			}
 		}
 		.gdpr-cookie-preferences {
-			outline: none;
-			background: none;
-			border:none;
 			font-weight: normal;
 			font-size: 14px;
 			text-decoration: underline;
@@ -455,23 +447,13 @@
 								font-weight: 600 !important;
 								padding-right: 10px;
 							}
-							.always-active {
-								display: flex;
-								justify-content: center;
-								align-items: center;
-								text-align: center;
-								padding: 5px 10px;
-								border-radius: 50px;;
-								line-height: 16px;
-								background-color: #00b9eb;
-								color: #fff;
-							}
 						}
 						.info{
 							height: 100%;
 							overflow-y: auto;
 							flex: 1;
 							margin-top: 20px;
+							position: relative;
 							strong{
 						    border-bottom: 1px solid rgba(0,0,0,0.4);
 						    display: block;
@@ -505,6 +487,19 @@
 									span {
 										font-style: italic;
 									}
+									.always-active {
+										display: flex;
+										align-items: center;
+										justify-content: center;
+										min-width: 105px;
+										min-height: 24px;
+										text-align: center;
+										border-radius: 50px;
+										line-height: 16px;
+										background-color: #00b9eb;
+										color: #fff;
+										font-style: normal;
+									}
 									a {
 										color: #0073aa;
 										&:hover {
@@ -531,6 +526,7 @@
   display: inline-block;
   min-width: 45px;
 	height: 24px;
+	margin-bottom: 0;
 	input{
 		display: none;
 	}
