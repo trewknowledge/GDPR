@@ -55,7 +55,7 @@
       <tbody>
         <tr>
           <td>
-            <h4>Someone placed a request for your information to be rectified on our site.</h4>
+            <h4>Someone placed a complaint on your behalf on our site.</h4>
             <p>By clicking confirm a request will be made and we will do our best to fulfil it.</p>
             <p><strong>This is the request</strong></p>
             <blockquote>
@@ -64,7 +64,7 @@
             <?php
               $confirm_url = add_query_arg(
                 array(
-                  'action' => 'add-to-rectify',
+                  'type' => 'complaint',
                   'key' => $args['key'],
                   'email' => $args['user']->user_email,
                   'data' => $args['data'],

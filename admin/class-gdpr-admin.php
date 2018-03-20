@@ -103,14 +103,27 @@ class GDPR_Admin {
 	public function add_menu() {
 		$page_title  = esc_html__( 'GDPR', 'gdpr' );
 		$capability  = 'manage_options';
-		$parent_slug = 'gdpr-settings';
-		$function    = array( $this, 'settings_page_template' );
+		$parent_slug = 'gdpr-requests';
+		$function    = array( $this, 'requests_page_template' );
 		$icon_url    = 'dashicons-id';
 
 		$requests = get_option( 'gdpr_requests', array() );
-		$menu_title  = sprintf( esc_html__( 'GDPR %s', 'gdpr' ), '<span class="awaiting-mod">' . count( $requests ) . '</span>' );
+		$confirmed_requests = array_filter( $requests, function( $item ) {
+			return $item['confirmed'] == true;
+		} );
+
+		$menu_title  = esc_html__( 'GDPR', 'gdpr' );
+		if ( count( $confirmed_requests ) ) {
+			$menu_title  = sprintf( esc_html__( 'GDPR %s', 'gdpr' ), '<span class="awaiting-mod">' . count( $confirmed_requests ) . '</span>' );
+		}
 
 		add_menu_page( $page_title, $menu_title, $capability, $parent_slug, $function, $icon_url );
+
+		$menu_title = esc_html__( 'Requests', 'gdpr' );
+		$menu_slug  = 'gdpr-requests';
+		$function   = array( $this, 'requests_page_template' );
+
+		add_submenu_page( $parent_slug, $menu_title, $menu_title, $capability, $menu_slug, $function );
 
 		$menu_title = esc_html__( 'Settings', 'gdpr' );
 		$menu_slug  = 'gdpr-settings';
@@ -118,11 +131,6 @@ class GDPR_Admin {
 
 		add_submenu_page( $parent_slug, $menu_title, $menu_title, $capability, $menu_slug, $function );
 
-		$menu_title = esc_html__( 'Requests', 'gdpr' );
-		$menu_slug  = 'gdpr-requests';
-		$function   = array( $this, 'requests_page_template' );
-
-		add_submenu_page( $parent_slug, $menu_title, $menu_title, $capability, $menu_slug, $function );
 
 		$menu_slug  = 'edit.php?post_type=telemetry';
 
@@ -361,17 +369,9 @@ class GDPR_Admin {
 		}
 
 		$tabs = array(
-			'access' => array(
-				'name' => 'Access Data',
-				'count' => isset( $access ) ? count( $access ) : 0,
-			),
 			'rectify' => array(
 				'name' => 'Rectify Data',
 				'count' => isset( $rectify ) ? count( $rectify ) : 0,
-			),
-			'portability' => array(
-				'name' => 'Data Portability',
-				'count' => isset( $portability ) ? count( $portability ) : 0,
 			),
 			'complaint' => array(
 				'name' => 'Complaint',

@@ -55,28 +55,7 @@
       <tbody>
         <tr>
           <td>
-            <h4>Someone placed a request for your information to be removed from our site.</h4>
-            <p>By clicking confirm your account will be removed from our site and all data we collected over time will be erased from our database. It will be impossible for us to retrieve that information in the future. </p>
-            <?php
-              $confirm_url = add_query_arg(
-                array(
-                  'action' => 'user_delete',
-                  'key' => $args['key'],
-                  'email' => $args['user']->user_email,
-                ),
-                home_url()
-              );
-              $forgot_password_url = add_query_arg(
-                array(
-                  'action' => 'rp',
-                  'key' => get_password_reset_key( $args['user'] ),
-                  'login' => $args['user']->user_login,
-                ),
-                wp_login_url()
-              );
-            ?>
-            <p align="center" class="button"><a href="<?php echo esc_url( $confirm_url ); ?>">Confirm</a></p>
-            <p>If that wasn't you, <a href="<?php echo esc_url( $forgot_password_url ); ?>">reset your password</a>.</p>
+            <h4>We've completed your complaint request. If you have any problems or questions, don't hesitate in contacting us.</h4>
           </td>
         </tr>
       </tbody>

@@ -118,7 +118,8 @@ class GDPR_Requests {
 		$user = get_user_by( 'email', $email );
 
 		if ( $user instanceof WP_User ) {
-			$meta_key = self::$plugin_name . '_' . $type . '_key';
+			$meta_key = self::$plugin_name . "_{$type}_key";
+			update_option( 'gdpr_requests', $requests );
 			delete_user_meta( $user->ID, $meta_key );
 			if ( $time = wp_next_scheduled( 'clean_gdpr_user_request_key', array( 'user_id' => $user->ID, 'meta_key' => $meta_key ) ) ) {
 				wp_unschedule_event( $time, 'clean_gdpr_user_request_key', array( 'user_id' => $user->ID, 'meta_key' => $meta_key ) );

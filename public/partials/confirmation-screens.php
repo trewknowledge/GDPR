@@ -33,6 +33,9 @@
 			$title = __( 'Request Received', 'gdpr' );
 			$text = __( 'Your request has been received. We will be in touch soon.', 'gdpr' );
 		}
+		if ( isset( $_GET['error'] ) && $_GET['error'] ) {
+			$text = __( 'There was a problem with your request. Please try again later.', 'gdpr' );
+		}
 	?>
 	<div class="gdpr-general-dialog" title="<?php echo esc_attr( $title ); ?>">
 		<p>

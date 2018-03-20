@@ -68,10 +68,12 @@ class GDPR_Email {
 		$email = $user instanceof WP_User ? $user->user_email : $user;
 
 		$possible_types = apply_filters( 'gdpr_email_types', array(
-			'request-to-delete' => apply_filters( 'gdpr_request_to_delete_email_subject', esc_html__( 'Someone requested to close your account.', 'gdpr' ) ),
-			'request-to-rectify' => apply_filters( 'gdpr_request_to_rectify_email_subject', esc_html__( 'Someone requested that we rectify data of your account.', 'gdpr' ) ),
-			'deleted' => apply_filters( 'gdpr_deleted_email_subject', esc_html__( 'Your account has been closed.', 'gdpr' ) ),
+			'delete-request' => apply_filters( 'gdpr_delete_request_email_subject', esc_html__( 'Someone requested to close your account.', 'gdpr' ) ),
+			'delete-resolved' => apply_filters( 'gdpr_delete_resolved_email_subject', esc_html__( 'Your account has been closed.', 'gdpr' ) ),
+			'rectify-request' => apply_filters( 'gdpr_rectify_request_email_subject', esc_html__( 'Someone requested that we rectify data of your account.', 'gdpr' ) ),
 			'rectify-resolved' => apply_filters( 'gdpr_rectify_resolved_email_subject', esc_html__( 'Your request has been completed.', 'gdpr' ) ),
+			'complaint-request' => apply_filters( 'gdpr_complaint_request_email_subject', esc_html__( 'Someone requested that we complaint data of your account.', 'gdpr' ) ),
+			'complaint-resolved' => apply_filters( 'gdpr_complaint_resolved_email_subject', esc_html__( 'Your request has been completed.', 'gdpr' ) ),
 		) );
 
 		if ( ! in_array( $type, array_keys( $possible_types ), true ) ) {

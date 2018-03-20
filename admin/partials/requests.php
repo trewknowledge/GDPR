@@ -29,23 +29,6 @@
 		<?php endforeach; ?>
 	</div>
 
-	<div class="tab hidden" data-id="access">
-		<h2><?php esc_html_e( 'Right to access', 'gdpr' ) ?></h2>
-		<div class="postbox">
-			<form class="gdpr-manual-email-lookup" method="post" action="">
-				<div class="inside">
-					<input type="hidden" name="gdpr_action" value="requests_email_lookup">
-					<?php wp_nonce_field( 'gdpr-request-email-lookup', 'gdpr_access_email_lookup' ); ?>
-					<h4>
-						<label for="gdpr-request-email-lookup"><?php esc_html_e( 'Manually add a user', 'gdpr' ); ?></label>
-					</h4>
-					<input type="email" name="email" class="gdpr-request-email-lookup regular-text" placeholder="<?php esc_attr_e( 'email@domain.com', 'gdpr' ); ?>" required>
-					<?php submit_button( 'Submit', 'primary', '', false ); ?>
-					<span class="spinner"></span>
-				</div>
-			</form>
-		</div>
-	</div>
 	<div class="tab hidden" data-id="rectify">
 		<h2><?php esc_html_e( 'Rectify Data', 'gdpr' ) ?></h2>
 		<table class="widefat gdpr-request-table">
@@ -101,23 +84,6 @@
 				</tr>
 			</tfoot>
 		</table>
-	</div>
-	<div class="tab hidden" data-id="portability">
-		<h2><?php esc_html_e( 'Portability', 'gdpr' ) ?></h2>
-		<div class="postbox">
-			<form class="gdpr-manual-email-lookup" method="post" action="">
-				<div class="inside">
-					<input type="hidden" name="gdpr_action" value="requests_email_lookup">
-					<?php wp_nonce_field( 'gdpr-request-email-lookup', 'gdpr_portability_email_lookup' ); ?>
-					<h4>
-						<label for="gdpr-request-email-lookup"><?php esc_html_e( 'Manually add a user', 'gdpr' ); ?></label>
-					</h4>
-					<input type="email" name="email" class="gdpr-request-email-lookup regular-text" placeholder="<?php esc_attr_e( 'email@domain.com', 'gdpr' ); ?>" required>
-					<?php submit_button( 'Submit', 'primary', '', false ); ?>
-					<span class="spinner"></span>
-				</div>
-			</form>
-		</div>
 	</div>
 
 	<div class="tab hidden" data-id="complaint">

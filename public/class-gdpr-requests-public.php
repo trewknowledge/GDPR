@@ -55,10 +55,17 @@ class GDPR_Requests_Public extends GDPR_Requests {
 		include plugin_dir_path( dirname( __FILE__ ) ) . 'public/partials/' . $type . '-form.php';
 	}
 
-	function send_deletion_request_email_confirmation() {
-		if ( ! isset( $_POST['gdpr_deletion_requests_nonce'] ) || ! wp_verify_nonce( sanitize_key( $_POST['gdpr_deletion_requests_nonce'] ), 'add-to-deletion-requests' ) ) {
+	function send_request_email() {
+		if ( ! isset( $_POST['type'] ) || ! in_array( $_POST['type'], parent::$allowed_types ) ) {
+				wp_die( esc_html__( 'Invalid type of request. Please try again.', 'gdpr' ) );
+		}
+
+		if ( ! isset( $_POST['gdpr_request_nonce'] ) || ! wp_verify_nonce( sanitize_key( $_POST['gdpr_request_nonce'] ), 'add-to-requests' ) ) {
 			wp_die( esc_html__( 'We could not verify the security token. Please try again.', 'gdpr' ) );
 		}
+
+		$type = sanitize_text_field( wp_unslash( $_POST['type'] ) );
+		$data = isset( $_POST['data'] ) ? sanitize_textarea_field( $_POST['data'] ) : '';
 
 		if ( is_user_logged_in() ) {
 			$user = wp_get_current_user();
@@ -66,33 +73,83 @@ class GDPR_Requests_Public extends GDPR_Requests {
 			$user = isset( $_POST['user_email'] ) ? get_user_by( 'email', sanitize_email( $_POST['user_email'] ) ) : null;
 		}
 
-		if ( in_array( 'administrator', $user->roles ) ) {
-			$admins_query = new WP_User_Query( array(
-					'role' => 'Administrator'
-			)	);
-			if ( 1 === $admins_query->get_total() ) {
-				wp_safe_redirect(
-				esc_url_raw(
-					add_query_arg(
-						array(
-							'notify' => 1,
-							'cannot-delete' => 1,
-						),
-						wp_get_referer()
-					)
-				)
-			);
-			exit;
-			}
+		switch ( $type ) {
+			case 'delete':
+				if ( ! $user instanceof WP_User ) {
+					wp_safe_redirect(
+						esc_url_raw(
+							add_query_arg(
+								array(
+									'notify' => 1,
+									'user-not-found' => 1,
+								),
+								wp_get_referer()
+							)
+						)
+					);
+					exit;
+				}
+
+				if ( in_array( 'administrator', $user->roles ) ) {
+					$admins_query = new WP_User_Query( array(
+							'role' => 'Administrator'
+					)	);
+					if ( 1 === $admins_query->get_total() ) {
+						wp_safe_redirect(
+						esc_url_raw(
+							add_query_arg(
+								array(
+									'notify' => 1,
+									'cannot-delete' => 1,
+								),
+								wp_get_referer()
+							)
+						)
+					);
+					exit;
+					}
+				}
+				break;
+
+			case 'rectify':
+			case 'complaint':
+				if ( ! $data ) {
+					wp_safe_redirect(
+						esc_url_raw(
+							add_query_arg(
+								array(
+									'notify' => 1,
+									'required-information-missing' => 1,
+								),
+								wp_get_referer()
+							)
+						)
+					);
+				}
+				break;
 		}
 
-		if ( ! $user instanceof WP_User ) {
+		$key = parent::add_to_requests( $user->user_email, $type, $data );
+		if ( GDPR_Email::send( $user, "{$type}-request", array( 'user' => $user, 'key' => $key, 'data' => $data ) ) ) {
 			wp_safe_redirect(
 				esc_url_raw(
 					add_query_arg(
 						array(
 							'notify' => 1,
-							'user-not-found' => 1,
+							'email-sent' => 1,
+						),
+						wp_get_referer()
+					)
+				)
+			);
+			exit;
+		} else {
+			wp_safe_redirect(
+				esc_url_raw(
+					add_query_arg(
+						array(
+							'notify' => 1,
+							'error' => 1,
 						),
 						wp_get_referer()
 					)
@@ -100,71 +157,71 @@ class GDPR_Requests_Public extends GDPR_Requests {
 			);
 			exit;
 		}
-
-		$key = parent::add_to_requests( $user->user_email, 'delete' );
-		GDPR_Email::send( $user, 'request-to-delete', array( 'user' => $user, 'key' => $key ) );
-
-		wp_safe_redirect(
-			esc_url_raw(
-				add_query_arg(
-					array(
-						'notify' => 1,
-						'email-sent' => 1,
-					),
-					wp_get_referer()
-				)
-			)
-		);
-		exit;
 	}
 
-	/**
-	 * Function that runs when user confirms deletion from the site.
-	 *
-	 * @since 1.0.0
-	 */
-	public function request_to_delete_confirmed() {
-		if ( ! is_front_page() || ! isset( $_GET['action'], $_GET['key'], $_GET['email'] ) || 'user_delete' !== $_GET['action'] ) {
+	function request_confirmed() {
+		if ( ! is_front_page() || ! isset( $_GET['type'], $_GET['key'], $_GET['email'] ) ) {
 			return;
 		}
 
+		$type = sanitize_text_field( wp_unslash( $_GET['type'] ) );
 		$key = sanitize_text_field( wp_unslash( $_GET['key'] ) );
 		$email = sanitize_email( $_GET['email'] );
+
 
 		$user = get_user_by( 'email', $email );
 		if ( ! $user instanceof WP_User ) {
 			return;
 		}
 
-		$meta_key = get_user_meta( $user->ID, self::$plugin_name . '_delete_key', true );
+		$meta_key = get_user_meta( $user->ID, self::$plugin_name . "_{$type}_key", true );
 		if ( empty( $meta_key ) ) {
 			return;
 		}
 
 		if ( $key === $meta_key ) {
-			$found_posts = parent::user_has_content( $user );
-			if ( $found_posts ) {
-				delete_user_meta( $user->ID, self::$plugin_name . '_delete_key' );
-				parent::confirm_request( $key );
-				wp_safe_redirect(
-					esc_url_raw(
-						add_query_arg(
-							array(
-								'user-deleted' => 0,
-								'notify' => 1
-							),
-							home_url()
-						)
-					)
-				);
-				exit;
-			} else {
-				if ( $this->delete_user( $user, $key ) ) {
+			switch ( $type ) {
+				case 'delete':
+					$found_posts = parent::user_has_content( $user );
+					if ( $found_posts ) {
+						parent::confirm_request( $key );
+						wp_safe_redirect(
+							esc_url_raw(
+								add_query_arg(
+									array(
+										'user-deleted' => 0,
+										'notify' => 1
+									),
+									home_url()
+								)
+							)
+						);
+						exit;
+					} else {
+						if ( $this->delete_user( $user, $key ) ) {
+							wp_safe_redirect(
+								esc_url_raw(
+									add_query_arg(
+										array(
+											'user-deleted' => 1,
+											'notify' => 1
+										),
+										home_url()
+									)
+								)
+							);
+							exit;
+						}
+					}
+					break;
+				case 'rectify':
+				case 'complaint':
+					parent::confirm_request( $key );
 					wp_safe_redirect(
 						esc_url_raw(
 							add_query_arg(
 								array(
-									'user-deleted' => 1,
+									'request-confirmed' => 1,
 									'notify' => 1
 								),
 								home_url()
@@ -172,105 +229,8 @@ class GDPR_Requests_Public extends GDPR_Requests {
 						)
 					);
 					exit;
-				}
+					break;
 			}
 		}
 	}
-
-	function send_rectify_request_email_confirmation() {
-		if ( ! isset( $_POST['gdpr_rectify_requests_nonce'] ) || ! wp_verify_nonce( sanitize_key( $_POST['gdpr_rectify_requests_nonce'] ), 'add-to-rectify-requests' ) ) {
-			wp_die( esc_html__( 'We could not verify the security token. Please try again.', 'gdpr' ) );
-		}
-
-		if ( ! isset( $_POST['data'] ) ) {
-			wp_safe_redirect(
-				esc_url_raw(
-					add_query_arg(
-						array(
-							'notify' => 1,
-							'required-information-missing' => 1,
-						),
-						wp_get_referer()
-					)
-				)
-			);
-		}
-
-		$data = sanitize_textarea_field( $_POST['data'] );
-
-		if ( is_user_logged_in() ) {
-			$user = wp_get_current_user();
-		} else {
-			$user = isset( $_POST['user_email'] ) ? get_user_by( 'email', sanitize_email( $_POST['user_email'] ) ) : null;
-		}
-
-		if ( ! $user instanceof WP_User ) {
-			wp_safe_redirect(
-				esc_url_raw(
-					add_query_arg(
-						array(
-							'notify' => 1,
-							'user-not-found' => 1,
-						),
-						wp_get_referer()
-					)
-				)
-			);
-			exit;
-		}
-
-		$key = parent::add_to_requests( $user->user_email, 'rectify' );
-		GDPR_Email::send( $user, 'request-to-rectify', array( 'user' => $user, 'key' => $key, 'data' => $data ) );
-
-		wp_safe_redirect(
-			esc_url_raw(
-				add_query_arg(
-					array(
-						'notify' => 1,
-						'email-sent' => 1,
-					),
-					wp_get_referer()
-				)
-			)
-		);
-		exit;
-	}
-
-	public function request_to_rectify_confirmed() {
-		if ( ! is_front_page() || ! isset( $_GET['action'], $_GET['key'], $_GET['email'] ) || 'add-to-rectify' !== $_GET['action'] ) {
-			return;
-		}
-
-		$key = sanitize_text_field( wp_unslash( $_GET['key'] ) );
-		$email = sanitize_email( $_GET['email'] );
-		$data = sanitize_textarea_field( $_GET['data'] );
-
-		$user = get_user_by( 'email', $email );
-		if ( ! $user instanceof WP_User ) {
-			return;
-		}
-
-		$meta_key = get_user_meta( $user->ID, self::$plugin_name . '_rectify_key', true );
-		if ( empty( $meta_key ) ) {
-			return;
-		}
-
-		if ( $key === $meta_key ) {
-			delete_user_meta( $user->ID, self::$plugin_name . '_rectify_key' );
-			parent::confirm_request( $key );
-			wp_safe_redirect(
-				esc_url_raw(
-					add_query_arg(
-						array(
-							'request-confirmed' => 1,
-							'notify' => 1
-						),
-						home_url()
-					)
-				)
-			);
-			exit;
-		}
-	}
-
 }

@@ -181,15 +181,10 @@ class GDPR {
 		add_action( 'wp_ajax_gdpr_anonymize_comments', array( $requests_admin, 'anonymize_comments' ) );
 		add_action( 'wp_ajax_gdpr_reassign_content', array( $requests_admin, 'reassign_content' ) );
 
-		add_action( 'wp', array( $requests_public, 'request_to_delete_confirmed' ) );
-		add_action( 'wp', array( $requests_public, 'request_to_rectify_confirmed' ) );
+		add_action( 'wp', array( $requests_public, 'request_confirmed' ) );
 
-		add_action( 'admin_post_send_deletion_request_email_confirmation', array( $requests_public, 'send_deletion_request_email_confirmation' ) );
-		add_action( 'admin_post_nopriv_send_deletion_request_email_confirmation', array( $requests_public, 'send_deletion_request_email_confirmation' ) );
-
-		add_action( 'admin_post_send_rectify_request_email_confirmation', array( $requests_public, 'send_rectify_request_email_confirmation' ) );
-		add_action( 'admin_post_nopriv_send_rectify_request_email_confirmation', array( $requests_public, 'send_rectify_request_email_confirmation' ) );
-
+		add_action( 'admin_post_gdpr_send_request_email', array( $requests_public, 'send_request_email' ) );
+		add_action( 'admin_post_nopriv_gdpr_send_request_email', array( $requests_public, 'send_request_email' ) );
 
 		add_action( 'init', array( $telemetry, 'register_post_type' ) );
 		add_filter( 'http_api_debug', array( $telemetry, 'log_request' ), 10, 5 );

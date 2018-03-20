@@ -220,7 +220,7 @@ class GDPR_Requests_Admin extends GDPR_Requests {
 		$index = sanitize_text_field( $_POST['index'] );
 		parent::remove_from_requests( $email, 'delete', $index );
 
-		GDPR_Email::send( $user->user_email, 'deleted', array( 'token' => 123456 ) );
+		GDPR_Email::send( $user->user_email, 'delete-resolved', array( 'token' => 123456 ) );
 		wp_delete_user( $user->ID );
 
 
