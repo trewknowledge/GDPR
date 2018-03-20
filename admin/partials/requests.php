@@ -14,7 +14,7 @@
 
 ?>
 
-<div class="wrap gdpr-requests">
+<div class="wrap gdpr">
 	<h1><?php esc_html_e( 'Requests', 'gdpr' ); ?></h1>
 	<?php settings_errors(); ?>
 	<div class="nav-tab-wrapper">
@@ -25,7 +25,6 @@
 					<span class="gdpr-pending-requests-badge"><?php echo esc_html( $value['count'] ); ?></span>
 				<?php endif ?>
 			</a>
-			<?php $counter++; ?>
 		<?php endforeach; ?>
 	</div>
 
@@ -145,7 +144,7 @@
 
 	<div class="tab hidden" data-id="delete">
 		<h2><?php esc_html_e( 'Right to erasure', 'gdpr' ) ?></h2>
-		<div class="postbox">
+		<div class="postbox not-full">
 			<form class="gdpr-manual-email-lookup" method="post" action="<?php echo esc_url( admin_url('admin-post.php') ); ?>">
 				<div class="inside">
 					<input type="hidden" name="action" value="add_to_deletion_requests">

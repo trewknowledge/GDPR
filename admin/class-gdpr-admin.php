@@ -125,6 +125,12 @@ class GDPR_Admin {
 
 		add_submenu_page( $parent_slug, $menu_title, $menu_title, $capability, $menu_slug, $function );
 
+		$menu_title = esc_html__( 'Tools', 'gdpr' );
+		$menu_slug  = 'gdpr-tools';
+		$function   = array( $this, 'tools_page_template' );
+
+		add_submenu_page( $parent_slug, $menu_title, $menu_title, $capability, $menu_slug, $function );
+
 		$menu_title = esc_html__( 'Settings', 'gdpr' );
 		$menu_slug  = 'gdpr-settings';
 		$function   = array( $this, 'settings_page_template' );
@@ -352,7 +358,7 @@ class GDPR_Admin {
 	}
 
 	/**
-	 * Requests Page Template
+	 * Requests Page Template.
 	 *
 	 * @since 1.0.0
 	 */
@@ -370,20 +376,134 @@ class GDPR_Admin {
 
 		$tabs = array(
 			'rectify' => array(
-				'name' => 'Rectify Data',
+				'name' => __( 'Rectify Data', 'gdpr' ),
 				'count' => isset( $rectify ) ? count( $rectify ) : 0,
 			),
 			'complaint' => array(
-				'name' => 'Complaint',
+				'name' => __( 'Complaint', 'gdpr' ),
 				'count' => isset( $complaint ) ? count( $complaint ) : 0,
 			),
 			'delete' => array(
-				'name' => 'Erasure',
+				'name' => __( 'Erasure', 'gdpr' ),
 				'count' => isset( $delete ) ? count( $delete ) : 0,
 			),
 		);
 
 		include plugin_dir_path( __FILE__ ) . 'partials/requests.php';
+	}
+
+	/**
+	 * Tools Page Template.
+	 *
+	 * @since 1.0.0
+	 */
+	public function tools_page_template() {
+
+		$tabs = array(
+			'access' => 'Access Data',
+			'audit-log' => 'Audit Log',
+		);
+
+		include plugin_dir_path( __FILE__ ) . 'partials/tools.php';
+	}
+
+	function access_data() {
+		if ( ! isset( $_POST['nonce'], $_POST['email'] ) || ! wp_verify_nonce( sanitize_key( wp_unslash( $_POST['nonce'] ) ), 'access-data' ) ) {
+			wp_send_json_error();
+		}
+
+		$email = sanitize_email( $_POST['email'] );
+		$user = get_user_by( 'email', $email );
+
+		if ( ! $user instanceof WP_User ) {
+			wp_send_json_error();
+		}
+
+		$usermeta = get_user_meta( $user->ID );
+		$remove_metadata = array(
+			'nickname',
+			'first_name',
+			'last_name',
+			'description',
+			'rich_editing',
+			'syntax_highlighting',
+			'comment_shortcuts',
+			'admin_color',
+			'use_ssl',
+			'show_admin_bar_front',
+			'wp_capabilities',
+			'wp_user_level',
+			'gdpr_consents',
+			'gdpr_audit_log',
+			'dismissed_wp_pointers',
+			'gdpr_delete_key',
+		);
+		$usermeta = array_diff_key( $usermeta, array_flip( $remove_metadata ) );
+
+		ob_start();
+		echo '<h2>' . $user->display_name . '<span>( ' . $email . ' )</span></h2>';
+		echo '<table class="widefat">
+			<tr>
+				<td class="row-title">Username</td>
+				<td>' . esc_html( $user->user_login ) . '</td>
+			</tr>
+			<tr>
+				<td class="row-title">First Name</td>
+				<td>' . esc_html( $user->first_name ) . '</td>
+			</tr>
+			<tr>
+				<td class="row-title">Last Name</td>
+				<td>' . esc_html( $user->last_name ) . '</td>
+			</tr>
+			<tr>
+				<td class="row-title">Email</td>
+				<td>' . esc_html( $user->user_email ) . '</td>
+			</tr>
+			<tr>
+				<td class="row-title">Nickname</td>
+				<td>' . esc_html( $user->nickname ) . '</td>
+			</tr>
+			<tr>
+				<td class="row-title">Bio</td>
+				<td>' . esc_html( $user->description ) . '</td>
+			</tr>
+			<tr>
+				<td class="row-title">URL</td>
+				<td>' . esc_url( $user->user_url ) . '</td>
+			</tr>
+			<tr>
+				<td class="row-title">Registered</td>
+				<td>' . esc_html( $user->user_registered ) . '</td>
+			</tr>
+			<tr>
+				<td class="row-title">Roles</td>
+				<td>' . esc_html( implode( ', ', $user->roles ) ) . '</td>
+			</tr>
+		</table>';
+
+		echo '<h2>Metadata</h2>';
+		echo '<table class="widefat">';
+		foreach ( $usermeta as $k => $v ) {
+			echo '<tr>';
+			echo '<td class="row-title">' . esc_html( $k ) . '</td>';
+			echo '<td>';
+				if ( count($v) === 1 ) {
+					echo esc_html( $v[0] );
+				} else {
+					foreach ( $v as $value ) {
+						if ( empty( $value ) ) {
+							continue;
+						}
+						echo esc_html( $value ) . '<br>';
+					}
+				}
+			echo '</tr>';
+		}
+		echo '</table>';
+
+		$result = ob_get_clean();
+		wp_send_json_success( $result );
+
 	}
 
 }

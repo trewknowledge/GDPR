@@ -136,3 +136,20 @@
 		}
 	}
 }
+
+.gdpr .not-full {
+	display: inline-block;
+}
+
+.gdpr .spinner {
+	display: none;
+	visibility: visible;
+}
+
+.gdpr .gdpr-access-data-result {
+	h2 {
+		span{
+			font-size: 16px;
+		}
+	}
+}

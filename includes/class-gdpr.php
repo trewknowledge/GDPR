@@ -168,6 +168,7 @@ class GDPR {
 		add_action( 'admin_enqueue_scripts', array( $plugin_admin, 'enqueue_scripts' ) );
 		add_action( 'admin_menu', array( $plugin_admin, 'add_menu' ) );
 		add_action( 'admin_init', array( $plugin_admin, 'register_settings' ) );
+		add_action( 'wp_ajax_gdpr_access_data', array( $plugin_admin, 'access_data' ) );
 		add_action( 'init', array( $this, 'block_cookies' ) );
 		add_action( 'admin_init', array( $this, 'block_cookies' ) );
 

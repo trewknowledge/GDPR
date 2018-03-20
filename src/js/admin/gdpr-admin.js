@@ -52,22 +52,22 @@
 			$('tr[data-index=' + target + '] div').slideToggle();
 		});
 
-		$(document).on('click', '.gdpr-requests .nav-tab-wrapper a', function(e) {
+		$(document).on('click', '.gdpr .nav-tab-wrapper a', function(e) {
 			var target = $(this).attr('href');
 			target = target.replace('#', '');
 			$(this).addClass('nav-tab-active');
 			$(this).siblings().removeClass('nav-tab-active');
-			$('.gdpr-requests .tab').addClass('hidden');
-			$('.gdpr-requests .tab[data-id='+ target +']').removeClass('hidden');
+			$('.gdpr .tab').addClass('hidden');
+			$('.gdpr .tab[data-id='+ target +']').removeClass('hidden');
 		});
 
 		var hash = window.location.hash;
 		if ( hash ) {
-			$('.gdpr-requests .nav-tab-wrapper a[href="'+ hash +'"]').addClass('nav-tab-active');
-			$('.gdpr-requests .tab[data-id="'+ hash.replace('#', '') +'"]').removeClass('hidden');
+			$('.gdpr .nav-tab-wrapper a[href="'+ hash +'"]').addClass('nav-tab-active');
+			$('.gdpr .tab[data-id="'+ hash.replace('#', '') +'"]').removeClass('hidden');
 		} else {
-			$('.gdpr-requests .nav-tab-wrapper a:eq(0)').addClass('nav-tab-active');
-			$('.gdpr-requests .tab:eq(0)').removeClass('hidden');
+			$('.gdpr .nav-tab-wrapper a:eq(0)').addClass('nav-tab-active');
+			$('.gdpr .tab:eq(0)').removeClass('hidden');
 		}
 
 		$(document).on('change', '.gdpr-reassign', function() {
@@ -148,6 +148,43 @@
 					}
 				}
 			);
+		});
+
+		$(document).on('submit', '.gdpr-access-data-lookup', function(e) {
+			e.preventDefault();
+			var user_email    = $(this).find('input[name="user_email"]'),
+					email         = user_email.val(),
+					nonce         = $(this).find('input[name="gdpr_access_data_nonce"]').val(),
+					button        = $(this).find('.button-primary'),
+					spinner       = $(this).find('.spinner'),
+					result        = $('.gdpr-access-data-result');
+
+			button.addClass('hidden');
+			spinner.show();
+			result.remove();
+			user_email.val('');
+
+			$.post(
+				ajaxurl,
+				{
+					action: 'gdpr_access_data',
+					nonce: nonce,
+					email: email,
+				},
+				function( response ) {
+					button.removeClass('hidden');
+					spinner.hide();
+					if ( response.success ) {
+						var template = wp.template( 'access-data-result-success' );
+						$('.gdpr div[data-id="access"]').append( template( {
+							result: response.data
+						} ) );
+					} else {
+						var template = wp.template( 'access-data-result-error' );
+						$('.gdpr div[data-id="access"]').append( template() );
+					}
+				}
+			)
 		});
 
 	});
