@@ -97,7 +97,7 @@
 	input {
 		&:checked {
 			+.gdpr-slider {
-				background-color: #2196F3;
+				background-color: #00b9eb;
 				&:before {
 					transform: translateX(21px);
 				}
@@ -105,7 +105,7 @@
 		}
 		&:focus {
 			+.gdpr-slider {
-				box-shadow: 0 0 1px #2196F3;
+				box-shadow: 0 0 1px #00b9eb;
 			}
 		}
 	}
@@ -159,7 +159,20 @@
 #tabs {
 	.postbox {
 		.inside {
-			padding-bottom: 0;
+			margin: 0 !important;
+			padding: 0 20px 20px 20px;
+			.form-table {
+				margin-top: 0;
+			}
+			.tab-hosts {
+				.postbox {
+					margin-bottom: 0;
+					.inside {
+						padding-bottom: 0;
+						background-color: #f9f9f9;
+					}
+				}
+			}
 		}
 	}
 }
