@@ -21,10 +21,8 @@
 <script type="text/html" id="tmpl-access-data-result-error">
 	<div class="gdpr-access-data-result">
 		<h2><?php echo _e( 'Error', 'gdpr' ); ?></h2>
-		<div class="postbox">
-			<div class="inside">
-				<p><?php esc_html_e( 'We could not find a user with that email.', 'gdpr' ); ?></p>
-			</div>
+		<div class="notice notice-error">
+			<p><?php esc_html_e( 'We could not find a user with that email.', 'gdpr' ); ?></p>
 		</div>
 	</div>
 </script>
