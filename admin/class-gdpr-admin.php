@@ -482,7 +482,13 @@ class GDPR_Admin {
 		</table>';
 
 		echo '<h2>Metadata</h2>';
-		echo '<table class="widefat">';
+		echo '<table class="widefat">
+			<thead>
+				<tr>
+					<th>' . esc_html__( 'Name', 'gdpr' ) . '</th>
+					<th>' . esc_html__( 'Value', 'gdpr' ) . '</th>
+				</tr>
+			</thead>';
 		foreach ( $usermeta as $k => $v ) {
 			echo '<tr>';
 			echo '<td class="row-title">' . esc_html( $k ) . '</td>';
