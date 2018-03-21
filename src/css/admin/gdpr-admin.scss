@@ -181,6 +181,9 @@
 	.tab-hosts {
 		.postbox {
 			margin-top: 15px;
+			.inside {
+				padding: 10px 20px 20px 20px !important;
+			}
 		}
 	}
 	.form-table {
@@ -188,6 +191,7 @@
 			padding-right: 0;
 			.button {
 				margin-top: 5px;
+				margin-bottom: 10px;
 			}
 		}
 	}
@@ -196,6 +200,9 @@
 @include breakpoint(small-only) {
 	.postbox {
 		width: 100%;
+		.notice-dismiss {
+			padding: 8px;
+		}
 	}
 	.inside{
 		.regular-text {
