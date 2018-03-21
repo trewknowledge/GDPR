@@ -419,26 +419,7 @@ class GDPR_Admin {
 			wp_send_json_error();
 		}
 
-		$usermeta = get_user_meta( $user->ID );
-		$remove_metadata = array(
-			'nickname',
-			'first_name',
-			'last_name',
-			'description',
-			'rich_editing',
-			'syntax_highlighting',
-			'comment_shortcuts',
-			'admin_color',
-			'use_ssl',
-			'show_admin_bar_front',
-			'wp_capabilities',
-			'wp_user_level',
-			'gdpr_consents',
-			'gdpr_audit_log',
-			'dismissed_wp_pointers',
-			'gdpr_delete_key',
-		);
-		$usermeta = array_diff_key( $usermeta, array_flip( $remove_metadata ) );
+		$usermeta = GDPR::get_user_meta( $user->ID );
 
 		ob_start();
 		echo '<h2>' . $user->display_name . '<span>( ' . $email . ' )</span></h2>';
@@ -505,7 +486,7 @@ class GDPR_Admin {
 		echo '</table>';
 
 		$result = ob_get_clean();
-		wp_send_json_success( $result );
+		wp_send_json_success( array( 'user_email' => $email, 'result' => $result ) );
 
 	}
 

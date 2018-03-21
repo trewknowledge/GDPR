@@ -169,6 +169,7 @@ class GDPR {
 		add_action( 'admin_menu', array( $plugin_admin, 'add_menu' ) );
 		add_action( 'admin_init', array( $plugin_admin, 'register_settings' ) );
 		add_action( 'wp_ajax_gdpr_access_data', array( $plugin_admin, 'access_data' ) );
+		add_action( 'wp_ajax_gdpr_generate_data_export', array( $this, 'generate_data_export' ) );
 		add_action( 'init', array( $this, 'block_cookies' ) );
 		add_action( 'admin_init', array( $this, 'block_cookies' ) );
 
@@ -229,6 +230,161 @@ class GDPR {
 		add_action( 'wp_footer', array( $plugin_public, 'cookie_preferences' ) );
 		add_action( 'wp_footer', array( $plugin_public, 'confirmation_screens' ) );
 
+	}
+
+	static function get_user_meta( $user_id ) {
+		$usermeta = get_user_meta( $user_id );
+		$remove_metadata = array(
+			'nickname',
+			'first_name',
+			'last_name',
+			'description',
+			'rich_editing',
+			'syntax_highlighting',
+			'comment_shortcuts',
+			'admin_color',
+			'use_ssl',
+			'show_admin_bar_front',
+			'wp_capabilities',
+			'wp_user_level',
+			'gdpr_consents',
+			'gdpr_audit_log',
+			'dismissed_wp_pointers',
+			'gdpr_delete_key',
+			'gdpr_rectify_key',
+			'gdpr_complaint_key',
+		);
+
+		return array_diff_key( $usermeta, array_flip( $remove_metadata ) );
+	}
+
+	private static function generate_export( $email, $type ) {
+
+		$email = sanitize_email( $email );
+		$user = get_user_by( 'email', $email );
+
+		if ( ! $user instanceof WP_User ) {
+			return false;
+		}
+
+		$usermeta = self::get_user_meta( $user->ID );
+
+		switch ( strtolower( $type ) ) {
+			case 'json':
+				$metadata = array();
+
+				foreach ( $usermeta as $k => $v ) {
+					if ( count( $v ) === 1 ) {
+						$metadata[ $k ] = $v[0];
+					} else {
+						$metadata[ $k ] = array();
+						foreach ( $v as $value ) {
+							$metadata[ $k ][] = $value;
+						}
+					}
+				}
+
+				$consents = array();
+				$gdpr_consents = get_user_meta( $user->ID, 'gdpr_consents', true);
+				foreach ( $gdpr_consents as $consent_item ) {
+					$consents[] = array(
+						'Name' => $consent_item['name'],
+						'Description' => $consent_item['description'],
+						'Consent Given' => $consent_item['enabled'],
+					);
+				}
+
+				$json = array(
+					'Personal Information' => array(
+						'Username' => $user->user_login,
+						'First name' => $user->first_name,
+						'Last name' => $user->last_name,
+						'Email' => $user->user_email,
+						'Nickname' => $user->nickname,
+						'Display name' => $user->display_name,
+						'Description' => $user->description,
+						'Website' => $user->user_url,
+					),
+					'Metadata' => $metadata,
+					'Consents' => $consents
+				);
+				return json_encode( $json );
+				break;
+			case 'md':
+			case 'markdown':
+				# code...
+				break;
+
+			default: // XML
+				$dom = new DomDocument( "1.0", "ISO-8859-1" );
+				$personal_info = $dom->createElement('Personal_Information');
+				$dom->appendChild( $personal_info );
+				$personal_info->appendChild( $dom->createElement( 'Username', $user->user_login ) );
+				$personal_info->appendChild( $dom->createElement( 'First_Name', $user->first_name ) );
+				$personal_info->appendChild( $dom->createElement( 'Last_Name', $user->last_name ) );
+				$personal_info->appendChild( $dom->createElement( 'Email', $user->user_email ) );
+				$personal_info->appendChild( $dom->createElement( 'Nickname', $user->nickname ) );
+				$personal_info->appendChild( $dom->createElement( 'Display_Name', $user->display_name ) );
+				$personal_info->appendChild( $dom->createElement( 'Description', $user->description ) );
+				$personal_info->appendChild( $dom->createElement( 'Website', $user->user_url ) );
+
+				$meta_data = $dom->createElement('Metadata');
+				$dom->appendChild( $meta_data );
+
+				foreach ( $usermeta as $k => $v ) {
+					if ( count( $v ) === 1 ) {
+						$key = $dom->createElement( $k, $v[0] );
+						$meta_data->appendChild( $key );
+					} else {
+						$key = $dom->createElement( $k );
+						$meta_data->appendChild( $key );
+						foreach ( $v as $value ) {
+							$key->appendChild( $dom->createElement( 'item', $value ) );
+						}
+					}
+				}
+
+				$consents = $dom->createElement( 'Consents' );
+				$dom->appendChild( $consents );
+				$gdpr_consents = get_user_meta( $user->ID, 'gdpr_consents', true);
+				foreach ( $gdpr_consents as $consent_item ) {
+					$consent = $dom->createElement( 'Consent' );
+					$consents->appendChild( $consent );
+					$consent->appendChild( $dom->createElement( 'Name', $consent_item['name'] ) );
+					$consent->appendChild( $dom->createElement( 'Description', $consent_item['description'] ) );
+					$consent->appendChild( $dom->createElement( 'Consent_Given', $consent_item['enabled'] ) );
+				}
+
+
+				$dom->preserveWhiteSpace = false;
+				$dom->formatOutput = true;
+				return $dom->saveXML();
+				break;
+		}
+
+		return false;
+
+	}
+
+	function generate_data_export() {
+		if ( ! isset( $_POST['nonce'], $_POST['email'], $_POST['type'] ) || ! wp_verify_nonce( sanitize_key( wp_unslash( $_POST['nonce'] ) ), 'export-data' ) ) {
+			wp_send_json_error();
+		}
+
+		$type = sanitize_text_field( wp_unslash( $_POST['type'] ) );
+		$email = sanitize_email( $_POST['email'] );
+		$user = get_user_by( 'email', $email );
+
+		if ( ! $user instanceof WP_User ) {
+			wp_send_json_error();
+		}
+
+		$export = self::generate_export( $email, $type );
+		if ( $export ) {
+			wp_send_json_success( $export );
+		}
+
+		wp_send_json_error();
 	}
 
 
