@@ -1,13 +1,14 @@
 <script type="text/html" id="tmpl-access-data-result-success">
 	<div class="gdpr-access-data-result">
-		<h2>
-			<?php echo _e( 'Result', 'gdpr' ); ?>
-			<span class="float-right">
-				<a href="#" class="button-primary download-data-xml"><?php esc_html_e( 'XML', 'gdpr' ); ?></a>
-				<a href="#" class="button-primary download-data-json"><?php esc_html_e( 'JSON', 'gdpr' ); ?></a>
-				<a href="#" class="button-primary download-data-markdown"><?php esc_html_e( 'Markdown', 'gdpr' ); ?></a>
-			</span>
-		</h2>
+		<h2><?php echo _e( 'Result', 'gdpr' ); ?></h2>
+		<p>
+		<form method="post" class="frm-export-data">
+			<?php wp_nonce_field( 'export-data', 'gdpr_export_data_nonce' ); ?>
+			<input type="hidden" name="user_email" value="{{data.user_email}}">
+			<?php submit_button( 'XML', 'primary', 'download-data-xml', false ) ?>
+			<?php submit_button( 'JSON', 'primary', 'download-data-json', false ) ?>
+		</form>
+		</p>
 		<div class="postbox">
 			<div class="inside">
 				<div class="result">

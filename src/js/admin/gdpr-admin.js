@@ -177,7 +177,8 @@
 					if ( response.success ) {
 						var template = wp.template( 'access-data-result-success' );
 						$('.gdpr div[data-id="access"]').append( template( {
-							result: response.data
+							result: response.data.result,
+							user_email: response.data.user_email
 						} ) );
 					} else {
 						var template = wp.template( 'access-data-result-error' );
@@ -185,6 +186,36 @@
 					}
 				}
 			)
+		});
+
+		$(document).on( 'click', '.frm-export-data input[type="submit"]', function(e) {
+			e.preventDefault();
+
+			var form = $(this).parents('form'),
+					type = $(this).val(),
+					nonce = form.find('#gdpr_export_data_nonce').val(),
+					email = form.find('input[name="user_email"]').val(),
+					extension = type.toLowerCase();
+
+			$.post(
+				ajaxurl,
+				{
+					action: 'gdpr_generate_data_export',
+					nonce: nonce,
+					type: type,
+					email: email
+				},
+				function( response ) {
+					console.log(response);
+					if ( response.success ) {
+						$('<a />', {
+							'href': 'data:text/plain;charset=utf-8,' + encodeURIComponent(response.data),
+							'download': email + '.' + extension,
+							'text': "click"
+						}).hide().appendTo("body")[0].click();
+					}
+				}
+			);
 		});
 
 	});
