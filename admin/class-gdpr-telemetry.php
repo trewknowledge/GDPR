@@ -125,7 +125,11 @@ class GDPR_Telemetry {
 		return $post_id;
 	}
 
-	public static function actions_above_table() {
+	public static function actions_above_table( $post_type ) {
+		if ( 'telemetry' !== $post_type ) {
+			return;
+		}
+
 		$url = wp_nonce_url(
 			add_query_arg(
 				array(
