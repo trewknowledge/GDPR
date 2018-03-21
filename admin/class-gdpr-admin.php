@@ -491,9 +491,6 @@ class GDPR_Admin {
 					echo esc_html( $v[0] );
 				} else {
 					foreach ( $v as $value ) {
-						if ( empty( $value ) ) {
-							continue;
-						}
 						echo esc_html( $value ) . '<br>';
 					}
 				}
