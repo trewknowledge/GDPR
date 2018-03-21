@@ -195,6 +195,9 @@
 			}
 		}
 	}
+	.type-telemetry * {
+		word-wrap: break-word !important;
+	}
 }
 
 @include breakpoint(small-only) {
