@@ -206,7 +206,6 @@
 					email: email
 				},
 				function( response ) {
-					console.log(response);
 					if ( response.success ) {
 						$('<a />', {
 							'href': 'data:text/plain;charset=utf-8,' + encodeURIComponent(response.data),

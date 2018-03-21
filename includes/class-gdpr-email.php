@@ -72,8 +72,10 @@ class GDPR_Email {
 			'delete-resolved' => apply_filters( 'gdpr_delete_resolved_email_subject', esc_html__( 'Your account has been closed.', 'gdpr' ) ),
 			'rectify-request' => apply_filters( 'gdpr_rectify_request_email_subject', esc_html__( 'Someone requested that we rectify data of your account.', 'gdpr' ) ),
 			'rectify-resolved' => apply_filters( 'gdpr_rectify_resolved_email_subject', esc_html__( 'Your request has been completed.', 'gdpr' ) ),
-			'complaint-request' => apply_filters( 'gdpr_complaint_request_email_subject', esc_html__( 'Someone requested that we complaint data of your account.', 'gdpr' ) ),
+			'complaint-request' => apply_filters( 'gdpr_complaint_request_email_subject', esc_html__( 'Someone made complaint on behalf of your account.', 'gdpr' ) ),
 			'complaint-resolved' => apply_filters( 'gdpr_complaint_resolved_email_subject', esc_html__( 'Your request has been completed.', 'gdpr' ) ),
+			'export-data-request' => apply_filters( 'gdpr_export_data_request_email_subject', esc_html__( 'Someone requested to download your data.', 'gdpr' ) ),
+			'export-data-resolved' => apply_filters( 'gdpr_export_data_resolved_email_subject', esc_html__( 'Your request has been completed.', 'gdpr' ) ),
 		) );
 
 		if ( ! in_array( $type, array_keys( $possible_types ), true ) ) {

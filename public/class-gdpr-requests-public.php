@@ -41,7 +41,7 @@ class GDPR_Requests_Public extends GDPR_Requests {
 		}
 
 		if ( parent::remove_from_requests( $index ) ) {
-			GDPR_Email::send( $user->user_email, 'deleted', array( 'token' => 123456 ) );
+			GDPR_Email::send( $user->user_email, 'delete-resolved', array( 'token' => 123456 ) );
 			wp_delete_user( $user->ID );
 			wp_logout();
 		}
@@ -125,6 +125,22 @@ class GDPR_Requests_Public extends GDPR_Requests {
 							)
 						)
 					);
+				}
+				break;
+			case 'export-data':
+				if ( ! $user instanceof WP_User ) {
+					wp_safe_redirect(
+						esc_url_raw(
+							add_query_arg(
+								array(
+									'notify' => 1,
+									'user-not-found' => 1,
+								),
+								wp_get_referer()
+							)
+						)
+					);
+					exit;
 				}
 				break;
 		}
@@ -230,6 +246,38 @@ class GDPR_Requests_Public extends GDPR_Requests {
 					);
 					exit;
 					break;
+				case 'export-data':
+					$format = isset( $_GET['format'] ) ? sanitize_text_field( wp_unslash( $_GET['format'] ) ) : 'xml';
+					wp_schedule_single_event( time(), 'mail_export_data', array( 'email' => $user->user_email, 'format' => $format, 'key' => $key ) );
+					wp_safe_redirect(
+						esc_url_raw(
+							add_query_arg(
+								array(
+									'export-started' => 1,
+									'notify' => 1
+								),
+								home_url()
+							)
+						)
+					);
+					exit;
+					break;
+			}
+		}
+	}
+
+	function mail_export_data( $email, $format, $key ) {
+		$email = sanitize_email( $email );
+		$format = sanitize_text_field( wp_unslash( $format ) );
+		$key = sanitize_text_field( wp_unslash( $key ) );
+
+		$export = GDPR::generate_export( $email, $format );
+		$filename = get_temp_dir() . $email . '.' . $format;
+		if ( $export ) {
+			file_put_contents( $filename, $export );
+			if ( GDPR_Email::send( $email, 'export-data-resolved', array(), array( $filename ) ) ) {
+				unlink( $filename );
+				parent::remove_from_requests( $key );
 			}
 		}
 	}

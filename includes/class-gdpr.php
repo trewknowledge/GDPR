@@ -169,12 +169,13 @@ class GDPR {
 		add_action( 'admin_menu', array( $plugin_admin, 'add_menu' ) );
 		add_action( 'admin_init', array( $plugin_admin, 'register_settings' ) );
 		add_action( 'wp_ajax_gdpr_access_data', array( $plugin_admin, 'access_data' ) );
-		add_action( 'wp_ajax_gdpr_generate_data_export', array( $this, 'generate_data_export' ) );
+		add_action( 'wp_ajax_gdpr_generate_data_export', array( $this, 'export_data' ) );
 		add_action( 'init', array( $this, 'block_cookies' ) );
 		add_action( 'admin_init', array( $this, 'block_cookies' ) );
 
 		add_action( 'clean_gdpr_requests', array( $requests, 'clean_requests' ) );
 		add_action( 'clean_gdpr_user_request_key', array( $requests, 'clean_user_request_key' ), 10, 2 );
+		add_action( 'mail_export_data', array( $requests_public, 'mail_export_data' ), 10, 3 );
 
 		add_action( 'admin_post_delete_user', array( $requests_admin, 'delete_user' ) );
 		add_action( 'admin_post_cancel_request', array( $requests_admin, 'cancel_request' ) );
@@ -253,12 +254,13 @@ class GDPR {
 			'gdpr_delete_key',
 			'gdpr_rectify_key',
 			'gdpr_complaint_key',
+			'gdpr_export-data_key',
 		);
 
 		return array_diff_key( $usermeta, array_flip( $remove_metadata ) );
 	}
 
-	private static function generate_export( $email, $type ) {
+	static function generate_export( $email, $format ) {
 
 		$email = sanitize_email( $email );
 		$user = get_user_by( 'email', $email );
@@ -269,29 +271,31 @@ class GDPR {
 
 		$usermeta = self::get_user_meta( $user->ID );
 
-		switch ( strtolower( $type ) ) {
+		switch ( strtolower( $format ) ) {
 			case 'json':
 				$metadata = array();
 
 				foreach ( $usermeta as $k => $v ) {
-					if ( count( $v ) === 1 ) {
-						$metadata[ $k ] = $v[0];
-					} else {
-						$metadata[ $k ] = array();
-						foreach ( $v as $value ) {
-							$metadata[ $k ][] = $value;
+					$metadata[ $k ] = array();
+					foreach ( $v as $value ) {
+						if ( is_serialized( $value ) ) {
+							$metadata[ $k ][] = maybe_unserialize( $value );
+						} else {
+							$metadata[ $k ] = $value;
 						}
 					}
 				}
 
 				$consents = array();
 				$gdpr_consents = get_user_meta( $user->ID, 'gdpr_consents', true);
-				foreach ( $gdpr_consents as $consent_item ) {
-					$consents[] = array(
-						'Name' => $consent_item['name'],
-						'Description' => $consent_item['description'],
-						'Consent Given' => $consent_item['enabled'],
-					);
+				if ( $gdpr_consents ) {
+					foreach ( $gdpr_consents as $consent_item ) {
+						$consents[] = array(
+							'Name' => $consent_item['name'],
+							'Description' => $consent_item['description'],
+							'Consent Given' => $consent_item['enabled'],
+						);
+					}
 				}
 
 				$json = array(
@@ -332,27 +336,24 @@ class GDPR {
 				$dom->appendChild( $meta_data );
 
 				foreach ( $usermeta as $k => $v ) {
-					if ( count( $v ) === 1 ) {
-						$key = $dom->createElement( $k, $v[0] );
-						$meta_data->appendChild( $key );
-					} else {
-						$key = $dom->createElement( $k );
-						$meta_data->appendChild( $key );
-						foreach ( $v as $value ) {
-							$key->appendChild( $dom->createElement( 'item', $value ) );
-						}
+					$key = $dom->createElement( $k );
+					$meta_data->appendChild( $key );
+					foreach ( $v as $value ) {
+						$key->appendChild( $dom->createElement( 'item', $value ) );
 					}
 				}
 
 				$consents = $dom->createElement( 'Consents' );
 				$dom->appendChild( $consents );
 				$gdpr_consents = get_user_meta( $user->ID, 'gdpr_consents', true);
-				foreach ( $gdpr_consents as $consent_item ) {
-					$consent = $dom->createElement( 'Consent' );
-					$consents->appendChild( $consent );
-					$consent->appendChild( $dom->createElement( 'Name', $consent_item['name'] ) );
-					$consent->appendChild( $dom->createElement( 'Description', $consent_item['description'] ) );
-					$consent->appendChild( $dom->createElement( 'Consent_Given', $consent_item['enabled'] ) );
+				if ( $gdpr_consents ) {
+					foreach ( $gdpr_consents as $consent_item ) {
+						$consent = $dom->createElement( 'Consent' );
+						$consents->appendChild( $consent );
+						$consent->appendChild( $dom->createElement( 'Name', $consent_item['name'] ) );
+						$consent->appendChild( $dom->createElement( 'Description', $consent_item['description'] ) );
+						$consent->appendChild( $dom->createElement( 'Consent_Given', $consent_item['enabled'] ) );
+					}
 				}
 
 
@@ -366,7 +367,7 @@ class GDPR {
 
 	}
 
-	function generate_data_export() {
+	function export_data() {
 		if ( ! isset( $_POST['nonce'], $_POST['email'], $_POST['type'] ) || ! wp_verify_nonce( sanitize_key( wp_unslash( $_POST['nonce'] ) ), 'export-data' ) ) {
 			wp_send_json_error();
 		}

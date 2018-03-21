@@ -474,13 +474,15 @@ class GDPR_Admin {
 			echo '<tr>';
 			echo '<td class="row-title">' . esc_html( $k ) . '</td>';
 			echo '<td>';
-				if ( count($v) === 1 ) {
-					echo esc_html( $v[0] );
-				} else {
-					foreach ( $v as $value ) {
-						echo esc_html( $value ) . '<br>';
+				foreach ( $v as $value ) {
+					if ( is_serialized( $value ) ) {
+
+						echo '<pre>' . print_r( maybe_unserialize( $value ), true ) . '</pre><br />';
+					} else {
+						echo print_r( $value, true ) . '<br />';
 					}
 				}
+			echo '</td>';
 			echo '</tr>';
 		}
 		echo '</table>';
