@@ -18,19 +18,17 @@
 	<h1><?php esc_html_e( 'Settings', 'gdpr' ); ?></h1>
 	<div class="nav-tab-wrapper">
 		<?php foreach ( $tabs as $tab => $value ) : ?>
-			<a href="<?php echo esc_url( admin_url( '/admin.php?page=gdpr-settings&tab=' . $tab ) ); ?>" class="nav-tab <?php echo ( $current_tab === $tab ) ? 'nav-tab-active' : ''; ?>"><?php echo esc_html( $value['name'] ); ?></a>
+			<a href="<?php echo esc_url( admin_url( '/admin.php?page=gdpr-settings&tab=' . $tab ) ); ?>" class="nav-tab <?php echo ( $current_tab === $tab ) ? 'nav-tab-active' : ''; ?>"><?php echo esc_html( $value ); ?></a>
 		<?php endforeach; ?>
 	</div>
 
-	<form action="options.php" method="post" class="gdpr-settings-form">
-		<?php $current_tab = $tabs[ $current_tab ]['page']; ?>
+	<?php settings_errors(); ?>
 
+	<form action="options.php" method="post" class="gdpr-settings-form">
 
 		<?php
-		include_once plugin_dir_path( __FILE__ ) . 'templates/tmpl-cookies.php';
-		settings_errors();
 		settings_fields( 'gdpr' );
-		do_settings_sections( $current_tab );
+		do_settings_sections( 'gdpr-settings' );
 		submit_button();
 		?>
 	</form>

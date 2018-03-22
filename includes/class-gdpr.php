@@ -164,6 +164,8 @@ class GDPR {
 		$requests_admin = new GDPR_Requests_Admin( $this->get_plugin_name(), $this->get_version() );
 		$requests_public = new GDPR_Requests_Public( $this->get_plugin_name(), $this->get_version() );
 
+		$privacy_page = get_option( 'gdpr_privacy_policy_page', '' );
+
 		add_action( 'admin_enqueue_scripts', array( $plugin_admin, 'enqueue_styles' ) );
 		add_action( 'admin_enqueue_scripts', array( $plugin_admin, 'enqueue_scripts' ) );
 		add_action( 'admin_menu', array( $plugin_admin, 'add_menu' ) );
@@ -172,6 +174,10 @@ class GDPR {
 		add_action( 'wp_ajax_gdpr_generate_data_export', array( $this, 'export_data' ) );
 		add_action( 'init', array( $this, 'block_cookies' ) );
 		add_action( 'admin_init', array( $this, 'block_cookies' ) );
+
+		if ( empty( $privacy_page ) ) {
+			add_action( 'admin_notices', $plugin_admin, 'privacy_policy_page_missing' );
+		}
 
 		add_action( 'clean_gdpr_requests', array( $requests, 'clean_requests' ) );
 		add_action( 'clean_gdpr_user_request_key', array( $requests, 'clean_user_request_key' ), 10, 2 );
