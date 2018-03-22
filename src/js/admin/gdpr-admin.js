@@ -59,12 +59,23 @@
 			$(this).siblings().removeClass('nav-tab-active');
 			$('.gdpr .tab').addClass('hidden');
 			$('.gdpr .tab[data-id='+ target +']').removeClass('hidden');
+
+			if ( -1 !== location.search.indexOf( 'page=gdpr-settings' ) ) {
+				var referer = $('.gdpr form input[name="_wp_http_referer"]');
+				var cleanReferer = referer.val().split('#')[0];
+				referer.val( cleanReferer + '#' + target );
+			}
 		});
 
 		var hash = window.location.hash;
 		if ( hash ) {
 			$('.gdpr .nav-tab-wrapper a[href="'+ hash +'"]').addClass('nav-tab-active');
 			$('.gdpr .tab[data-id="'+ hash.replace('#', '') +'"]').removeClass('hidden');
+			if ( -1 !== location.search.indexOf( 'page=gdpr-settings' ) ) {
+				var referer = $('.gdpr form input[name="_wp_http_referer"]');
+				var cleanReferer = referer.val().split('#')[0];
+				referer.val( cleanReferer + hash);
+			}
 		} else {
 			$('.gdpr .nav-tab-wrapper a:eq(0)').addClass('nav-tab-active');
 			$('.gdpr .tab:eq(0)').removeClass('hidden');
