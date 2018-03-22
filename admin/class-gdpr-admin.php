@@ -337,4 +337,14 @@ class GDPR_Admin {
 
 	}
 
+	function privacy_policy_page_missing() {
+		?>
+			<div class="notice notice-error is-dismissible">
+				<p>
+					<strong><?php echo sprintf( __( 'You must select a Privacy Policy Page.', 'gdpr' ), admin_url( 'admin.php?page=gdpr-settings' ) ); ?></strong>
+				</p>
+			</div>
+		<?php
+	}
+
 }
