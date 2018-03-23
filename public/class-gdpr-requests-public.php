@@ -146,7 +146,7 @@ class GDPR_Requests_Public extends GDPR_Requests {
 		}
 
 		$key = parent::add_to_requests( $user->user_email, $type, $data );
-		if ( GDPR_Email::send( $user, "{$type}-request", array( 'user' => $user, 'key' => $key, 'data' => $data ) ) ) {
+		if ( GDPR_Email::send( $user->user_email, "{$type}-request", array( 'user' => $user, 'key' => $key, 'data' => $data ) ) ) {
 			wp_safe_redirect(
 				esc_url_raw(
 					add_query_arg(

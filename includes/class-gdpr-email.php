@@ -59,14 +59,16 @@ class GDPR_Email {
 		return ob_get_clean();
 	}
 
-	public static function send( $user, $type, $args = array(), $attachments = array() ) {
-		if ( ! $user instanceof WP_User ) {
-			if ( ! is_email( $user ) && is_int( $user ) ) {
-				$user = get_user_by( 'ID', $user );
-			}
-		}
-		$email = $user instanceof WP_User ? $user->user_email : $user;
+	private static function get_do_not_reply_address() {
+	  $sitename = strtolower( $_SERVER['SERVER_NAME'] );
+    if ( substr( $sitename, 0, 4 ) === 'www.' ) {
+			$sitename = substr( $sitename, 4 );
+    }
 
+	  return apply_filters( 'gdpr_do_not_reply_address', 'noreply@' . $sitename );
+	}
+
+	public static function send( $emails, $type, $args = array(), $attachments = array() ) {
 		$possible_types = apply_filters( 'gdpr_email_types', array(
 			'delete-request' => apply_filters( 'gdpr_delete_request_email_subject', esc_html__( 'Someone requested to close your account.', 'gdpr' ) ),
 			'delete-resolved' => apply_filters( 'gdpr_delete_resolved_email_subject', esc_html__( 'Your account has been closed.', 'gdpr' ) ),
@@ -86,11 +88,22 @@ class GDPR_Email {
 
 		$args = apply_filters( 'gdpr_email_args', $args );
 
+		$from_email = self::get_do_not_reply_address();
+
+    $headers = array( 'From: ' . get_bloginfo( 'name' ) . ' <' . $from_email . '>' );
+		$headers[] = 'Content-Type: text/html; charset=UTF-8';
+
+		foreach ( (array) $emails as $email ) {
+			$headers[] = 'Bcc: ' . $email;
+		}
+
+
+
 		$content = self::get_template_html( $type . '.php', $args );
-		return wp_mail( $email,
+		return wp_mail( $no_reply,
 			$possible_types[ $type ],
 			$content,
-			array( 'Content-Type: text/html; charset=UTF-8' ),
+			$headers,
 			( ! empty( $attachments ) ) ? $attachments : array()
 		);
 	}
