@@ -53,7 +53,7 @@ class GDPR_Email {
 		include $template_file;
 	}
 
-	public static function get_template_html( $template_name, $args = array() ) {
+	public static function get_email_content( $template_name, $args = array() ) {
 		ob_start();
 		self::get_template( $template_name, $args );
 		return ob_get_clean();
@@ -68,38 +68,68 @@ class GDPR_Email {
 	  return apply_filters( 'gdpr_do_not_reply_address', 'noreply@' . $sitename );
 	}
 
+	public static function prepare_data_breach_emails( $key ) {
+		$data_breach = get_option( 'gdpr_data_breach_initiated', array( 'key' => '' ) );
+		if ( $key !== $data_breach['key'] ) {
+			return;
+		}
+
+		$limit = get_option( 'gdpr_email_limit', 100 );
+
+		$users = get_users( array(
+			'fields' => 'all_with_meta'
+		) );
+
+		$steps = ceil( count( $users ) / $limit );
+
+		foreach ( range( 0, $steps - 1 ) as $loop ) {
+			$offset = $limit * $loop;
+			$loop_emails = wp_list_pluck( $users, 'user_email' );
+			$loop_emails = array_slice( $loop_emails, $offset, $limit );
+			wp_schedule_single_event( time() + $loop * HOUR_IN_SECONDS, 'send_data_breach_emails', array( $loop_emails, $data_breach ) );
+		}
+	}
+
+	public function send_data_breach_emails( $emails, $data ) {
+		$subject = apply_filters( 'gdpr_data_breach_notification_email_subject', esc_html__( 'Data Breach Notification', 'gdpr' ) );
+
+		$content = isset( $data['content'] ) ? sanitize_textarea_field( $data['content'] ) : '';
+
+		self::send( $emails, 'data-breach-notification', array(
+			'content' => $content,
+			'nature' => $data['nature'],
+			'office_contact' => $data['office_contact'],
+			'consequences' => $data['consequences'],
+			'measures' => $data['measures'],
+		) );
+	}
+
 	public static function send( $emails, $type, $args = array(), $attachments = array() ) {
 		$possible_types = apply_filters( 'gdpr_email_types', array(
-			'delete-request' => apply_filters( 'gdpr_delete_request_email_subject', esc_html__( 'Someone requested to close your account.', 'gdpr' ) ),
-			'delete-resolved' => apply_filters( 'gdpr_delete_resolved_email_subject', esc_html__( 'Your account has been closed.', 'gdpr' ) ),
-			'rectify-request' => apply_filters( 'gdpr_rectify_request_email_subject', esc_html__( 'Someone requested that we rectify data of your account.', 'gdpr' ) ),
-			'rectify-resolved' => apply_filters( 'gdpr_rectify_resolved_email_subject', esc_html__( 'Your request has been completed.', 'gdpr' ) ),
-			'complaint-request' => apply_filters( 'gdpr_complaint_request_email_subject', esc_html__( 'Someone made complaint on behalf of your account.', 'gdpr' ) ),
-			'complaint-resolved' => apply_filters( 'gdpr_complaint_resolved_email_subject', esc_html__( 'Your request has been completed.', 'gdpr' ) ),
-			'export-data-request' => apply_filters( 'gdpr_export_data_request_email_subject', esc_html__( 'Someone requested to download your data.', 'gdpr' ) ),
-			'export-data-resolved' => apply_filters( 'gdpr_export_data_resolved_email_subject', esc_html__( 'Your request has been completed.', 'gdpr' ) ),
+			'delete-request'           => apply_filters( 'gdpr_delete_request_email_subject', esc_html__( 'Someone requested to close your account.', 'gdpr' ) ),
+			'delete-resolved'          => apply_filters( 'gdpr_delete_resolved_email_subject', esc_html__( 'Your account has been closed.', 'gdpr' ) ),
+			'rectify-request'          => apply_filters( 'gdpr_rectify_request_email_subject', esc_html__( 'Someone requested that we rectify data of your account.', 'gdpr' ) ),
+			'rectify-resolved'         => apply_filters( 'gdpr_rectify_resolved_email_subject', esc_html__( 'Your request has been completed.', 'gdpr' ) ),
+			'complaint-request'        => apply_filters( 'gdpr_complaint_request_email_subject', esc_html__( 'Someone made complaint on behalf of your account.', 'gdpr' ) ),
+			'complaint-resolved'       => apply_filters( 'gdpr_complaint_resolved_email_subject', esc_html__( 'Your request has been completed.', 'gdpr' ) ),
+			'export-data-request'      => apply_filters( 'gdpr_export_data_request_email_subject', esc_html__( 'Someone requested to download your data.', 'gdpr' ) ),
+			'export-data-resolved'     => apply_filters( 'gdpr_export_data_resolved_email_subject', esc_html__( 'Your request has been completed.', 'gdpr' ) ),
+			'data-breach-request'      => apply_filters( 'gdpr_data_breach_request_email_subject', esc_html__( 'Someone requested to send a data breach notification.', 'gdpr' ) ),
+			'data-breach-notification' => apply_filters( 'gdpr_data_breach_resolved_email_subject', esc_html__( 'Data Breach Notification.', 'gdpr' ) ),
 		) );
 
 		if ( ! in_array( $type, array_keys( $possible_types ), true ) ) {
 			return;
 		}
 
-		$args['email_title'] = $possible_types[ $type ];
-
-		$args = apply_filters( 'gdpr_email_args', $args );
-
 		$from_email = self::get_do_not_reply_address();
-
     $headers = array( 'From: ' . get_bloginfo( 'name' ) . ' <' . $from_email . '>' );
-		$headers[] = 'Content-Type: text/html; charset=UTF-8';
-
 		foreach ( (array) $emails as $email ) {
 			$headers[] = 'Bcc: ' . $email;
 		}
 
+		$content = self::get_email_content( $type . '.php', $args );
 
-
-		$content = self::get_template_html( $type . '.php', $args );
 		return wp_mail( $no_reply,
 			$possible_types[ $type ],
 			$content,

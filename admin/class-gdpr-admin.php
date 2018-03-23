@@ -174,6 +174,7 @@ class GDPR_Admin {
 			'gdpr_cookie_banner_content'  => 'sanitize_textarea_field',
 			'gdpr_cookie_privacy_excerpt' => 'sanitize_textarea_field',
 			'gdpr_cookie_popup_content'   => array( $this, 'sanitize_cookie_tabs' ),
+			'gdpr_email_limit'            => 'intval',
 		);
 		foreach ( $settings as $option_name => $sanitize_callback ) {
 			register_setting( 'gdpr', $option_name, array( 'sanitize_callback' => $sanitize_callback ) );
@@ -245,8 +246,8 @@ class GDPR_Admin {
 	public function tools_page_template() {
 
 		$tabs = array(
-			'access' => 'Access Data',
-			'audit-log' => 'Audit Log',
+			'access' => esc_html__( 'Access Data', 'gdpr' ),
+			'data-breach' => esc_html__( 'Data Breach', 'gdpr' ),
 		);
 
 		include plugin_dir_path( __FILE__ ) . 'partials/tools.php';
@@ -345,6 +346,86 @@ class GDPR_Admin {
 				</p>
 			</div>
 		<?php
+	}
+
+	function send_data_breach_confirmation_email() {
+		if ( ! isset( $_POST['gdpr_data_breach_nonce'] ) || ! wp_verify_nonce( sanitize_key( $_POST[ 'gdpr_data_breach_nonce' ] ), 'data-breach' ) ) {
+			wp_die( esc_html__( 'We could not verify the user email or the security token. Please try again.', 'gdpr' ) );
+		}
+
+		if (
+			! isset(
+				$_POST['gdpr-data-breach-email-content'],
+				$_POST['gdpr-data-breach-nature'],
+				$_POST['gdpr-name-contact-details-protection-officer'],
+				$_POST['gdpr-likely-consequences'],
+				$_POST['gdpr-measures-taken']
+			)
+		) {
+			wp_die( esc_html__( 'One or more required fields are missing. Please try again.', 'gdpr' ) );
+		}
+
+		$email = get_bloginfo( 'admin_email' );
+		$user = wp_get_current_user();
+		$content = sanitize_textarea_field( wp_unslash( $_POST['gdpr-data-breach-email-content'] ) );
+		$nature = sanitize_textarea_field( wp_unslash( $_POST['gdpr-data-breach-nature'] ) );
+		$office_contact = sanitize_textarea_field( wp_unslash( $_POST['gdpr-name-contact-details-protection-officer'] ) );
+		$consequences = sanitize_textarea_field( wp_unslash( $_POST['gdpr-likely-consequences'] ) );
+		$measures = sanitize_textarea_field( wp_unslash( $_POST['gdpr-measures-taken'] ) );
+
+		$key = wp_generate_password( 20, false );
+		update_option( 'gdpr_data_breach_initiated', array(
+			'key' => $key,
+			'content' => $content,
+			'nature' => $nature,
+			'office_contact' => $office_contact,
+			'consequences' => $consequences,
+			'measures' => $measures
+		)	);
+
+		$confirm_url = add_query_arg(
+		  array(
+		    'type' => 'data-breach-confirmed',
+		    'key' => $key
+		  ),
+		  get_home_url() . wp_get_referer() . '#data-breach'
+		);
+
+		GDPR_Email::send(
+			$email,
+			'data-breach-request',
+			array(
+				'requester' => $user->user_email,
+				'nature'=> $nature,
+				'office_contact' => $office_contact,
+				'consequences' => $consequences,
+				'measures' => $measures,
+				'confirm_url' => $confirm_url,
+			)
+		);
+
+		if ( $time = wp_next_scheduled( 'clean_gdpr_data_breach_request' ) ) {
+			wp_unschedule_event( $time, 'clean_gdpr_data_breach_request' );
+		}
+		wp_schedule_single_event( time() + 2 * DAY_IN_SECONDS, 'clean_gdpr_data_breach_request' );
+
+		add_settings_error( 'gdpr', 'resolved', esc_html__( 'Data breach notification has been initialized. An email confirmation has been sent to the website controller.', 'gdpr' ), 'updated' );
+		set_transient( 'settings_errors', get_settings_errors(), 30 );
+		wp_safe_redirect(
+			esc_url_raw(
+				add_query_arg(
+					array(
+						'settings-updated' => true
+					),
+					wp_get_referer() . '#data-breach'
+				)
+			)
+		);
+		exit;
+	}
+
+	function clean_data_breach_request() {
+		delete_option( 'gdpr_data_breach_initiated' );
 	}
 
 }

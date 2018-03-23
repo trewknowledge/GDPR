@@ -51,6 +51,15 @@
 						</select>
 					</td>
 				</tr>
+				<tr>
+					<th scope="row">
+						<label for="gdpr_email_limit"><?php esc_html_e( 'Outgoing email limitation', 'gdpr' ) ?></label>
+					</th>
+					<td>
+						<?php $limit = get_option( 'gdpr_email_limit', 100 ); ?>
+						<input type="number" name="gdpr_email_limit" id="gdpr_email_limit" value="<?php echo esc_attr( $limit ); ?>">
+					</td>
+				</tr>
 			</tbody>
 		</table>
 		<table class="form-table tab hidden" data-id="cookies">

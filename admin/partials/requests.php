@@ -49,7 +49,7 @@
 							<td class="text-center">
 								<form class="frm-process-rectification" action="<?php echo esc_url( admin_url('admin-post.php') ); ?>" method="post">
 									<?php wp_nonce_field( 'gdpr-request-nonce', 'gdpr_cancel_rectify_nonce' ); ?>
-									<input type="hidden" name="action" value="cancel_request">
+									<input type="hidden" name="action" value="gdpr_cancel_request">
 									<input type="hidden" name="type" value="rectify">
 									<input type="hidden" name="index" value="<?php echo esc_attr( $i ); ?>">
 									<input type="hidden" name="user_email" value="<?php echo esc_attr( $request['email'] ) ?>">
@@ -57,7 +57,7 @@
 								</form>
 								<form class="frm-process-rectification" action="<?php echo esc_url( admin_url('admin-post.php') ); ?>" method="post">
 									<?php wp_nonce_field( 'gdpr-mark-as-resolved', 'gdpr_rectify_mark_resolved_nonce' ); ?>
-									<input type="hidden" name="action" value="mark_resolved">
+									<input type="hidden" name="action" value="gdpr_mark_resolved">
 									<input type="hidden" name="type" value="rectify">
 									<input type="hidden" name="index" value="<?php echo esc_attr( $i ); ?>">
 									<input type="hidden" name="user_email" value="<?php echo esc_attr( $request['email'] ) ?>">
@@ -147,7 +147,7 @@
 		<div class="postbox not-full">
 			<form class="gdpr-manual-email-lookup" method="post" action="<?php echo esc_url( admin_url('admin-post.php') ); ?>">
 				<div class="inside">
-					<input type="hidden" name="action" value="add_to_deletion_requests">
+					<input type="hidden" name="action" value="gdpr_add_to_deletion_requests">
 					<?php wp_nonce_field( 'add-to-deletion-requests', 'gdpr_deletion_requests_nonce' ); ?>
 					<h4>
 						<label for="gdpr-request-email-lookup"><?php esc_html_e( 'Manually add a user', 'gdpr' ); ?></label>
@@ -198,7 +198,7 @@
 								</form>
 								<form class="frm-process-user-deletion" action="<?php echo esc_url( admin_url('admin-post.php') ); ?>" method="post">
 									<?php wp_nonce_field( 'gdpr-request-delete-user', 'gdpr_delete_user' ); ?>
-									<input type="hidden" name="action" value="delete_user">
+									<input type="hidden" name="action" value="gdpr_delete_user">
 									<input type="hidden" name="user_email" value="<?php echo esc_attr( $request['email'] ) ?>">
 									<input type="hidden" name="index" value="<?php echo esc_attr( $i ); ?>">
 									<?php submit_button( esc_html__( 'Delete User', 'gdpr' ), 'primary', '', false ) ?>
