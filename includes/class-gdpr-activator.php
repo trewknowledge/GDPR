@@ -23,9 +23,7 @@
 class GDPR_Activator {
 
 	/**
-	 * Short Description. (use period)
-	 *
-	 * Long Description.
+	 * Sets a CRON jo to clean up the telemetry post type every 12 hours.
 	 *
 	 * @since    1.0.0
 	 */

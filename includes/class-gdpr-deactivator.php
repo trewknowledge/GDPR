@@ -23,9 +23,7 @@
 class GDPR_Deactivator {
 
 	/**
-	 * Short Description. (use period)
-	 *
-	 * Long Description.
+	 * Clears the CRON job that deletes telemetry posts every 12 hours.
 	 *
 	 * @since    1.0.0
 	 */
