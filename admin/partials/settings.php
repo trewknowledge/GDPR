@@ -168,6 +168,9 @@
 				</tr>
 			</tbody>
 		</table>
+		<div class="tab hidden" data-id="consents">
+			<h2><?php esc_html_e( 'Coming Soon', 'gdpr' ); ?></h2>
+		</div>
 		<?php
 		submit_button();
 		?>

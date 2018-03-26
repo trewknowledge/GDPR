@@ -193,8 +193,9 @@ class GDPR_Admin {
 		$current_tab = isset( $_GET['tab'] ) ? sanitize_text_field( wp_unslash( $_GET['tab'] ) ) : 'general'; // Input var okay. CSRF ok.
 		$settings    = get_option( 'gdpr_options', array() );
 		$tabs        = array(
-			'general' => 'General',
-			'cookies' => 'Cookies',
+			'general'  => esc_html__( 'General', 'gdpr' ),
+			'cookies'  => esc_html__( 'Cookies', 'gdpr' ),
+			'consents' => esc_html__( 'Consents', 'gdpr' ),
 		);
 
 		$tabs = apply_filters( 'gdpr_settings_pages', $tabs );
@@ -251,6 +252,7 @@ class GDPR_Admin {
 		$tabs = array(
 			'access' => esc_html__( 'Access Data', 'gdpr' ),
 			'data-breach' => esc_html__( 'Data Breach', 'gdpr' ),
+			'audit-log' => esc_html__( 'Audit Log', 'gdpr' ),
 		);
 
 		include plugin_dir_path( __FILE__ ) . 'partials/tools.php';
