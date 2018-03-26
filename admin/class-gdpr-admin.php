@@ -431,4 +431,18 @@ class GDPR_Admin {
 		delete_option( 'gdpr_data_breach_initiated' );
 	}
 
+	function telemetry_cleanup() {
+		$args = array(
+			'post_type' => 'telemetry',
+			'posts_per_page' => -1,
+			'fields' => 'ids',
+		);
+
+		$telemetry_posts = get_posts( $args );
+
+		foreach ( $telemetry_posts as $post ) {
+			wp_delete_post( $post, true );
+		}
+	}
+
 }

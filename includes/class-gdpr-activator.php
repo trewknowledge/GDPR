@@ -30,7 +30,13 @@ class GDPR_Activator {
 	 * @since    1.0.0
 	 */
 	public static function activate() {
-
+		if ( ! wp_next_scheduled('telemetry_cleanup') ) {
+			wp_schedule_event(
+				time(),
+				'twicedaily',
+				'telemetry_cleanup'
+			);
+		}
 	}
 
 }

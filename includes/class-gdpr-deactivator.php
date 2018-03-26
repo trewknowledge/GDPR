@@ -30,7 +30,7 @@ class GDPR_Deactivator {
 	 * @since    1.0.0
 	 */
 	public static function deactivate() {
-
+		wp_clear_scheduled_hook('telemetry_cleanup');
 	}
 
 }

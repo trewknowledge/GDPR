@@ -113,5 +113,9 @@ if ( isset( $_GET['type'], $_GET['key'] ) ) {
 		</form>
 	</div>
 
+	<div class="tab hidden" data-id="audit-log">
+		<h2><?php esc_html_e( 'Coming Soon', 'gdpr' ) ?></h2>
+	</div>
+
 <!-- #poststuff -->
 </div>

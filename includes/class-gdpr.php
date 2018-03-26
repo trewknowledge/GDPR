@@ -189,6 +189,7 @@ class GDPR {
 		add_action( 'clean_gdpr_data_breach_request', array( $plugin_admin, 'clean_data_breach_request' ), 10, 2 );
 		add_action( 'mail_export_data', array( $requests_public, 'mail_export_data' ), 10, 3 );
 		add_action( 'send_data_breach_emails', array( $plugin_emails, 'send_data_breach_emails' ), 10, 2 );
+		add_action( 'telemetry_cleanup', array( $plugin_admin, 'telemetry_cleanup' ) );
 
 		add_action( 'admin_post_gdpr_delete_user', array( $requests_admin, 'delete_user' ) );
 		add_action( 'admin_post_gdpr_cancel_request', array( $requests_admin, 'cancel_request' ) );
