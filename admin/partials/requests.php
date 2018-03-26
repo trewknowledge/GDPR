@@ -106,7 +106,7 @@
 							<td class="text-center">
 								<form class="frm-process-complaint" action="<?php echo esc_url( admin_url('admin-post.php') ); ?>" method="post">
 									<?php wp_nonce_field( 'gdpr-request-nonce', 'gdpr_cancel_complaint_nonce' ); ?>
-									<input type="hidden" name="action" value="cancel_request">
+									<input type="hidden" name="action" value="gdpr_cancel_request">
 									<input type="hidden" name="type" value="complaint">
 									<input type="hidden" name="index" value="<?php echo esc_attr( $i ); ?>">
 									<input type="hidden" name="user_email" value="<?php echo esc_attr( $request['email'] ) ?>">
@@ -190,7 +190,7 @@
 							<td class="text-center">
 								<form class="frm-process-user-deletion" action="<?php echo esc_url( admin_url('admin-post.php') ); ?>" method="post">
 									<?php wp_nonce_field( 'gdpr-request-nonce', 'gdpr_cancel_delete_nonce' ); ?>
-									<input type="hidden" name="action" value="cancel_request">
+									<input type="hidden" name="action" value="gdpr_cancel_request">
 									<input type="hidden" name="type" value="delete">
 									<input type="hidden" name="user_email" value="<?php echo esc_attr( $request['email'] ) ?>">
 									<input type="hidden" name="index" value="<?php echo esc_attr( $i ); ?>">

@@ -42,6 +42,7 @@
 							$pages = get_pages();
 						?>
 						<select name="gdpr_privacy_policy_page" id="gdpr_privacy_policy_page">
+							<option value=""><?php esc_html_e( '-- Select --', 'gdpr' ) ?></option>
 							<?php foreach ( $pages as $page ): ?>
 								<option value="<?php echo esc_attr( $page->ID ) ?>" <?php selected( $privacy_policy_page, $page->ID ); ?>><?php echo esc_html( $page->post_title ); ?></option>
 							<?php endforeach ?>

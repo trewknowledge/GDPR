@@ -13,8 +13,8 @@
 /**
  * The admin-specific functionality of the plugin.
  *
- * Defines the plugin name, version, and two examples hooks for how to
- * enqueue the admin-specific stylesheet and JavaScript.
+ * Defines the plugin name and version.
+ * Enqueue the admin-specific stylesheet and JavaScript.
  *
  * @package    GDPR
  * @subpackage GDPR/admin
@@ -40,8 +40,6 @@ class GDPR_Admin {
 	 */
 	private $version;
 
-	protected $sections;
-
 	/**
 	 * Initialize the class and set its properties.
 	 *
@@ -50,10 +48,8 @@ class GDPR_Admin {
 	 * @param      string    $version    The version of this plugin.
 	 */
 	public function __construct( $plugin_name, $version ) {
-
 		$this->plugin_name = $plugin_name;
 		$this->version     = $version;
-
 	}
 
 	/**
@@ -135,6 +131,11 @@ class GDPR_Admin {
 		add_action( "load-edit.php", array( 'GDPR_Help', 'add_telemetry_help' ) );
 	}
 
+	/**
+	 * Sanitizing user input on the cookie tabs.
+	 * @param  array $tabs The cookie tabs.
+	 * @return array       The sanitized options.
+	 */
 	function sanitize_cookie_tabs( $tabs ) {
 
 		$output = array();
@@ -171,6 +172,10 @@ class GDPR_Admin {
 		return $output;
 	}
 
+	/**
+	 * Register settings.
+	 * @since  1.0.0
+	 */
 	public function register_settings() {
 		$settings = array(
 			'gdpr_privacy_policy_page'    => 'intval',
@@ -258,6 +263,10 @@ class GDPR_Admin {
 		include plugin_dir_path( __FILE__ ) . 'partials/tools.php';
 	}
 
+	/**
+	 * The data markup on the access data page.
+	 * @since  1.0.0
+	 */
 	function access_data() {
 		if ( ! isset( $_POST['nonce'], $_POST['email'] ) || ! wp_verify_nonce( sanitize_key( wp_unslash( $_POST['nonce'] ) ), 'access-data' ) ) {
 			wp_send_json_error();
@@ -343,6 +352,10 @@ class GDPR_Admin {
 
 	}
 
+	/**
+	 * Admin notice when the user haven't picked a privacy policy page.
+	 * @since  1.0.0
+	 */
 	function privacy_policy_page_missing() {
 		?>
 			<div class="notice notice-error is-dismissible">
@@ -353,6 +366,10 @@ class GDPR_Admin {
 		<?php
 	}
 
+	/**
+	 * Sends a confirmation email to the admin email address before continuing with the data breach notification.
+	 * @since  1.0.0
+	 */
 	function send_data_breach_confirmation_email() {
 		if ( ! isset( $_POST['gdpr_data_breach_nonce'] ) || ! wp_verify_nonce( sanitize_key( $_POST[ 'gdpr_data_breach_nonce' ] ), 'data-breach' ) ) {
 			wp_die( esc_html__( 'We could not verify the user email or the security token. Please try again.', 'gdpr' ) );
@@ -429,10 +446,18 @@ class GDPR_Admin {
 		exit;
 	}
 
+	/**
+	 * CRON Job runs this after a couple days to cancel the data breach request.
+	 * @since  1.0.0
+	 */
 	function clean_data_breach_request() {
 		delete_option( 'gdpr_data_breach_initiated' );
 	}
 
+	/**
+	 * CRON job runs this to clean up the telemetry post type every 12 hours.
+	 * @since  1.0.0
+	 */
 	function telemetry_cleanup() {
 		$args = array(
 			'post_type' => 'telemetry',

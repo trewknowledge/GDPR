@@ -13,8 +13,8 @@
 /**
  * The public-facing functionality of the plugin.
  *
- * Defines the plugin name, version, and two examples hooks for how to
- * enqueue the public-facing stylesheet and JavaScript.
+ * Defines the plugin name and version.
+ * Enqueue the admin-specific stylesheet and JavaScript.
  *
  * @package    GDPR
  * @subpackage GDPR/public
@@ -73,6 +73,11 @@ class GDPR_Public {
 		) );
 	}
 
+	/**
+	 * Prints the cookie bar for the end user to save the cookie settings.
+	 *
+	 * @return mixed The cookie bar HTML.
+	 */
 	public function cookie_bar() {
 		if ( isset( $_COOKIE['gdpr_approved_cookies'] ) ) { // Input var okay.
 			return;
@@ -87,6 +92,11 @@ class GDPR_Public {
 		include plugin_dir_path( __FILE__ ) . 'partials/cookie-bar.php';
 	}
 
+	/**
+	 * The cookie preferences modal.
+	 *
+	 * @return mixed The modal HTML.
+	 */
 	public function cookie_preferences() {
 		$cookie_privacy_excerpt = get_option( 'gdpr_cookie_privacy_excerpt', '' );
 		$approved_cookies = isset( $_COOKIE['gdpr_approved_cookies'] ) ? json_decode( wp_unslash( $_COOKIE['gdpr_approved_cookies'] ) ) : array();
@@ -98,6 +108,10 @@ class GDPR_Public {
 		include plugin_dir_path( __FILE__ ) . 'partials/cookie-preferences.php';
 	}
 
+	/**
+	 * Prints the confirmation dialogs.
+	 * @return mixed The confirmation dialogs HTML.
+	 */
 	public function confirmation_screens() {
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'public/partials/confirmation-screens.php';
 	}

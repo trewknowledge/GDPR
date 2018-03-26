@@ -20,17 +20,13 @@
 class GDPR_Requests_Public extends GDPR_Requests {
 
 	/**
-	 * Initialize the class and set its properties.
+	 * Removes the user from the requests table, sends a notification email and
+	 * delete the user from the site
 	 *
-	 * @since    1.0.0
-	 * @param      string    $plugin_name       The name of this plugin.
-	 * @param      string    $version    The version of this plugin.
+	 * @param  WP_User $user  The user object.
+	 * @param  string  $index The request key on the requests array.
+	 * @return void
 	 */
-	public function __construct( $plugin_name, $version ) {
-		parent::__construct( $plugin_name, $version );
-	}
-
-
 	function delete_user( $user, $index ) {
 		if ( ! $user instanceof WP_User ) {
 			return false;
@@ -47,6 +43,12 @@ class GDPR_Requests_Public extends GDPR_Requests {
 		}
 	}
 
+	/**
+	 * Prints a request form.
+	 *
+	 * @param  string $type The type of request to display the correct form.
+	 * @return mixed        Print the form html.
+	 */
 	static function request_form( $type ) {
 		if ( ! in_array( $type, parent::$allowed_types ) ) {
 			return;
@@ -55,6 +57,11 @@ class GDPR_Requests_Public extends GDPR_Requests {
 		include plugin_dir_path( dirname( __FILE__ ) ) . 'public/partials/' . $type . '-form.php';
 	}
 
+	/**
+	 * Sends an email to the end user so it can confirm his request.
+	 *
+	 * @return void
+	 */
 	function send_request_email() {
 		if ( ! isset( $_POST['type'] ) || ! in_array( $_POST['type'], parent::$allowed_types ) ) {
 				wp_die( esc_html__( 'Invalid type of request. Please try again.', 'gdpr' ) );
@@ -175,6 +182,12 @@ class GDPR_Requests_Public extends GDPR_Requests {
 		}
 	}
 
+	/**
+	 * Runs when a user confirms a request email.
+	 * This process the request, set the request to confirmed on the database.
+	 *
+	 * @return void
+	 */
 	function request_confirmed() {
 		if ( ! is_front_page() || ! isset( $_GET['type'], $_GET['key'], $_GET['email'] ) ) {
 			return;
@@ -266,6 +279,14 @@ class GDPR_Requests_Public extends GDPR_Requests {
 		}
 	}
 
+	/**
+	 * Sends the user data export email with the chosen format.
+	 *
+	 * @param  string $email  The recipient.
+	 * @param  string $format The export format. XML or JSON.
+	 * @param  string $key    The request array key.
+	 * @return void
+	 */
 	function mail_export_data( $email, $format, $key ) {
 		$email = sanitize_email( $email );
 		$format = sanitize_text_field( wp_unslash( $format ) );

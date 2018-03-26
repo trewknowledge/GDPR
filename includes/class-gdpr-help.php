@@ -1,6 +1,17 @@
 <?php
+/**
+ * This file is responsible for adding help sections to the plugin pages.
+ */
+
+/**
+ * A class that adds help tabs to the plugin pages.
+ */
 class GDPR_Help {
 
+	/**
+	 * Add the requests page help tabs.
+	 * @since 1.0.0
+	 */
 	public static function add_requests_help() {
 		$overview = '<h2>' . esc_html__( 'Overview', 'gdpr' ) . '</h2>' .
 			'<p>' . esc_html__( 'This page has multiple request tables. Users can request multiple things like getting deleted from the site or having their data rectified. All requests will come to these tables.', 'gdpr' ) . '</p>';
@@ -38,6 +49,10 @@ class GDPR_Help {
 		) );
 	}
 
+	/**
+	 * Add the tools page help tabs.
+	 * @since 1.0.0
+	 */
 	public static function add_tools_help() {
 		$overview = '<h2>' . esc_html__( 'Overview', 'gdpr' ) . '</h2>' .
 			'<p>' . esc_html__( 'We added tools to make your life easier when you need to perform administrative tasks like notify all your users of a possible data breach.', 'gdpr' ) . '</p>';
@@ -66,6 +81,10 @@ class GDPR_Help {
 		) );
 	}
 
+	/**
+	 * Add the settings page help tabs.
+	 * @since 1.0.0
+	 */
 	public static function add_settings_help() {
 		$general_settings_help = '<h2>' . esc_html__( 'General Settings', 'gdpr' ) . '</h2>' .
 			'<p>' . esc_html__( 'The plugin needs to know your privacy policy page to track updates to it and ask users to reconsent to your new terms.', 'gdpr' ) . '</p>' .
@@ -113,6 +132,10 @@ class GDPR_Help {
 		) );
 	}
 
+	/**
+	 * Add the telemetry page help tabs.
+	 * @since 1.0.0
+	 */
 	public static function add_telemetry_help() {
 		if ( 'edit-telemetry' !== get_current_screen()->id ) {
 			return;

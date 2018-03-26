@@ -1,15 +1,21 @@
 <?php
+/**
+ * This file handle emailing users.
+ */
+
+/**
+ * Handles emailing users.
+ */
 class GDPR_Email {
 	/**
 	 * Locate template.
 	 *
 	 * Locate the called template.
 	 * Search Order:
-	 * 1. /themes/theme/gdpr/templates/$template_name
+	 * 1. /themes/theme/gdpr/templates/email/$template_name
 	 * 2. /plugins/gdpr/templates/$template_name.
 	 *
-	 * @since 0.1.0
-	 *
+	 * @since 1.0.0
 	 * @param   string  $template_name    Template to load.
 	 * @return  string                    Path to the template file.
 	 */
@@ -37,12 +43,9 @@ class GDPR_Email {
 	 *
 	 * Search for the template and include the file.
 	 *
-	 * @since 0.1.0
-	 *
+	 * @since 1.0.0
 	 * @param string  $template_name    Template to load.
-	 * @param array   $args             Args passed for the template file.
-	 * @param string  $template_path    Path to templates.
-	 * @param string  $default_path     Default path to template files.
+	 * @param array   $args             Arguments passed to the template file.
 	 */
 	private static function get_template( $template_name, $args = array() ) {
 		$template_file = self::locate_template( $template_name );
@@ -53,12 +56,24 @@ class GDPR_Email {
 		include $template_file;
 	}
 
+	/**
+	 * Get the email content from the correct file.
+	 * @since  1.0.0
+	 * @param  string $template_name Template to load.
+	 * @param  array  $args          Arguments passed to the template file.
+	 * @return string                Email contents.
+	 */
 	public static function get_email_content( $template_name, $args = array() ) {
 		ob_start();
 		self::get_template( $template_name, $args );
 		return ob_get_clean();
 	}
 
+	/**
+	 * Get a noreply email address.
+	 * @since  1.0.0
+	 * @return string The noreply email address
+	 */
 	private static function get_do_not_reply_address() {
 	  $sitename = strtolower( $_SERVER['SERVER_NAME'] );
     if ( substr( $sitename, 0, 4 ) === 'www.' ) {
@@ -68,6 +83,12 @@ class GDPR_Email {
 	  return apply_filters( 'gdpr_do_not_reply_address', 'noreply@' . $sitename );
 	}
 
+	/**
+	 * Create batches of users so we can throtle emails.
+	 * Schedule CRON jobs every hour that sends the current batch of emails.
+	 * @since  1.0.0
+	 * @param  string $key The confirmation key.
+	 */
 	public static function prepare_data_breach_emails( $key ) {
 		$data_breach = get_option( 'gdpr_data_breach_initiated', array( 'key' => '' ) );
 		if ( $key !== $data_breach['key'] ) {
@@ -90,6 +111,13 @@ class GDPR_Email {
 		}
 	}
 
+	/**
+	 * The CRON job set by the prepare_data_breach_emails calls this function.
+	 * This sends one of the data breach batch emails.
+	 * @since  1.0.0
+	 * @param  array  $emails The batch recipients.
+	 * @param  string $data   The contents of the email.
+	 */
 	public function send_data_breach_emails( $emails, $data ) {
 		$subject = apply_filters( 'gdpr_data_breach_notification_email_subject', esc_html__( 'Data Breach Notification', 'gdpr' ) );
 
@@ -97,13 +125,24 @@ class GDPR_Email {
 
 		self::send( $emails, 'data-breach-notification', array(
 			'content' => $content,
-			'nature' => $data['nature'],
-			'office_contact' => $data['office_contact'],
-			'consequences' => $data['consequences'],
-			'measures' => $data['measures'],
+			'nature' => sanitize_textarea_field( wp_unslash( $data['nature'] ) ),
+			'office_contact' => sanitize_textarea_field( wp_unslash( $data['office_contact'] ) ),
+			'consequences' => sanitize_textarea_field( wp_unslash( $data['consequences'] ) ),
+			'measures' => sanitize_textarea_field( wp_unslash( $data['measures'] ) ),
 		) );
 	}
 
+	/**
+	 * Actually send an email.
+	 * This check if the type is one of the possible types of email.
+	 * Set the headers. Get the email content from the correct file.
+	 * @since  1.0.0
+	 * @param  array  $emails       The recipient email addresses.
+	 * @param  string $type         The email type.
+	 * @param  array  $args         The arguments to be used by the email template.
+	 * @param  array  $attachments  Attachments
+	 * @return bool                 Whether the email contents were sent successfully.
+	 */
 	public static function send( $emails, $type, $args = array(), $attachments = array() ) {
 		$possible_types = apply_filters( 'gdpr_email_types', array(
 			'delete-request'           => apply_filters( 'gdpr_delete_request_email_subject', esc_html__( 'Someone requested to close your account.', 'gdpr' ) ),

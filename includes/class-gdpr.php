@@ -66,6 +66,7 @@ class GDPR {
 
 		$this->load_dependencies();
 		$this->set_locale();
+		$this->define_common_hooks();
 		$this->define_admin_hooks();
 		$this->define_public_hooks();
 
@@ -76,16 +77,6 @@ class GDPR {
 
 	/**
 	 * Load the required dependencies for this plugin.
-	 *
-	 * Include the following files that make up the plugin:
-	 *
-	 * - GDPR_Loader. Orchestrates the hooks of the plugin.
-	 * - GDPR_i18n. Defines internationalization functionality.
-	 * - GDPR_Admin. Defines all hooks for the admin area.
-	 * - GDPR_Public. Defines all hooks for the public side of the site.
-	 *
-	 * Create an instance of the loader which will be used to register the hooks
-	 * with WordPress.
 	 *
 	 * @since    1.0.0
 	 * @access   private
@@ -136,10 +127,6 @@ class GDPR {
 
 	/**
 	 * Define the locale for this plugin for internationalization.
-	 *
-	 * Uses the GDPR_i18n class in order to set the domain and to register the hook
-	 * with WordPress.
-	 *
 	 * @since    1.0.0
 	 * @access   private
 	 */
@@ -154,6 +141,17 @@ class GDPR {
 	}
 
 	/**
+	 * Register all of the common hooks.
+	 * @since    1.0.0
+	 * @access   private
+	 */
+	private function define_common_hooks() {
+		add_action( 'init', array( $this, 'block_cookies' ) );
+		add_action( 'admin_init', array( $this, 'block_cookies' ) );
+		add_action( 'wp_ajax_gdpr_generate_data_export', array( $this, 'export_data' ) );
+	}
+
+	/**
 	 * Register all of the hooks related to the admin area functionality
 	 * of the plugin.
 	 *
@@ -163,70 +161,45 @@ class GDPR {
 	private function define_admin_hooks() {
 
 		$plugin_admin = new GDPR_Admin( $this->get_plugin_name(), $this->get_version() );
+		$requests_admin = new GDPR_Requests_Admin( $this->get_plugin_name(), $this->get_version() );
 		$telemetry = new GDPR_Telemetry( $this->get_plugin_name(), $this->get_version() );
 		$requests = new GDPR_Requests( $this->get_plugin_name(), $this->get_version() );
-		$requests_admin = new GDPR_Requests_Admin( $this->get_plugin_name(), $this->get_version() );
-		$requests_public = new GDPR_Requests_Public( $this->get_plugin_name(), $this->get_version() );
 		$plugin_emails =  new GDPR_Email();
 
+
 		$privacy_page = get_option( 'gdpr_privacy_policy_page', '' );
-
-		add_action( 'admin_enqueue_scripts', array( $plugin_admin, 'enqueue_styles' ) );
-		add_action( 'admin_enqueue_scripts', array( $plugin_admin, 'enqueue_scripts' ) );
-		add_action( 'admin_menu', array( $plugin_admin, 'add_menu' ) );
-		add_action( 'admin_init', array( $plugin_admin, 'register_settings' ) );
-		add_action( 'wp_ajax_gdpr_access_data', array( $plugin_admin, 'access_data' ) );
-		add_action( 'wp_ajax_gdpr_generate_data_export', array( $this, 'export_data' ) );
-		add_action( 'init', array( $this, 'block_cookies' ) );
-		add_action( 'admin_init', array( $this, 'block_cookies' ) );
-
 		if ( empty( $privacy_page ) ) {
-			add_action( 'admin_notices', $plugin_admin, 'privacy_policy_page_missing' );
+			add_action( 'admin_notices',                array( $plugin_admin, 'privacy_policy_page_missing' ) );
 		}
+		add_action( 'admin_enqueue_scripts',          array( $plugin_admin, 'enqueue_styles' ) );
+		add_action( 'admin_enqueue_scripts',          array( $plugin_admin, 'enqueue_scripts' ) );
+		add_action( 'admin_menu',                     array( $plugin_admin, 'add_menu' ) );
+		add_action( 'admin_init',                     array( $plugin_admin, 'register_settings' ) );
+		add_action( 'wp_ajax_gdpr_access_data',       array( $plugin_admin, 'access_data' ) );
+		add_action( 'admin_post_gdpr_data_breach',    array( $plugin_admin, 'send_data_breach_confirmation_email' ) );
+		add_action( 'clean_gdpr_data_breach_request', array( $plugin_admin, 'clean_data_breach_request' ), 10, 2 ); // CRON JOB
+		add_action( 'telemetry_cleanup',              array( $plugin_admin, 'telemetry_cleanup' ) ); // CRON JOB
 
-		add_action( 'clean_gdpr_requests', array( $requests, 'clean_requests' ) );
-		add_action( 'clean_gdpr_user_request_key', array( $requests, 'clean_user_request_key' ), 10, 2 );
-		add_action( 'clean_gdpr_data_breach_request', array( $plugin_admin, 'clean_data_breach_request' ), 10, 2 );
-		add_action( 'mail_export_data', array( $requests_public, 'mail_export_data' ), 10, 3 );
-		add_action( 'send_data_breach_emails', array( $plugin_emails, 'send_data_breach_emails' ), 10, 2 );
-		add_action( 'telemetry_cleanup', array( $plugin_admin, 'telemetry_cleanup' ) );
-
-		add_action( 'admin_post_gdpr_delete_user', array( $requests_admin, 'delete_user' ) );
-		add_action( 'admin_post_gdpr_cancel_request', array( $requests_admin, 'cancel_request' ) );
+		add_action( 'admin_post_gdpr_delete_user',              array( $requests_admin, 'delete_user' ) );
+		add_action( 'admin_post_gdpr_cancel_request',           array( $requests_admin, 'cancel_request' ) );
 		add_action( 'admin_post_gdpr_add_to_deletion_requests', array( $requests_admin, 'add_to_deletion_requests' ) );
-		add_action( 'admin_post_gdpr_mark_resolved', array( $requests_admin, 'mark_resolved' ) );
-		add_action( 'admin_post_gdpr_data_breach', array( $plugin_admin, 'send_data_breach_confirmation_email' ) );
-		add_action( 'wp_ajax_gdpr_anonymize_comments', array( $requests_admin, 'anonymize_comments' ) );
-		add_action( 'wp_ajax_gdpr_reassign_content', array( $requests_admin, 'reassign_content' ) );
+		add_action( 'admin_post_gdpr_mark_resolved',            array( $requests_admin, 'mark_resolved' ) );
+		add_action( 'wp_ajax_gdpr_anonymize_comments',          array( $requests_admin, 'anonymize_comments' ) );
+		add_action( 'wp_ajax_gdpr_reassign_content',            array( $requests_admin, 'reassign_content' ) );
 
-		add_action( 'wp', array( $requests_public, 'request_confirmed' ) );
-
-		add_action( 'admin_post_gdpr_send_request_email', array( $requests_public, 'send_request_email' ) );
-		add_action( 'admin_post_nopriv_gdpr_send_request_email', array( $requests_public, 'send_request_email' ) );
-
-		add_action( 'init', array( $telemetry, 'register_post_type' ) );
-		add_filter( 'http_api_debug', array( $telemetry, 'log_request' ), 10, 5 );
-		add_filter( 'manage_telemetry_posts_columns', array( $telemetry, 'manage_columns' ) );
+		add_action( 'init',                                 array( $telemetry, 'register_post_type' ) );
+		add_filter( 'http_api_debug',                       array( $telemetry, 'log_request' ), 10, 5 );
+		add_filter( 'manage_telemetry_posts_columns',       array( $telemetry, 'manage_columns' ) );
 		add_filter( 'manage_telemetry_posts_custom_column', array( $telemetry, 'custom_column' ), 10, 2 );
-		add_filter( 'restrict_manage_posts', array( $telemetry, 'actions_above_table' ) );
-		add_filter( 'views_edit-telemetry', '__return_null' );
+		add_filter( 'restrict_manage_posts',                array( $telemetry, 'actions_above_table' ) );
+		add_filter( 'views_edit-telemetry',                 '__return_null' );
 
-	}
 
-	function block_cookies() {
-		$approved_cookies = ( isset( $_COOKIE['gdpr_approved_cookies'] ) ? json_decode( wp_unslash( $_COOKIE['gdpr_approved_cookies'] ), true ) : array() );
-		if ( ! in_array( 'comment_author', $approved_cookies ) ) {
-			remove_action( 'set_comment_cookies', 'wp_set_comment_cookies' );
-		}
-		foreach( headers_list() as $header ) {
-	    if ( preg_match( '/Set-Cookie/', $header ) ) {
-	    	$cookie_name = explode('=', $header);
-	    	$cookie_name = str_replace( 'Set-Cookie: ', '', $cookie_name[0] );
-	    	if ( ! in_array( $cookie_name, $approved_cookies ) ) {
-		      header_remove( 'Set-Cookie' );
-	    	}
-	    }
-		}
+		// CRON JOBS
+		add_action( 'clean_gdpr_requests',         array( $requests, 'clean_requests' ) );
+		add_action( 'clean_gdpr_user_request_key', array( $requests, 'clean_user_request_key' ), 10, 2 );
+
+		add_action( 'send_data_breach_emails',     array( $plugin_emails, 'send_data_breach_emails' ), 10, 2 );
 	}
 
 	/**
@@ -239,15 +212,43 @@ class GDPR {
 	private function define_public_hooks() {
 
 		$plugin_public = new GDPR_Public( $this->get_plugin_name(), $this->get_version() );
+		$requests_public = new GDPR_Requests_Public( $this->get_plugin_name(), $this->get_version() );
 
 		add_action( 'wp_enqueue_scripts', array( $plugin_public, 'enqueue_styles' ) );
 		add_action( 'wp_enqueue_scripts', array( $plugin_public, 'enqueue_scripts' ) );
-		add_action( 'wp_footer', array( $plugin_public, 'cookie_bar' ) );
-		add_action( 'wp_footer', array( $plugin_public, 'cookie_preferences' ) );
-		add_action( 'wp_footer', array( $plugin_public, 'confirmation_screens' ) );
+		add_action( 'wp_footer',          array( $plugin_public, 'cookie_bar' ) );
+		add_action( 'wp_footer',          array( $plugin_public, 'cookie_preferences' ) );
+		add_action( 'wp_footer',          array( $plugin_public, 'confirmation_screens' ) );
 
+		add_action( 'wp',                                        array( $requests_public, 'request_confirmed' ) );
+		add_action( 'admin_post_gdpr_send_request_email',        array( $requests_public, 'send_request_email' ) );
+		add_action( 'admin_post_nopriv_gdpr_send_request_email', array( $requests_public, 'send_request_email' ) );
+		add_action( 'mail_export_data',                          array( $requests_public, 'mail_export_data' ), 10, 3 ); // CRON JOB
 	}
 
+	/**
+	 * Block cookies created by through that are not on the list of allowed cookies.
+	 * @since  1.0.0
+	 */
+	function block_cookies() {
+		$approved_cookies = ( isset( $_COOKIE['gdpr_approved_cookies'] ) ? json_decode( wp_unslash( $_COOKIE['gdpr_approved_cookies'] ), true ) : array() );
+		foreach( headers_list() as $header ) {
+	    if ( preg_match( '/Set-Cookie/', $header ) ) {
+	    	$cookie_name = explode('=', $header);
+	    	$cookie_name = str_replace( 'Set-Cookie: ', '', $cookie_name[0] );
+	    	if ( ! in_array( $cookie_name, $approved_cookies ) ) {
+		      header_remove( 'Set-Cookie' );
+	    	}
+	    }
+		}
+	}
+
+	/**
+	 * Get user meta for exporting.
+	 * @since  1.0.0
+	 * @param  int   $user_id  The user ID.
+	 * @return array           The user meta minus not important metas.
+	 */
 	static function get_user_meta( $user_id ) {
 		$usermeta = get_user_meta( $user_id );
 		$remove_metadata = array(
@@ -275,6 +276,13 @@ class GDPR {
 		return array_diff_key( $usermeta, array_flip( $remove_metadata ) );
 	}
 
+	/**
+	 * Generates the export in JSON or XML formats.
+	 * @since  1.0.0
+	 * @param  string $email  The user email.
+	 * @param  string $format Either XML or JSON.
+	 * @return string         Returns the file as string.
+	 */
 	static function generate_export( $email, $format ) {
 
 		$email = sanitize_email( $email );
@@ -382,6 +390,10 @@ class GDPR {
 
 	}
 
+	/**
+	 * Export the generated export file.
+	 * @since 1.0.0
+	 */
 	function export_data() {
 		if ( ! isset( $_POST['nonce'], $_POST['email'], $_POST['type'] ) || ! wp_verify_nonce( sanitize_key( wp_unslash( $_POST['nonce'] ) ), 'export-data' ) ) {
 			wp_send_json_error();

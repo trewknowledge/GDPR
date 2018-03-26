@@ -37,6 +37,13 @@ class GDPR_Requests {
 	 */
 	protected static $version;
 
+	/**
+	 * Allowed types of requests.
+	 *
+	 * @since    1.0.0
+	 * @access   protected
+	 * @var      array
+	 */
 	protected static $allowed_types = array( 'export-data', 'rectify', 'complaint', 'delete' );
 
 
@@ -44,20 +51,29 @@ class GDPR_Requests {
 	 * Initialize the class and set its properties.
 	 *
 	 * @since    1.0.0
-	 * @param      string    $plugin_name       The name of this plugin.
-	 * @param      string    $version    The version of this plugin.
+	 * @param    string    $plugin_name   The name of this plugin.
+	 * @param    string    $version       The version of this plugin.
 	 */
 	public function __construct( $plugin_name, $version ) {
-
 		self::$plugin_name = $plugin_name;
 		self::$version     = $version;
-
 	}
 
+	/**
+	 * Allowed types getter.
+	 * @since 1.0.0
+	 * @return array The allowed request types.
+	 */
 	protected function get_allowed_types() {
     return self::$allowed_types;
   }
 
+  /**
+   * Checks if the user has any content published on the site. Including comments.
+   * @since 1.0.0
+   * @param  WP_User/int 	$user The user object or the user ID.
+   * @return bool               Whether the user has content or not.
+   */
 	static function user_has_content( $user ) {
 		if ( ! $user instanceof WP_User ) {
 			if ( ! is_int( $user ) ) {
@@ -90,6 +106,12 @@ class GDPR_Requests {
 		return $extra_checks;
 	}
 
+	/**
+	 * Removes the user from the requests list.
+	 * @since 1.0.0
+	 * @param  string $index The request key.
+	 * @return bool          Whether the user was removed from the requests list.
+	 */
 	protected function remove_from_requests( $index ) {
 		$requests = ( array ) get_option( 'gdpr_requests', array() );
 		$index = sanitize_text_field( wp_unslash( $index ) );
@@ -103,6 +125,13 @@ class GDPR_Requests {
 		return false;
 	}
 
+	/**
+	 * Set the user request as confirmed.
+	 * Unschedules the cron jobs that clean up the requests that haven't been confirmed.
+	 * @since  1.0.0
+	 * @param  string $key The request key.
+	 * @return bool        Whether the request was confirmed or not.
+	 */
 	protected function confirm_request( $key ) {
 		$key = sanitize_text_field( wp_unslash( $key ) );
 		$requests = ( array ) get_option( 'gdpr_requests', array() );
@@ -129,6 +158,12 @@ class GDPR_Requests {
 		return true;
 	}
 
+	/**
+	 * The function the CRON job calls. It checks after a couple days if a request was confirmed or not.
+	 * If it wasn't, the request gets removed.
+	 * @since  1.0.0
+	 * @param  string $key The request key.
+	 */
 	function clean_requests( $key ) {
 		$key = sanitize_text_field( $key );
 		$requests = ( array ) get_option( 'gdpr_requests', array() );
@@ -141,6 +176,12 @@ class GDPR_Requests {
 		}
 	}
 
+	/**
+	 * Whenever a user places a request, the request key is saved as a user meta for comparison.
+	 * @since  1.0.0
+	 * @param  int    $user_id  The user ID.
+	 * @param  string $meta_key The user meta key.
+	 */
 	function clean_user_request_key( $user_id, $meta_key ) {
 		$user_id = ( int ) $user_id;
 		$meta_key = sanitize_text_field( $meta_key );
@@ -152,6 +193,13 @@ class GDPR_Requests {
 		}
 	}
 
+	/**
+	 * Add a user to the request list. Set up the cleanup CRON job.
+	 * @param string  $email  The requestant email.
+	 * @param string  $type   The type of request.
+	 * @param string  $data   Some types of request have an extra field. E.g. Complaint and Rectify data.
+	 * @param string  $key    The request key.
+	 */
 	protected function add_to_requests( $email, $type, $data = null, $confirmed = false ) {
 		$requests = ( array ) get_option( 'gdpr_requests', array() );
 

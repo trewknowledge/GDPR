@@ -20,16 +20,9 @@
 class GDPR_Requests_Admin extends GDPR_Requests {
 
 	/**
-	 * Initialize the class and set its properties.
-	 *
-	 * @since    1.0.0
-	 * @param      string    $plugin_name       The name of this plugin.
-	 * @param      string    $version    The version of this plugin.
+	 * Add the user to the deletion requests list.
+	 * @since  1.0.0
 	 */
-	public function __construct( $plugin_name, $version ) {
-		parent::__construct( $plugin_name, $version );
-	}
-
 	function add_to_deletion_requests() {
 		if ( ! isset( $_POST['gdpr_deletion_requests_nonce'] ) || ! wp_verify_nonce( sanitize_key( $_POST['gdpr_deletion_requests_nonce'] ), 'add-to-deletion-requests' ) ) {
 			wp_die( esc_html__( 'We could not verify the user email or the security token. Please try again.', 'gdpr' ) );
@@ -131,6 +124,10 @@ class GDPR_Requests_Admin extends GDPR_Requests {
 		exit;
 	}
 
+	/**
+	 * Cancels a request.
+	 * @since 1.0.0
+	 */
 	function cancel_request() {
 		if ( ! isset( $_POST['type'] ) ) {
 			wp_die( esc_html__( 'We could not verify the type of request you want to cancel.', 'gdpr' ) );
@@ -169,6 +166,10 @@ class GDPR_Requests_Admin extends GDPR_Requests {
 		exit;
 	}
 
+	/**
+	 * Marks a request as resolved and notifies the user.
+	 * @since 1.0.0
+	 */
 	function mark_resolved() {
 		if ( ! isset( $_POST['type'] ) ) {
 			wp_die( esc_html__( 'We could not verify the type of request you want to cancel.', 'gdpr' ) );
@@ -210,6 +211,10 @@ class GDPR_Requests_Admin extends GDPR_Requests {
 		exit;
 	}
 
+	/**
+	 * Deletes a user from the admin interface.
+	 * @since  1.0.0
+	 */
 	function delete_user() {
 		if ( ! isset( $_POST['gdpr_delete_user'], $_POST['user_email'], $_POST['index'] ) || ! wp_verify_nonce( $_POST['gdpr_delete_user'], 'gdpr-request-delete-user' ) ) {
 			wp_die( esc_html__( 'We could not verify the user email or the security token. Please try again.', 'gdpr' ) );
@@ -239,6 +244,10 @@ class GDPR_Requests_Admin extends GDPR_Requests {
 		exit;
 	}
 
+	/**
+	 * Anonymize comments from a user.
+	 * @since  1.0.0
+	 */
 	function anonymize_comments() {
 		if ( ! isset( $_POST['nonce'] ) || ! wp_verify_nonce( sanitize_key( wp_unslash( $_POST['nonce'] ) ), 'gdpr-anonymize-comments-action' ) ) {
 			wp_send_json_error( esc_html__( 'We could not verify the security token. Please try again.', 'gdpr' ) );
@@ -272,6 +281,10 @@ class GDPR_Requests_Admin extends GDPR_Requests {
 		wp_send_json_success();
 	}
 
+	/**
+	 * Reassign content to a different user.
+	 * @since  1.0.0
+	 */
 	function reassign_content() {
 		if ( ! isset( $_POST['nonce'] ) || ! wp_verify_nonce( sanitize_key( wp_unslash( $_POST['nonce'] ) ), 'gdpr-reassign-content-action' ) ) {
 			wp_send_json_error( esc_html__( 'We could not verify the security token. Please try again.', 'gdpr' ) );

@@ -20,12 +20,10 @@
  */
 class GDPR_Telemetry {
 
-	protected static $options;
-
-	public function __construct( $plugin_name, $version ) {
-
-	}
-
+	/**
+	 * Registers the telemetry post type.
+	 * @since  1.0.0
+	 */
 	public function register_post_type() {
 		register_post_type(
 			'telemetry',
@@ -49,6 +47,15 @@ class GDPR_Telemetry {
 		);
 	}
 
+	/**
+	 * Log the call request.
+	 * @param  object $response The call response.
+	 * @param  [type] $type     Context under which the hook is fired.
+	 * @param  [type] $class    HTTP transport used.
+	 * @param  [type] $args     HTTP request arguments.
+	 * @param  [type] $url      The request URL.
+	 * @since  1.0.0
+	 */
 	public function log_request( $response, $type, $class, $args, $url ) {
 		/* Only response type */
 		if ( 'response' !== $type ) {
@@ -103,6 +110,11 @@ class GDPR_Telemetry {
 		) );
 	}
 
+	/**
+	 * Insert the telemetry post.
+	 * @param  array  $meta  Meta values.
+	 * @return int           The post ID.
+	 */
 	private function insert_post( $meta ) {
 		/* Empty? */
 		if ( empty( $meta ) ) {
@@ -118,13 +130,18 @@ class GDPR_Telemetry {
 		);
 
 		/* Add meta values */
-		foreach( $meta as $key => $value ) {
+		foreach( (array) $meta as $key => $value ) {
 			add_post_meta( $post_id, '_gdpr_telemetry_' .$key, $value, true );
 		}
 
 		return $post_id;
 	}
 
+	/**
+	 * Add a Delete All button on top of the table.
+	 * @param  string $post_type The post type.
+	 * @since  1.0.0
+	 */
 	public static function actions_above_table( $post_type ) {
 		if ( 'telemetry' !== $post_type ) {
 			return;
@@ -146,6 +163,12 @@ class GDPR_Telemetry {
 		<?php
 	}
 
+	/**
+	 * Adding custom columns.
+	 * @since  1.0.0
+	 * @param  array $columns The columns array.
+	 * @return array          The new columns.
+	 */
 	public function manage_columns( $columns ) {
 		return array(
 			'url'      => esc_html__( 'Destination', 'gdpr' ),
@@ -156,6 +179,12 @@ class GDPR_Telemetry {
 		);
 	}
 
+	/**
+	 * Custom columns hook.
+	 * @since  1.0.0
+	 * @param  string $column  The column ID.
+	 * @param  int    $post_id The post ID.
+	 */
 	public static function custom_column( $column, $post_id ) {
 		/* Column types */
 		$types = array(
@@ -178,6 +207,11 @@ class GDPR_Telemetry {
 		}
 	}
 
+	/**
+	 * The URL column callback.
+	 * @since  1.0.0
+	 * @param  int $post_id The post ID.
+	 */
 	private static function _html_url( $post_id ) {
 		/* Init data */
 		$url = self::_get_post_meta( $post_id, 'url' );
@@ -190,6 +224,11 @@ class GDPR_Telemetry {
 		);
 	}
 
+	/**
+	 * The file column callback.
+	 * @since  1.0.0
+	 * @param  int $post_id The post ID.
+	 */
 	private static function _html_file( $post_id ) {
 		$file = self::_get_post_meta( $post_id, 'file' );
 		$line = self::_get_post_meta( $post_id, 'line' );
@@ -205,10 +244,20 @@ class GDPR_Telemetry {
 		);
 	}
 
+	/**
+	 * The response code column callback.
+	 * @since  1.0.0
+	 * @param  int $post_id The post ID.
+	 */
 	private static function _html_code( $post_id ) {
 		echo self::_get_post_meta( $post_id, 'code' );
 	}
 
+	/**
+	 * The created column callback.
+	 * @since  1.0.0
+	 * @param  int $post_id The post ID.
+	 */
 	private static function _html_created( $post_id ) {
 		echo sprintf(
 			esc_html__( '%s ago' ),
@@ -216,6 +265,11 @@ class GDPR_Telemetry {
 		);
 	}
 
+	/**
+	 * The post data column callback.
+	 * @since  1.0.0
+	 * @param  int $post_id The post ID.
+	 */
 	private static function _html_postdata( $post_id ) {
 		/* Item post data */
 		$postdata = self::_get_post_meta( $post_id, 'postdata' );
@@ -255,6 +309,13 @@ class GDPR_Telemetry {
 		);
 	}
 
+	/**
+	 * Get the post meta we care about.
+	 * @since  1.0.0
+	 * @param  int    $post_id The post ID.
+	 * @param  string $key     The key that matters to us.
+	 * @return mixed           The post meta.
+	 */
 	private static function _get_post_meta( $post_id, $key ) {
 		if ( $value = get_post_meta( $post_id, '_gdpr_telemetry_' .$key, true ) ) {
 			return $value;
@@ -263,6 +324,11 @@ class GDPR_Telemetry {
 		return get_post_meta( $post_id, $key, true );
 	}
 
+	/**
+	 * The debug backtrace of the call. This gives us the file and line of origin of the call.
+	 * @since  1.0.0
+	 * @return array Extra information about the call like File and Line.
+	 */
 	private static function _debug_backtrace() {
 		/* Reverse items */
 		$trace = array_reverse( debug_backtrace() );
@@ -283,6 +349,12 @@ class GDPR_Telemetry {
   	}
 	}
 
+	/**
+	 * Is the call coming from a theme or plugin?
+	 * @since  1.0.0
+	 * @param  string $path Path to the file.
+	 * @return array        The name of the plugin or theme that made the call.
+	 */
 	private static function _face_detect( $path ) {
 		/* Default */
 		$meta = array(
@@ -313,6 +385,12 @@ class GDPR_Telemetry {
 		return $meta;
 	}
 
+	/**
+	 * Figures out if the file that made the call belongs to a plugin.
+	 * @since  1.0.0
+	 * @param  string $path The path to the file that made the call.
+	 * @return string       The plugin name.
+	 */
 	private static function _localize_plugin( $path ) {
 		/* Check path */
 		if ( false === strpos( $path, WP_PLUGIN_DIR ) ) {
@@ -341,6 +419,12 @@ class GDPR_Telemetry {
 		}
 	}
 
+	/**
+	 * Figures out if the file that made the call belongs to a theme.
+	 * @since  1.0.0
+	 * @param  string $path The path to the file that made the call.
+	 * @return string       The theme name.
+	 */
 	private static function _localize_theme( $path ) {
 		/* Check path */
 		if ( false === strpos( $path, get_theme_root() ) ) {
@@ -364,6 +448,12 @@ class GDPR_Telemetry {
 		return false;
 	}
 
+	/**
+	 * The data that was transmitted.
+	 * @since  1.0.0
+	 * @param  array $args The http call arguments.
+	 * @return mixed       The request body.
+	 */
 	private static function _get_postdata( $args ) {
 		/* No POST data? */
 		if ( empty( $args['method'] ) OR 'POST' !== $args['method'] ) {
