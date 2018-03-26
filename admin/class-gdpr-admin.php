@@ -107,19 +107,19 @@ class GDPR_Admin {
 		$menu_slug  = 'gdpr-requests';
 		$function   = array( $this, 'requests_page_template' );
 
-		add_submenu_page( $parent_slug, $menu_title, $menu_title, $capability, $menu_slug, $function );
+		$requests_hook = add_submenu_page( $parent_slug, $menu_title, $menu_title, $capability, $menu_slug, $function );
 
 		$menu_title = esc_html__( 'Tools', 'gdpr' );
 		$menu_slug  = 'gdpr-tools';
 		$function   = array( $this, 'tools_page_template' );
 
-		add_submenu_page( $parent_slug, $menu_title, $menu_title, $capability, $menu_slug, $function );
+		$tools_hook = add_submenu_page( $parent_slug, $menu_title, $menu_title, $capability, $menu_slug, $function );
 
 		$menu_title = esc_html__( 'Settings', 'gdpr' );
 		$menu_slug  = 'gdpr-settings';
 		$function   = array( $this, 'settings_page_template' );
 
-		add_submenu_page( $parent_slug, $menu_title, $menu_title, $capability, $menu_slug, $function );
+		$settings_hook = add_submenu_page( $parent_slug, $menu_title, $menu_title, $capability, $menu_slug, $function );
 
 
 		$menu_slug  = 'edit.php?post_type=telemetry';
@@ -129,12 +129,15 @@ class GDPR_Admin {
 
 		add_submenu_page( $parent_slug, $cpt_obj->labels->name, $cpt_obj->labels->menu_name, $capability, $menu_slug );
 
+		add_action( "load-{$requests_hook}", array( 'GDPR_Help', 'add_requests_help' ) );
+		add_action( "load-{$tools_hook}", array( 'GDPR_Help', 'add_tools_help' ) );
+		add_action( "load-{$settings_hook}", array( 'GDPR_Help', 'add_settings_help' ) );
+		add_action( "load-edit.php", array( 'GDPR_Help', 'add_telemetry_help' ) );
 	}
 
 	function sanitize_cookie_tabs( $tabs ) {
 
 		$output = array();
-		error_log( $tabs );
 		if ( ! is_array( $tabs ) ) {
 			return $tabs;
 		}

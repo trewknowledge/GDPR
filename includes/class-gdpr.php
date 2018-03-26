@@ -91,6 +91,10 @@ class GDPR {
 	 * @access   private
 	 */
 	private function load_dependencies() {
+		/**
+		 * The class responsible for adding help tabs.
+		 */
+		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/class-gdpr-help.php';
 
 		/**
 		 * The class responsible for defining the telemetry post type.
