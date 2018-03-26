@@ -28,10 +28,7 @@
 
 	<form action="options.php" method="post" class="gdpr-settings-form">
 
-		<?php
-		settings_fields( 'gdpr' );
-		// do_settings_sections( 'gdpr-settings' );
-		?>
+		<?php settings_fields( 'gdpr' ); ?>
 
 		<table class="form-table tab hidden" data-id="general">
 			<tbody>
