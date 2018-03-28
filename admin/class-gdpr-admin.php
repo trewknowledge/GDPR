@@ -68,11 +68,7 @@ class GDPR_Admin {
 	 * @since    1.0.0
 	 */
 	public function enqueue_scripts() {
-		wp_enqueue_script( $this->plugin_name, plugin_dir_url( dirname( __FILE__ ) ) . 'assets/js/gdpr-admin.js', array( 'jquery', 'wp-util' ), $this->version, false );
-
-		wp_localize_script( $this->plugin_name, 'GDPR', array(
-			'cookie_popup_content' => 'gdpr_cookie_popup_content'
-		) );
+		wp_enqueue_script( $this->plugin_name, plugin_dir_url( dirname( __FILE__ ) ) . 'assets/js/gdpr-admin.js', array( 'jquery', 'wp-util', 'jquery-ui-sortable' ), $this->version, false );
 	}
 
 	/**
@@ -150,7 +146,7 @@ class GDPR_Admin {
 			}
 			$output[ $key ] = array(
 				'name'          => sanitize_text_field( wp_unslash( $props['name'] ) ),
-				'always_active' => isset( $props['always_active'] ) ? sanitize_text_field( wp_unslash( $props['always_active'] ) ) : 0,
+				'always_active' => isset( $props['always_active'] ) ? boolval( $props['always_active'] ) : 0,
 				'how_we_use'    => wp_kses_post( $props['how_we_use'] ),
 				'cookies_used'  => sanitize_text_field( wp_unslash( $props['cookies_used'] ) ),
 			);
@@ -183,10 +179,32 @@ class GDPR_Admin {
 			'gdpr_cookie_privacy_excerpt' => 'sanitize_textarea_field',
 			'gdpr_cookie_popup_content'   => array( $this, 'sanitize_cookie_tabs' ),
 			'gdpr_email_limit'            => 'intval',
+			'gdpr_consent_types'          => array( $this, 'sanitize_consents' ),
 		);
 		foreach ( $settings as $option_name => $sanitize_callback ) {
 			register_setting( 'gdpr', $option_name, array( 'sanitize_callback' => $sanitize_callback ) );
 		}
+	}
+
+	public function sanitize_consents( $consents ) {
+		$output = array();
+		if ( ! is_array( $consents ) ) {
+			return $consents;
+		}
+
+		foreach ( $consents as $key => $props ) {
+			if ( '' === $props['name'] || '' === $props['description'] ) {
+				unset( $consents[ $key ] );
+				continue;
+			}
+			$output[ $key ] = array(
+				'name'         => sanitize_text_field( wp_unslash( $props['name'] ) ),
+				'required'     => isset( $props['required'] ) ? boolval( $props['required'] ) : 0,
+				'description'  => sanitize_textarea_field( wp_unslash( $props['description'] ) ),
+				'registration' => sanitize_textarea_field( wp_unslash( $props['registration'] ) ),
+			);
+		}
+		return $output;
 	}
 
 	/**
@@ -195,7 +213,6 @@ class GDPR_Admin {
 	 * @since 1.0.0
 	 */
 	public function settings_page_template() {
-		$current_tab = isset( $_GET['tab'] ) ? sanitize_text_field( wp_unslash( $_GET['tab'] ) ) : 'general'; // Input var okay. CSRF ok.
 		$settings    = get_option( 'gdpr_options', array() );
 		$tabs        = array(
 			'general'  => esc_html__( 'General', 'gdpr' ),
@@ -205,9 +222,8 @@ class GDPR_Admin {
 
 		$tabs = apply_filters( 'gdpr_settings_pages', $tabs );
 
-		if ( 'cookies' === $current_tab ) {
-			include_once plugin_dir_path( __FILE__ ) . 'partials/templates/tmpl-cookies.php';
-		}
+		include_once plugin_dir_path( __FILE__ ) . 'partials/templates/tmpl-cookies.php';
+		include_once plugin_dir_path( __FILE__ ) . 'partials/templates/tmpl-consents.php';
 
 		include plugin_dir_path( __FILE__ ) . 'partials/settings.php';
 	}
@@ -357,11 +373,47 @@ class GDPR_Admin {
 	 * @since  1.0.0
 	 */
 	function privacy_policy_page_missing() {
+		$privacy_page = get_option( 'gdpr_privacy_policy_page', '' );
+		if ( ! empty( $privacy_page ) ) {
+			return;
+		}
 		?>
 			<div class="notice notice-error is-dismissible">
 				<p>
-					<strong><?php echo sprintf( __( 'You must select a Privacy Policy Page.', 'gdpr' ), admin_url( 'admin.php?page=gdpr-settings' ) ); ?></strong>
+					<strong><?php echo esc_html__( 'You must select a Privacy Policy Page.', 'gdpr' ); ?></strong>
 				</p>
+			</div>
+		<?php
+	}
+
+	/**
+	 * Admin notice when the privacy policy has been updated.
+	 * @since  1.0.0
+	 */
+	function privacy_policy_updated_notice() {
+		$updated = get_option( 'gdpr_privacy_policy_updated' );
+		if ( ! $updated ) {
+			return;
+		}
+		?>
+			<div class="notice notice-error privacy-page-updated-notice is-dismissible">
+				<p>
+					<strong><?php echo esc_html__( 'Your Privacy Policy have been updated. In case this was not a small typo fix, you must ask users for explicit consent again.', 'gdpr' ); ?></strong>
+				</p>
+				<form action="<?php echo esc_url( admin_url('admin-post.php') ); ?>" method="post">
+					<?php wp_nonce_field( 'seek_consent', 'privacy-policy-updated-nonce' ); ?>
+					<input type="hidden" name="action" value="seek_consent">
+					<p>
+						<?php submit_button( esc_html__( 'Ask for consent', 'gdpr' ), 'primary', 'submit', false ); ?>
+					</p>
+				</form>
+				<form action="<?php echo esc_url( admin_url('admin-post.php') ); ?>" method="post" class="frm-ignore-privacy-update">
+					<?php wp_nonce_field( 'ignore_update', 'privacy-policy-ignore-update-nonce' ); ?>
+					<input type="hidden" name="action" value="ignore_privacy_policy_update">
+					<p>
+						<?php submit_button( esc_html__( 'Ignore', 'gdpr' ), 'secondary', 'submit', false ); ?>
+					</p>
+				</form>
 			</div>
 		<?php
 	}
@@ -372,7 +424,7 @@ class GDPR_Admin {
 	 */
 	function send_data_breach_confirmation_email() {
 		if ( ! isset( $_POST['gdpr_data_breach_nonce'] ) || ! wp_verify_nonce( sanitize_key( $_POST[ 'gdpr_data_breach_nonce' ] ), 'data-breach' ) ) {
-			wp_die( esc_html__( 'We could not verify the user email or the security token. Please try again.', 'gdpr' ) );
+			wp_die( esc_html__( 'We could not verify the the security token. Please try again.', 'gdpr' ) );
 		}
 
 		if (
@@ -470,6 +522,107 @@ class GDPR_Admin {
 		foreach ( $telemetry_posts as $post ) {
 			wp_delete_post( $post, true );
 		}
+	}
+
+	function register_form() {
+		$consent_types = get_option( 'gdpr_consent_types', array() );
+		$sent_extras = ( isset( $_POST['user_consents'] ) ) ? $_POST['user_consents'] : '';
+		?>
+		<h2><?php esc_html_e( 'Consents', 'gdpr' ); ?></h2><br>
+		<?php foreach ( $consent_types as $key => $consent ): ?>
+			<p>
+				<input type="checkbox" name="user_consents[<?php echo esc_attr( $key ) ?>]" id="<?php echo esc_attr( $key ) ?>-consent" value="1" <?php ( isset( $sent_extras[ $key ] ) ) ? checked( $sent_extras[ $key ], 1 ) : ''; ?>>
+				<label for="<?php echo esc_attr( $key ) ?>-consent"><?php echo esc_html( $consent['registration'] ); ?></label>
+				<br><br>
+			</p>
+		<?php endforeach;
+	}
+
+	function registration_errors( $errors, $sanitized_user_login, $user_email ) {
+    $consent_types = get_option( 'gdpr_consent_types', array() );
+    if ( empty( $consent_types ) ) {
+    	return $errors;
+    }
+
+    foreach ( $consent_types as $key => $consent ) {
+    	if ( $consent['required'] ) {
+    		if ( ! isset( $_POST['user_consents'][ $key ] ) ) {
+			    $errors->add( 'missing_required_consents', sprintf(
+			    	'<strong>%s</strong>: %s %s.',
+			    	__( 'ERROR', 'gdpr' ),
+			    	$consent['name'],
+			    	__( 'is a required consent', 'gdpr' )
+			    ) );
+    		}
+    	}
+    }
+    return $errors;
+	}
+
+	function user_register( $user_id ) {
+		if ( isset( $_POST['user_consents'] ) ) {
+			foreach ( $_POST['user_consents'] as $consent => $value ) {
+				add_user_meta( $user_id, 'gdpr_consents', $consent );
+			}
+		}
+	}
+
+	function seek_consent() {
+		if ( ! isset( $_POST['privacy-policy-updated-nonce'] ) || ! wp_verify_nonce( sanitize_key( $_POST['privacy-policy-updated-nonce'] ), 'seek_consent' ) ) {
+			wp_die( esc_html__( 'We could not verify the the security token. Please try again.', 'gdpr' ) );
+		}
+
+		delete_option( 'gdpr_privacy_policy_updated' );
+
+		$users = get_users( array(
+			'fields' => 'all_with_meta'
+		) );
+
+		foreach ( $users as $user ) {
+			$usermeta = get_user_meta( $user->ID, 'gdpr_consents' );
+			if ( in_array( 'privacy-policy', $usermeta ) ) {
+				delete_user_meta( $user->ID, 'gdpr_consents', 'privacy-policy' );
+			}
+		}
+
+		add_settings_error( 'gdpr', 'resolved', esc_html__( 'Users will have to consent to the updated privacy policy on login.', 'gdpr' ), 'updated' );
+		set_transient( 'settings_errors', get_settings_errors(), 30 );
+		wp_safe_redirect(
+			esc_url_raw(
+				add_query_arg(
+					array(
+						'settings-updated' => true
+					),
+					wp_get_referer()
+				)
+			)
+		);
+		exit;
+	}
+
+	function privacy_policy_updated( $ID, $post ) {
+		$privacy_page = (int) get_option( 'gdpr_privacy_policy_page', 0 );
+		$ID = (int) $ID;
+		if ( $ID === $privacy_page ) {
+			$revisions = wp_get_post_revisions( $ID );
+			$revisions = array_filter( $revisions, function( $rev ) {
+				return strpos( $rev->post_name, 'autosave' ) === false;
+			});
+
+			reset( $revisions );
+			if ( current( $revisions )->post_content !== $post->post_content ) {
+				update_option( 'gdpr_privacy_policy_updated', 1 );
+			}
+		}
+	}
+
+	function ignore_privacy_policy_update() {
+		if ( ! isset( $_POST['nonce'] ) || ! wp_verify_nonce( sanitize_key( $_POST['nonce'] ), 'ignore_update' ) ) {
+			wp_send_json_error( esc_html__( 'We could not verify the the security token. Please try again.', 'gdpr' ) );
+		}
+
+		delete_option( 'gdpr_privacy_policy_updated' );
+		wp_send_json_success();
 	}
 
 }

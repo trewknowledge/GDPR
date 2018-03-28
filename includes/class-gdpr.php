@@ -167,18 +167,22 @@ class GDPR {
 		$plugin_emails =  new GDPR_Email();
 
 
-		$privacy_page = get_option( 'gdpr_privacy_policy_page', '' );
-		if ( empty( $privacy_page ) ) {
-			add_action( 'admin_notices',                array( $plugin_admin, 'privacy_policy_page_missing' ) );
-		}
-		add_action( 'admin_enqueue_scripts',          array( $plugin_admin, 'enqueue_styles' ) );
-		add_action( 'admin_enqueue_scripts',          array( $plugin_admin, 'enqueue_scripts' ) );
-		add_action( 'admin_menu',                     array( $plugin_admin, 'add_menu' ) );
-		add_action( 'admin_init',                     array( $plugin_admin, 'register_settings' ) );
-		add_action( 'wp_ajax_gdpr_access_data',       array( $plugin_admin, 'access_data' ) );
-		add_action( 'admin_post_gdpr_data_breach',    array( $plugin_admin, 'send_data_breach_confirmation_email' ) );
-		add_action( 'clean_gdpr_data_breach_request', array( $plugin_admin, 'clean_data_breach_request' ), 10, 2 ); // CRON JOB
-		add_action( 'telemetry_cleanup',              array( $plugin_admin, 'telemetry_cleanup' ) ); // CRON JOB
+		add_action( 'admin_notices',                           array( $plugin_admin, 'privacy_policy_page_missing' ) );
+		add_action( 'admin_notices',                           array( $plugin_admin, 'privacy_policy_updated_notice' ) );
+		add_action( 'wp_ajax_ignore_privacy_policy_update',    array( $plugin_admin, 'ignore_privacy_policy_update' ) );
+		add_action( 'admin_post_seek_consent',                 array( $plugin_admin, 'seek_consent' ) );
+		add_action( 'publish_page',                            array( $plugin_admin, 'privacy_policy_updated' ), 10, 2 );
+		add_action( 'admin_enqueue_scripts',                   array( $plugin_admin, 'enqueue_styles' ) );
+		add_action( 'admin_enqueue_scripts',                   array( $plugin_admin, 'enqueue_scripts' ) );
+		add_action( 'admin_menu',                              array( $plugin_admin, 'add_menu' ) );
+		add_action( 'admin_init',                              array( $plugin_admin, 'register_settings' ) );
+		add_action( 'register_form',                           array( $plugin_admin, 'register_form' ) );
+		add_action( 'registration_errors',                     array( $plugin_admin, 'registration_errors' ), 10, 3 );
+		add_action( 'user_register',                           array( $plugin_admin, 'user_register' ) );
+		add_action( 'wp_ajax_gdpr_access_data',                array( $plugin_admin, 'access_data' ) );
+		add_action( 'admin_post_gdpr_data_breach',             array( $plugin_admin, 'send_data_breach_confirmation_email' ) );
+		add_action( 'clean_gdpr_data_breach_request',          array( $plugin_admin, 'clean_data_breach_request' ), 10, 2 ); // CRON JOB
+		add_action( 'telemetry_cleanup',                       array( $plugin_admin, 'telemetry_cleanup' ) ); // CRON JOB
 
 		add_action( 'admin_post_gdpr_delete_user',              array( $requests_admin, 'delete_user' ) );
 		add_action( 'admin_post_gdpr_cancel_request',           array( $requests_admin, 'cancel_request' ) );
@@ -214,11 +218,17 @@ class GDPR {
 		$plugin_public = new GDPR_Public( $this->get_plugin_name(), $this->get_version() );
 		$requests_public = new GDPR_Requests_Public( $this->get_plugin_name(), $this->get_version() );
 
-		add_action( 'wp_enqueue_scripts', array( $plugin_public, 'enqueue_styles' ) );
-		add_action( 'wp_enqueue_scripts', array( $plugin_public, 'enqueue_scripts' ) );
-		add_action( 'wp_footer',          array( $plugin_public, 'cookie_bar' ) );
-		add_action( 'wp_footer',          array( $plugin_public, 'cookie_preferences' ) );
-		add_action( 'wp_footer',          array( $plugin_public, 'confirmation_screens' ) );
+		add_action( 'wp_enqueue_scripts',          array( $plugin_public, 'enqueue_styles' ) );
+		add_action( 'wp_enqueue_scripts',          array( $plugin_public, 'enqueue_scripts' ) );
+		add_action( 'wp_footer',                   array( $plugin_public, 'overlay' ) );
+		add_action( 'wp_footer',                   array( $plugin_public, 'cookie_bar' ) );
+		add_action( 'wp_footer',                   array( $plugin_public, 'cookie_preferences' ) );
+		add_action( 'wp_footer',                   array( $plugin_public, 'consents_preferences' ) );
+		add_action( 'wp_footer',                   array( $plugin_public, 'confirmation_screens' ) );
+		add_action( 'wp_footer',                   array( $plugin_public, 'is_consent_needed' ) );
+		add_action( 'wp_ajax_update_consents',     array( $plugin_public, 'update_consents' ) );
+		add_action( 'wp_ajax_disagree_with_terms', array( $plugin_public, 'logout' ) );
+		add_action( 'wp_ajax_agree_with_terms',    array( $plugin_public, 'agree_with_terms' ) );
 
 		add_action( 'wp',                                        array( $requests_public, 'request_confirmed' ) );
 		add_action( 'admin_post_gdpr_send_request_email',        array( $requests_public, 'send_request_email' ) );

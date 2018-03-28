@@ -6,8 +6,8 @@ if ( ! function_exists( 'gdpr_cookie_preferences' ) ) {
 	 * @since  1.0.0
 	 * @param  string $text The button text.
 	 */
-	function gdpr_cookie_preferences( $text ) {
-		echo '<button type="button" class="gdpr-cookie-preferences">' . esc_html( $text ) . '</button>';
+	function gdpr_preferences( $text, $type ) {
+		echo '<button type="button" class="gdpr-preferences" data-type="' . esc_attr( $type ) . '">' . esc_html( $text ) . '</button>';
 	}
 }
 

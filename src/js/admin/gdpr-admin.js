@@ -6,23 +6,59 @@
 			$(this).parent().parent().remove();
 		});
 
+		function string_to_slug (str) {
+	    str = str.replace(/^\s+|\s+$/g, ''); // trim
+	    str = str.toLowerCase();
+
+	    // remove accents, swap ñ for n, etc
+	    var from = "àáäâèéëêìíïîòóöôùúüûñç·/_,:;";
+	    var to   = "aaaaeeeeiiiioooouuuunc------";
+	    for (var i=0, l=from.length ; i<l ; i++) {
+        str = str.replace(new RegExp(from.charAt(i), 'g'), to.charAt(i));
+	    }
+
+	    str = str.replace(/[^a-z0-9 -]/g, '') // remove invalid chars
+        .replace(/\s+/g, '-') // collapse whitespace and replace by -
+        .replace(/-+/g, '-'); // collapse dashes
+
+	    return str;
+		}
+
 		$('.add-tab').click(function(e) {
 			e.preventDefault();
 			var field = $('#cookie-tabs');
 			if ( field.val() === '' ) {
 				return;
 			}
-			var tabID = field.val().toLowerCase().replace(/ /g, '-');
+			var tabID = string_to_slug( field.val() );
 			var tabName = field.val();
 			var template = wp.template( 'cookie-tabs' );
 			$('#tabs').append( template( {
 				key: tabID,
 				name: tabName,
-				option_name: GDPR.cookie_popup_content
+				option_name: 'cookie_popup_content'
 			} ) );
 			field.val('');
 		});
 
+		$('.add-consent').click(function(e) {
+			e.preventDefault();
+			var field = $('#type-of-consent');
+			if ( field.val() === '' ) {
+				return;
+			}
+			var consentID = string_to_slug( field.val() );
+			var consentName = field.val();
+			var template = wp.template( 'consents' );
+			$('#consent-tabs').append( template( {
+				key: consentID,
+				name: consentName,
+				option_name: 'gdpr_consent_types'
+			} ) );
+			field.val('');
+		});
+
+		$('#consent-tabs, #tabs').sortable();
 
 		$(document).on('click', '.add-host', function(e) {
 			e.preventDefault();
@@ -224,6 +260,22 @@
 							'text': "click"
 						}).hide().appendTo("body")[0].click();
 					}
+				}
+			);
+		});
+
+		$(document).on( 'submit', '.frm-ignore-privacy-update', function(e) {
+			e.preventDefault();
+			var action = $(this).find('input[name="action"]').val(),
+					nonce = $(this).find('#privacy-policy-ignore-update-nonce').val();
+
+			$('.privacy-page-updated-notice .notice-dismiss').click();
+
+			$.post(
+				ajaxurl,
+				{
+					action: action,
+					nonce: nonce
 				}
 			);
 		});

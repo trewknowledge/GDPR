@@ -69,14 +69,26 @@
 			}
 		}
 
-		$(document).on('click', '.gdpr-cookie-preferences', function() {
-			$('.gdpr.overlay').fadeIn();
-			$('.gdpr.cookie-preferences .wrapper').fadeIn();
+		$(document).on('click', '.gdpr-preferences', function() {
+			var type = $(this).data('type');
+			$('.gdpr-overlay').fadeIn();
+			switch(type) {
+				case 'cookies':
+					$('.gdpr.cookie-preferences .wrapper').fadeIn();
+					break;
+				case 'consents':
+					$('.gdpr.consents-preferences .wrapper').fadeIn();
+					break;
+			}
 		});
 
-		$(document).on('click', '.gdpr.cookie-preferences .wrapper form>header .box-title .close', function() {
-			$('.gdpr.overlay').fadeOut();
+		$(document).on('click', '.gdpr.cookie-preferences .close', function() {
+			$('.gdpr-overlay').fadeOut();
 			$('.gdpr.cookie-preferences .wrapper').fadeOut();
+		});
+		$(document).on('click', '.gdpr.consents-preferences .close', function() {
+			$('.gdpr-overlay').fadeOut();
+			$('.gdpr.consents-preferences .wrapper').fadeOut();
 		});
 
 		$(document).on('click', '.gdpr.cookie-preferences .tabs button', function() {
@@ -134,7 +146,7 @@
 			});
 
 			createCookie("gdpr_approved_cookies", JSON.stringify( approvedCookies ));
-			$('.gdpr.cookie-preferences .wrapper, .gdpr.overlay, .gdpr.cookie-bar').fadeOut();
+			$('.gdpr.cookie-preferences .wrapper, .gdpr-overlay, .gdpr.cookie-bar').fadeOut();
 		}
 
 		$('.confirm-delete-request-dialog').dialog({
@@ -178,6 +190,87 @@
 				}
 			});
 		}
+
+		$(document).on( 'submit', '.frm-gdpr-consents-preferences', function(e) {
+			e.preventDefault();
+
+			var checkboxes = $(this).find('input[type="checkbox"]:checked'),
+					consents = [],
+					action = $(this).find('input[name="action"]').val(),
+					nonce = $(this).find('input[name="update-consents-nonce"]').val(),
+					button = $(this).find('input[type="submit"]'),
+					error = $(this).find('.error');
+
+
+			checkboxes.each(function() {
+				consents.push( $(this).val() );
+			});
+
+			button.prop( 'disabled', true );
+			error.html('');
+
+			$.post(
+				GDPR.ajaxurl,
+				{
+					action: action,
+					nonce: nonce,
+					consents: consents
+				},
+				function( res ) {
+					if( res.success ) {
+						$('.gdpr-overlay').fadeOut();
+						$('.gdpr.consents-preferences .wrapper').fadeOut();
+					} else {
+						error.html( res.data );
+						console.log(res.data);
+					}
+					button.prop( 'disabled', false );
+				}
+			);
+
+		});
+
+		if ( $('.gdpr-consent-modal').length > 0 ) {
+			$('body').css('overflow', 'hidden');
+		}
+
+		$(document).on('click', '.gdpr-agree', function(e) {
+			e.preventDefault();
+			var that = $(this);
+			$.post(
+				GDPR.ajaxurl,
+				{
+					action: 'agree_with_terms',
+					nonce: $(this).data('nonce'),
+				},
+				function(res) {
+					if ( res.success ) {
+						that.closest('.gdpr-consent-modal').fadeOut(300, function(){
+							$(this).remove();
+							if ( $('.gdpr-consent-modal').length == 0 ) {
+								$('body').css('overflow', 'auto');
+							}
+						});
+					}
+				}
+			);
+		});
+
+		$(document).on('click', '.gdpr-disagree', function(e) {
+			e.preventDefault();
+			$.post(
+				GDPR.ajaxurl,
+				{
+					action: 'disagree_with_terms',
+					nonce: $(this).data('nonce')
+				},
+				function(res) {
+					if ( res.success ) {
+						location.reload();
+					}
+				}
+			);
+		});
 	});
 
 })( jQuery );

@@ -15,7 +15,7 @@
 				</tr>
 				<tr>
 					<th><label for="tab-how-we-use-{{data.key}}"><?php esc_html_e( 'How we use', 'gdpr' ); ?></label></th>
-					<td><textarea name="{{data.option_name}}[{{data.key}}][how_we_use]" id="tab-how-we-use-{{data.key}}" cols="53" rows="5" required></textarea></td>
+					<td><textarea name="{{data.option_name}}[{{data.key}}][how_we_use]" id="tab-how-we-use-{{data.key}}" cols="53" rows="3" required></textarea></td>
 				</tr>
 				<tr>
 					<th><label for="cookies-used-{{data.key}}"><?php esc_html_e( 'Cookies used by the site', 'gdpr' ); ?></label></th>

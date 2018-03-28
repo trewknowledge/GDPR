@@ -1,13 +1,30 @@
 @import '../../utils';
 
 .gdpr-settings-form{
-	#tabs{
+	#tabs, #consent-tabs{
 		margin-top: 20px;
 		.hndle{
-			font-size: 14px;
+			font-size: 16px;
 	    padding: 8px 12px;
 	    margin: 0;
 	    line-height: 1.4;
+			span{
+				font-size: 12px;
+			}
+		}
+	}
+}
+
+.privacy-page-updated-notice {
+	form{
+		display: inline-block;
+		.button-secondary {
+			vertical-align: baseline;
+		}
+		.button-primary {
+			&:active {
+				vertical-align: baseline;
+			}
 		}
 	}
 }

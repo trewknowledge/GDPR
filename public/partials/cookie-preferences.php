@@ -13,7 +13,6 @@
 ?>
 
 <div class="gdpr cookie-preferences">
-	<div class="gdpr overlay"></div>
 	<div class="wrapper">
 		<form method="post" class="frm-gdpr-cookie-preferences">
 			<header>

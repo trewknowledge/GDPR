@@ -70,6 +70,7 @@ class GDPR_Public {
 		wp_enqueue_script( $this->plugin_name, plugin_dir_url( dirname( __FILE__ ) ) . 'assets/js/gdpr-public.js', array( 'jquery', 'jquery-ui-dialog' ), $this->version, false );
 		wp_localize_script( $this->plugin_name, 'GDPR', array(
 			'add_to_deletion_requests_text' => esc_html__( 'You are about to request that your account and all the data we collected of you be removed from the site. Are you sure? This can\'t be undone.', 'gdpr' ),
+			'ajaxurl' => admin_url( 'admin-ajax.php' ),
 		) );
 	}
 
@@ -109,11 +110,116 @@ class GDPR_Public {
 	}
 
 	/**
+	 * The consents preferences modal.
+	 *
+	 * @return mixed The modal HTML.
+	 */
+	public function consents_preferences() {
+
+		if ( ! is_user_logged_in() ) {
+			return;
+		}
+
+		$consent_types = get_option( 'gdpr_consent_types', array() );
+		if ( empty( $consent_types ) ) {
+			return;
+		}
+
+		if ( is_user_logged_in() ) {
+			$user = wp_get_current_user();
+			$user_consents = get_user_meta( $user->ID, 'gdpr_consents' );
+		}
+
+		include plugin_dir_path( __FILE__ ) . 'partials/consents-preferences.php';
+	}
+
+	public function overlay() {
+		echo '<div class="gdpr-overlay"></div>';
+	}
+
+	/**
 	 * Prints the confirmation dialogs.
 	 * @return mixed The confirmation dialogs HTML.
 	 */
 	public function confirmation_screens() {
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'public/partials/confirmation-screens.php';
+	}
+
+	public function update_consents() {
+		if ( ! isset( $_POST['nonce'] ) || ! wp_verify_nonce( sanitize_key( $_POST['nonce'] ), 'update_consents' ) ) {
+			wp_send_json_error( esc_html__( 'We could not verify the the security token. Please try again.', 'gdpr' ) );
+		}
+
+		if ( ! isset( $_POST['consents'] ) ) {
+			wp_send_json_error( esc_html__( "You can't disable all consents.", 'gdpr' ) );
+		}
+
+		$consents = $_POST['consents'];
+		$user = wp_get_current_user();
+		$user_consents = get_user_meta( $user->ID, 'gdpr_consents' );
+
+		delete_user_meta( $user->ID, 'gdpr_consents' );
+
+		foreach ( $consents as $consent ) {
+			$consent = sanitize_text_field( wp_unslash( $consent ) );
+			add_user_meta( $user->ID, 'gdpr_consents', $consent );
+		}
+
+		wp_send_json_success( $user_consents );
+	}
+
+	public function is_consent_needed() {
+		if ( ! is_user_logged_in() ) {
+			return;
+		}
+
+		$privacy_policy_page = get_option( 'gdpr_privacy_policy_page' );
+		if ( ! $privacy_policy_page ) {
+			return;
+		}
+
+		$page_obj = get_post( $privacy_policy_page );
+		if ( empty( $page_obj->post_content ) ) {
+			return;
+		}
+
+		$user = wp_get_current_user();
+		$user_consents = get_user_meta( $user->ID, 'gdpr_consents' );
+
+		if ( ! in_array( 'privacy-policy', (array) $user_consents ) ) {
+		?>
+			<div class="gdpr-consent-modal">
+				<div class="gdpr-consent-modal-content">
+					<h3><?php esc_html_e( 'Our Privacy Policy has been updated.', 'gdpr' ); ?></h3>
+					<h4><?php esc_html_e( 'To continue using the site you need to read the revised version and agree to the terms.', 'gdpr' ); ?></h4>
+					<textarea readonly><?php echo $page_obj->post_content; ?></textarea>
+					<div class="gdpr-consent-buttons">
+						<a href="#" class="gdpr-agree" data-nonce="<?php echo wp_create_nonce( 'user_agree_with_terms' ) ?>"><?php esc_html_e( 'Agree', 'gdpr' ); ?></a>
+						<a href="#" class="gdpr-disagree" data-nonce="<?php echo wp_create_nonce( 'user_disagree_with_terms' ) ?>"><?php esc_html_e( 'Disagree', 'gdpr' ); ?></a>
+					</div>
+				</div>
+			</div>
+		<?php
+		}
+	}
+
+	public function logout() {
+		if ( ! wp_verify_nonce( sanitize_text_field( wp_unslash( $_POST['nonce'] ) ), 'user_disagree_with_terms' ) ) {
+			wp_send_json_error( esc_html__( 'We could not verify the the security token. Please try again.', 'gdpr' ) );
+		}
+
+		wp_logout();
+		wp_send_json_success();
+	}
+
+	public function agree_with_terms() {
+		if ( ! wp_verify_nonce( sanitize_text_field( wp_unslash( $_POST['nonce'] ) ), 'user_agree_with_terms' ) ) {
+			wp_send_json_error( esc_html__( 'We could not verify the the security token. Please try again.', 'gdpr' ) );
+		}
+
+		$user = wp_get_current_user();
+		add_user_meta( $user->ID, 'gdpr_consents', 'privacy-policy' );
+		wp_send_json_success();
 	}
 
 }

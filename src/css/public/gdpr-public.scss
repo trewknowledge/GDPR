@@ -3,6 +3,18 @@
 .gdpr-hidden {
 	display: none;
 }
+
+.gdpr-overlay{
+	position: fixed;
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 100%;
+	background: rgba(0,0,0,0.7);
+	z-index: 99999999;
+	display: none;
+}
+
 .gdpr {
 	* {
 		font-family: Helvetica, Arial, sans-serif !important;
@@ -35,16 +47,6 @@
 	}
 	img {
 		width: 100% !important;
-	}
-	&.overlay{
-		position: fixed;
-		top: 0;
-		left: 0;
-		width: 100%;
-		height: 100%;
-		background: rgba(0,0,0,0.7);
-		z-index: 99999999;
-		display: none;
 	}
 	&.cookie-bar{
 		position: fixed;
@@ -213,7 +215,12 @@
 			}
 		}
 	}
-	&.cookie-preferences {
+	&.consents-preferences{
+		footer{
+			left: initial !important;
+		}
+	}
+	&.cookie-preferences, &.consents-preferences {
 		.wrapper {
 			position: fixed;
 			top: 50%;
@@ -367,11 +374,13 @@
 			.content {
 				display: flex;
 				height: calc( 100% - 75px );
+				background: #f1f1f1;
 				@include breakpoint(small-only) {
 					position: relative;
 					height: calc( 100% - 119px );
 				}
 				.tabs {
+					border: none !important;
 					min-width: 160px;
 					padding: 0;
 					margin: 0;
@@ -430,7 +439,6 @@
 				.tab-content {
 					width: 100%;
 					padding-bottom: 48px;
-					background: #f1f1f1;
 					> div {
 						display: none;
 						padding: 20px;
@@ -472,9 +480,15 @@
 									padding: 10px;
 									border-bottom: 1px solid #e1e1e1;
 									color: #32373c;
+									position: relative;
 									p{
 										margin: 0;
 										font-weight: 600 !important;
+									}
+									.gdpr-switch, .required {
+										position: absolute;
+										right: 10px;
+										top: 10px;
 									}
 								}
 								.cookies {
@@ -568,6 +582,49 @@
 		&:focus {
 			+.gdpr-slider {
 				box-shadow: 0 0 1px #00b9eb;
+			}
+		}
+	}
+}
+
+
+.gdpr-consent-modal{
+	width: 100%;
+	height: 100%;
+	position: fixed;
+	top: 0;
+	left: 0;
+	background: #fff;
+	z-index: 999999;
+	.gdpr-consent-modal-content{
+		width: 90%;
+		margin: 0 auto;
+		position: absolute;
+		top: 50%;
+		left: 50%;
+		transform: translate(-50%, -50%);
+		@include breakpoint('medium') {
+			width: 50%;
+		}
+		textarea {
+			height: 50vh;
+			resize: none;
+		}
+		.gdpr-consent-buttons {
+			text-align: center;
+			margin: 15px 0;
+			a {
+				padding: 10px 20px;
+				display: inline-block;
+				margin: 0 10px;
+				color: #fff;
+				border-radius: 5px;
+				&.gdpr-agree{
+					background: #28a745;
+				}
+				&.gdpr-disagree {
+					background: #dc3545;
+				}
 			}
 		}
 	}
