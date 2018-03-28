@@ -625,4 +625,48 @@ class GDPR_Admin {
 		wp_send_json_success();
 	}
 
+	function edit_user_profile( $user ) {
+		$consent_types = get_option( 'gdpr_consent_types', array() );
+		$user_consents = get_user_meta( $user->ID, 'gdpr_consents' );
+		if ( empty( $consent_types ) ) {
+			return;
+		}
+		?>
+    <h3><?php _e( 'Consent Management', 'gdpr' ); ?></h3>
+
+    <table class="form-table">
+    	<?php foreach ( $consent_types as $consent_key => $consent ): ?>
+	      <tr>
+	        <th>
+	        	<label><?php echo esc_html( $consent['name'] ); ?></label>
+	        </th>
+	        <td>
+	        	<?php if ( $consent['required'] ): ?>
+		        	<input type="checkbox" name="user_consents[]" value="<?php echo esc_attr( $consent_key ); ?>" disabled checked>
+		        	<input type="hidden" name="user_consents[]" value="<?php echo esc_attr( $consent_key ); ?>">
+	        	<?php else: ?>
+		        	<input type="checkbox" name="user_consents[]" value="<?php echo esc_attr( $consent_key ); ?>" <?php echo ! empty( $user_consents ) ? checked( in_array( $consent_key, $user_consents, true ), 1, false ) : ''; ?>>
+	        	<?php endif ?>
+	          <span class="description"><?php echo esc_html( $consent['description'] ); ?></span>
+	        </td>
+	      </tr>
+    	<?php endforeach ?>
+    </table>
+
+		<?php
+	}
+
+	function user_profile_update( $user_id ) {
+		if ( ! isset( $_POST['user_consents'] ) ) {
+			return;
+		}
+
+		delete_user_meta( $user_id, 'gdpr_consents' );
+
+		foreach ( (array) $_POST['user_consents'] as $consent ) {
+			$consent = sanitize_text_field( wp_unslash( $consent ) );
+			add_user_meta( $user_id, 'gdpr_consents', $consent );
+		}
+	}
+
 }

@@ -167,6 +167,8 @@ class GDPR {
 		$plugin_emails =  new GDPR_Email();
 
 
+		add_action( 'show_user_profile',                       array( $plugin_admin, 'edit_user_profile' ) );
+		add_action( 'personal_options_update',                 array( $plugin_admin, 'user_profile_update' ) );
 		add_action( 'admin_notices',                           array( $plugin_admin, 'privacy_policy_page_missing' ) );
 		add_action( 'admin_notices',                           array( $plugin_admin, 'privacy_policy_updated_notice' ) );
 		add_action( 'wp_ajax_ignore_privacy_policy_update',    array( $plugin_admin, 'ignore_privacy_policy_update' ) );
