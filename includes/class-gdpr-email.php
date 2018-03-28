@@ -161,8 +161,8 @@ class GDPR_Email {
 			return;
 		}
 
-		$from_email = self::get_do_not_reply_address();
-    $headers = array( 'From: ' . get_bloginfo( 'name' ) . ' <' . $from_email . '>' );
+		$no_reply = self::get_do_not_reply_address();
+    $headers = array( 'From: ' . get_bloginfo( 'name' ) . ' <' . $no_reply . '>' );
 		foreach ( (array) $emails as $email ) {
 			$headers[] = 'Bcc: ' . $email;
 		}
