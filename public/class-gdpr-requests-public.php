@@ -37,7 +37,10 @@ class GDPR_Requests_Public extends GDPR_Requests {
 		}
 
 		if ( parent::remove_from_requests( $index ) ) {
-			GDPR_Email::send( $user->user_email, 'delete-resolved', array( 'token' => 123456 ) );
+			$token = GDPR::generate_pin();
+			GDPR_Email::send( $user->user_email, 'delete-resolved', array( 'token' => $token ) );
+			GDPR_Audit_Log::log( $user->ID, esc_html__( 'User was removed from the site.', 'gdpr') );
+			GDPR_Audit_Log::export_log( $user->ID, $token );
 			wp_delete_user( $user->ID );
 			wp_logout();
 		}
@@ -214,6 +217,9 @@ class GDPR_Requests_Public extends GDPR_Requests {
 					$found_posts = parent::user_has_content( $user );
 					if ( $found_posts ) {
 						parent::confirm_request( $key );
+						GDPR_Audit_Log::log( $user->ID, esc_html__( 'User confirmed a request to be deleted.', 'gdpr') );
+						GDPR_Audit_Log::log( $user->ID, esc_html__( 'Content was found for that user.', 'gdpr') );
+						GDPR_Audit_Log::log( $user->ID, esc_html__( 'User added to the erasure review table.', 'gdpr') );
 						wp_safe_redirect(
 							esc_url_raw(
 								add_query_arg(
@@ -246,6 +252,7 @@ class GDPR_Requests_Public extends GDPR_Requests {
 				case 'rectify':
 				case 'complaint':
 					parent::confirm_request( $key );
+					GDPR_Audit_Log::log( $user->ID, esc_html__( 'User placed a request for rectification or a complaint.', 'gdpr') );
 					wp_safe_redirect(
 						esc_url_raw(
 							add_query_arg(
@@ -262,6 +269,7 @@ class GDPR_Requests_Public extends GDPR_Requests {
 				case 'export-data':
 					$format = isset( $_GET['format'] ) ? sanitize_text_field( wp_unslash( $_GET['format'] ) ) : 'xml';
 					wp_schedule_single_event( time(), 'mail_export_data', array( 'email' => $user->user_email, 'format' => $format, 'key' => $key ) );
+					GDPR_Audit_Log::log( $user->ID, esc_html__( 'User requested to have all their data sent to their email.', 'gdpr') );
 					wp_safe_redirect(
 						esc_url_raw(
 							add_query_arg(

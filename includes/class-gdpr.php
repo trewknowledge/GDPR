@@ -88,6 +88,11 @@ class GDPR {
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/class-gdpr-help.php';
 
 		/**
+		 * The class responsible logging user actions.
+		 */
+		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/class-gdpr-audit-log.php';
+
+		/**
 		 * The class responsible for defining the telemetry post type.
 		 */
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'admin/class-gdpr-telemetry.php';
@@ -182,6 +187,7 @@ class GDPR {
 		add_action( 'registration_errors',                     array( $plugin_admin, 'registration_errors' ), 10, 3 );
 		add_action( 'user_register',                           array( $plugin_admin, 'user_register' ) );
 		add_action( 'wp_ajax_gdpr_access_data',                array( $plugin_admin, 'access_data' ) );
+		add_action( 'wp_ajax_gdpr_audit_log',                  array( $plugin_admin, 'audit_log' ) );
 		add_action( 'admin_post_gdpr_data_breach',             array( $plugin_admin, 'send_data_breach_confirmation_email' ) );
 		add_action( 'clean_gdpr_data_breach_request',          array( $plugin_admin, 'clean_data_breach_request' ), 10, 2 ); // CRON JOB
 		add_action( 'telemetry_cleanup',                       array( $plugin_admin, 'telemetry_cleanup' ) ); // CRON JOB
@@ -321,18 +327,7 @@ class GDPR {
 					}
 				}
 
-				$consents = array();
-				$gdpr_consents = get_user_meta( $user->ID, 'gdpr_consents', true);
-				if ( $gdpr_consents ) {
-					foreach ( $gdpr_consents as $consent_item ) {
-						$consents[] = array(
-							'Name' => $consent_item['name'],
-							'Description' => $consent_item['description'],
-							'Consent Given' => $consent_item['enabled'],
-						);
-					}
-				}
-
+				$user_consents = get_user_meta( $user->ID, 'gdpr_consents' );
 				$json = array(
 					'Personal Information' => array(
 						'Username' => $user->user_login,
@@ -345,7 +340,7 @@ class GDPR {
 						'Website' => $user->user_url,
 					),
 					'Metadata' => $metadata,
-					'Consents' => $consents
+					'Consents' => $user_consents
 				);
 				return json_encode( $json );
 				break;
@@ -380,14 +375,10 @@ class GDPR {
 
 				$consents = $dom->createElement( 'Consents' );
 				$dom->appendChild( $consents );
-				$gdpr_consents = get_user_meta( $user->ID, 'gdpr_consents', true);
-				if ( $gdpr_consents ) {
-					foreach ( $gdpr_consents as $consent_item ) {
-						$consent = $dom->createElement( 'Consent' );
-						$consents->appendChild( $consent );
-						$consent->appendChild( $dom->createElement( 'Name', $consent_item['name'] ) );
-						$consent->appendChild( $dom->createElement( 'Description', $consent_item['description'] ) );
-						$consent->appendChild( $dom->createElement( 'Consent_Given', $consent_item['enabled'] ) );
+				$user_consents = get_user_meta( $user->ID, 'gdpr_consents' );
+				if ( $user_consents ) {
+					foreach ( $user_consents as $consent_item ) {
+						$consents->appendChild( $dom->createElement( 'consent', $consent_item ) );
 					}
 				}
 
@@ -425,6 +416,20 @@ class GDPR {
 		}
 
 		wp_send_json_error();
+	}
+
+	/**
+	 * Generates a random 6 digit pin.
+	 * This pin is necessary to use with the audit log files.
+	 *
+	 * @since                  1.0.0
+	 *
+	 * @param  integer $length Number of digits.
+	 * @return string          Returns the generated pin
+	 */
+	public static function generate_pin( $length = 6 ) {
+		$bytes = openssl_random_pseudo_bytes( $length / 2 );
+		return strtoupper( bin2hex( $bytes ) );
 	}
 
 

@@ -369,6 +369,32 @@ class GDPR_Admin {
 	}
 
 	/**
+	 * The audit-log for the audit log email lookup.
+	 * @since  1.0.0
+	 */
+	function audit_log() {
+		if ( ! isset( $_POST['nonce'], $_POST['email'] ) || ! wp_verify_nonce( sanitize_key( wp_unslash( $_POST['nonce'] ) ), 'audit-log' ) ) {
+			wp_send_json_error();
+		}
+
+		$email = sanitize_email( $_POST['email'] );
+		$token = null;
+
+		if ( isset( $_POST['token'] ) ) {
+			$token = sanitize_text_field( wp_unslash( $_POST['token'] ) );
+		}
+
+		error_log($token);
+		$log = GDPR_Audit_log::get_log( $email, $token );
+
+		if ( ! $log ) {
+			wp_send_json_error( esc_html__( 'No logs found for this email.', 'gdpr' ) );
+		}
+
+		wp_send_json_success( $log );
+	}
+
+	/**
 	 * Admin notice when the user haven't picked a privacy policy page.
 	 * @since  1.0.0
 	 */
@@ -560,8 +586,11 @@ class GDPR_Admin {
 	}
 
 	function user_register( $user_id ) {
+		GDPR_Audit_Log::log( $user_id, esc_html__( 'User registered to the site.', 'gdpr' ) );
+
 		if ( isset( $_POST['user_consents'] ) ) {
 			foreach ( $_POST['user_consents'] as $consent => $value ) {
+				GDPR_Audit_Log::log( $user_id, sprintf( esc_html__( 'User gave explicit consent to %s', 'gdpr' ), $consent['name'] ) );
 				add_user_meta( $user_id, 'gdpr_consents', $consent );
 			}
 		}
@@ -581,6 +610,7 @@ class GDPR_Admin {
 		foreach ( $users as $user ) {
 			$usermeta = get_user_meta( $user->ID, 'gdpr_consents' );
 			if ( in_array( 'privacy-policy', $usermeta ) ) {
+				GDPR_Audit_Log::log( $user->ID, esc_html__( 'Privacy Policy has been updated. Removing the Privacy Policy consent and requesting new consent.', 'gdpr' ) );
 				delete_user_meta( $user->ID, 'gdpr_consents', 'privacy-policy' );
 			}
 		}
@@ -663,9 +693,11 @@ class GDPR_Admin {
 
 		delete_user_meta( $user_id, 'gdpr_consents' );
 
+		GDPR_Audit_Log::log( $user_id, esc_html__( 'Profile Updated. These are the user consents after the save:', 'gdpr' ) );
 		foreach ( (array) $_POST['user_consents'] as $consent ) {
 			$consent = sanitize_text_field( wp_unslash( $consent ) );
 			add_user_meta( $user_id, 'gdpr_consents', $consent );
+			GDPR_Audit_Log::log( $user_id, $consent );
 		}
 	}
 

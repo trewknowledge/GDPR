@@ -159,9 +159,11 @@ class GDPR_Public {
 
 		delete_user_meta( $user->ID, 'gdpr_consents' );
 
+		GDPR_Audit_Log::log( $user->ID, esc_html__( 'User updated consents from modal. These are the user consents after the save:', 'gdpr' ) );
 		foreach ( (array) $_POST['consents'] as $consent ) {
 			$consent = sanitize_text_field( wp_unslash( $consent ) );
 			add_user_meta( $user->ID, 'gdpr_consents', $consent );
+			GDPR_Audit_Log::log( $user->ID, $consent['name'] );
 		}
 
 		wp_send_json_success( $user_consents );
@@ -218,6 +220,7 @@ class GDPR_Public {
 
 		$user = wp_get_current_user();
 		add_user_meta( $user->ID, 'gdpr_consents', 'privacy-policy' );
+		GDPR_Audit_Log::log( $user->ID, esc_html__( 'User consented to the Privacy Policies.', 'gdpr' ) );
 		wp_send_json_success();
 	}
 

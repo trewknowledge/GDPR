@@ -1,3 +1,23 @@
+<script type="text/html" id="tmpl-audit-log-result-success">
+	<div class="gdpr-audit-log-result">
+		<h2><?php echo _e( 'Result', 'gdpr' ); ?></h2>
+		<div class="postbox">
+			<div class="inside">
+				<textarea readonly class="gdpr-audit-log-result large-text" rows="20">{{{data.result}}}</textarea>
+			</div>
+		</div>
+	</div>
+</script>
+
+<script type="text/html" id="tmpl-audit-log-result-error">
+	<div class="gdpr-audit-log-result">
+		<h2><?php echo _e( 'Error', 'gdpr' ); ?></h2>
+		<div class="notice notice-error">
+			<p><?php esc_html_e( 'We could not find a any logs for that email and token combination.', 'gdpr' ); ?></p>
+		</div>
+	</div>
+</script>
+
 <script type="text/html" id="tmpl-access-data-result-success">
 	<div class="gdpr-access-data-result">
 		<h2><?php echo _e( 'Result', 'gdpr' ); ?></h2>

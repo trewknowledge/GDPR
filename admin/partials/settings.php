@@ -32,7 +32,7 @@
 
 		<div class="tab hidden" data-id="general">
 			<h2><?php esc_html_e( 'General', 'gdpr' ) ?></h2>
-			<table class="form-table tab hidden" data-id="general">
+			<table class="form-table" data-id="general">
 				<tbody>
 					<tr>
 						<th scope="row">

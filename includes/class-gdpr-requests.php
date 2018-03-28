@@ -191,6 +191,8 @@ class GDPR_Requests {
 		if ( $meta ) {
 			delete_user_meta( $user_id, $meta_key );
 		}
+
+		GDPR_Audit_Log::log( $user_id, sprintf( esc_html__( 'User request expired. Removing %s user_meta.', 'gdpr' ), $meta_key ) );
 	}
 
 	/**

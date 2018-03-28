@@ -123,12 +123,30 @@ class GDPR_Email {
 
 		$content = isset( $data['content'] ) ? sanitize_textarea_field( $data['content'] ) : '';
 
+		$nature = sanitize_textarea_field( wp_unslash( $data['nature'] ) );
+		$office_contact = sanitize_textarea_field( wp_unslash( $data['office_contact'] ) );
+		$consequences = sanitize_textarea_field( wp_unslash( $data['consequences'] ) );
+		$measures = sanitize_textarea_field( wp_unslash( $data['measures'] ) );
+
+		foreach ( (array) $emails as $email ) {
+			$user = get_user_by( 'email', $email );
+			if ( $user instanceof WP_User ) {
+				GDPR_Audit_Log::log( $user->ID, esc_html__( 'Data breach notification sent to user.', 'gdpr' ) );
+				GDPR_Audit_Log::log( $user->ID, sprintf( esc_html__( 'Email content: %s', 'gdpr'), $content ) );
+				GDPR_Audit_Log::log( $user->ID, sprintf( esc_html__( 'Nature of data breach: %s', 'gdpr'), $nature ) );
+				GDPR_Audit_Log::log( $user->ID, sprintf( esc_html__( 'Data protection officer contact: %s', 'gdpr'), $office_contact ) );
+				GDPR_Audit_Log::log( $user->ID, sprintf( esc_html__( 'Likely consequences of breach: %s', 'gdpr'), $consequences ) );
+				GDPR_Audit_Log::log( $user->ID, sprintf( esc_html__( 'Measures taken or proposed to be taken: %s', 'gdpr'), $measures ) );
+			}
+		}
+
+
 		self::send( $emails, 'data-breach-notification', array(
 			'content' => $content,
-			'nature' => sanitize_textarea_field( wp_unslash( $data['nature'] ) ),
-			'office_contact' => sanitize_textarea_field( wp_unslash( $data['office_contact'] ) ),
-			'consequences' => sanitize_textarea_field( wp_unslash( $data['consequences'] ) ),
-			'measures' => sanitize_textarea_field( wp_unslash( $data['measures'] ) ),
+			'nature' => $nature,
+			'office_contact' => $office_contact,
+			'consequences' => $consequences,
+			'measures' => $measures,
 		) );
 	}
 

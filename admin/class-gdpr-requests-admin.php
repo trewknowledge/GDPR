@@ -72,6 +72,7 @@ class GDPR_Requests_Admin extends GDPR_Requests {
 
 		if ( empty( $requests ) ) {
 			parent::add_to_requests( $email, 'delete', null, true );
+			GDPR_Audit_Log::log( $user->ID, esc_html__( 'User added to the deletion requests list by admin.', 'gdpr' ) );
 			add_settings_error( 'gdpr-requests', 'new-request', sprintf( esc_html__( 'User %s was added to the deletion table.', 'gdpr' ), $email ), 'updated' );
 			set_transient( 'settings_errors', get_settings_errors(), 30 );
 			wp_safe_redirect(
@@ -109,6 +110,7 @@ class GDPR_Requests_Admin extends GDPR_Requests {
 		}
 
 		parent::add_to_requests( $email, 'delete' );
+		GDPR_Audit_Log::log( $user->ID, esc_html__( 'User added to the deletion requests list by admin.', 'gdpr' ) );
 		add_settings_error( 'gdpr-requests', 'new-request', sprintf( esc_html__( 'User %s was added to the deletion table.', 'gdpr' ), $email ), 'updated' );
 		set_transient( 'settings_errors', get_settings_errors(), 30 );
 		wp_safe_redirect(
@@ -150,6 +152,8 @@ class GDPR_Requests_Admin extends GDPR_Requests {
 		$index = sanitize_text_field( wp_unslash( $_POST['index'] ) );
 
 		parent::remove_from_requests( $index );
+		$user = get_user_by( 'email', $email );
+		GDPR_Audit_Log::log( $user->ID, sprintf( esc_html__( 'User was removed from the %s request list by admin.', 'gdpr' ), $type ) );
 
 		add_settings_error( 'gdpr-requests', 'remove-request', sprintf( esc_html__( 'User %s was removed from this request table.', 'gdpr' ), $email ), 'updated' );
 		set_transient( 'settings_errors', get_settings_errors(), 30 );
@@ -196,6 +200,9 @@ class GDPR_Requests_Admin extends GDPR_Requests {
 
 		GDPR_Email::send( $email, $type . '-resolved' );
 
+		$user = get_user_by( 'email', $email );
+		GDPR_Audit_Log::log( $user->ID, sprintf( esc_html__( 'User %s request was marked as resolved by admin.', 'gdpr' ), $type ) );
+
 		add_settings_error( 'gdpr-requests', 'resolved', sprintf( esc_html__( 'Request was resolved. User %s has been notified.', 'gdpr' ), $email ), 'updated' );
 		set_transient( 'settings_errors', get_settings_errors(), 30 );
 		wp_safe_redirect(
@@ -223,9 +230,13 @@ class GDPR_Requests_Admin extends GDPR_Requests {
 		$email = sanitize_email( $_POST['user_email'] );
 		$user = get_user_by( 'email', $email );
 		$index = sanitize_text_field( $_POST['index'] );
-		parent::remove_from_requests( $email, 'delete', $index );
+		parent::remove_from_requests( $index );
 
-		GDPR_Email::send( $user->user_email, 'delete-resolved', array( 'token' => 123456 ) );
+		$token = GDPR::generate_pin();
+		GDPR_Email::send( $user->user_email, 'delete-resolved', array( 'token' => $token ) );
+
+		GDPR_Audit_Log::log( $user->ID, esc_html__( 'User was removed from the site.', 'gdpr') );
+		GDPR_Audit_Log::export_log( $user->ID, $token );
 		wp_delete_user( $user->ID );
 
 
@@ -278,6 +289,7 @@ class GDPR_Requests_Admin extends GDPR_Requests {
 			$new_comment['user_id'] = 0;
 			wp_update_comment( $new_comment );
 		}
+		GDPR_Audit_Log::log( $user->ID, esc_html__( 'User comments were anonymized.', 'gdpr' ) );
 		wp_send_json_success();
 	}
 
@@ -319,6 +331,7 @@ class GDPR_Requests_Admin extends GDPR_Requests {
 					'post_author' => $reassign_to,
 				) );
 			}
+			GDPR_Audit_Log::log( $user->ID, sprintf( esc_html__( 'User %s were reassigned to %s.', 'gdpr' ), $post_type, $reassign_to ) );
 			wp_send_json_success();
 		}
 

@@ -235,6 +235,47 @@
 			)
 		});
 
+		$(document).on('submit', '.gdpr-audit-log-lookup', function(e) {
+			e.preventDefault();
+			var user_email    = $(this).find('input[name="user_email"]'),
+					email         = user_email.val(),
+					token         = $(this).find('input[name="token"]'),
+					tokenVal      = token.val(),
+					nonce         = $(this).find('input[name="gdpr_audit_log_nonce"]').val(),
+					button        = $(this).find('.button-primary'),
+					spinner       = $(this).find('.spinner'),
+					result        = $('.gdpr-audit-log-result');
+
+			button.addClass('hidden');
+			spinner.show();
+			result.remove();
+			user_email.val('');
+			token.val('');
+
+			$.post(
+				ajaxurl,
+				{
+					action: 'gdpr_audit_log',
+					nonce: nonce,
+					email: email,
+					token: tokenVal
+				},
+				function( response ) {
+					button.removeClass('hidden');
+					spinner.hide();
+					if ( response.success ) {
+						var template = wp.template( 'audit-log-result-success' );
+						$('.gdpr div[data-id="audit-log"]').append( template( {
+							result: response.data
+						} ) );
+					} else {
+						var template = wp.template( 'audit-log-result-error' );
+						$('.gdpr div[data-id="audit-log"]').append( template() );
+					}
+				}
+			)
+		});
+
 		$(document).on( 'click', '.frm-export-data input[type="submit"]', function(e) {
 			e.preventDefault();
 

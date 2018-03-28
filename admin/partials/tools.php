@@ -12,7 +12,7 @@
  * @subpackage GDPR/admin/partials
  */
 
-include_once plugin_dir_path( __FILE__ ) . 'templates/tmpl-access-data.php';
+include_once plugin_dir_path( __FILE__ ) . 'templates/tmpl-tools.php';
 
 if ( isset( $_GET['type'], $_GET['key'] ) ) {
 
@@ -61,7 +61,7 @@ if ( isset( $_GET['type'], $_GET['key'] ) ) {
 						<label for="gdpr-request-email-lookup"><?php esc_html_e( 'Search by email', 'gdpr' ); ?></label>
 					</h4>
 					<input type="email" name="user_email" class="regular-text" placeholder="<?php esc_attr_e( 'email@domain.com', 'gdpr' ); ?>" required>
-					<?php submit_button( esc_html__( 'Submit', 'gdpr' ), 'primary', '', false ); ?>
+					<?php submit_button( esc_html__( 'Search', 'gdpr' ), 'primary', '', false ); ?>
 					<span class="spinner"></span>
 				</div>
 			</form>
@@ -114,7 +114,21 @@ if ( isset( $_GET['type'], $_GET['key'] ) ) {
 	</div>
 
 	<div class="tab hidden" data-id="audit-log">
-		<h2><?php esc_html_e( 'Coming Soon', 'gdpr' ) ?></h2>
+		<h2><?php esc_html_e( 'Audit Log', 'gdpr' ) ?></h2>
+		<div class="postbox not-full">
+			<form class="gdpr-audit-log-lookup" method="post">
+				<div class="inside">
+					<?php wp_nonce_field( 'audit-log', 'gdpr_audit_log_nonce' ); ?>
+					<h4>
+						<label for="gdpr-request-email-lookup"><?php esc_html_e( 'Search by email', 'gdpr' ); ?></label>
+					</h4>
+					<input type="email" name="user_email" class="regular-text" placeholder="<?php esc_attr_e( 'email@domain.com', 'gdpr' ); ?>" required>
+					<input type="text" name="token" placeholder="<?php esc_attr_e( '6 digit token (optional)', 'gdpr' ); ?>">
+					<?php submit_button( esc_html__( 'Search', 'gdpr' ), 'primary', '', false ); ?>
+					<span class="spinner"></span>
+				</div>
+			</form>
+		</div>
 	</div>
 
 <!-- #poststuff -->
