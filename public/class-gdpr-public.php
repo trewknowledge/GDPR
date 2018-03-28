@@ -154,13 +154,12 @@ class GDPR_Public {
 			wp_send_json_error( esc_html__( "You can't disable all consents.", 'gdpr' ) );
 		}
 
-		$consents = $_POST['consents'];
 		$user = wp_get_current_user();
 		$user_consents = get_user_meta( $user->ID, 'gdpr_consents' );
 
 		delete_user_meta( $user->ID, 'gdpr_consents' );
 
-		foreach ( $consents as $consent ) {
+		foreach ( (array) $_POST['consents'] as $consent ) {
 			$consent = sanitize_text_field( wp_unslash( $consent ) );
 			add_user_meta( $user->ID, 'gdpr_consents', $consent );
 		}
