@@ -54,3 +54,22 @@ if ( ! function_exists( 'is_allowed_cookie') ) {
 		return false;
 	}
 }
+
+if ( ! function_exists( 'have_consent' ) ) {
+	/**
+	 * Checks if a user gave consent.
+	 * @param  string $consent The consent id.
+	 * @return bool            Whether the user gave consent or not.
+	 */
+	function have_consent( $consent ) {
+		$user = wp_get_current_user();
+
+		$consents = get_user_meta( $user->ID, 'gdpr_consents' );
+
+		if ( in_array( $consent, $consents ) ) {
+			return true;
+		}
+
+		return false;
+	}
+}
