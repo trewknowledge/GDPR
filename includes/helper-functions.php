@@ -31,7 +31,7 @@ if ( ! function_exists( 'gdpr_request_form' ) ) {
 	 * @param  string $type The type of request.
 	 */
 	function gdpr_request_form( $type ) {
-		GDPR_Requests_Public::request_form( $type );
+		return GDPR_Requests_Public::request_form( $type );
 	}
 }
 

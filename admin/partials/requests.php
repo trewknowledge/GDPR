@@ -45,7 +45,7 @@
 						<tr>
 							<td class="row-title"><?php echo esc_html( $request['email'] ); ?></td>
 							<td class="text-center"><?php echo esc_html( $request['date'] ); ?></td>
-							<td class="text-center"><?php echo wp_kses( wpautop( $request['data'] ), array( 'p' => true, 'br' => true ) ); ?></td>
+							<td class="text-center"><?php echo wp_kses( wpautop( wp_unslash( $request['data'] ) ), array( 'p' => true, 'br' => true ) ); ?></td>
 							<td class="text-center">
 								<form class="frm-process-rectification" action="<?php echo esc_url( admin_url('admin-post.php') ); ?>" method="post">
 									<?php wp_nonce_field( 'gdpr-request-nonce', 'gdpr_cancel_rectify_nonce' ); ?>
@@ -102,7 +102,7 @@
 						<tr>
 							<td class="row-title"><?php echo esc_html( $request['email'] ); ?></td>
 							<td class="text-center"><?php echo esc_html( $request['date'] ); ?></td>
-							<td class="text-center"><?php echo esc_html( $request['data'] ); ?></td>
+							<td class="text-center"><?php echo esc_html( wp_unslash( $request['data'] ) ); ?></td>
 							<td class="text-center">
 								<form class="frm-process-complaint" action="<?php echo esc_url( admin_url('admin-post.php') ); ?>" method="post">
 									<?php wp_nonce_field( 'gdpr-request-nonce', 'gdpr_cancel_complaint_nonce' ); ?>
@@ -114,7 +114,7 @@
 								</form>
 								<form class="frm-process-complaint" action="<?php echo esc_url( admin_url('admin-post.php') ); ?>" method="post">
 									<?php wp_nonce_field( 'gdpr-mark-as-resolved', 'gdpr_complaint_mark_resolved_nonce' ); ?>
-									<input type="hidden" name="action" value="mark_resolved">
+									<input type="hidden" name="action" value="gdpr_mark_resolved">
 									<input type="hidden" name="type" value="complaint">
 									<input type="hidden" name="index" value="<?php echo esc_attr( $i ); ?>">
 									<input type="hidden" name="user_email" value="<?php echo esc_attr( $request['email'] ) ?>">
