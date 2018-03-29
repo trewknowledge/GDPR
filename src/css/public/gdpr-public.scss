@@ -606,8 +606,14 @@
 		@include breakpoint('medium') {
 			width: 50%;
 		}
-		textarea {
+		.privacy-viewer {
 			height: 50vh;
+			width: 100%;
+			border: 1px solid #cecece;
+			padding: 20px;
+	    overflow: auto;
+		}
+		textarea {
 			resize: none;
 		}
 		.gdpr-consent-buttons {
