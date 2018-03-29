@@ -111,7 +111,7 @@ class GDPR_Requests_Admin extends GDPR_Requests {
 			exit;
 		}
 
-		parent::add_to_requests( $email, 'delete' );
+		parent::add_to_requests( $email, 'delete', null, true );
 		GDPR_Audit_Log::log( $user->ID, esc_html__( 'User added to the deletion requests list by admin.', 'gdpr' ) );
 		add_settings_error( 'gdpr-requests', 'new-request', sprintf( esc_html__( 'User %s was added to the deletion table.', 'gdpr' ), $email ), 'updated' );
 		set_transient( 'settings_errors', get_settings_errors(), 30 );
