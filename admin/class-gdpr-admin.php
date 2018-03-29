@@ -139,7 +139,7 @@ class GDPR_Admin {
 	 * @param  array $tabs The cookie tabs.
 	 * @return array       The sanitized options.
 	 */
-	function sanitize_cookie_tabs( $tabs ) {
+	public function sanitize_cookie_tabs( $tabs ) {
 
 		$output = array();
 		if ( ! is_array( $tabs ) ) {
