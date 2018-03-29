@@ -61,7 +61,9 @@ class GDPR_Requests_Public extends GDPR_Requests {
 			return;
 		}
 
+		ob_start();
 		include plugin_dir_path( dirname( __FILE__ ) ) . 'public/partials/' . $type . '-form.php';
+		return ob_get_clean();
 	}
 
 	/**
