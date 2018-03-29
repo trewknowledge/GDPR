@@ -10,7 +10,7 @@
  * @since      1.0.0
  *
  * @package    GDPR
- * @subpackage GDPR/includes
+ * @subpackage includes
  * @author     Fernando Claussen <fernandoclaussen@gmail.com>
  */
 
@@ -21,7 +21,7 @@
  *
  * @since      1.0.0
  * @package    GDPR
- * @subpackage GDPR/includes
+ * @subpackage includes
  * @author     Fernando Claussen <fernandoclaussen@gmail.com>
  */
 class GDPR_Audit_Log {

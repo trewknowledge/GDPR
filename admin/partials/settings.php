@@ -1,19 +1,3 @@
-<?php
-
-/**
- * Provide a admin area view for the plugin
- *
- * This file is used to markup the admin-facing aspects of the plugin.
- *
- * @link       https://trewknowledge.com
- * @since      1.0.0
- *
- * @package    GDPR
- * @subpackage GDPR/admin/partials
- */
-
-?>
-
 <div class="wrap gdpr">
 	<h1><?php esc_html_e( 'Settings', 'gdpr' ); ?></h1>
 	<div class="nav-tab-wrapper">

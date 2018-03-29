@@ -7,7 +7,7 @@
  * @since      1.0.0
  *
  * @package    GDPR
- * @subpackage GDPR/admin
+ * @subpackage admin
  * @author     Fernando Claussen <fernandoclaussen@gmail.com>
  */
 
@@ -18,7 +18,7 @@
  * Enqueue the admin-specific stylesheet and JavaScript.
  *
  * @package    GDPR
- * @subpackage GDPR/admin
+ * @subpackage admin
  * @author     Fernando Claussen <fernandoclaussen@gmail.com>
  */
 class GDPR_Admin {

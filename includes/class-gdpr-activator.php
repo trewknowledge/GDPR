@@ -7,7 +7,7 @@
  * @since      1.0.0
  *
  * @package    GDPR
- * @subpackage GDPR/includes
+ * @subpackage includes
  * @author     Fernando Claussen <fernandoclaussen@gmail.com>
  */
 
@@ -18,12 +18,13 @@
  *
  * @since      1.0.0
  * @package    GDPR
- * @subpackage GDPR/includes
+ * @subpackage includes
  * @author     Fernando Claussen <fernandoclaussen@gmail.com>
  */
 class GDPR_Activator {
 
 	/**
+	 * Runs when the user first activates the plugin.
 	 * Sets a CRON jo to clean up the telemetry post type every 12 hours.
 	 *
 	 * @since  1.0.0

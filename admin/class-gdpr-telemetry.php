@@ -6,7 +6,7 @@
  * @since      1.0.0
  *
  * @package    GDPR
- * @subpackage GDPR/admin
+ * @subpackage admin
  * @author     Fernando Claussen <fernandoclaussen@gmail.com>
  */
 
@@ -16,7 +16,7 @@
  * Defines the custom post type and edit the look and feel of the page.
  *
  * @package    GDPR
- * @subpackage GDPR/admin
+ * @subpackage admin
  * @author     Fernando Claussen <fernandoclaussen@gmail.com>
  */
 class GDPR_Telemetry {

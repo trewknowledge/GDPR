@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<phpdoc>
+	<title>GDPR</title>
+  <encoding>utf8</encoding>
+  <parser>
+    <target>docs</target>
+  </parser>
+  <transformer>
+    <target>docs</target>
+  </transformer>
+  <files>
+    <directory>templates</directory>
+    <directory>src</directory>
+    <directory>public</directory>
+    <directory>includes</directory>
+    <directory>admin</directory>
+    <file>gdpr.php</file>
+    <file>uninstall.php</file>
+    <ignore>templates/email/*</ignore>
+    <ignore>admin/partials/*</ignore>
+    <ignore>public/partials/*</ignore>
+    <ignore>index.php</ignore>
+  </files>
+</phpdoc>

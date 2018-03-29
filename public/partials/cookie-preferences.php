@@ -8,7 +8,7 @@
  * @since      1.0.0
  *
  * @package    GDPR
- * @subpackage GDPR/public/partials
+ * @subpackage public/partials
  */
 ?>
 

@@ -1,3 +1,16 @@
+<?php
+/**
+ * The confirmation dialogs.
+ *
+ * @link       https://trewknowledge.com
+ * @since      1.0.0
+ *
+ * @package    GDPR
+ * @subpackage public
+ * @author     Fernando Claussen <fernandoclaussen@gmail.com>
+ */
+?>
+
 <div class="confirm-delete-request-dialog" title="<?php esc_attr_e( 'Close your account?', 'gdpr' ); ?>">
   <p>
   	<?php esc_html_e( 'Your account will be closed and all data will be permanently deleted and cannot be recovered. Are you sure?', 'gdpr' ); ?>

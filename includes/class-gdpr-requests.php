@@ -7,7 +7,7 @@
  * @since      1.0.0
  *
  * @package    GDPR
- * @subpackage GDPR/admin
+ * @subpackage includes
  * @author     Fernando Claussen <fernandoclaussen@gmail.com>
  */
 
@@ -15,7 +15,7 @@
  * The requests functionality of the plugin.
  *
  * @package    GDPR
- * @subpackage GDPR/admin
+ * @subpackage includes
  * @author     Fernando Claussen <fernandoclaussen@gmail.com>
  */
 class GDPR_Requests {
@@ -218,10 +218,10 @@ class GDPR_Requests {
 	 * @since  1.0.0
 	 * @author Fernando Claussen <fernandoclaussen@gmail.com>
 	 * @access protected
-	 * @param  string  $email  The requestant email.
-	 * @param  string  $type   The type of request.
-	 * @param  string  $data   Some types of request have an extra field. E.g. Complaint and Rectify data.
-	 * @param  string  $key    The request key.
+	 * @param  string  $email      The requestant email.
+	 * @param  string  $type       The type of request.
+	 * @param  string  $data       Some types of request have an extra field. E.g. Complaint and Rectify data.
+	 * @param  string  $confirmed  If the request is confirmed or not.
 	 */
 	protected function add_to_requests( $email, $type, $data = null, $confirmed = false ) {
 		$requests = ( array ) get_option( 'gdpr_requests', array() );

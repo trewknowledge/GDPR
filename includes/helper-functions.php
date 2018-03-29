@@ -1,4 +1,14 @@
 <?php
+/**
+ * The plugin helper functions
+ *
+ * @link       https://trewknowledge.com
+ * @since      1.0.0
+ *
+ * @package    GDPR
+ * @subpackage public
+ * @author     Fernando Claussen <fernandoclaussen@gmail.com>
+ */
 
 if ( ! function_exists( 'gdpr_cookie_preferences' ) ) {
 	/**
@@ -6,6 +16,7 @@ if ( ! function_exists( 'gdpr_cookie_preferences' ) ) {
 	 * @since  1.0.0
 	 * @author Fernando Claussen <fernandoclaussen@gmail.com>
 	 * @param  string $text The button text.
+	 * @param  string $type The type of preferences. Possible options are `cookies` or `consents`
 	 */
 	function gdpr_preferences( $text, $type ) {
 		echo '<button type="button" class="gdpr-preferences" data-type="' . esc_attr( $type ) . '">' . esc_html( $text ) . '</button>';

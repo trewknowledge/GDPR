@@ -1,3 +1,4 @@
-logs/
 node_modules/
 .DS_Store
+vendor/
+docs/
