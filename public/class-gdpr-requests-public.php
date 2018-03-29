@@ -8,6 +8,7 @@
  *
  * @package    GDPR
  * @subpackage GDPR/admin
+ * @author     Fernando Claussen <fernandoclaussen@gmail.com>
  */
 
 /**
@@ -22,12 +23,13 @@ class GDPR_Requests_Public extends GDPR_Requests {
 	/**
 	 * Removes the user from the requests table, sends a notification email and
 	 * delete the user from the site
-	 *
+	 * @since  1.0.0
+	 * @author Fernando Claussen <fernandoclaussen@gmail.com>
 	 * @param  WP_User $user  The user object.
 	 * @param  string  $index The request key on the requests array.
 	 * @return void
 	 */
-	function delete_user( $user, $index ) {
+	public function delete_user( $user, $index ) {
 		if ( ! $user instanceof WP_User ) {
 			return false;
 		}
@@ -48,11 +50,13 @@ class GDPR_Requests_Public extends GDPR_Requests {
 
 	/**
 	 * Prints a request form.
-	 *
+	 * @since  1.0.0
+	 * @author Fernando Claussen <fernandoclaussen@gmail.com>
+	 * @static
 	 * @param  string $type The type of request to display the correct form.
 	 * @return mixed        Print the form html.
 	 */
-	static function request_form( $type ) {
+	public static function request_form( $type ) {
 		if ( ! in_array( $type, parent::$allowed_types ) ) {
 			return;
 		}
@@ -62,10 +66,10 @@ class GDPR_Requests_Public extends GDPR_Requests {
 
 	/**
 	 * Sends an email to the end user so it can confirm his request.
-	 *
-	 * @return void
+	 * @since  1.0.0
+	 * @author Fernando Claussen <fernandoclaussen@gmail.com>
 	 */
-	function send_request_email() {
+	public function send_request_email() {
 		if ( ! isset( $_POST['type'] ) || ! in_array( $_POST['type'], parent::$allowed_types ) ) {
 				wp_die( esc_html__( 'Invalid type of request. Please try again.', 'gdpr' ) );
 		}
@@ -188,10 +192,10 @@ class GDPR_Requests_Public extends GDPR_Requests {
 	/**
 	 * Runs when a user confirms a request email.
 	 * This process the request, set the request to confirmed on the database.
-	 *
-	 * @return void
+	 * @since  1.0.0
+	 * @author Fernando Claussen <fernandoclaussen@gmail.com>
 	 */
-	function request_confirmed() {
+	public function request_confirmed() {
 		if ( ! is_front_page() || ! isset( $_GET['type'], $_GET['key'], $_GET['email'] ) ) {
 			return;
 		}
@@ -289,13 +293,13 @@ class GDPR_Requests_Public extends GDPR_Requests {
 
 	/**
 	 * Sends the user data export email with the chosen format.
-	 *
+	 * @since  1.0.0
+	 * @author Fernando Claussen <fernandoclaussen@gmail.com>
 	 * @param  string $email  The recipient.
 	 * @param  string $format The export format. XML or JSON.
 	 * @param  string $key    The request array key.
-	 * @return void
 	 */
-	function mail_export_data( $email, $format, $key ) {
+	public function mail_export_data( $email, $format, $key ) {
 		$email = sanitize_email( $email );
 		$format = sanitize_text_field( wp_unslash( $format ) );
 		$key = sanitize_text_field( wp_unslash( $key ) );

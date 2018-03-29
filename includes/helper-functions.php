@@ -4,6 +4,7 @@ if ( ! function_exists( 'gdpr_cookie_preferences' ) ) {
 	/**
 	 * Adds a button to re-open the cookie preferences modal.
 	 * @since  1.0.0
+	 * @author Fernando Claussen <fernandoclaussen@gmail.com>
 	 * @param  string $text The button text.
 	 */
 	function gdpr_preferences( $text, $type ) {
@@ -14,6 +15,8 @@ if ( ! function_exists( 'gdpr_cookie_preferences' ) ) {
 if ( ! function_exists( 'gdpr_request_form' ) ) {
 	/**
 	 * Load the request forms.
+	 * @since  1.0.0
+	 * @author Fernando Claussen <fernandoclaussen@gmail.com>
 	 * @param  string $type The type of request.
 	 */
 	function gdpr_request_form( $type ) {
@@ -24,6 +27,8 @@ if ( ! function_exists( 'gdpr_request_form' ) ) {
 if ( ! function_exists( 'gdpr_request_form_shortcode' ) ) {
 	/**
 	 * Create the request form shortcode.
+	 * @since  1.0.0
+	 * @author Fernando Claussen <fernandoclaussen@gmail.com>
 	 * @param  string $atts Shortcode attributes.
 	 */
 	function gdpr_request_form_shortcode( $atts ) {
@@ -40,6 +45,8 @@ if ( ! function_exists( 'gdpr_request_form_shortcode' ) ) {
 if ( ! function_exists( 'is_allowed_cookie') ) {
 	/**
 	 * Checks if a cookie is allowed
+	 * @since  1.0.0
+	 * @author Fernando Claussen <fernandoclaussen@gmail.com>
 	 * @param  string  $cookie_name The cookie name.
 	 * @return bool                 Whether the cookie is allowed or not.
 	 */
@@ -58,6 +65,8 @@ if ( ! function_exists( 'is_allowed_cookie') ) {
 if ( ! function_exists( 'have_consent' ) ) {
 	/**
 	 * Checks if a user gave consent.
+	 * @since  1.0.0
+	 * @author Fernando Claussen <fernandoclaussen@gmail.com>
 	 * @param  string $consent The consent id.
 	 * @return bool            Whether the user gave consent or not.
 	 */

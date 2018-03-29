@@ -11,6 +11,7 @@
  *
  * @package    GDPR
  * @subpackage GDPR/includes
+ * @author     Fernando Claussen <fernandoclaussen@gmail.com>
  */
 
 /**
@@ -32,18 +33,20 @@ class GDPR {
 	/**
 	 * The unique identifier of this plugin.
 	 *
-	 * @since    1.0.0
-	 * @access   protected
-	 * @var      string    $plugin_name    The string used to uniquely identify this plugin.
+	 * @since  1.0.0
+	 * @author Fernando Claussen <fernandoclaussen@gmail.com>
+	 * @access protected
+	 * @var    string    $plugin_name    The string used to uniquely identify this plugin.
 	 */
 	protected $plugin_name;
 
 	/**
 	 * The current version of the plugin.
 	 *
-	 * @since    1.0.0
-	 * @access   protected
-	 * @var      string    $version    The current version of the plugin.
+	 * @since  1.0.0
+	 * @author Fernando Claussen <fernandoclaussen@gmail.com>
+	 * @access protected
+	 * @var    string    $version    The current version of the plugin.
 	 */
 	protected $version;
 
@@ -54,7 +57,8 @@ class GDPR {
 	 * Load the dependencies, define the locale, and set the hooks for the admin area and
 	 * the public-facing side of the site.
 	 *
-	 * @since    1.0.0
+	 * @since  1.0.0
+	 * @author Fernando Claussen <fernandoclaussen@gmail.com>
 	 */
 	public function __construct() {
 		if ( defined( 'GDPR_VERSION' ) ) {
@@ -78,8 +82,9 @@ class GDPR {
 	/**
 	 * Load the required dependencies for this plugin.
 	 *
-	 * @since    1.0.0
-	 * @access   private
+	 * @since  1.0.0
+	 * @author Fernando Claussen <fernandoclaussen@gmail.com>
+	 * @access private
 	 */
 	private function load_dependencies() {
 		/**
@@ -132,8 +137,9 @@ class GDPR {
 
 	/**
 	 * Define the locale for this plugin for internationalization.
-	 * @since    1.0.0
-	 * @access   private
+	 * @since  1.0.0
+	 * @author Fernando Claussen <fernandoclaussen@gmail.com>
+	 * @access private
 	 */
 	private function set_locale() {
 
@@ -147,8 +153,9 @@ class GDPR {
 
 	/**
 	 * Register all of the common hooks.
-	 * @since    1.0.0
-	 * @access   private
+	 * @since  1.0.0
+	 * @author Fernando Claussen <fernandoclaussen@gmail.com>
+	 * @access private
 	 */
 	private function define_common_hooks() {
 		add_action( 'init', array( $this, 'block_cookies' ) );
@@ -160,8 +167,9 @@ class GDPR {
 	 * Register all of the hooks related to the admin area functionality
 	 * of the plugin.
 	 *
-	 * @since    1.0.0
-	 * @access   private
+	 * @since  1.0.0
+	 * @author Fernando Claussen <fernandoclaussen@gmail.com>
+	 * @access private
 	 */
 	private function define_admin_hooks() {
 
@@ -218,8 +226,9 @@ class GDPR {
 	 * Register all of the hooks related to the public-facing functionality
 	 * of the plugin.
 	 *
-	 * @since    1.0.0
-	 * @access   private
+	 * @since  1.0.0
+	 * @author Fernando Claussen <fernandoclaussen@gmail.com>
+	 * @access private
 	 */
 	private function define_public_hooks() {
 
@@ -247,6 +256,7 @@ class GDPR {
 	/**
 	 * Block cookies created by through that are not on the list of allowed cookies.
 	 * @since  1.0.0
+	 * @author Fernando Claussen <fernandoclaussen@gmail.com>
 	 */
 	function block_cookies() {
 		$approved_cookies = ( isset( $_COOKIE['gdpr_approved_cookies'] ) ? json_decode( wp_unslash( $_COOKIE['gdpr_approved_cookies'] ), true ) : array() );
@@ -264,6 +274,8 @@ class GDPR {
 	/**
 	 * Get user meta for exporting.
 	 * @since  1.0.0
+	 * @author Fernando Claussen <fernandoclaussen@gmail.com>
+	 * @static
 	 * @param  int   $user_id  The user ID.
 	 * @return array           The user meta minus not important metas.
 	 */
@@ -297,6 +309,8 @@ class GDPR {
 	/**
 	 * Generates the export in JSON or XML formats.
 	 * @since  1.0.0
+	 * @author Fernando Claussen <fernandoclaussen@gmail.com>
+	 * @static
 	 * @param  string $email  The user email.
 	 * @param  string $format Either XML or JSON.
 	 * @return string         Returns the file as string.
@@ -395,7 +409,8 @@ class GDPR {
 
 	/**
 	 * Export the generated export file.
-	 * @since 1.0.0
+	 * @since  1.0.0
+	 * @author Fernando Claussen <fernandoclaussen@gmail.com>
 	 */
 	function export_data() {
 		if ( ! isset( $_POST['nonce'], $_POST['email'], $_POST['type'] ) || ! wp_verify_nonce( sanitize_key( wp_unslash( $_POST['nonce'] ) ), 'export-data' ) ) {
@@ -422,8 +437,9 @@ class GDPR {
 	 * Generates a random 6 digit pin.
 	 * This pin is necessary to use with the audit log files.
 	 *
-	 * @since                  1.0.0
-	 *
+	 * @since  1.0.0
+	 * @author Fernando Claussen <fernandoclaussen@gmail.com>
+	 * @static
 	 * @param  integer $length Number of digits.
 	 * @return string          Returns the generated pin
 	 */
@@ -437,8 +453,9 @@ class GDPR {
 	 * The name of the plugin used to uniquely identify it within the context of
 	 * WordPress and to define internationalization functionality.
 	 *
-	 * @since     1.0.0
-	 * @return    string    The name of the plugin.
+	 * @since  1.0.0
+	 * @author Fernando Claussen <fernandoclaussen@gmail.com>
+	 * @return string    The name of the plugin.
 	 */
 	public function get_plugin_name() {
 		return $this->plugin_name;
@@ -447,8 +464,9 @@ class GDPR {
 	/**
 	 * Retrieve the version number of the plugin.
 	 *
-	 * @since     1.0.0
-	 * @return    string    The version number of the plugin.
+	 * @since  1.0.0
+	 * @author Fernando Claussen <fernandoclaussen@gmail.com>
+	 * @return string    The version number of the plugin.
 	 */
 	public function get_version() {
 		return $this->version;

@@ -1,10 +1,22 @@
 <?php
 /**
  * This file handle emailing users.
+ *
+ * @link       http://trewknowledge.com
+ * @since      1.0.0
+ *
+ * @package    GDPR
+ * @subpackage GDPR/includes
+ * @author     Fernando Claussen <fernandoclaussen@gmail.com>
  */
 
 /**
  * Handles emailing users.
+ *
+ * @since      1.0.0
+ * @package    GDPR
+ * @subpackage GDPR/includes
+ * @author     Fernando Claussen <fernandoclaussen@gmail.com>
  */
 class GDPR_Email {
 	/**
@@ -15,9 +27,12 @@ class GDPR_Email {
 	 * 1. /themes/theme/gdpr/templates/email/$template_name
 	 * 2. /plugins/gdpr/templates/$template_name.
 	 *
-	 * @since 1.0.0
-	 * @param   string  $template_name    Template to load.
-	 * @return  string                    Path to the template file.
+	 * @since  1.0.0
+	 * @author Fernando Claussen <fernandoclaussen@gmail.com>
+	 * @access private
+	 * @static
+	 * @param  string  $template_name    Template to load.
+	 * @return string                    Path to the template file.
 	 */
 	private static function locate_template( $template_name ) {
 		// Set variable to search in gdpr folder of theme.
@@ -43,9 +58,12 @@ class GDPR_Email {
 	 *
 	 * Search for the template and include the file.
 	 *
-	 * @since 1.0.0
-	 * @param string  $template_name    Template to load.
-	 * @param array   $args             Arguments passed to the template file.
+	 * @since  1.0.0
+	 * @author Fernando Claussen <fernandoclaussen@gmail.com>
+	 * @access private
+	 * @static
+	 * @param  string  $template_name    Template to load.
+	 * @param  array   $args             Arguments passed to the template file.
 	 */
 	private static function get_template( $template_name, $args = array() ) {
 		$template_file = self::locate_template( $template_name );
@@ -59,6 +77,8 @@ class GDPR_Email {
 	/**
 	 * Get the email content from the correct file.
 	 * @since  1.0.0
+	 * @author Fernando Claussen <fernandoclaussen@gmail.com>
+	 * @static
 	 * @param  string $template_name Template to load.
 	 * @param  array  $args          Arguments passed to the template file.
 	 * @return string                Email contents.
@@ -72,6 +92,9 @@ class GDPR_Email {
 	/**
 	 * Get a noreply email address.
 	 * @since  1.0.0
+	 * @author Fernando Claussen <fernandoclaussen@gmail.com>
+	 * @access private
+	 * @static
 	 * @return string The noreply email address
 	 */
 	private static function get_do_not_reply_address() {
@@ -87,6 +110,8 @@ class GDPR_Email {
 	 * Create batches of users so we can throtle emails.
 	 * Schedule CRON jobs every hour that sends the current batch of emails.
 	 * @since  1.0.0
+	 * @author Fernando Claussen <fernandoclaussen@gmail.com>
+	 * @static
 	 * @param  string $key The confirmation key.
 	 */
 	public static function prepare_data_breach_emails( $key ) {
@@ -115,6 +140,7 @@ class GDPR_Email {
 	 * The CRON job set by the prepare_data_breach_emails calls this function.
 	 * This sends one of the data breach batch emails.
 	 * @since  1.0.0
+	 * @author Fernando Claussen <fernandoclaussen@gmail.com>
 	 * @param  array  $emails The batch recipients.
 	 * @param  string $data   The contents of the email.
 	 */
@@ -155,6 +181,8 @@ class GDPR_Email {
 	 * This check if the type is one of the possible types of email.
 	 * Set the headers. Get the email content from the correct file.
 	 * @since  1.0.0
+	 * @author Fernando Claussen <fernandoclaussen@gmail.com>
+	 * @static
 	 * @param  array  $emails       The recipient email addresses.
 	 * @param  string $type         The email type.
 	 * @param  array  $args         The arguments to be used by the email template.

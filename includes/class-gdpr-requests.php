@@ -8,6 +8,7 @@
  *
  * @package    GDPR
  * @subpackage GDPR/admin
+ * @author     Fernando Claussen <fernandoclaussen@gmail.com>
  */
 
 /**
@@ -22,27 +23,33 @@ class GDPR_Requests {
 	/**
 	 * The ID of this plugin.
 	 *
-	 * @since    1.0.0
-	 * @access   protected
-	 * @var      string    $plugin_name    The ID of this plugin.
+	 * @since  1.0.0
+	 * @author Fernando Claussen <fernandoclaussen@gmail.com>
+	 * @access protected
+	 * @static
+	 * @var    string    $plugin_name    The ID of this plugin.
 	 */
 	protected static $plugin_name;
 
 	/**
 	 * The version of this plugin.
 	 *
-	 * @since    1.0.0
-	 * @access   protected
-	 * @var      string    $version    The current version of this plugin.
+	 * @since  1.0.0
+	 * @author Fernando Claussen <fernandoclaussen@gmail.com>
+	 * @access protected
+	 * @static
+	 * @var    string    $version    The current version of this plugin.
 	 */
 	protected static $version;
 
 	/**
 	 * Allowed types of requests.
 	 *
-	 * @since    1.0.0
-	 * @access   protected
-	 * @var      array
+	 * @since  1.0.0
+	 * @author Fernando Claussen <fernandoclaussen@gmail.com>
+	 * @access protected
+	 * @static
+	 * @var    array
 	 */
 	protected static $allowed_types = array( 'export-data', 'rectify', 'complaint', 'delete' );
 
@@ -50,9 +57,10 @@ class GDPR_Requests {
 	/**
 	 * Initialize the class and set its properties.
 	 *
-	 * @since    1.0.0
-	 * @param    string    $plugin_name   The name of this plugin.
-	 * @param    string    $version       The version of this plugin.
+	 * @since  1.0.0
+	 * @author Fernando Claussen <fernandoclaussen@gmail.com>
+	 * @param  string    $plugin_name   The name of this plugin.
+	 * @param  string    $version       The version of this plugin.
 	 */
 	public function __construct( $plugin_name, $version ) {
 		self::$plugin_name = $plugin_name;
@@ -61,7 +69,9 @@ class GDPR_Requests {
 
 	/**
 	 * Allowed types getter.
-	 * @since 1.0.0
+	 * @since  1.0.0
+	 * @author Fernando Claussen <fernandoclaussen@gmail.com>
+	 * @access protected
 	 * @return array The allowed request types.
 	 */
 	protected function get_allowed_types() {
@@ -70,7 +80,9 @@ class GDPR_Requests {
 
   /**
    * Checks if the user has any content published on the site. Including comments.
-   * @since 1.0.0
+   * @since  1.0.0
+   * @author Fernando Claussen <fernandoclaussen@gmail.com>
+   * @static
    * @param  WP_User/int 	$user The user object or the user ID.
    * @return bool               Whether the user has content or not.
    */
@@ -108,7 +120,9 @@ class GDPR_Requests {
 
 	/**
 	 * Removes the user from the requests list.
-	 * @since 1.0.0
+	 * @since  1.0.0
+	 * @author Fernando Claussen <fernandoclaussen@gmail.com>
+	 * @access protected
 	 * @param  string $index The request key.
 	 * @return bool          Whether the user was removed from the requests list.
 	 */
@@ -129,6 +143,8 @@ class GDPR_Requests {
 	 * Set the user request as confirmed.
 	 * Unschedules the cron jobs that clean up the requests that haven't been confirmed.
 	 * @since  1.0.0
+	 * @author Fernando Claussen <fernandoclaussen@gmail.com>
+	 * @access protected
 	 * @param  string $key The request key.
 	 * @return bool        Whether the request was confirmed or not.
 	 */
@@ -162,6 +178,7 @@ class GDPR_Requests {
 	 * The function the CRON job calls. It checks after a couple days if a request was confirmed or not.
 	 * If it wasn't, the request gets removed.
 	 * @since  1.0.0
+	 * @author Fernando Claussen <fernandoclaussen@gmail.com>
 	 * @param  string $key The request key.
 	 */
 	function clean_requests( $key ) {
@@ -179,6 +196,7 @@ class GDPR_Requests {
 	/**
 	 * Whenever a user places a request, the request key is saved as a user meta for comparison.
 	 * @since  1.0.0
+	 * @author Fernando Claussen <fernandoclaussen@gmail.com>
 	 * @param  int    $user_id  The user ID.
 	 * @param  string $meta_key The user meta key.
 	 */
@@ -197,10 +215,13 @@ class GDPR_Requests {
 
 	/**
 	 * Add a user to the request list. Set up the cleanup CRON job.
-	 * @param string  $email  The requestant email.
-	 * @param string  $type   The type of request.
-	 * @param string  $data   Some types of request have an extra field. E.g. Complaint and Rectify data.
-	 * @param string  $key    The request key.
+	 * @since  1.0.0
+	 * @author Fernando Claussen <fernandoclaussen@gmail.com>
+	 * @access protected
+	 * @param  string  $email  The requestant email.
+	 * @param  string  $type   The type of request.
+	 * @param  string  $data   Some types of request have an extra field. E.g. Complaint and Rectify data.
+	 * @param  string  $key    The request key.
 	 */
 	protected function add_to_requests( $email, $type, $data = null, $confirmed = false ) {
 		$requests = ( array ) get_option( 'gdpr_requests', array() );

@@ -8,6 +8,7 @@
  *
  * @package    GDPR
  * @subpackage GDPR/admin
+ * @author     Fernando Claussen <fernandoclaussen@gmail.com>
  */
 
 /**
@@ -25,27 +26,28 @@ class GDPR_Admin {
 	/**
 	 * The ID of this plugin.
 	 *
-	 * @since    1.0.0
-	 * @access   private
-	 * @var      string    $plugin_name    The ID of this plugin.
+	 * @since  1.0.0
+	 * @access private
+	 * @var    string    $plugin_name    The ID of this plugin.
 	 */
 	private $plugin_name;
 
 	/**
 	 * The version of this plugin.
 	 *
-	 * @since    1.0.0
-	 * @access   private
-	 * @var      string    $version    The current version of this plugin.
+	 * @since  1.0.0
+	 * @access private
+	 * @var    string    $version    The current version of this plugin.
 	 */
 	private $version;
 
 	/**
 	 * Initialize the class and set its properties.
 	 *
-	 * @since    1.0.0
-	 * @param      string    $plugin_name       The name of this plugin.
-	 * @param      string    $version    The version of this plugin.
+	 * @since  1.0.0
+	 * @param  string    $plugin_name       The name of this plugin.
+	 * @param  string    $version    The version of this plugin.
+	 * @author Fernando Claussen <fernandoclaussen@gmail.com>
 	 */
 	public function __construct( $plugin_name, $version ) {
 		$this->plugin_name = $plugin_name;
@@ -55,7 +57,8 @@ class GDPR_Admin {
 	/**
 	 * Register the stylesheets for the admin area.
 	 *
-	 * @since    1.0.0
+	 * @since  1.0.0
+	 * @author Fernando Claussen <fernandoclaussen@gmail.com>
 	 */
 	public function enqueue_styles() {
 		add_thickbox();
@@ -65,7 +68,8 @@ class GDPR_Admin {
 	/**
 	 * Register the JavaScript for the admin area.
 	 *
-	 * @since    1.0.0
+	 * @since  1.0.0
+	 * @author Fernando Claussen <fernandoclaussen@gmail.com>
 	 */
 	public function enqueue_scripts() {
 		wp_enqueue_script( $this->plugin_name, plugin_dir_url( dirname( __FILE__ ) ) . 'assets/js/gdpr-admin.js', array( 'jquery', 'wp-util', 'jquery-ui-sortable' ), $this->version, false );
@@ -74,7 +78,8 @@ class GDPR_Admin {
 	/**
 	 * Adds a menu page for the plugin with all it's sub pages.
 	 *
-	 * @since   1.0.0
+	 * @since  1.0.0
+	 * @author Fernando Claussen <fernandoclaussen@gmail.com>
 	 */
 	public function add_menu() {
 		$page_title  = esc_html__( 'GDPR', 'gdpr' );
@@ -129,6 +134,8 @@ class GDPR_Admin {
 
 	/**
 	 * Sanitizing user input on the cookie tabs.
+	 * @since  1.0.0
+	 * @author Fernando Claussen <fernandoclaussen@gmail.com>
 	 * @param  array $tabs The cookie tabs.
 	 * @return array       The sanitized options.
 	 */
@@ -171,6 +178,7 @@ class GDPR_Admin {
 	/**
 	 * Register settings.
 	 * @since  1.0.0
+	 * @author Fernando Claussen <fernandoclaussen@gmail.com>
 	 */
 	public function register_settings() {
 		$settings = array(
@@ -186,6 +194,13 @@ class GDPR_Admin {
 		}
 	}
 
+	/**
+	 * Sanitize the consents option when saving.
+	 * @since  1.0.0
+	 * @author Fernando Claussen <fernandoclaussen@gmail.com>
+	 * @param  array $consents The consents that were registered.
+	 * @return array           The sanitized consents array.
+	 */
 	public function sanitize_consents( $consents ) {
 		$output = array();
 		if ( ! is_array( $consents ) ) {
@@ -210,7 +225,8 @@ class GDPR_Admin {
 	/**
 	 * Settings Page Template
 	 *
-	 * @since 1.0.0
+	 * @since  1.0.0
+	 * @author Fernando Claussen <fernandoclaussen@gmail.com>
 	 */
 	public function settings_page_template() {
 		$settings    = get_option( 'gdpr_options', array() );
@@ -231,7 +247,8 @@ class GDPR_Admin {
 	/**
 	 * Requests Page Template.
 	 *
-	 * @since 1.0.0
+	 * @since  1.0.0
+	 * @author Fernando Claussen <fernandoclaussen@gmail.com>
 	 */
 	public function requests_page_template() {
 		$requests = ( array ) get_option( 'gdpr_requests', array() );
@@ -266,7 +283,8 @@ class GDPR_Admin {
 	/**
 	 * Tools Page Template.
 	 *
-	 * @since 1.0.0
+	 * @since  1.0.0
+	 * @author Fernando Claussen <fernandoclaussen@gmail.com>
 	 */
 	public function tools_page_template() {
 
@@ -282,8 +300,9 @@ class GDPR_Admin {
 	/**
 	 * The data markup on the access data page.
 	 * @since  1.0.0
+	 * @author Fernando Claussen <fernandoclaussen@gmail.com>
 	 */
-	function access_data() {
+	public function access_data() {
 		if ( ! isset( $_POST['nonce'], $_POST['email'] ) || ! wp_verify_nonce( sanitize_key( wp_unslash( $_POST['nonce'] ) ), 'access-data' ) ) {
 			wp_send_json_error();
 		}
@@ -371,8 +390,9 @@ class GDPR_Admin {
 	/**
 	 * The audit-log for the audit log email lookup.
 	 * @since  1.0.0
+	 * @author Fernando Claussen <fernandoclaussen@gmail.com>
 	 */
-	function audit_log() {
+	public function audit_log() {
 		if ( ! isset( $_POST['nonce'], $_POST['email'] ) || ! wp_verify_nonce( sanitize_key( wp_unslash( $_POST['nonce'] ) ), 'audit-log' ) ) {
 			wp_send_json_error();
 		}
@@ -397,8 +417,9 @@ class GDPR_Admin {
 	/**
 	 * Admin notice when the user haven't picked a privacy policy page.
 	 * @since  1.0.0
+	 * @author Fernando Claussen <fernandoclaussen@gmail.com>
 	 */
-	function privacy_policy_page_missing() {
+	public function privacy_policy_page_missing() {
 		$privacy_page = get_option( 'gdpr_privacy_policy_page', '' );
 		if ( ! empty( $privacy_page ) ) {
 			return;
@@ -415,8 +436,9 @@ class GDPR_Admin {
 	/**
 	 * Admin notice when the privacy policy has been updated.
 	 * @since  1.0.0
+	 * @author Fernando Claussen <fernandoclaussen@gmail.com>
 	 */
-	function privacy_policy_updated_notice() {
+	public function privacy_policy_updated_notice() {
 		$updated = get_option( 'gdpr_privacy_policy_updated' );
 		if ( ! $updated ) {
 			return;
@@ -447,8 +469,9 @@ class GDPR_Admin {
 	/**
 	 * Sends a confirmation email to the admin email address before continuing with the data breach notification.
 	 * @since  1.0.0
+	 * @author Fernando Claussen <fernandoclaussen@gmail.com>
 	 */
-	function send_data_breach_confirmation_email() {
+	public function send_data_breach_confirmation_email() {
 		if ( ! isset( $_POST['gdpr_data_breach_nonce'] ) || ! wp_verify_nonce( sanitize_key( $_POST[ 'gdpr_data_breach_nonce' ] ), 'data-breach' ) ) {
 			wp_die( esc_html__( 'We could not verify the the security token. Please try again.', 'gdpr' ) );
 		}
@@ -527,16 +550,18 @@ class GDPR_Admin {
 	/**
 	 * CRON Job runs this after a couple days to cancel the data breach request.
 	 * @since  1.0.0
+	 * @author Fernando Claussen <fernandoclaussen@gmail.com>
 	 */
-	function clean_data_breach_request() {
+	public function clean_data_breach_request() {
 		delete_option( 'gdpr_data_breach_initiated' );
 	}
 
 	/**
 	 * CRON job runs this to clean up the telemetry post type every 12 hours.
 	 * @since  1.0.0
+	 * @author Fernando Claussen <fernandoclaussen@gmail.com>
 	 */
-	function telemetry_cleanup() {
+	public function telemetry_cleanup() {
 		$args = array(
 			'post_type' => 'telemetry',
 			'posts_per_page' => -1,
@@ -550,7 +575,12 @@ class GDPR_Admin {
 		}
 	}
 
-	function register_form() {
+	/**
+	 * Adds consent checkboxes to the wordpress registration form.
+	 * @since  1.0.0
+	 * @author Fernando Claussen <fernandoclaussen@gmail.com>
+	 */
+	public function register_form() {
 		$consent_types = get_option( 'gdpr_consent_types', array() );
 		$sent_extras = ( isset( $_POST['user_consents'] ) ) ? $_POST['user_consents'] : '';
 		?>
@@ -564,7 +594,16 @@ class GDPR_Admin {
 		<?php endforeach;
 	}
 
-	function registration_errors( $errors, $sanitized_user_login, $user_email ) {
+	/**
+	 * Sanitizes the consents during wordpress registration.
+	 * @since  1.0.0
+	 * @author Fernando Claussen <fernandoclaussen@gmail.com>
+	 * @param  WP_Error $errors             The error object.
+	 * @param  string $sanitized_user_login The user login.
+	 * @param  string $user_email           The user email.
+	 * @return WP_Error                     WP_Error object with added errors or not.
+	 */
+	public function registration_errors( $errors, $sanitized_user_login, $user_email ) {
     $consent_types = get_option( 'gdpr_consent_types', array() );
     if ( empty( $consent_types ) ) {
     	return $errors;
@@ -585,7 +624,13 @@ class GDPR_Admin {
     return $errors;
 	}
 
-	function user_register( $user_id ) {
+	/**
+	 * Save the extra fields on a successful registration.
+	 * @since  1.0.0
+	 * @author Fernando Claussen <fernandoclaussen@gmail.com>
+	 * @param  int $user_id The user ID.
+	 */
+	public function user_register( $user_id ) {
 		GDPR_Audit_Log::log( $user_id, esc_html__( 'User registered to the site.', 'gdpr' ) );
 
 		if ( isset( $_POST['user_consents'] ) ) {
@@ -596,7 +641,12 @@ class GDPR_Admin {
 		}
 	}
 
-	function seek_consent() {
+	/**
+	 * Remove the Privacy Policy consent from all users. On next login they will need to consent again.
+	 * @since  1.0.0
+	 * @author Fernando Claussen <fernandoclaussen@gmail.com>
+	 */
+	public function seek_consent() {
 		if ( ! isset( $_POST['privacy-policy-updated-nonce'] ) || ! wp_verify_nonce( sanitize_key( $_POST['privacy-policy-updated-nonce'] ), 'seek_consent' ) ) {
 			wp_die( esc_html__( 'We could not verify the the security token. Please try again.', 'gdpr' ) );
 		}
@@ -630,7 +680,14 @@ class GDPR_Admin {
 		exit;
 	}
 
-	function privacy_policy_updated( $ID, $post ) {
+	/**
+	 * Check if the privacy policy page content has been updated or not.
+	 * @since  1.0.0
+	 * @author Fernando Claussen <fernandoclaussen@gmail.com>
+	 * @param  int     $ID   The page ID.
+	 * @param  WP_Post $post The post object.
+	 */
+	public function privacy_policy_updated( $ID, $post ) {
 		$privacy_page = (int) get_option( 'gdpr_privacy_policy_page', 0 );
 		$ID = (int) $ID;
 		if ( $ID === $privacy_page ) {
@@ -646,7 +703,12 @@ class GDPR_Admin {
 		}
 	}
 
-	function ignore_privacy_policy_update() {
+	/**
+	 * Ignore the privacy policy update. The update was probably just a typo fix.
+	 * @since  1.0.0
+	 * @author Fernando Claussen <fernandoclaussen@gmail.com>
+	 */
+	public function ignore_privacy_policy_update() {
 		if ( ! isset( $_POST['nonce'] ) || ! wp_verify_nonce( sanitize_key( $_POST['nonce'] ), 'ignore_update' ) ) {
 			wp_send_json_error( esc_html__( 'We could not verify the the security token. Please try again.', 'gdpr' ) );
 		}
@@ -655,7 +717,13 @@ class GDPR_Admin {
 		wp_send_json_success();
 	}
 
-	function edit_user_profile( $user ) {
+	/**
+	 * Add consent checkboxes to the user profile on wp dashboard.
+	 * @since  1.0.0
+	 * @author Fernando Claussen <fernandoclaussen@gmail.com>
+	 * @param  WP_User $user The user object.
+	 */
+	public function edit_user_profile( $user ) {
 		$consent_types = get_option( 'gdpr_consent_types', array() );
 		$user_consents = get_user_meta( $user->ID, 'gdpr_consents' );
 		if ( empty( $consent_types ) ) {
@@ -686,7 +754,13 @@ class GDPR_Admin {
 		<?php
 	}
 
-	function user_profile_update( $user_id ) {
+	/**
+	 * Save the user consent preferences when he update his profile on wp dashboard.
+	 * @since  1.0.0
+	 * @author Fernando Claussen <fernandoclaussen@gmail.com>
+	 * @param  int $user_id The user ID.
+	 */
+	public function user_profile_update( $user_id ) {
 		if ( ! isset( $_POST['user_consents'] ) ) {
 			return;
 		}

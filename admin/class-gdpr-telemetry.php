@@ -7,6 +7,7 @@
  *
  * @package    GDPR
  * @subpackage GDPR/admin
+ * @author     Fernando Claussen <fernandoclaussen@gmail.com>
  */
 
 /**
@@ -23,6 +24,7 @@ class GDPR_Telemetry {
 	/**
 	 * Registers the telemetry post type.
 	 * @since  1.0.0
+	 * @author Fernando Claussen <fernandoclaussen@gmail.com>
 	 */
 	public function register_post_type() {
 		register_post_type(
@@ -112,6 +114,8 @@ class GDPR_Telemetry {
 
 	/**
 	 * Insert the telemetry post.
+	 * @since  1.0.0
+	 * @access private
 	 * @param  array  $meta  Meta values.
 	 * @return int           The post ID.
 	 */
@@ -140,6 +144,7 @@ class GDPR_Telemetry {
 	/**
 	 * Add a Delete All button on top of the table.
 	 * @param  string $post_type The post type.
+	 * @static
 	 * @since  1.0.0
 	 */
 	public static function actions_above_table( $post_type ) {
@@ -182,6 +187,7 @@ class GDPR_Telemetry {
 	/**
 	 * Custom columns hook.
 	 * @since  1.0.0
+	 * @static
 	 * @param  string $column  The column ID.
 	 * @param  int    $post_id The post ID.
 	 */
@@ -210,6 +216,8 @@ class GDPR_Telemetry {
 	/**
 	 * The URL column callback.
 	 * @since  1.0.0
+	 * @static
+	 * @access private
 	 * @param  int $post_id The post ID.
 	 */
 	private static function _html_url( $post_id ) {
@@ -227,6 +235,8 @@ class GDPR_Telemetry {
 	/**
 	 * The file column callback.
 	 * @since  1.0.0
+	 * @access private
+	 * @static
 	 * @param  int $post_id The post ID.
 	 */
 	private static function _html_file( $post_id ) {
@@ -247,6 +257,8 @@ class GDPR_Telemetry {
 	/**
 	 * The response code column callback.
 	 * @since  1.0.0
+	 * @access private
+	 * @static
 	 * @param  int $post_id The post ID.
 	 */
 	private static function _html_code( $post_id ) {
@@ -256,6 +268,8 @@ class GDPR_Telemetry {
 	/**
 	 * The created column callback.
 	 * @since  1.0.0
+	 * @access private
+	 * @static
 	 * @param  int $post_id The post ID.
 	 */
 	private static function _html_created( $post_id ) {
@@ -268,6 +282,8 @@ class GDPR_Telemetry {
 	/**
 	 * The post data column callback.
 	 * @since  1.0.0
+	 * @access private
+	 * @static
 	 * @param  int $post_id The post ID.
 	 */
 	private static function _html_postdata( $post_id ) {
@@ -312,6 +328,8 @@ class GDPR_Telemetry {
 	/**
 	 * Get the post meta we care about.
 	 * @since  1.0.0
+	 * @access private
+	 * @static
 	 * @param  int    $post_id The post ID.
 	 * @param  string $key     The key that matters to us.
 	 * @return mixed           The post meta.
@@ -327,6 +345,8 @@ class GDPR_Telemetry {
 	/**
 	 * The debug backtrace of the call. This gives us the file and line of origin of the call.
 	 * @since  1.0.0
+	 * @access private
+	 * @static
 	 * @return array Extra information about the call like File and Line.
 	 */
 	private static function _debug_backtrace() {
@@ -352,6 +372,8 @@ class GDPR_Telemetry {
 	/**
 	 * Is the call coming from a theme or plugin?
 	 * @since  1.0.0
+	 * @access private
+	 * @static
 	 * @param  string $path Path to the file.
 	 * @return array        The name of the plugin or theme that made the call.
 	 */
@@ -388,6 +410,8 @@ class GDPR_Telemetry {
 	/**
 	 * Figures out if the file that made the call belongs to a plugin.
 	 * @since  1.0.0
+	 * @access private
+	 * @static
 	 * @param  string $path The path to the file that made the call.
 	 * @return string       The plugin name.
 	 */
@@ -422,6 +446,8 @@ class GDPR_Telemetry {
 	/**
 	 * Figures out if the file that made the call belongs to a theme.
 	 * @since  1.0.0
+	 * @access private
+	 * @static
 	 * @param  string $path The path to the file that made the call.
 	 * @return string       The theme name.
 	 */
@@ -451,6 +477,8 @@ class GDPR_Telemetry {
 	/**
 	 * The data that was transmitted.
 	 * @since  1.0.0
+	 * @access private
+	 * @static
 	 * @param  array $args The http call arguments.
 	 * @return mixed       The request body.
 	 */

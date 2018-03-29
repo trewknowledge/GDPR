@@ -1,16 +1,30 @@
 <?php
 /**
  * This file is responsible for adding help sections to the plugin pages.
+ *
+ * @link       http://trewknowledge.com
+ * @since      0.1.0
+ *
+ * @package    GDPR
+ * @subpackage GDPR/includes
+ * @author     Fernando Claussen <fernandoclaussen@gmail.com>
  */
 
 /**
  * A class that adds help tabs to the plugin pages.
+ *
+ * @since      1.0.0
+ * @package    GDPR
+ * @subpackage GDPR/includes
+ * @author     Fernando Claussen <fernandoclaussen@gmail.com>
  */
 class GDPR_Help {
 
 	/**
 	 * Add the requests page help tabs.
-	 * @since 1.0.0
+	 * @since  1.0.0
+	 * @author Fernando Claussen <fernandoclaussen@gmail.com>
+	 * @static
 	 */
 	public static function add_requests_help() {
 		$overview = '<h2>' . esc_html__( 'Overview', 'gdpr' ) . '</h2>' .
@@ -51,7 +65,9 @@ class GDPR_Help {
 
 	/**
 	 * Add the tools page help tabs.
-	 * @since 1.0.0
+	 * @since  1.0.0
+	 * @author Fernando Claussen <fernandoclaussen@gmail.com>
+	 * @static
 	 */
 	public static function add_tools_help() {
 		$overview = '<h2>' . esc_html__( 'Overview', 'gdpr' ) . '</h2>' .
@@ -94,7 +110,9 @@ class GDPR_Help {
 
 	/**
 	 * Add the settings page help tabs.
-	 * @since 1.0.0
+	 * @since  1.0.0
+	 * @author Fernando Claussen <fernandoclaussen@gmail.com>
+	 * @static
 	 */
 	public static function add_settings_help() {
 		$general_settings_help = '<h2>' . esc_html__( 'General Settings', 'gdpr' ) . '</h2>' .
@@ -145,7 +163,9 @@ class GDPR_Help {
 
 	/**
 	 * Add the telemetry page help tabs.
-	 * @since 1.0.0
+	 * @since  1.0.0
+	 * @author Fernando Claussen <fernandoclaussen@gmail.com>
+	 * @static
 	 */
 	public static function add_telemetry_help() {
 		if ( 'edit-telemetry' !== get_current_screen()->id ) {

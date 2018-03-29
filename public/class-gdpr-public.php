@@ -8,6 +8,7 @@
  *
  * @package    GDPR
  * @subpackage GDPR/public
+ * @author     Fernando Claussen <fernandoclaussen@gmail.com>
  */
 
 /**
@@ -25,27 +26,30 @@ class GDPR_Public {
 	/**
 	 * The ID of this plugin.
 	 *
-	 * @since    1.0.0
-	 * @access   private
-	 * @var      string    $plugin_name    The ID of this plugin.
+	 * @since  1.0.0
+	 * @author Fernando Claussen <fernandoclaussen@gmail.com>
+	 * @access private
+	 * @var    string    $plugin_name    The ID of this plugin.
 	 */
 	private $plugin_name;
 
 	/**
 	 * The version of this plugin.
 	 *
-	 * @since    1.0.0
-	 * @access   private
-	 * @var      string    $version    The current version of this plugin.
+	 * @since  1.0.0
+	 * @author Fernando Claussen <fernandoclaussen@gmail.com>
+	 * @access private
+	 * @var    string    $version    The current version of this plugin.
 	 */
 	private $version;
 
 	/**
 	 * Initialize the class and set its properties.
 	 *
-	 * @since    1.0.0
-	 * @param    string    $plugin_name    The name of the plugin.
-	 * @param    string    $version        The version of this plugin.
+	 * @since  1.0.0
+	 * @author Fernando Claussen <fernandoclaussen@gmail.com>
+	 * @param  string    $plugin_name    The name of the plugin.
+	 * @param  string    $version        The version of this plugin.
 	 */
 	public function __construct( $plugin_name, $version ) {
 		$this->plugin_name = $plugin_name;
@@ -55,7 +59,8 @@ class GDPR_Public {
 	/**
 	 * Register the stylesheets for the public-facing side of the site.
 	 *
-	 * @since    1.0.0
+	 * @since  1.0.0
+	 * @author Fernando Claussen <fernandoclaussen@gmail.com>
 	 */
 	public function enqueue_styles() {
 		wp_enqueue_style( $this->plugin_name, plugin_dir_url( dirname( __FILE__ ) ) . 'assets/css/gdpr-public.css', array( 'wp-jquery-ui-dialog' ), $this->version, 'all' );
@@ -64,7 +69,8 @@ class GDPR_Public {
 	/**
 	 * Register the JavaScript for the public-facing side of the site.
 	 *
-	 * @since    1.0.0
+	 * @since  1.0.0
+	 * @author Fernando Claussen <fernandoclaussen@gmail.com>
 	 */
 	public function enqueue_scripts() {
 		wp_enqueue_script( $this->plugin_name, plugin_dir_url( dirname( __FILE__ ) ) . 'assets/js/gdpr-public.js', array( 'jquery', 'jquery-ui-dialog' ), $this->version, false );
@@ -76,8 +82,8 @@ class GDPR_Public {
 
 	/**
 	 * Prints the cookie bar for the end user to save the cookie settings.
-	 *
-	 * @return mixed The cookie bar HTML.
+	 * @since  1.0.0
+	 * @author Fernando Claussen <fernandoclaussen@gmail.com>
 	 */
 	public function cookie_bar() {
 		if ( isset( $_COOKIE['gdpr_approved_cookies'] ) ) { // Input var okay.
@@ -95,8 +101,8 @@ class GDPR_Public {
 
 	/**
 	 * The cookie preferences modal.
-	 *
-	 * @return mixed The modal HTML.
+	 * @since  1.0.0
+	 * @author Fernando Claussen <fernandoclaussen@gmail.com>
 	 */
 	public function cookie_preferences() {
 		$cookie_privacy_excerpt = get_option( 'gdpr_cookie_privacy_excerpt', '' );
@@ -111,8 +117,8 @@ class GDPR_Public {
 
 	/**
 	 * The consents preferences modal.
-	 *
-	 * @return mixed The modal HTML.
+	 * @since  1.0.0
+	 * @author Fernando Claussen <fernandoclaussen@gmail.com>
 	 */
 	public function consents_preferences() {
 
@@ -133,18 +139,29 @@ class GDPR_Public {
 		include plugin_dir_path( __FILE__ ) . 'partials/consents-preferences.php';
 	}
 
+	/**
+	 * The black overlay for the plugin modals.
+	 * @since  1.0.0
+	 * @author Fernando Claussen <fernandoclaussen@gmail.com>
+	 */
 	public function overlay() {
 		echo '<div class="gdpr-overlay"></div>';
 	}
 
 	/**
 	 * Prints the confirmation dialogs.
-	 * @return mixed The confirmation dialogs HTML.
+	 * @since  1.0.0
+	 * @author Fernando Claussen <fernandoclaussen@gmail.com>
 	 */
 	public function confirmation_screens() {
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'public/partials/confirmation-screens.php';
 	}
 
+	/**
+	 * Update the user consents from the front end modal window.
+	 * @since  1.0.0
+	 * @author Fernando Claussen <fernandoclaussen@gmail.com>
+	 */
 	public function update_consents() {
 		if ( ! isset( $_POST['nonce'] ) || ! wp_verify_nonce( sanitize_key( $_POST['nonce'] ), 'update_consents' ) ) {
 			wp_send_json_error( esc_html__( 'We could not verify the the security token. Please try again.', 'gdpr' ) );
@@ -169,6 +186,12 @@ class GDPR_Public {
 		wp_send_json_success( $user_consents );
 	}
 
+	/**
+	 * Check if the user did not consent to the privacy policy
+	 * @since  1.0.0
+	 * @author Fernando Claussen <fernandoclaussen@gmail.com>
+	 * @return bool     Whether the user consented or not.
+	 */
 	public function is_consent_needed() {
 		if ( ! is_user_logged_in() ) {
 			return;
@@ -204,6 +227,11 @@ class GDPR_Public {
 		}
 	}
 
+	/**
+	 * Log the user out if they does not agree with the privacy policy terms when prompted.
+	 * @since  1.0.0
+	 * @author Fernando Claussen <fernandoclaussen@gmail.com>
+	 */
 	public function logout() {
 		if ( ! wp_verify_nonce( sanitize_text_field( wp_unslash( $_POST['nonce'] ) ), 'user_disagree_with_terms' ) ) {
 			wp_send_json_error( esc_html__( 'We could not verify the the security token. Please try again.', 'gdpr' ) );
@@ -213,6 +241,11 @@ class GDPR_Public {
 		wp_send_json_success();
 	}
 
+	/**
+	 * The user agreed with the privacy policy terms when prompted.
+	 * @since  1.0.0
+	 * @author Fernando Claussen <fernandoclaussen@gmail.com>
+	 */
 	public function agree_with_terms() {
 		if ( ! wp_verify_nonce( sanitize_text_field( wp_unslash( $_POST['nonce'] ) ), 'user_agree_with_terms' ) ) {
 			wp_send_json_error( esc_html__( 'We could not verify the the security token. Please try again.', 'gdpr' ) );

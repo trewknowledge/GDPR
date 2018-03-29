@@ -8,6 +8,7 @@
  *
  * @package    GDPR
  * @subpackage GDPR/includes
+ * @author     Fernando Claussen <fernandoclaussen@gmail.com>
  */
 
 /**
@@ -25,7 +26,9 @@ class GDPR_Activator {
 	/**
 	 * Sets a CRON jo to clean up the telemetry post type every 12 hours.
 	 *
-	 * @since    1.0.0
+	 * @since  1.0.0
+	 * @static
+	 * @author Fernando Claussen <fernandoclaussen@gmail.com>
 	 */
 	public static function activate() {
 		if ( ! wp_next_scheduled('telemetry_cleanup') ) {
