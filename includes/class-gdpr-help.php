@@ -79,6 +79,17 @@ class GDPR_Help {
 			'title' => esc_html__( 'Data Breach', 'gdpr' ),
 			'content' => $data_breach_help,
 		) );
+
+		$audit_log_help = '<h2>' . esc_html__( 'Audit Log', 'gdpr' ) . '</h2>' .
+			'<p><strong>' . esc_html__( 'We do not log the any user personal data.', 'gdpr' ) . '</strong></p>' .
+			'<p>' . esc_html__( 'All logs are encrypted before saving to the database. An encrypted log file is created whenever a user gets removed from the site.', 'gdpr' ) . '</p>' .
+			'<p>' . esc_html__( 'This tool will keep record of some actions such as changing consent preferences, placing a request, data breach notifications received, etc…', 'gdpr' ) . '<br />' .
+			esc_html__( 'The only way to read the logs is to search for the user email. If the data subject is not a registered site user anymore, you need to ask for the 6 digit token that were provided during deletion. That will allow this tool to look for a log file with his information.', 'gdpr' ) . '</p>';
+		get_current_screen()->add_help_tab( array(
+			'id' => 'audit-log',
+			'title' => esc_html__( 'Audit Log', 'gdpr' ),
+			'content' => $audit_log_help,
+		) );
 	}
 
 	/**
