@@ -36,7 +36,7 @@
 			$('#tabs').append( template( {
 				key: tabID,
 				name: tabName,
-				option_name: 'cookie_popup_content'
+				option_name: 'gdpr_cookie_popup_content'
 			} ) );
 			field.val('');
 		});
