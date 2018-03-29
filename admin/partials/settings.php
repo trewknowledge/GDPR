@@ -107,12 +107,12 @@
 														</td>
 													</tr>
 													<tr>
-														<th><label for="hosts-<?php echo esc_attr( $tab_key ); ?>"><?php esc_html_e( 'Hosts', 'gdpr' ); ?></label></th>
+														<th><label for="hosts-<?php echo esc_attr( $tab_key ); ?>"><?php esc_html_e( 'Third party domains', 'gdpr' ); ?></label></th>
 														<td>
-															<input type="text" id="hosts-<?php echo esc_attr( $tab_key ); ?>" class="regular-text" />
+															<input type="text" id="hosts-<?php echo esc_attr( $tab_key ); ?>" class="regular-text" placeholder="facebook.com" />
 															<button class="button button-primary add-host" data-tabid="<?php echo esc_attr( $tab_key ); ?>"><?php esc_html_e( 'Add', 'gdpr' ); ?></button>
 															<br>
-															<span class="description"><?php esc_html_e( '3rd party cookie hosts.', 'gdpr' ); ?></span>
+															<span class="description"><?php esc_html_e( 'Cookies that are set by a third party, like facebook.com.', 'gdpr' ); ?></span>
 														</td>
 													</tr>
 												</table>
@@ -120,7 +120,7 @@
 													<?php if ( isset( $tab['hosts'] ) && $tab['hosts'] ) : ?>
 														<?php foreach ( $tab['hosts'] as $host_key => $host ) : ?>
 															<div class="postbox">
-																<h2 class="hndle"><?php echo esc_attr( $host_key ); ?><button class="notice-dismiss" type="button"><span class="screen-reader-text"><?php esc_html_e( 'Remove this host.', 'gdpr' ); ?></span></button></h2>
+																<h2 class="hndle"><?php echo esc_attr( $host_key ); ?><button class="notice-dismiss" type="button"><span class="screen-reader-text"><?php esc_html_e( 'Remove this domain.', 'gdpr' ); ?></span></button></h2>
 																<input type="hidden" name="<?php echo esc_attr( 'gdpr_cookie_popup_content' ); ?>[<?php echo esc_attr( $tab_key ); ?>][hosts][<?php echo esc_attr( $host_key ); ?>][name]" value="<?php echo esc_attr( $host_key ); ?>" />
 																<div class="inside">
 																	<table class="form-table">

@@ -26,12 +26,12 @@
 					</td>
 				</tr>
 				<tr>
-					<th><label for="hosts-{{data.key}}"><?php esc_html_e( 'Hosts', 'gdpr' ); ?></label></th>
+					<th><label for="hosts-{{data.key}}"><?php esc_html_e( 'Third Party Domains', 'gdpr' ); ?></label></th>
 					<td>
-						<input type="text" id="hosts-{{data.key}}" class="regular-text" />
+						<input type="text" id="hosts-{{data.key}}" class="regular-text" placeholder="facebook.com" />
 						<button class="button button-primary add-host" data-tabid="{{data.key}}"><?php esc_html_e( 'Add', 'gdpr' ); ?></button>
 						<br>
-						<span class="description"><?php esc_html_e( '3rd party cookie hosts.', 'gdpr' ); ?></span>
+						<span class="description"><?php esc_html_e( 'Cookies that are set by a third party, like facebook.com', 'gdpr' ); ?></span>
 					</td>
 				</tr>
 			</table>
@@ -45,7 +45,7 @@
 
 <script type="text/html" id="tmpl-cookie-tabs-hosts">
 	<div class="postbox">
-		<h2 class="hndle">{{data.host_key}}<button class="notice-dismiss" type="button"><span class="screen-reader-text"><?php esc_html_e( 'Remove this host.', 'gdpr' ); ?></span></button></h2>
+		<h2 class="hndle">{{data.host_key}}<button class="notice-dismiss" type="button"><span class="screen-reader-text"><?php esc_html_e( 'Remove this domain.', 'gdpr' ); ?></span></button></h2>
 		<input type="hidden" name="{{data.option_name}}[{{data.tab_key}}][hosts][{{data.host_key}}][name]" value="{{data.host_key}}" />
 		<div class="inside">
 			<table class="form-table">
