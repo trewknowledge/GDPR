@@ -228,7 +228,7 @@ class GDPR_Requests {
 
 		$email = sanitize_email( $email );
 		$type = sanitize_text_field( wp_unslash( $type ) );
-		$data = sanitize_textarea_field( $data );
+		$data = sanitize_textarea_field( wp_unslash( $data ) );
 
 		if ( ! in_array( $type, self::$allowed_types ) ) {
 			return false;
