@@ -72,7 +72,7 @@
 			$('.tab-hosts[data-tabid="'+tabID+'"]').append( template( {
 				host_key: hostID,
 				tab_key: tabID,
-				option_name: 'cookie_popup_content'
+				option_name: 'gdpr_cookie_popup_content'
 			} ) );
 			field.val('');
 		});
