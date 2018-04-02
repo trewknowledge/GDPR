@@ -1,116 +1,179 @@
 === GDPR ===
-Contributors: fclaussen, matthewfarlymn
+Contributors: fclaussen, trewknowledge, matthewfarlymn
 Tags: gdpr, compliance, privacy, law, general data protection regulation
-Requires at least: 3.0.1
-Requires PHP: 5.3
+Requires at least: 4.0
+Requires PHP: 5.6
 Tested up to: 4.9
-Stable tag: 0.1.0
+Stable tag: 1.0.0
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
-This plugin is meant to assist with GDPR.
-This plugin is in BETA. It is not finished and might contain bugs.
+This plugin is meant to assist with the GDPR obligations of a Data processor and Controller.
 
 == Description ==
 
-**THIS PLUGIN IS IN BETA**
-
-This plugin is meant to assist with GDPR.
-It has a set of features that aim to website owners to be compliant and users to have easy access to it's data.
+This plugin is meant to assist a Controller, Data Processor, and Data Protection Officer (DPO) with efforts to meet the obligations and rights enacted under the GDPR.
 
 == Collaboration ==
 
-On our github repo you will find 2 branches
-1. master => On this branch is where you will find the code for this plugin. Feel free to help out.
-1. rewrite => It's a rewrite version of this plugin with some extra stuff. This version includes the cookie component. It is built with the same file structure. Feel free to help out there too.
+You can send your pull request at [https://github.com/trewknowledge/gdpr](https://github.com/trewknowledge/gdpr)
 
-Whatever is submitted to the master branch will end up being used on the rewrite. The rewrite is just a polished version of this plugin. Maybe with a nicer UI.
+== Shortcodes & helper functions ==
 
-== Known issues / TODO ==
+**Display one of the request forms**
+`[gdpr_request_form type="$type"]`
+or
+`gdpr_request_form( $type );`
+$type can be `delete`, `rectify`, `complaint`
 
-1. Due to server limitations we can't shoot an email to everyone when using the data breach notification. Open to suggestions.
-1. Data download should have an additional layer of confirmation. Email confirmation as all other options.
-1. When removing a consent from the settings, it doesn't revoke that particular consent for all users.
-1. Cookie preferences ( Being worked on the rewrite branch of the plugin. )
+**Create a button to open the preferences modals**
+`gdpr_preferences( $text, $type );`
+$text is the button label
+$type is the preferences type. Valid options are `cookies` or `consents`
+
+**Checks whether a cookie is allowed**
+`is_allowed_cookie( $cookie )`
+
+**Checks wheter a consent was given**
+`have_consent( $consent_id )`
+
 
 == Features ==
 
-*   Privacy Policy and Terms of Service update detection
-*   Requests Table
-*   Audit Log
-*   Right to access
-*   Data Breach notification
-*   Right to be forgotten
+* Consent management.
+* Cookie Preference management & activation toggles
+* Rights to erasure & deletion of data with confirmation email
+* Re-assignment of user data on erasure request & pseudonymization of user data
+* Data Processor settings and publishing of contact information
+* Right to access data from admin dashboard and export
+* Right to access data from front end by Data User
+* Right to portability & export of data to XML or JSON by Data User
+* Encrypted audit logs for the lifetime of the Data User
+* Data User Secret Token for decryption and recovery of data
+* Data breach notification and user segments for message obligations
 
-== Privacy Policy and Terms of Service update detection ==
-If the site owner updates the privacy policy or terms of service page content, all users will be notified on login and asked to review the new policies and provide their consent again.
+== Consent Management ==
 
-== Requests Table ==
+Consents can be registered at the settings page. They can be be optional or not.
+By default, this plugin comes with a Privacy Policy consent that users need to agree on registration.
 
-1.   Here the owner can review or add a user to be reviewed.
-1.   If the user has content published on the site of any post type or comments, he will be added to this table.
-1.   His content can then be reassigned to another user or deleted.
-1.   His comments can also be anonymized.
+For optional consents, there's a wrapper function `have_consent( $consent_id )` to help you display or hide something on the site depending if user gave consent or not.
+
+== Cookie Management ==
+
+Similar to consent management, users can opt in and out of cookies.
+We also offer a function to prevent setting cookies depending on the user setting.
+The cookie with the user approved cookies can be found at another cookie named `gdpr_approved_cookies`.
+
+There's also a helper function called `is_allowed_cookie( $cookie )` that you can use to prevent setting up a cookie.
+
+== Telemetry Tracker ==
+
+Wordpress Core and some plugins gather data from your install and send this data to an outside server for whatever reason.
+Wordpress Plugin Repository does not allow plugins to do that, but premium plugins do because they are not bound by the Plugin repository rules.
+If you did not explicit opt in for this feature you should make a complaint.
+
+This feature will display all data that is being sent outside of your server. Indicate the plugin or theme responsible, file and line where the data is being sent.
+
+== Privacy Policy consent management ==
+
+From the Settings options in the dashboard, the Data Processor can select the Privacy Policy page for tracking.
+
+On login, the user must consent to the Privacy Policy outlined on the site. If the user does not consent, the user will not be registered or logged in.
+
+If the site owner updates the Privacy Policy page content, the change will be logged and flagged to the admin that they must notify users on next login to seek re-consent. Additionally, the warning message can be dismissed in the event of a minor correction or mistake.
+
+== Requests Table & Right to Erasure ==
+
+1. The Data User is able to submit a request to be erased from the site using a shortcode.
+1. When a request is made, the Data User will receive an email confirmation to confirm the deletion request.
+1.
+   1. after email confirmation, the user request is added to the requests table for review by the Administrator. The Administrator can also add user manually with an email look up and review.
+   1. if the Data User has content published on the site for any post types, or comments, they will be added to this table. If they do not have any content, they will receive a confirmation of erasure request and be provided a 6 digit Token for safe keeping after erasure in case of recover data needs.
+1.
+   1. the requests table allows the Administrator to reassign any content to another user or delete it.
+   1. In the event of comments, the Data User’s content would be made anonymous.
 
 == Audit Log ==
 
-1.   Everything the user does regarding their privacy preferences and consents gets encrypted and logged in the database.
+1.   Everything the Data User does from registration, providing consent to privacy policy, terms of service and requests is logged and encrypted in a database.
 1.   Data breach notifications are also logged to all users.
-1.   Using the user's email, we can retrieve this information and display it.
-1.   If the user has been removed from the site, this encrypted log is deleted from the database and saved as an encrypted file inside the plugin folder.
-1.   If in the future, this users makes a complaint, you need his email and a 6 digit token that he got with his deletion email. That will decrypt the file and display the data.
+1.   Using the Data User's email, we can retrieve this information and display it.
+1.   If the Data User has been removed from the site, this encrypted log is deleted from the database and saved as an encrypted file inside the plugin folder.
+1.   If in the future, the Data User makes a complaint, they will need to provide their email address and the 6 digit token they received from the deletion confirmation email. With the Data User’s email and the secondary 6 digit token, you can decrypt the file and display the data.
 
-== Right to access ==
+== Right to Access Data & User Data Portability ==
 
-1.   The user can place a request to download their data. They can do this on their wp profile page or on a custom profile page with a shortcode.
-1.   After requesting his data, we generate an xml file and it gets downloaded.
-1.   There is also a email lookup on the backend so the site owner can get it to his user if the user lost access to his account or isn't tech savvy. ( This method should not be used without the user confirming that they are who they say ).
+1.   The Data User can place a request to download their data. They may also do this on a custom page with the shortcode.
+1.   After requesting their data, the plugin will generate an XML or JSON file, which will be emailed to them and downloaded.
+1.   There is also an email lookup for the Administrator to access the Data User’s information. NOTE: This method should not be used without the Data User confirming their identity.
 
-== Data Breach notification ==
+== Data Breach & Notifications ==
 
-1.   It's possible to notify everyone of a data breach.
-1.   The owner need to fill out some information for his records.
-    *   Nature of the personal data breach
-    *   Name and contact details of the data protection officer
-    *   Likely consequences of the personal data breach
-    *   Measures taken or proposed to be taken
-1.   A confirmation email is sent to the requesting user to confirm that they in fact wish to notify people of a data breach.
-1.   The data breach event and information provided are logged to all users audit logs.
-1.   After confirming the email, the owner gets another email with a simple list of user emails. He can then put that into a mailing service and notify his users.
-
-== Right to be forgotten ==
-
-1.   The user can request that his data be removed from the site
-1.   A confirmation by email needs to happen.
-1.   After confirmation, we analyze that user data. If he have any posts or comments on the site, he goes to the Requests Table, otherwise he is removed form the site and his data deleted.
+1. In case of breach, the Administrator can notify the Data Users by confirming the breach and receiving an export of user data.
+1. The Administrator would complete the following information which would be recorded in the audit log:
+   1. Nature of the personal data breach
+   1. Name and contact details of the data protection officer
+   1. Likely consequences of the personal data breach
+   1. Measures taken or proposed to be taken
+1. A confirmation email is then sent to the Data Processor to confirm the breach notification.
+1. After email confirming, the plugin will begin notifying all users of the breach in batches every hour until all users receive the notification.
 
 == Installation ==
 
-1. Upload the plugin to the `/wp-content/plugins/` directory
-1. Activate the plugin through the 'Plugins' menu in WordPress
-1. Fill out all sections of the settings page.
+1.  Upload the plugin to the `/wp-content/plugins/` directory
+1.  Activate the plugin through the 'Plugins' menu in WordPress
+1.  Fill out all sections of the settings page.
+
+== Important! ==
+
+Activating this plugin does not guarantee that an organization is successfully meeting it's responsibilities and obligations of GDPR. Individual organizations should assess their unique responsibilities and ensure extra measures are taken to meet any oligations required by law and based on a data protection impact assessment (DPIA).
 
 == Frequently Asked Questions ==
 
 = What is GDPR? =
 
-An answer to that question.
+This Regulation lays down rules relating to the protection of natural persons with regard to the processing of personal data and rules relating to the free movement of personal data.
+
+This Regulation protects fundamental rights and freedoms of natural persons and in particular their right to the protection of personal data.
+
+The free movement of personal data within the Union shall be neither restricted nor prohibited for reasons connected with the protection of natural persons with regard to the processing of personal data.
+
+= How do Businesses benefit from GDPR? =
+
+* Build stronger customer relationships and trust
+* Improve the brand image of the organization and its brand reputation
+* Improve the governance and responsibility of data
+* Enhance the security and commitment to privacy of the brand
+* Create value added competitive advantages
 
 = When is the GDPR coming into effect? =
 
-It will be in force May 2018.
+It will be in force May 25th, 2018.
 
 = Who does the GDPR affect? =
 
-The GDPR not only applies to organisations located within the EU but it will also apply to organisations located outside of the EU if they offer goods or services to, or monitor the behaviour of, EU data subjects. It applies to all companies processing and holding the personal data of data subjects residing in the European Union, regardless of the company’s location.
+The GDPR applies to all EU organisations – whether commercial business, charity or public authority – that collect, store or process EU residents’ personal data, even if they’re not EU citizens.
+
+The GDPR applies to all organisations located within the EU, whether you are a commercial business, charity or public authority, institution and collect, store or process EU citizen data. It also applies to any organisation located outside of the EU if they also collect store or process EU citizen data.
+
+= What is considered personal data? =
+
+The GDPR defines personal data as any information or type of data that can directly or indirectly identify a natural person’s identity. This can include information such as: Name, Address, Email, Photos, System Data, IP addresses, Location data, Phone numbers and Cookies.
+
+For other special categories of personal data, there are more strict regulations for categories such as: Race, Religion, Political Views, Sexual Orientation, Health Information, Biometric and Genetic data.
 
 = What are the penalties for non-compliance? =
 
-Organizations can be fined up to 4% of annual global turnover for breaching GDPR or €20 Million. This is the maximum fine that can be imposed for the most serious infringements e.g.not having sufficient customer consent to process data or violating the core of Privacy by Design concepts. There is a tiered approach to fines e.g. a company can be fined 2% for not having their records in order (article 28), not notifying the supervising authority and data subject about a breach or not conducting impact assessment. It is important to note that these rules apply to both controllers and processors -- meaning 'clouds' will not be exempt from GDPR enforcement.
+Organizations can be fined up to 4% of annual global turnover for breaching GDPR or €20 Million. This is the maximum fine that can be imposed for the most serious infringements.
+
+There is a tiered approach to the fines whereby a company can be fined 2% for not having their records in order (Article 28), not notifying the supervising authority and Data User about a security breach or for investigating and assessing the breach.
 
 = Am I compliant just by activating this plugin? =
 
-No. This plugin is used to assist you on being compliant. You need to know what you need to do and what the law is.
+NO! This plugin is meant to assist a Controller, Data Processor, and Data Protection Officer (DPO) with efforts to meet the obligations and rights enacted under the GDPR.
+
+ACTIVATING THIS PLUGIN DOES NOT GUARANTEE THAT AN ORGANIZATION IS SUCCESSFULLY MEETING ITS RESPONSIBILITIES AND OBLIGATIONS OF GDPR. INDIVIDUAL ORGANIZATIONS SHOULD ASSESS THEIR UNIQUE RESPONSIBILITIES AND ENSURE EXTRA MEASURES ARE TAKE TO MEET ANY OBLIGATIONS REQUIRED BY LAW AND BASED ON A DATA PROTECTION IMPACT ASSESSMENT (DPIA).
 
 == Screenshots ==
 
@@ -127,10 +190,30 @@ No. This plugin is used to assist you on being compliant. You need to know what 
 
 == Changelog ==
 
+= 1.0.0 =
+* Added cookie management screen
+* Added consent management screen
+* Added Telemetry tracker
+* Complete code rewrite
+* Added more types of request
+* Added Help documentation
+* Added new shortcodes
+* Changed to Settings API
+
+= 0.1.1 =
+* Set the admin email as the default processor information on activation
+* Settings updated notice is now dismissible
+
 = 0.1.0 =
 * Beta version released to the public
 
 == Upgrade Notice ==
+
+= 1.0.0 =
+This is a major rewrite of the plugin. Things will look different and work differently.
+We tried to keep most things the same so the impact would be minimal.
+This plugin is no longer in BETA.
+Update with care
 
 = 0.1.0 =
 This plugin is in beta. Use it at your own discretion.
