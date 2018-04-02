@@ -42,7 +42,7 @@ $type is the preferences type. Valid options are `cookies` or `consent`
 
 * Consent management.
 * Cookie Preference management & activation toggles
-* Rights to erasure & deletion of data with confirmation email
+* Rights to erasure & deletion of data with a confirmation email
 * Re-assignment of user data on erasure request & pseudonymization of user data
 * Data Processor settings and publishing of contact information
 * Right to access data from admin dashboard and export
@@ -54,10 +54,10 @@ $type is the preferences type. Valid options are `cookies` or `consent`
 
 == Consent Management ==
 
-Consents can be registered at the settings page. They can be be optional or not.
+Consents can be registered on the settings page. They can be optional or not.
 By default, this plugin comes with a Privacy Policy consent that users need to agree on registration.
 
-For optional consents, there's a wrapper function `have_consent( $consent_id )` to help you display or hide something on the site depending if user gave consent or not.
+For optional consents, there's a wrapper function `have_consent( $consent_id )` to help you display or hide something on the site depending if the user gave consent or not.
 
 == Cookie Management ==
 
@@ -69,13 +69,13 @@ There's also a helper function called `is_allowed_cookie( $cookie )` that you ca
 
 == Telemetry Tracker ==
 
-Wordpress Core and some plugins gather data from your install and send this data to an outside server for whatever reason.
-Wordpress Plugin Repository does not allow plugins to do that, but premium plugins do because they are not bound by the Plugin repository rules.
-If you did not explicit opt in for this feature you should make a complaint.
+WordPress Core and some plugins gather data from your install and send this data to an outside server for whatever reason.
+WordPress Plugin Repository does not allow plugins to do that, but premium plugins do because they are not bound by the Plugin repository rules.
+If you did not explicitly opt-in for this feature you should make a complaint.
 
 This feature will display all data that is being sent outside of your server. Indicate the plugin or theme responsible, file and line where the data is being sent.
 
-== Privacy Policy consent management ==
+== Privacy Policy Consent Management ==
 
 From the Settings options in the dashboard, the Data Processor can select the Privacy Policy page for tracking.
 
@@ -88,15 +88,15 @@ If the site owner updates the Privacy Policy page content, the change will be lo
 1. The Data User is able to submit a request to be erased from the site using a shortcode.
 1. When a request is made, the Data User will receive an email confirmation to confirm the deletion request.
 1.
-   1. after email confirmation, the user request is added to the requests table for review by the Administrator. The Administrator can also add user manually with an email look up and review.
-   1. if the Data User has content published on the site for any post types, or comments, they will be added to this table. If they do not have any content, they will receive a confirmation of erasure request and be provided a 6 digit Token for safe keeping after erasure in case of recover data needs.
+   1. after email confirmation, the user request is added to the requests table for review by the Administrator. The Administrator can also add a user manually with an email look up and review.
+   1. if the Data User has content published on the site for any post types or comments, they will be added to this table. If they do not have any content, they will receive a confirmation of erasure request and be provided a 6 digit Token for safekeeping after erasure in case of recover data needs.
 1.
    1. the requests table allows the Administrator to reassign any content to another user or delete it.
    1. In the event of comments, the Data User’s content would be made anonymous.
 
 == Audit Log ==
 
-1.   Everything the Data User does from registration, providing consent to privacy policy, terms of service and requests is logged and encrypted in a database.
+1.   Everything the Data User does from registration, providing consent to the privacy policy, terms of service and requests is logged and encrypted in a database.
 1.   Data breach notifications are also logged to all users.
 1.   Using the Data User's email, we can retrieve this information and display it.
 1.   If the Data User has been removed from the site, this encrypted log is deleted from the database and saved as an encrypted file inside the plugin folder.
@@ -115,7 +115,7 @@ If the site owner updates the Privacy Policy page content, the change will be lo
    1. Nature of the personal data breach
    1. Name and contact details of the data protection officer
    1. Likely consequences of the personal data breach
-   1. Measures taken or proposed to be taken
+   1. Measures were taken or proposed to be taken
 1. A confirmation email is then sent to the Data Processor to confirm the breach notification.
 1. After email confirming, the plugin will begin notifying all users of the breach in batches every hour until all users receive the notification.
 
@@ -127,7 +127,7 @@ If the site owner updates the Privacy Policy page content, the change will be lo
 
 == Important! ==
 
-Activating this plugin does not guarantee that an organization is successfully meeting it's responsibilities and obligations of GDPR. Individual organizations should assess their unique responsibilities and ensure extra measures are taken to meet any oligations required by law and based on a data protection impact assessment (DPIA).
+Activating this plugin does not guarantee that an organization is successfully meeting its responsibilities and obligations of GDPR. Individual organizations should assess their unique responsibilities and ensure extra measures are taken to meet any obligations required by law and based on a data protection impact assessment (DPIA).
 
 == Frequently Asked Questions ==
 
@@ -144,12 +144,12 @@ The free movement of personal data within the Union shall be neither restricted 
 * Build stronger customer relationships and trust
 * Improve the brand image of the organization and its brand reputation
 * Improve the governance and responsibility of data
-* Enhance the security and commitment to privacy of the brand
-* Create value added competitive advantages
+* Enhance the security and commitment to the privacy of the brand
+* Create value-added competitive advantages
 
 = When is the GDPR coming into effect? =
 
-It will be in force May 25th, 2018.
+It will be enforced on May 25th, 2018.
 
 = Who does the GDPR affect? =
 
@@ -159,9 +159,9 @@ The GDPR applies to all organisations located within the EU, whether you are a c
 
 = What is considered personal data? =
 
-The GDPR defines personal data as any information or type of data that can directly or indirectly identify a natural person’s identity. This can include information such as: Name, Address, Email, Photos, System Data, IP addresses, Location data, Phone numbers and Cookies.
+The GDPR defines personal data as any information or type of data that can directly or indirectly identify a natural person’s identity. This can include information such as Name, Address, Email, Photos, System Data, IP addresses, Location data, Phone numbers, and Cookies.
 
-For other special categories of personal data, there are more strict regulations for categories such as: Race, Religion, Political Views, Sexual Orientation, Health Information, Biometric and Genetic data.
+For other special categories of personal data, there are more strict regulations for categories such as Race, Religion, Political Views, Sexual Orientation, Health Information, Biometric and Genetic data.
 
 = What are the penalties for non-compliance? =
 
@@ -171,9 +171,9 @@ There is a tiered approach to the fines whereby a company can be fined 2% for no
 
 = Am I compliant just by activating this plugin? =
 
-NO! This plugin is meant to assist a Controller, Data Processor, and Data Protection Officer (DPO) with efforts to meet the obligations and rights enacted under the GDPR.
+No, this plugin is meant to assist a Controller, Data Processor, and Data Protection Officer (DPO) with efforts to meet the obligations and rights enacted under the GDPR.
 
-ACTIVATING THIS PLUGIN DOES NOT GUARANTEE THAT AN ORGANIZATION IS SUCCESSFULLY MEETING ITS RESPONSIBILITIES AND OBLIGATIONS OF GDPR. INDIVIDUAL ORGANIZATIONS SHOULD ASSESS THEIR UNIQUE RESPONSIBILITIES AND ENSURE EXTRA MEASURES ARE TAKE TO MEET ANY OBLIGATIONS REQUIRED BY LAW AND BASED ON A DATA PROTECTION IMPACT ASSESSMENT (DPIA).
+Activating this plugin does not guarantee that an organisation is successfully meeting its responsibilities and obligations of GDPR. Organisations should assess their unique responsibilities and ensure extra measures are taken to meet any obligations required by law and based on a data protection impact assessment (DPIA).
 
 == Screenshots ==
 
