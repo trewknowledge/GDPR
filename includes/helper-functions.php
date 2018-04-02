@@ -10,7 +10,7 @@
  * @author     Fernando Claussen <fernandoclaussen@gmail.com>
  */
 
-if ( ! function_exists( 'gdpr_cookie_preferences' ) ) {
+if ( ! function_exists( 'gdpr_preferences' ) ) {
 	/**
 	 * Adds a button to re-open the cookie preferences modal.
 	 * @since  1.0.0
