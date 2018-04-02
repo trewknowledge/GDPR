@@ -427,7 +427,10 @@ class GDPR_Admin {
 		?>
 			<div class="notice notice-error is-dismissible">
 				<p>
-					<strong><?php echo esc_html__( 'You must select a Privacy Policy Page.', 'gdpr' ); ?></strong>
+					<strong><?php echo esc_html__( '[GDPR] You must select a Privacy Policy Page.', 'gdpr' ); ?></strong>
+				</p>
+				<p>
+					<a href="<?php echo esc_url( admin_url( 'admin.php?page=gdpr-settings' ) ) ?>" class="button button-primary"><?php esc_html_e( 'Select your Privacy Policy page', 'gdpr' ); ?></a>
 				</p>
 			</div>
 		<?php
