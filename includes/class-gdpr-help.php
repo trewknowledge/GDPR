@@ -37,7 +37,7 @@ class GDPR_Help {
 
 		$rectify_help = '<h2>' . esc_html__( 'Rectify Data', 'gdpr' ) . '</h2>' .
 			'<p>' . esc_html__( 'Users may request to have their data rectified. They can place a request somewhere on your site and those requests will show up here.', 'gdpr' ) . '</p>' .
-			'<p>' . esc_html__( 'When you complete the request, mark it as resolved and the requester will get a notification email confirming that his request was resolved.', 'gdpr' ) . '</p>';
+			'<p>' . esc_html__( 'When you complete the request, mark it as resolved and the requester will get a notification email confirming that their request was resolved.', 'gdpr' ) . '</p>';
 		get_current_screen()->add_help_tab( array(
 			'id' => 'rectify-data',
 			'title' => esc_html__( 'Rectify Data', 'gdpr' ),
@@ -45,7 +45,7 @@ class GDPR_Help {
 		) );
 
 		$complaint_help = '<h2>' . esc_html__( 'Complaints', 'gdpr' ) . '</h2>' .
-			'<p>' . esc_html__( 'Users may complaint about something that happened. They can place a complaint somewhere on your site and those complaints will show up here.', 'gdpr' ) . '</p>' .
+			'<p>' . esc_html__( 'Users may complain about something that happened. They can place a complaint somewhere on your site and those complaints will show up here.', 'gdpr' ) . '</p>' .
 			'<p>' . esc_html__( 'When you resolve the problem, mark it as resolved and the requester will get a notification email confirming that his complaint was resolved.', 'gdpr' ) . '</p>';
 		get_current_screen()->add_help_tab( array(
 			'id' => 'complaint',
@@ -54,8 +54,8 @@ class GDPR_Help {
 		) );
 
 		$erasure_help = '<h2>' . esc_html__( 'Erasure', 'gdpr' ) . '</h2>' .
-			'<p>' . esc_html__( 'Users may request to be deleted from the site. If they don\'t have any content published on the site (including comments) they will be removed from the site automatically. Otherwise they will show up at this review table where you can reasign or delete their published content and anonymize his comments.', 'gdpr' ) . '</p>' .
-			'<p>' . esc_html__( 'When you are ready to delete the user, they will get a notification that their account has been closed. According to GDPR you have 30 days to fulfil this request. On some occasions you can ask to extend this time.', 'gdpr' ) . '</p>';
+			'<p>' . esc_html__( 'Users may request to be deleted from the site. If they don\'t have any content published on the site (including comments) they will be removed from the site automatically. Otherwise, they will show up at this review table where you can reassign or delete their published content and anonymize his comments.', 'gdpr' ) . '</p>' .
+			'<p>' . esc_html__( 'When you are ready to delete the user, they will get a notification that their account has been closed. According to GDPR, you have 30 days to fulfill this request. On some occasions, you can ask to extend this time.', 'gdpr' ) . '</p>';
 		get_current_screen()->add_help_tab( array(
 			'id' => 'erasure',
 			'title' => esc_html__( 'Erasures', 'gdpr' ),
@@ -79,7 +79,7 @@ class GDPR_Help {
 		) );
 
 		$access_data_help = '<h2>' . esc_html__( 'Access Data', 'gdpr' ) . '</h2>' .
-			'<p>' . esc_html__( 'Use this page to look for all known data about a user. You can look it up using the user email address and are able to download it in XML and JSON formats.', 'gdpr' ) . '</p>';
+			'<p>' . esc_html__( 'Use this page to look for all known data about a user. You can look it up using the user\'s email address and are able to download it in XML and JSON formats.', 'gdpr' ) . '</p>';
 		get_current_screen()->add_help_tab( array(
 			'id' => 'access-data',
 			'title' => esc_html__( 'Access Data', 'gdpr' ),
@@ -88,8 +88,8 @@ class GDPR_Help {
 
 		$data_breach_help = '<h2>' . esc_html__( 'Data Breach Notification', 'gdpr' ) . '</h2>' .
 			'<p><strong>' . esc_html__( 'Use this carefully.', 'gdpr' ) . '</strong></p>' .
-			'<p>' . esc_html__( 'This will send a mass email to all your users with the information provided on these fields. This email is throtled based on the hourly limit set on the plugin settings page. ', 'gdpr' ) . '</p>' .
-			'<p><strong>' . esc_html__( 'Only use this tool if you believe your site has been compromised and that your users personal data might have been leaked.', 'gdpr' ) . '</strong></p>';
+			'<p>' . esc_html__( 'This will send a mass email to all your users with the information provided on these fields. This email is throttled based on the hourly limit set on the plugin settings page. ', 'gdpr' ) . '</p>' .
+			'<p><strong>' . esc_html__( 'Only use this tool if you believe your site has been compromised and that your user\'s personal data might have been leaked.', 'gdpr' ) . '</strong></p>';
 		get_current_screen()->add_help_tab( array(
 			'id' => 'data-breach',
 			'title' => esc_html__( 'Data Breach', 'gdpr' ),
@@ -97,10 +97,10 @@ class GDPR_Help {
 		) );
 
 		$audit_log_help = '<h2>' . esc_html__( 'Audit Log', 'gdpr' ) . '</h2>' .
-			'<p><strong>' . esc_html__( 'We do not log the any user personal data.', 'gdpr' ) . '</strong></p>' .
+			'<p><strong>' . esc_html__( 'We do not log any of the user\'s personal data.', 'gdpr' ) . '</strong></p>' .
 			'<p>' . esc_html__( 'All logs are encrypted before saving to the database. An encrypted log file is created whenever a user gets removed from the site.', 'gdpr' ) . '</p>' .
-			'<p>' . esc_html__( 'This tool will keep record of some actions such as changing consent preferences, placing a request, data breach notifications received, etc…', 'gdpr' ) . '<br />' .
-			esc_html__( 'The only way to read the logs is to search for the user email. If the data subject is not a registered site user anymore, you need to ask for the 6 digit token that were provided during deletion. That will allow this tool to look for a log file with his information.', 'gdpr' ) . '</p>';
+			'<p>' . esc_html__( 'This tool will keep a record of some actions such as changing consent preferences, placing a request, data breach notifications received, etc…', 'gdpr' ) . '<br />' .
+			esc_html__( 'The only way to read the logs is to search for the user email. If the data subject is not a registered site user anymore, you need to ask for the 6 digit token that was provided during deletion. That will allow this tool to look for a log file with his information.', 'gdpr' ) . '</p>';
 		get_current_screen()->add_help_tab( array(
 			'id' => 'audit-log',
 			'title' => esc_html__( 'Audit Log', 'gdpr' ),
@@ -116,8 +116,8 @@ class GDPR_Help {
 	 */
 	public static function add_settings_help() {
 		$general_settings_help = '<h2>' . esc_html__( 'General Settings', 'gdpr' ) . '</h2>' .
-			'<p>' . esc_html__( 'The plugin needs to know your privacy policy page to track updates to it and ask users to reconsent to your new terms.', 'gdpr' ) . '</p>' .
-			'<p>' . esc_html__( 'When sending a data breach notification to your users, we need to throtle the emails because of server limitations. This is and hourly limit. Check with your hosting provider before changing this value.', 'gdpr' ) . '</p>';
+			'<p>' . esc_html__( 'This plugin needs to know your privacy policy page to track updates to it and ask users to re-consent to your new terms.', 'gdpr' ) . '</p>' .
+			'<p>' . esc_html__( 'When sending a data breach notification to your users, we need to throttle the emails because of server limitations. This is an hourly limit. Check with your hosting provider before changing this value.', 'gdpr' ) . '</p>';
 		get_current_screen()->add_help_tab( array(
 			'id' => 'general',
 			'title' => esc_html__( 'General Settings', 'gdpr' ),
@@ -127,7 +127,7 @@ class GDPR_Help {
 		$cookies_settings_help = sprintf( '<h2>' . esc_html__( 'Cookie Management', 'gdpr' ) . '</h2>' .
 			'<p>' . esc_html__( 'Fill out every information you can about the cookies your site uses. Set the cookies that you set under Cookies Used and cookies used and set by third parties under the hosts section.', 'gdpr' ) . '</p>' .
 			'<p>' . esc_html__( 'You must ask your developer to wrap the code that sets the cookies with our helper function %s.', 'gdpr' ) . '</p>' .
-			'<p>' . esc_html__( 'Some services like Google Analytics provide a way to optout from their code with an extra parameter to their snippet.', 'gdpr' ) . '</p>' .
+			'<p>' . esc_html__( 'Some services like Google Analytics provide a way to opt out from their code with an extra parameter to their snippet.', 'gdpr' ) . '</p>' .
 			'<h3>' . esc_html__( 'External Links', 'gdpr' ) . '</h3>' .
 			'<ul>' .
 				'<li><a href="https://codex.wordpress.org/WordPress_Cookies" title="' . esc_attr__( 'WordPress cookies', 'gdpr' ) . '" target="_blank">'. esc_html__( 'WordPress cookies', 'gdpr' ) .'</a></li>' .
@@ -141,9 +141,9 @@ class GDPR_Help {
 		) );
 
 		$consent_settings_help = sprintf( '<h2>' . esc_html__( 'Consent Management ( Coming Soon )', 'gdpr' ) . '</h2>' .
-			'<p>' . esc_html__( 'All consents are disabled by default. On first registration your users will need to consent to your privacy policy. Depending on your privacy policy you should register multiple types of consent on this page and allow them to be toggled on/off.', 'gdpr' ) . '</p>' .
+			'<p>' . esc_html__( 'All consents are disabled by default. On first registration, your users will need to consent to your privacy policy. Depending on your privacy policy you should register multiple types of consent on this page and allow them to be toggled on/off.', 'gdpr' ) . '</p>' .
 			'<p>' . esc_html__( 'If you have an optional consent type, you must have a developer wrap the functionality in our helper function %s.', 'gdpr' ) . '</p>' .
-			'<p><strong>' . esc_html__( 'i.e.', 'gdpr' ) . '</strong><br />' . esc_html__( 'You registered email marketing as an optional consent but the user did not actively opted in to it on their profile page. You should have your email capture form wrapped in our helper function to block registration or better yet, not even display the email capture form. Same goes for blocking adding the user to your mailing system on registration if consent is not given.', 'gdpr' ) . '</p>' .
+			'<p><strong>' . esc_html__( 'i.e.', 'gdpr' ) . '</strong><br />' . esc_html__( 'You registered email marketing as an optional consent but the user did not actively opt into it on their profile page. You should have your email capture form wrapped in our helper function to block registration or better yet, not even display the email capture form. Same goes for blocking adding the user to your mailing system on registration if consent is not given.', 'gdpr' ) . '</p>' .
 			'<h3>' . esc_html__( 'External Links', 'gdpr' ) . '</h3>' .
 			'<ul>' .
 				'<li><a href="https://gdpr-info.eu/art-7-gdpr/" title="' . esc_attr__( 'Article 7 - Conditions for consent', 'gdpr' ) . '" target="_blank">'. esc_html__( 'Article 7 - Conditions for consent', 'gdpr' ) .'</a></li>' .
