@@ -135,7 +135,7 @@ class GDPR_Public {
 			$user_consents = get_user_meta( $user->ID, 'gdpr_consents' );
 		}
 
-		include plugin_dir_path( __FILE__ ) . 'partials/consents-preferences.php';
+		include plugin_dir_path( __FILE__ ) . 'partials/consent-preferences.php';
 	}
 
 	/**

@@ -76,8 +76,8 @@
 				case 'cookies':
 					$('.gdpr.cookie-preferences .wrapper').fadeIn();
 					break;
-				case 'consents':
-					$('.gdpr.consents-preferences .wrapper').fadeIn();
+				case 'consent':
+					$('.gdpr.consent-preferences .wrapper').fadeIn();
 					break;
 			}
 		});

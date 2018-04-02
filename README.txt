@@ -1,5 +1,5 @@
 === GDPR ===
-Contributors: fclaussen, trewknowledge, matthewfarlymn
+Contributors: fclaussen, matthewfarlymn, trewknowledge
 Tags: gdpr, compliance, privacy, law, general data protection regulation
 Requires at least: 4.0
 Requires PHP: 5.6
@@ -29,7 +29,7 @@ $type can be `delete`, `rectify`, `complaint`
 **Create a button to open the preferences modals**
 `gdpr_preferences( $text, $type );`
 $text is the button label
-$type is the preferences type. Valid options are `cookies` or `consents`
+$type is the preferences type. Valid options are `cookies` or `consent`
 
 **Checks whether a cookie is allowed**
 `is_allowed_cookie( $cookie )`
