@@ -75,7 +75,6 @@ class GDPR_Public {
 	public function enqueue_scripts() {
 		wp_enqueue_script( $this->plugin_name, plugin_dir_url( dirname( __FILE__ ) ) . 'assets/js/gdpr-public.js', array( 'jquery', 'jquery-ui-dialog' ), $this->version, false );
 		wp_localize_script( $this->plugin_name, 'GDPR', array(
-			'add_to_deletion_requests_text' => esc_html__( 'You are about to request that your account and all the data we collected of you be removed from the site. Are you sure? This can\'t be undone.', 'gdpr' ),
 			'ajaxurl' => admin_url( 'admin-ajax.php' ),
 		) );
 	}
