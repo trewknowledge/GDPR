@@ -206,16 +206,15 @@ Activating this plugin does not guarantee that an organisation is successfully m
 
 == Screenshots ==
 
-1. Audit log results example.
-2. Plugin Settings.
-3. Right to access result example.
-4. Data breach request page.
-5. Right to forget requests table.
-6. Front facing buttons.
-7. Forget me confirmation.
-8. Data download confirmation.
-9. Forget me email confirmation.
-10. Data breach email confirmation.
+1. Cookie settings page.
+2. Cookie notification bar.
+3. Cookie management modal.
+4. Registration with consent checkboxes.
+5. Consent management modal.
+6. Privacy Policy page updated. Asking for re-consent.
+7. User deletion review table.
+8. Telemetry Tracker.
+9. Audit Log sample.
 
 == Changelog ==
 
