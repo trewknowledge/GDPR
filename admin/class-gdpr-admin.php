@@ -358,44 +358,48 @@ class GDPR_Admin {
 			</tr>
 		</table>';
 
-		echo '<h2>Consent Given</h2>';
-		echo '<table class="widefat">
-			<thead>
-				<tr>
-					<th>' . esc_html__( 'Consent ID', 'gdpr' ) . '</th>
-				</tr>
-			</thead>';
-		foreach ( $user_consents as $v ) {
-			echo '<tr>';
-				echo '<td class="row-title">' . esc_html( $v ) . '</td>';
-			echo '</tr>';
+		if ( ! empty( $user_consents ) ) {
+			echo '<h2>Consent Given</h2>';
+			echo '<table class="widefat">
+				<thead>
+					<tr>
+						<th>' . esc_html__( 'Consent ID', 'gdpr' ) . '</th>
+					</tr>
+				</thead>';
+			foreach ( $user_consents as $v ) {
+				echo '<tr>';
+					echo '<td class="row-title">' . esc_html( $v ) . '</td>';
+				echo '</tr>';
+			}
+			echo '</table>';
 		}
-		echo '</table>';
 
-		echo '<h2>Metadata</h2>';
-		echo '<table class="widefat">
-			<thead>
-				<tr>
-					<th>' . esc_html__( 'Name', 'gdpr' ) . '</th>
-					<th>' . esc_html__( 'Value', 'gdpr' ) . '</th>
-				</tr>
-			</thead>';
-		foreach ( $usermeta as $k => $v ) {
-			echo '<tr>';
-			echo '<td class="row-title">' . esc_html( $k ) . '</td>';
-			echo '<td>';
-				foreach ( $v as $value ) {
-					if ( is_serialized( $value ) ) {
+		if ( ! empty( $usermeta ) ) {
+			echo '<h2>Metadata</h2>';
+			echo '<table class="widefat">
+				<thead>
+					<tr>
+						<th>' . esc_html__( 'Name', 'gdpr' ) . '</th>
+						<th>' . esc_html__( 'Value', 'gdpr' ) . '</th>
+					</tr>
+				</thead>';
+			foreach ( $usermeta as $k => $v ) {
+				echo '<tr>';
+				echo '<td class="row-title">' . esc_html( $k ) . '</td>';
+				echo '<td>';
+					foreach ( $v as $value ) {
+						if ( is_serialized( $value ) ) {
 
-						echo '<pre>' . print_r( maybe_unserialize( $value ), true ) . '</pre><br />';
-					} else {
-						echo print_r( $value, true ) . '<br />';
+							echo '<pre>' . print_r( maybe_unserialize( $value ), true ) . '</pre><br />';
+						} else {
+							echo print_r( $value, true ) . '<br />';
+						}
 					}
-				}
-			echo '</td>';
-			echo '</tr>';
+				echo '</td>';
+				echo '</tr>';
+			}
+			echo '</table>';
 		}
-		echo '</table>';
 
 		$result = ob_get_clean();
 		wp_send_json_success( array( 'user_email' => $email, 'result' => $result ) );
@@ -653,7 +657,7 @@ class GDPR_Admin {
 
 		if ( isset( $_POST['user_consents'] ) ) {
 			foreach ( $_POST['user_consents'] as $consent => $value ) {
-				GDPR_Audit_Log::log( $user_id, sprintf( esc_html__( 'User gave explicit consent to %s', 'gdpr' ), $consent['name'] ) );
+				GDPR_Audit_Log::log( $user_id, sprintf( esc_html__( 'User gave explicit consent to %s', 'gdpr' ), $consent ) );
 				add_user_meta( $user_id, 'gdpr_consents', $consent );
 			}
 		}

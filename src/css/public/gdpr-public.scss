@@ -215,12 +215,12 @@
 			}
 		}
 	}
-	&.consents-preferences{
+	&.consent-preferences{
 		footer{
 			left: initial !important;
 		}
 	}
-	&.cookie-preferences, &.consents-preferences {
+	&.cookie-preferences, &.consent-preferences {
 		.wrapper {
 			position: fixed;
 			top: 50%;

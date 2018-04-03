@@ -32,6 +32,6 @@ To confirm this request, click here: %s
 ---------------------------------------------------------------------------------
 If that wasn\'t you, reset your password: %s
 ', 'gdpr' ),
-  esc_url_raw( $args['confirm_url'] )
-  esc_url_raw( $args['forgot_password_url'] )
+  esc_url_raw( $confirm_url ),
+  esc_url_raw( $forgot_password_url )
 );

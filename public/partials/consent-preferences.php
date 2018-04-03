@@ -12,7 +12,7 @@
  */
 ?>
 
-<div class="gdpr consents-preferences">
+<div class="gdpr consent-preferences">
 	<div class="wrapper">
 		<form method="post" class="frm-gdpr-consents-preferences">
 			<input type="hidden" name="action" value="update_consents">
