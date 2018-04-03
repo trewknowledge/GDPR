@@ -53,6 +53,15 @@
 									<div class="cookies-used">
 										<div class="cookie-title">
 											<p><?php esc_html_e( 'Cookies Used', 'gdpr' ); ?></p>
+											<?php if ( $tab['always_active'] ): ?>
+												<span class="always-active"><?php esc_html_e( 'Always Active', 'gdpr' ); ?></span>
+												<input type="checkbox" class="gdpr-hidden" name="approved_cookies" value="<?php echo esc_attr( json_encode( $site_cookies ) ) ?>" checked>
+											<?php else: ?>
+												<label class="gdpr-switch">
+													<input type="checkbox" name="approved_cookies" value="<?php echo esc_attr( json_encode( $site_cookies ) ) ?>" <?php echo ( $enabled ? 'checked' : '' ); ?>>
+													<span class="gdpr-slider round"></span>
+												</label>
+											<?php endif; ?>
 										</div>
 										<div class="cookies">
 											<span><?php echo esc_html( $tab['cookies_used'] ); ?></span>
@@ -69,15 +78,6 @@
 												}
 											}
 											?>
-											<?php if ( $tab['always_active'] ): ?>
-												<span class="always-active"><?php esc_html_e( 'Always Active', 'gdpr' ); ?></span>
-												<input type="checkbox" class="gdpr-hidden" name="approved_cookies" value="<?php echo esc_attr( json_encode( $site_cookies ) ) ?>" checked>
-											<?php else: ?>
-												<label class="gdpr-switch">
-													<input type="checkbox" name="approved_cookies" value="<?php echo esc_attr( json_encode( $site_cookies ) ) ?>" <?php echo ( $enabled ? 'checked' : '' ); ?>>
-													<span class="gdpr-slider round"></span>
-												</label>
-											<?php endif; ?>
 										</div>
 									</div>
 								<?php endif ?>
@@ -86,10 +86,10 @@
 										<div class="cookies-used">
 											<div class="cookie-title">
 												<p><?php echo esc_html( $host['name'] ); ?></p>
+												<a href="<?php echo esc_url( $host['optout'] ); ?>" target="_blank" class="gdpr-button"><?php esc_html_e( 'Opt Out', 'gdpr' ); ?></a>
 											</div>
 											<div class="cookies">
 												<span><?php echo esc_html( $host['cookies_used'] ); ?></span>
-												<a href="<?php echo esc_url( $host['optout'] ); ?>" target="_blank" class="gdpr-button"><?php esc_html_e( 'Opt Out', 'gdpr' ); ?></a>
 											</div>
 										</div>
 									<?php endforeach ?>

@@ -481,25 +481,12 @@
 									border-bottom: 1px solid #e1e1e1;
 									color: #32373c;
 									position: relative;
+									display: flex;
+									justify-content: space-between;
+									align-items: flex-end;
 									p{
 										margin: 0;
 										font-weight: 600 !important;
-									}
-									.gdpr-switch, .required {
-										position: absolute;
-										right: 10px;
-										top: 10px;
-									}
-								}
-								.cookies {
-									color: #555;
-									background-color: #f9f9f9;
-									padding: 10px;
-									display: flex;
-									justify-content: space-between;
-									align-items: flex-start;
-									span {
-										font-style: italic;
 									}
 									.always-active {
 										display: flex;
@@ -519,6 +506,14 @@
 										&:hover {
 											color: #00a0d2;
 										}
+									}
+								}
+								.cookies {
+									color: #555;
+									background-color: #f9f9f9;
+									padding: 10px;
+									span {
+										font-style: italic;
 									}
 								}
 							}
