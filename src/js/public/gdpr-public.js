@@ -86,9 +86,9 @@
 			$('.gdpr-overlay').fadeOut();
 			$('.gdpr.cookie-preferences .wrapper').fadeOut();
 		});
-		$(document).on('click', '.gdpr.consents-preferences .close', function() {
+		$(document).on('click', '.gdpr.consent-preferences .close', function() {
 			$('.gdpr-overlay').fadeOut();
-			$('.gdpr.consents-preferences .wrapper').fadeOut();
+			$('.gdpr.consent-preferences .wrapper').fadeOut();
 		});
 
 		$(document).on('click', '.gdpr.cookie-preferences .tabs button', function() {
@@ -191,7 +191,7 @@
 			});
 		}
 
-		$(document).on( 'submit', '.frm-gdpr-consents-preferences', function(e) {
+		$(document).on( 'submit', '.frm-gdpr-consent-preferences', function(e) {
 			e.preventDefault();
 
 			var checkboxes = $(this).find('input[type="checkbox"]:checked'),
@@ -219,7 +219,7 @@
 				function( res ) {
 					if( res.success ) {
 						$('.gdpr-overlay').fadeOut();
-						$('.gdpr.consents-preferences .wrapper').fadeOut();
+						$('.gdpr.consent-preferences .wrapper').fadeOut();
 					} else {
 						error.html( res.data );
 						console.log(res.data);
