@@ -39,7 +39,7 @@ To download it in a JSON format, click here: %s
 ---------------------------------------------------------------------------------
 If that wasn\'t you, reset your password: %s
 ', 'gdpr' ),
-  esc_url_raw( $args['confirm_url_xml'] )
-  esc_url_raw( $args['confirm_url_json'] )
-  esc_url_raw( $args['forgot_password_url'] )
+  esc_url_raw( $confirm_url_xml ),
+  esc_url_raw( $confirm_url_json ),
+  esc_url_raw( $forgot_password_url ),
 );
