@@ -24,7 +24,7 @@ You can send your pull request at [https://github.com/trewknowledge/gdpr](https:
 `[gdpr_request_form type="$type"]`
 or
 `gdpr_request_form( $type );`
-$type can be `delete`, `rectify`, `complaint`, 'export-data'
+$type can be `delete`, `rectify`, `complaint`, `export-data`
 
 **Create a button to open the preferences modals**
 `gdpr_preferences( $text, $type );`
@@ -40,7 +40,7 @@ $type is the preferences type. Valid options are `cookies` or `consent`
 == Features ==
 
 * Consent management
-* Privacy Preference management for Cookies with front-end preference UI & banner notifications 
+* Privacy Preference management for Cookies with front-end preference UI & banner notifications
 * Privacy Policy page configurations with version control and re-consent management
 * Rights to erasure & deletion of website data with a double opt-in confirmation email
 * Re-assignment of user data on erasure requests & pseudonymization of user website data
@@ -63,13 +63,13 @@ On login, the user must consent to the Privacy Policy outlined on the site. If t
 
 If the site owner updates the Privacy Policy page content, the change will be logged and flagged to the admin that they must notify users on next login to seek re-consent. Additionally, the warning message can be dismissed in the event of a minor correction or mistake.
 
-Additionally, under General Settings the Admin can set the outgoing email limitation which would set the batch notification email limit per hour in the event of a Breach Notification. 
+Additionally, under General Settings the Admin can set the outgoing email limitation which would set the batch notification email limit per hour in the event of a Breach Notification.
 
 **Cookie Preference Management**
 
-Similar to consent management, users can opt in or out of cookies that are being used on the site. There are 3 formats of cookies that can be created which include: 
+Similar to consent management, users can opt in or out of cookies that are being used on the site. There are 3 formats of cookies that can be created which include:
 
-* **Always Active:** Cookies that are always active or are required for the site to function. 
+* **Always Active:** Cookies that are always active or are required for the site to function.
 * **Toggled:** Cookies that can be activated or blocked based on the user preference
 * **Opt-Out Link:** Cookies that require configuration from a third-party source in order to opt-out
 
@@ -81,7 +81,7 @@ Consents can be registered on the settings page. They can be optional or not. By
 
 For optional consents, there's a wrapper function `have_consent( $consent_id )` to help you display or hide something on the site depending if the user gave consent or not.
 
-Consents are logged to the user record for auditing or for access purposes. 
+Consents are logged to the user record for auditing or for access purposes.
 
 
 == Requests Table & Rights of Data User ==
@@ -95,25 +95,25 @@ Consents are logged to the user record for auditing or for access purposes.
    1. If the Data User has content published on the site for any post types or comments, they will be added to this table. If they do not have any content, they will receive a confirmation of erasure request and be provided a 6 digit Token for safekeeping after erasure in case of recover data needs.
    1. The requests table allows the Administrator to reassign any content to another user or delete it.
    1. In the event of comments, the Data User’s content would be made anonymous.
-   
+
 1. Admin can also manually add users to the erasure requests table with a manual email search
 
-**Right to Access Data Request & User Data Portability** 
+**Right to Access Data Request & User Data Portability**
 
 1.   The Data User can place a request to download their data with the shortcode.
 1.   After requesting their data, the user will receive a double opt-in confirmation email then the plugin will generate an XML or JSON file, which will be emailed to them for download with an expiration time of 48 hours.
 
-**Right to Rectify & Complaint Requests** 
+**Right to Rectify & Complaint Requests**
 
 1.   The Data User can place a request to rectify data or file a complaint with the shortcode.
-1.   After making their request, the user will receive a double opt-in confirmation email and then add them to the table for admin to handle the request. 
+1.   After making their request, the user will receive a double opt-in confirmation email and then add them to the table for admin to handle the request.
 
 
 == Tools ==
 
 **Access Data**
 
-The Access Data tool allows the Admin to look up a user email and view the data of a particular user. The Admin can download and export the data in a JSON or XML format and provide to the Data User if manually requested. 
+The Access Data tool allows the Admin to look up a user email and view the data of a particular user. The Admin can download and export the data in a JSON or XML format and provide to the Data User if manually requested.
 
 NOTE: This method should not be used without the Data User confirming their identity.
 
@@ -124,7 +124,7 @@ Everything the Data User does from registration, providing consent to the privac
 1.   Using the Data User's email, you can look up and retrieve the user information and display it.
 1.   If the Data User has been removed from the site, this encrypted log is deleted from the database and saved as an encrypted file inside the plugin folder.
 
-If in the future, the Data User makes a complaint or there is a need to recover the data, the user can provide their email address and the 6 digit token they received from the deletion confirmation email to decrypt and retrieve the file. 
+If in the future, the Data User makes a complaint or there is a need to recover the data, the user can provide their email address and the 6 digit token they received from the deletion confirmation email to decrypt and retrieve the file.
 
 **Data Breach & Notifications**
 
