@@ -14,7 +14,7 @@
 
 <div class="gdpr consent-preferences">
 	<div class="wrapper">
-		<form method="post" class="frm-gdpr-consents-preferences">
+		<form method="post" class="frm-gdpr-consent-preferences">
 			<input type="hidden" name="action" value="update_consents">
 			<?php wp_nonce_field( 'update_consents', 'update-consents-nonce' ); ?>
 			<header>
