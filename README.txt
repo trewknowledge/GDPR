@@ -42,14 +42,14 @@ $type is the preferences type. Valid options are `cookies` or `consent`
 * Consent management
 * Privacy Preference management for Cookies with front-end preference UI & banner notifications 
 * Privacy Policy page configurations with version control and re-consent management
-* Rights to erasure & deletion of website data with double opt-in confirmation email
+* Rights to erasure & deletion of website data with a double opt-in confirmation email
 * Re-assignment of user data on erasure requests & pseudonymization of user website data
 * Data Processor settings and publishing of contact information
 * Right to access data by admin dashboard with email look up and export
-* Right to access data by Data User with front end requests button & double opt-in confirmation email
+* Right to access data by Data User with front-end requests button & double opt-in confirmation email
 * Right to portability & export of data by Admin or Data User in XML or JSON formats
 * Encrypted audit logs for the lifetime of Data User compliance activity
-* Data User Secret Token for two factor decryption and recovery of data
+* Data User Secret Token for two-factor decryption and recovery of data
 * Data breach notification logs and batch email notifications to data users
 * Telemetry Tracker for visualizing plugins and website data
 
@@ -69,11 +69,11 @@ Additionally, under General Settings the Admin can set the outgoing email limita
 
 Similar to consent management, users can opt in or out of cookies that are being used on the site. There are 3 formats of cookies that can be created which include: 
 
-* **Always Active:** Cookeis that are always active or are required for the site to function. 
+* **Always Active:** Cookies that are always active or are required for the site to function. 
 * **Toggled:** Cookies that can be activated or blocked based on the user preference
-* **Opt-Out Link:** Cookies that require 3rd party configuration at source can be linked to resource
+* **Opt-Out Link:** Cookies that require configuration from a third-party source in order to opt-out
 
-Depending on the user preference setting, you can use the `is_allowed_cookie( $cookie )`function to save and set the cookies. The cookie with the user approved cookies can be found at another cookie named `gdpr_approved_cookies`. There's also a helper function called `is_allowed_cookie( $cookie )` that you can use to prevent setting up a cookie.
+Depending on the user preference setting, you can use the `is_allowed_cookie( $cookie )` function to save and set the cookies. The cookie with the user approved cookies can be found at another cookie named `gdpr_approved_cookies`. There's also a helper function called `is_allowed_cookie( $cookie )` that you can use to prevent setting up a cookie.
 
 **Consent Management**
 
@@ -81,7 +81,7 @@ Consents can be registered on the settings page. They can be optional or not. By
 
 For optional consents, there's a wrapper function `have_consent( $consent_id )` to help you display or hide something on the site depending if the user gave consent or not.
 
-Consents are logged to the user record for auditing or for access purpooses. 
+Consents are logged to the user record for auditing or for access purposes. 
 
 
 == Requests Table & Rights of Data User ==
@@ -96,7 +96,7 @@ Consents are logged to the user record for auditing or for access purpooses.
    1. The requests table allows the Administrator to reassign any content to another user or delete it.
    1. In the event of comments, the Data User’s content would be made anonymous.
    
-1. Admin can also manually add users to the erasure requests table with a manual email look up
+1. Admin can also manually add users to the erasure requests table with a manual email search
 
 **Right to Access Data Request & User Data Portability** 
 
@@ -113,22 +113,22 @@ Consents are logged to the user record for auditing or for access purpooses.
 
 **Access Data**
 
-The Access Data tool allows the Admin to look up a user email and view the data of a particular user. Admin can download and export the data in a JSON or XML format and provide to the data user if manually requested. 
+The Access Data tool allows the Admin to look up a user email and view the data of a particular user. The Admin can download and export the data in a JSON or XML format and provide to the Data User if manually requested. 
 
 NOTE: This method should not be used without the Data User confirming their identity.
 
 **Audit Log**
 
-Everything the Data User does from registration, providing consent to the privacy policy, terms of service and other requests is logged and encrypted in a database. Data breach notifications are also logged to all data users upon confirmation by Controller.
+Everything the Data User does from registration, providing consent to the privacy policy, terms of service and other requests are logged and encrypted in a database. Data breach notifications are also logged to all data users upon confirmation by Controller.
 
 1.   Using the Data User's email, you can look up and retrieve the user information and display it.
 1.   If the Data User has been removed from the site, this encrypted log is deleted from the database and saved as an encrypted file inside the plugin folder.
 
-If in the future, the Data User makes a complaint or there is a need to recover the data, the user user can provide their email address and the 6 digit token they received from the deletion confirmation email to decrypt and retrieve the file. 
+If in the future, the Data User makes a complaint or there is a need to recover the data, the user can provide their email address and the 6 digit token they received from the deletion confirmation email to decrypt and retrieve the file. 
 
 **Data Breach & Notifications**
 
-In case of a data breach, the Admin can generate a Data Breach Notification to users by logging the information and confirm the breach trhough a double opt-in confirmation email. The following information would be recorded in the audit log:
+In case of a data breach, the Admin can generate a Data Breach Notification to users by logging the information and confirm the breach through a double opt-in confirmation email. The following information would be recorded in the audit log:
 
    1. Nature of the personal data breach
    1. Name and contact details of the data protection officer
