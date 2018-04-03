@@ -217,7 +217,7 @@ class GDPR_Email {
 
 		return wp_mail( $no_reply,
 			$possible_types[ $type ],
-			$content,
+			html_entity_decode( $content, ENT_QUOTES, 'UTF-8' ),
 			$headers,
 			( ! empty( $attachments ) ) ? $attachments : array()
 		);
