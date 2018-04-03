@@ -353,8 +353,8 @@ class GDPR {
 						'Description' => $user->description,
 						'Website' => $user->user_url,
 					),
+					'Consents' => $user_consents,
 					'Metadata' => $metadata,
-					'Consents' => $user_consents
 				);
 				return json_encode( $json );
 				break;
@@ -376,6 +376,16 @@ class GDPR {
 				$personal_info->appendChild( $dom->createElement( 'Description', $user->description ) );
 				$personal_info->appendChild( $dom->createElement( 'Website', $user->user_url ) );
 
+				$consents = $dom->createElement( 'Consents' );
+				$dom->appendChild( $consents );
+				$user_consents = get_user_meta( $user->ID, 'gdpr_consents' );
+				if ( $user_consents ) {
+					foreach ( $user_consents as $consent_item ) {
+						$consents->appendChild( $dom->createElement( 'consent', $consent_item ) );
+					}
+				}
+
+
 				$meta_data = $dom->createElement('Metadata');
 				$dom->appendChild( $meta_data );
 
@@ -387,14 +397,6 @@ class GDPR {
 					}
 				}
 
-				$consents = $dom->createElement( 'Consents' );
-				$dom->appendChild( $consents );
-				$user_consents = get_user_meta( $user->ID, 'gdpr_consents' );
-				if ( $user_consents ) {
-					foreach ( $user_consents as $consent_item ) {
-						$consents->appendChild( $dom->createElement( 'consent', $consent_item ) );
-					}
-				}
 
 
 				$dom->preserveWhiteSpace = false;

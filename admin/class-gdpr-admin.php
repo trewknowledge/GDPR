@@ -315,6 +315,7 @@ class GDPR_Admin {
 		}
 
 		$usermeta = GDPR::get_user_meta( $user->ID );
+		$user_consents = get_user_meta( $user->ID, 'gdpr_consents' );
 
 		ob_start();
 		echo '<h2>' . $user->display_name . '<span>( ' . $email . ' )</span></h2>';
@@ -356,6 +357,20 @@ class GDPR_Admin {
 				<td>' . esc_html( implode( ', ', $user->roles ) ) . '</td>
 			</tr>
 		</table>';
+
+		echo '<h2>Consent Given</h2>';
+		echo '<table class="widefat">
+			<thead>
+				<tr>
+					<th>' . esc_html__( 'Consent ID', 'gdpr' ) . '</th>
+				</tr>
+			</thead>';
+		foreach ( $user_consents as $v ) {
+			echo '<tr>';
+				echo '<td class="row-title">' . esc_html( $v ) . '</td>';
+			echo '</tr>';
+		}
+		echo '</table>';
 
 		echo '<h2>Metadata</h2>';
 		echo '<table class="widefat">
