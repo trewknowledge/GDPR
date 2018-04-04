@@ -53,6 +53,19 @@
 									<div class="cookies-used">
 										<div class="cookie-title">
 											<p><?php esc_html_e( 'Cookies Used', 'gdpr' ); ?></p>
+											<?php
+												$site_cookies = array();
+												$enabled = true;
+												$cookies_used = explode(',', $tab['cookies_used']);
+												foreach ( $cookies_used as $cookie ) {
+													$site_cookies[] = trim( $cookie );
+													if ( ! empty( $approved_cookies ) ) {
+														if ( ! in_array( trim( $cookie ), $approved_cookies ) ) {
+															$enabled = false;
+														}
+													}
+												}
+											?>
 											<?php if ( $tab['always_active'] ): ?>
 												<span class="always-active"><?php esc_html_e( 'Always Active', 'gdpr' ); ?></span>
 												<input type="checkbox" class="gdpr-hidden" name="approved_cookies" value="<?php echo esc_attr( json_encode( $site_cookies ) ) ?>" checked>
@@ -65,19 +78,6 @@
 										</div>
 										<div class="cookies">
 											<span><?php echo esc_html( $tab['cookies_used'] ); ?></span>
-											<?php
-											$site_cookies = array();
-											$enabled = true;
-											$cookies_used = explode(',', $tab['cookies_used']);
-											foreach ( $cookies_used as $cookie ) {
-												$site_cookies[] = trim( $cookie );
-												if ( ! empty( $approved_cookies ) ) {
-													if ( ! in_array( trim( $cookie ), $approved_cookies ) ) {
-														$enabled = false;
-													}
-												}
-											}
-											?>
 										</div>
 									</div>
 								<?php endif ?>

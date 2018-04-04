@@ -218,6 +218,9 @@ Activating this plugin does not guarantee that an organisation is successfully m
 
 == Changelog ==
 
+= 1.0.1 =
+* Fix issue on cookie preferences not saving and displaying php errors.
+
 = 1.0.0 =
 * Added cookie management screen
 * Added consent management screen
