@@ -4,7 +4,7 @@ Tags: gdpr, compliance, privacy, law, general data protection regulation
 Requires at least: 4.0
 Requires PHP: 5.6
 Tested up to: 4.9
-Stable tag: 1.0.1
+Stable tag: 1.0.2
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -217,6 +217,10 @@ Activating this plugin does not guarantee that an organisation is successfully m
 9. Audit Log sample.
 
 == Changelog ==
+
+= 1.0.2 =
+* Added new filters for access data so extensions can add more information.
+* Rebuilt the translation pot file and added translation comments.
 
 = 1.0.1 =
 * Fix issue on cookie preferences not saving and displaying php errors.
