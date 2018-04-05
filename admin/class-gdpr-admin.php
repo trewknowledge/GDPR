@@ -399,7 +399,10 @@ class GDPR_Admin {
 				echo '</tr>';
 			}
 			echo '</table>';
+
 		}
+
+		do_action( 'admin_access_data_extra_tables', $email );
 
 		$result = ob_get_clean();
 		wp_send_json_success( array( 'user_email' => $email, 'result' => $result ) );
