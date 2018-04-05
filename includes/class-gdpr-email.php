@@ -158,10 +158,15 @@ class GDPR_Email {
 			$user = get_user_by( 'email', $email );
 			if ( $user instanceof WP_User ) {
 				GDPR_Audit_Log::log( $user->ID, esc_html__( 'Data breach notification sent to user.', 'gdpr' ) );
+				/* translators: email content */
 				GDPR_Audit_Log::log( $user->ID, sprintf( esc_html__( 'Email content: %s', 'gdpr'), $content ) );
+				/* translators: nature of the data breach */
 				GDPR_Audit_Log::log( $user->ID, sprintf( esc_html__( 'Nature of data breach: %s', 'gdpr'), $nature ) );
+				/* translators: data protection officer contact information */
 				GDPR_Audit_Log::log( $user->ID, sprintf( esc_html__( 'Data protection officer contact: %s', 'gdpr'), $office_contact ) );
+				/* translators: likely consequences */
 				GDPR_Audit_Log::log( $user->ID, sprintf( esc_html__( 'Likely consequences of breach: %s', 'gdpr'), $consequences ) );
+				/* translators: measures taken */
 				GDPR_Audit_Log::log( $user->ID, sprintf( esc_html__( 'Measures taken or proposed to be taken: %s', 'gdpr'), $measures ) );
 			}
 		}

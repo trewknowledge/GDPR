@@ -53,6 +53,7 @@ class GDPR_Requests_Admin extends GDPR_Requests {
 						'role' => 'Administrator'
 				)	);
 				if ( 1 === $admins_query->get_total() ) {
+					/* translators: User email */
 					add_settings_error( 'gdpr-requests', 'invalid-request', sprintf( esc_html__( 'User %s is the only admin of the site. It cannot be deleted.', 'gdpr' ), $email ), 'error' );
 					set_transient( 'settings_errors', get_settings_errors(), 30 );
 					wp_safe_redirect(
@@ -75,6 +76,7 @@ class GDPR_Requests_Admin extends GDPR_Requests {
 		if ( empty( $requests ) ) {
 			parent::add_to_requests( $email, 'delete', null, true );
 			GDPR_Audit_Log::log( $user->ID, esc_html__( 'User added to the deletion requests list by admin.', 'gdpr' ) );
+			/* translators: User email */
 			add_settings_error( 'gdpr-requests', 'new-request', sprintf( esc_html__( 'User %s was added to the deletion table.', 'gdpr' ), $email ), 'updated' );
 			set_transient( 'settings_errors', get_settings_errors(), 30 );
 			wp_safe_redirect(
@@ -113,6 +115,7 @@ class GDPR_Requests_Admin extends GDPR_Requests {
 
 		parent::add_to_requests( $email, 'delete', null, true );
 		GDPR_Audit_Log::log( $user->ID, esc_html__( 'User added to the deletion requests list by admin.', 'gdpr' ) );
+		/* translators: User email */
 		add_settings_error( 'gdpr-requests', 'new-request', sprintf( esc_html__( 'User %s was added to the deletion table.', 'gdpr' ), $email ), 'updated' );
 		set_transient( 'settings_errors', get_settings_errors(), 30 );
 		wp_safe_redirect(
@@ -142,7 +145,8 @@ class GDPR_Requests_Admin extends GDPR_Requests {
 		$allowed_types = parent::get_allowed_types();
 
 		if ( ! in_array( $type, $allowed_types ) ) {
-			wp_die( sprintf( esc_html__( 'Type of request \'%s\' is not an allowed type.', 'gdpr' ), $email ) );
+			/* translators: The type of request */
+			wp_die( sprintf( esc_html__( 'Type of request \'%s\' is not an allowed type.', 'gdpr' ), $type ) );
 		}
 
 		$nonce_field = 'gdpr_cancel_' . $type . '_nonce';
@@ -156,8 +160,10 @@ class GDPR_Requests_Admin extends GDPR_Requests {
 
 		parent::remove_from_requests( $index );
 		$user = get_user_by( 'email', $email );
+		/* translators: The type of request i.e 'delete' */
 		GDPR_Audit_Log::log( $user->ID, sprintf( esc_html__( 'User was removed from the %s request list by admin.', 'gdpr' ), $type ) );
 
+		/* translators: User email */
 		add_settings_error( 'gdpr-requests', 'remove-request', sprintf( esc_html__( 'User %s was removed from this request table.', 'gdpr' ), $email ), 'updated' );
 		set_transient( 'settings_errors', get_settings_errors(), 30 );
 		wp_safe_redirect(
@@ -187,7 +193,8 @@ class GDPR_Requests_Admin extends GDPR_Requests {
 		$allowed_types = parent::get_allowed_types();
 
 		if ( ! in_array( $type, $allowed_types ) ) {
-			wp_die( sprintf( esc_html__( 'Type of request \'%s\' is not an allowed type.', 'gdpr' ), $email ) );
+			/* translators: The type of request i.e. 'delete' */
+			wp_die( sprintf( esc_html__( 'Type of request \'%s\' is not an allowed type.', 'gdpr' ), $type ) );
 		}
 
 		$nonce_field = 'gdpr_' . $type . '_mark_resolved_nonce';
@@ -205,7 +212,8 @@ class GDPR_Requests_Admin extends GDPR_Requests {
 		GDPR_Email::send( $email, $type . '-resolved' );
 
 		$user = get_user_by( 'email', $email );
-		GDPR_Audit_Log::log( $user->ID, sprintf( esc_html__( 'User %s request was marked as resolved by admin.', 'gdpr' ), $type ) );
+		/* translators: User email */
+		GDPR_Audit_Log::log( $user->ID, sprintf( esc_html__( 'User %s request was marked as resolved by admin.', 'gdpr' ), $user->user_email ) );
 
 		add_settings_error( 'gdpr-requests', 'resolved', sprintf( esc_html__( 'Request was resolved. User %s has been notified.', 'gdpr' ), $email ), 'updated' );
 		set_transient( 'settings_errors', get_settings_errors(), 30 );
@@ -244,7 +252,7 @@ class GDPR_Requests_Admin extends GDPR_Requests {
 		GDPR_Audit_Log::export_log( $user->ID, $token );
 		wp_delete_user( $user->ID );
 
-
+		/* translators: User email */
 		add_settings_error( 'gdpr-requests', 'new-request', sprintf( esc_html__( 'User %s was deleted from the site.', 'gdpr' ), $email ), 'updated' );
 		set_transient( 'settings_errors', get_settings_errors(), 30 );
 		wp_safe_redirect(
@@ -338,7 +346,10 @@ class GDPR_Requests_Admin extends GDPR_Requests {
 					'post_author' => $reassign_to,
 				) );
 			}
-			GDPR_Audit_Log::log( $user->ID, sprintf( esc_html__( 'User %s were reassigned to %s.', 'gdpr' ), $post_type, $reassign_to ) );
+
+			$reassign_to_user = get_user_by( 'ID', $reassign_to );
+			/* translators: 1: The post type, 2: The user the posts were reassigned to */
+			GDPR_Audit_Log::log( $user->ID, sprintf( esc_html__( 'User %s were reassigned to %s.', 'gdpr' ), $post_type, $reassign_to_user->display_name ) );
 			wp_send_json_success();
 		}
 

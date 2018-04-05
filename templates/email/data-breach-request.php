@@ -1,5 +1,6 @@
 <?php
 echo sprintf(
+	/* translators: 1: User who requested the notification, 2: Nature of data breach, 3: Contact details for data protection officer, 4: Likely consequences of breach, 5: Measures taken, 6: Confirmation link */
 	esc_html__(
 'A request to send a mass email notification to all users regarding a data breach has been made by %s.
 

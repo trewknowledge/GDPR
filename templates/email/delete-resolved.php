@@ -1,6 +1,7 @@
 <?php
 
 echo sprintf(
+	/* translators: 6-digit token for audit log */
   esc_html__(
 'Your account has been closed.
 

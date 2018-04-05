@@ -16,7 +16,8 @@ var paths = {
 	},
 	dest: {
 		css: './assets/css/',
-		js: './assets/js/'
+		js: './assets/js/',
+		pot: './languages/'
 	}
 };
 
@@ -24,6 +25,14 @@ function errorLog(error) {
     console.log(error.message);
     this.emit('end');
 }
+
+gulp.task('pot', function() {
+	return gulp.src( paths.src.php )
+		.pipe( $.wpPot( {
+			domain: 'gdpr'
+		} ) )
+		.pipe( gulp.dest( paths.dest.pot + 'gdpr.pot' ) );
+});
 
 gulp.task('admin-css', function() {
 	return gulp.src( paths.src.admin.css )
@@ -88,4 +97,4 @@ gulp.task('watch', function(){
 	gulp.watch( paths.src.public.js, ['public-js']);
 });
 
-gulp.task('default', ['admin-css', 'public-css', 'admin-js', 'public-js', 'watch']);
+gulp.task('default', ['admin-css', 'public-css', 'admin-js', 'public-js', 'pot', 'watch']);

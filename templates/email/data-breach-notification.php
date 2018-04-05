@@ -1,5 +1,6 @@
 <?php
 echo sprintf(
+	/* translators: 1: Email content, 2: Nature of data breach, 3: Contact details for data protection officer, 4: Likely consequences of breach, 5: Measures taken */
 	esc_html__(
 '%s
 
@@ -22,13 +23,6 @@ Likely consequences of the personal data breach:
 Measures taken or proposed to be taken:
 --------------------------------------------------------
 %s
-
-
-To confirm this request, click here: %s
-
----------------------------------------------------------------------------------
-If that is not intended, have the person who requested it change their password.
----------------------------------------------------------------------------------
 ', 'gdpr' ),
 	esc_html( $args['content'] ),
 	esc_html( $args['nature'] ),

@@ -17,6 +17,7 @@
   );
 
 echo sprintf(
+  /* translators: 1: Confirmation link, 2: Reset password link */
   esc_html__(
 'Someone placed a request for your information to be removed from our site.
 By clicking confirm your account will be removed from our site and all data we collected
