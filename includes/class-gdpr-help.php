@@ -126,6 +126,7 @@ class GDPR_Help {
 
 		$cookies_settings_help = sprintf( '<h2>' . esc_html__( 'Cookie Management', 'gdpr' ) . '</h2>' .
 			'<p>' . esc_html__( 'Fill out every information you can about the cookies your site uses. Set the cookies that you set under Cookies Used and cookies used and set by third parties under the hosts section.', 'gdpr' ) . '</p>' .
+			/* translators: the function */
 			'<p>' . esc_html__( 'You must ask your developer to wrap the code that sets the cookies with our helper function %s.', 'gdpr' ) . '</p>' .
 			'<p>' . esc_html__( 'Some services like Google Analytics provide a way to opt out from their code with an extra parameter to their snippet.', 'gdpr' ) . '</p>' .
 			'<h3>' . esc_html__( 'External Links', 'gdpr' ) . '</h3>' .
@@ -142,6 +143,7 @@ class GDPR_Help {
 
 		$consent_settings_help = sprintf( '<h2>' . esc_html__( 'Consent Management ( Coming Soon )', 'gdpr' ) . '</h2>' .
 			'<p>' . esc_html__( 'All consents are disabled by default. On first registration, your users will need to consent to your privacy policy. Depending on your privacy policy you should register multiple types of consent on this page and allow them to be toggled on/off.', 'gdpr' ) . '</p>' .
+			/* translators: the function */
 			'<p>' . esc_html__( 'If you have an optional consent type, you must have a developer wrap the functionality in our helper function %s.', 'gdpr' ) . '</p>' .
 			'<p><strong>' . esc_html__( 'i.e.', 'gdpr' ) . '</strong><br />' . esc_html__( 'You registered email marketing as an optional consent but the user did not actively opt into it on their profile page. You should have your email capture form wrapped in our helper function to block registration or better yet, not even display the email capture form. Same goes for blocking adding the user to your mailing system on registration if consent is not given.', 'gdpr' ) . '</p>' .
 			'<h3>' . esc_html__( 'External Links', 'gdpr' ) . '</h3>' .

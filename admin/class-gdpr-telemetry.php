@@ -273,6 +273,7 @@ class GDPR_Telemetry {
 	 * @param  int $post_id The post ID.
 	 */
 	private static function _html_created( $post_id ) {
+		/* translators: Amount of time  */
 		echo sprintf(
 			esc_html__( '%s ago' ),
 			human_time_diff( get_post_time( 'G', true, $post_id ) )

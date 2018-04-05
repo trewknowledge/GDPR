@@ -27,6 +27,7 @@
   );
 
 echo sprintf(
+  /* translators: 1: XML download link, 2: JSON download link, 3: reset password link */
   esc_html__(
 'Someone requested to download your data from our site.
 By clicking confirm we will redirect you back to our site where a download will begin.

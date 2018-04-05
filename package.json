@@ -16,6 +16,7 @@
     "gulp-notify": "^3.0.0",
     "gulp-rename": "^1.2.2",
     "gulp-sass": "^2.1.0",
-    "gulp-uglify-es": "^1.0.0"
+    "gulp-uglify-es": "^1.0.0",
+    "gulp-wp-pot": "^2.2.0"
   }
 }

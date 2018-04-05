@@ -95,7 +95,7 @@ class GDPR_Admin {
 
 		$menu_title  = esc_html__( 'GDPR', 'gdpr' );
 		if ( count( $confirmed_requests ) ) {
-			$menu_title  = sprintf( esc_html__( 'GDPR %s', 'gdpr' ), '<span class="awaiting-mod">' . count( $confirmed_requests ) . '</span>' );
+			$menu_title  = sprintf( esc_html( 'GDPR %s' ), '<span class="awaiting-mod">' . count( $confirmed_requests ) . '</span>' );
 		}
 
 		add_menu_page( $page_title, $menu_title, $capability, $parent_slug, $function, $icon_url );
@@ -657,6 +657,7 @@ class GDPR_Admin {
 
 		if ( isset( $_POST['user_consents'] ) ) {
 			foreach ( $_POST['user_consents'] as $consent => $value ) {
+				/* translators: Name of consent */
 				GDPR_Audit_Log::log( $user_id, sprintf( esc_html__( 'User gave explicit consent to %s', 'gdpr' ), $consent ) );
 				add_user_meta( $user_id, 'gdpr_consents', $consent );
 			}
