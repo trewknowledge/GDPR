@@ -324,7 +324,9 @@ class GDPR {
 			return false;
 		}
 
-		$usermeta = self::get_user_meta( $user->ID );
+		$usermeta      = self::get_user_meta( $user->ID );
+		$user_consents = get_user_meta( $user->ID, 'gdpr_consents' );
+		$extra_content = apply_filters( 'export_data_extra_tables', $email );
 
 		switch ( strtolower( $format ) ) {
 			case 'json':
@@ -341,7 +343,6 @@ class GDPR {
 					}
 				}
 
-				$user_consents = get_user_meta( $user->ID, 'gdpr_consents' );
 				$json = array(
 					'Personal Information' => array(
 						'Username' => $user->user_login,
@@ -356,6 +357,11 @@ class GDPR {
 					'Consents' => $user_consents,
 					'Metadata' => $metadata,
 				);
+
+				$extra_content = apply_filters( 'export_data_extra_tables', $email );
+				if ( $extra_content ) {
+					$json[ $extra_content['name'] ] = $extra_content['content'];
+				}
 				return json_encode( $json );
 				break;
 			case 'md':
@@ -379,7 +385,6 @@ class GDPR {
 				if ( ! empty( $user_consents ) ) {
 					$consents = $dom->createElement( 'Consents' );
 					$dom->appendChild( $consents );
-					$user_consents = get_user_meta( $user->ID, 'gdpr_consents' );
 					foreach ( $user_consents as $consent_item ) {
 						$consents->appendChild( $dom->createElement( 'consent', $consent_item ) );
 					}
@@ -395,6 +400,17 @@ class GDPR {
 					$meta_data->appendChild( $key );
 					foreach ( $v as $value ) {
 						$key->appendChild( $dom->createElement( 'item', $value ) );
+					}
+				}
+
+				if ( $extra_content ) {
+					$extra = $dom->createElement( $extra_content['name'] );
+					$dom->appendChild( $extra );
+					foreach ( $extra_content['content'] as $key => $obj ) {
+						$item = $extra->appendChild( $dom->createElement( 'item' ) );
+						foreach ( $obj as $k => $value) {
+							$item->appendChild( $dom->createElement( $k, ( is_object( $value ) || is_array( $value ) ) ? serialize( (array) $value ) : $value ) );
+						}
 					}
 				}
 

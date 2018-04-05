@@ -399,6 +399,12 @@ class GDPR_Admin {
 				echo '</tr>';
 			}
 			echo '</table>';
+
+		}
+
+		$extra_content = apply_filters( 'admin_access_data_extra_tables', $email );
+		if ( $extra_content ) {
+			echo $extra_content;
 		}
 
 		$result = ob_get_clean();
