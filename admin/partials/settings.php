@@ -206,6 +206,7 @@
 			</div>
 		</div>
 		<?php
+		do_action( 'gdpr_extra_settings' );
 		submit_button();
 		?>
 	</form>

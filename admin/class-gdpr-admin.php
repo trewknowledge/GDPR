@@ -402,10 +402,7 @@ class GDPR_Admin {
 
 		}
 
-		$extra_content = apply_filters( 'admin_access_data_extra_tables', $email );
-		if ( $extra_content ) {
-			echo $extra_content;
-		}
+		do_action( 'admin_access_data_extra_tables', $email );
 
 		$result = ob_get_clean();
 		wp_send_json_success( array( 'user_email' => $email, 'result' => $result ) );
