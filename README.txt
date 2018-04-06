@@ -4,7 +4,7 @@ Tags: gdpr, compliance, privacy, law, general data protection regulation
 Requires at least: 4.0
 Requires PHP: 5.6
 Tested up to: 4.9
-Stable tag: 1.0.2
+Stable tag: 1.0.3
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -27,6 +27,8 @@ or
 $type can be `delete`, `rectify`, `complaint`, `export-data`
 
 **Create a button to open the preferences modals**
+`[gdpr_preferences text="$text" type="$type"]`
+or
 `gdpr_preferences( $text, $type );`
 $text is the button label
 $type is the preferences type. Valid options are `cookies` or `consent`
@@ -217,6 +219,9 @@ Activating this plugin does not guarantee that an organisation is successfully m
 9. Audit Log sample.
 
 == Changelog ==
+
+= 1.0.3 =
+* Added a shortcode for re-opening the cookie or consent management windows.
 
 = 1.0.2 =
 * Added new filters for access data so extensions can add more information.

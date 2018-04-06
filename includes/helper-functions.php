@@ -21,6 +21,19 @@ if ( ! function_exists( 'gdpr_preferences' ) ) {
 	function gdpr_preferences( $text, $type ) {
 		echo '<button type="button" class="gdpr-preferences" data-type="' . esc_attr( $type ) . '">' . esc_html( $text ) . '</button>';
 	}
+
+	function gdpr_preferences_shortcode( $atts ) {
+		$atts = shortcode_atts( array(
+			'text' => esc_html__( 'Consent management', 'gdpr' ),
+			'type' => 'consent',
+		), $atts, 'gdpr_preferences' );
+
+		ob_start();
+		gdpr_preferences( $atts['text'], $atts['type'] );
+		return ob_get_clean();
+	}
+
+	add_shortcode( 'gdpr_preferences', 'gdpr_preferences_shortcode' );
 }
 
 if ( ! function_exists( 'gdpr_request_form' ) ) {
