@@ -2,7 +2,7 @@
 	<h1><?php esc_html_e( 'Settings', 'gdpr' ); ?></h1>
 	<div class="nav-tab-wrapper">
 		<?php foreach ( $tabs as $tab => $value ) : ?>
-			<a href="<?php echo '#' . $tab; ?>" class="nav-tab">
+			<a href="<?php echo esc_attr( "#{$tab}" ); ?>" class="nav-tab">
 				<?php echo esc_html( $value ); ?>
 			</a>
 		<?php endforeach; ?>
@@ -15,29 +15,29 @@
 		<?php settings_fields( 'gdpr' ); ?>
 
 		<div class="tab hidden" data-id="general">
-			<h2><?php esc_html_e( 'General', 'gdpr' ) ?></h2>
+			<h2><?php esc_html_e( 'General', 'gdpr' ); ?></h2>
 			<table class="form-table" data-id="general">
 				<tbody>
 					<tr>
 						<th scope="row">
-							<label for="gdpr_privacy_policy_page"><?php esc_html_e( 'Privacy Policy Page', 'gdpr' ) ?></label>
+							<label for="gdpr_privacy_policy_page"><?php esc_html_e( 'Privacy Policy Page', 'gdpr' ); ?></label>
 						</th>
 						<td>
 							<?php
-								$privacy_policy_page = get_option( 'gdpr_privacy_policy_page', 0 );
-								$pages = get_pages();
+							$privacy_policy_page = get_option( 'gdpr_privacy_policy_page', 0 );
+							$pages               = get_pages();
 							?>
 							<select name="gdpr_privacy_policy_page" id="gdpr_privacy_policy_page">
-								<option value=""><?php esc_html_e( '-- Select --', 'gdpr' ) ?></option>
-								<?php foreach ( $pages as $page ): ?>
-									<option value="<?php echo esc_attr( $page->ID ) ?>" <?php selected( $privacy_policy_page, $page->ID ); ?>><?php echo esc_html( $page->post_title ); ?></option>
+								<option value=""><?php esc_html_e( '-- Select --', 'gdpr' ); ?></option>
+								<?php foreach ( $pages as $page ) : ?>
+									<option value="<?php echo esc_attr( $page->ID ); ?>" <?php selected( $privacy_policy_page, $page->ID ); ?>><?php echo esc_html( $page->post_title ); ?></option>
 								<?php endforeach ?>
 							</select>
 						</td>
 					</tr>
 					<tr>
 						<th scope="row">
-							<label for="gdpr_email_limit"><?php esc_html_e( 'Outgoing email limitation', 'gdpr' ) ?></label>
+							<label for="gdpr_email_limit"><?php esc_html_e( 'Outgoing email limitation', 'gdpr' ); ?></label>
 						</th>
 						<td>
 							<?php $limit = get_option( 'gdpr_email_limit', 100 ); ?>
@@ -48,12 +48,12 @@
 			</table>
 		</div>
 		<div class="tab hidden" data-id="cookies">
-			<h2><?php esc_html_e( 'Cookies', 'gdpr' ) ?></h2>
+			<h2><?php esc_html_e( 'Cookies', 'gdpr' ); ?></h2>
 			<table class="form-table" data-id="cookies">
 				<tbody>
 					<tr>
 						<th scope="row">
-							<label for="gdpr_cookie_banner_content"><?php esc_html_e( 'Cookie Banner Text', 'gdpr' ) ?></label>
+							<label for="gdpr_cookie_banner_content"><?php esc_html_e( 'Cookie Banner Text', 'gdpr' ); ?></label>
 						</th>
 						<td>
 							<?php $cookie_banner_content = get_option( 'gdpr_cookie_banner_content', '' ); ?>
@@ -62,7 +62,7 @@
 					</tr>
 					<tr>
 						<th scope="row">
-							<label for="gdpr_cookie_privacy_excerpt"><?php esc_html_e( 'Cookie Privacy Excerpt', 'gdpr' ) ?></label>
+							<label for="gdpr_cookie_privacy_excerpt"><?php esc_html_e( 'Cookie Privacy Excerpt', 'gdpr' ); ?></label>
 						</th>
 						<td>
 							<?php $cookie_privacy_excerpt = get_option( 'gdpr_cookie_privacy_excerpt', '' ); ?>
@@ -71,7 +71,7 @@
 					</tr>
 					<tr>
 						<th scope="row">
-							<label for="cookie-tabs"><?php esc_html_e( 'Cookie Categories', 'gdpr' ) ?></label>
+							<label for="cookie-tabs"><?php esc_html_e( 'Cookie Categories', 'gdpr' ); ?></label>
 						</th>
 						<td>
 							<input type="text" id="cookie-tabs" class="regular-text" placeholder="<?php esc_attr_e( 'Category name', 'gdpr' ); ?>">
@@ -157,18 +157,20 @@
 			</table>
 		</div>
 		<div class="tab hidden" data-id="consents">
-			<h2><?php esc_html_e( 'Consents', 'gdpr' ) ?></h2>
+			<h2><?php esc_html_e( 'Consents', 'gdpr' ); ?></h2>
 			<input type="text" id="type-of-consent" class="regular-text" placeholder="<?php esc_attr_e( 'Type of consent', 'gdpr' ); ?>">
 			<button class="button button-primary add-consent"><?php esc_html_e( 'Add consent', 'gdpr' ); ?></button>
 			<div id="consent-tabs">
-				<?php $consent_types = get_option( 'gdpr_consent_types', array(
+				<?php
+				$consent_types = get_option( 'gdpr_consent_types', array(
 					'privacy-policy' => array(
-						'name' => 'Privacy Policy',
-						'required' => 'on',
-						'description' => esc_html__( 'You read and agreed to our privacy policy.', 'gdpr' ),
+						'name'         => 'Privacy Policy',
+						'required'     => 'on',
+						'description'  => esc_html__( 'You read and agreed to our privacy policy.', 'gdpr' ),
 						'registration' => esc_html__( 'You read and agreed to our privacy policy.', 'gdpr' ),
-					)
-				) ); ?>
+					),
+				) );
+				?>
 				<?php if ( ! empty( $consent_types ) ) : ?>
 					<?php foreach ( $consent_types as $consent_key => $consent ) : ?>
 						<div class="postbox" id="consent-type-content-<?php echo esc_attr( $consent_key ); ?>">
@@ -179,10 +181,10 @@
 									<tr>
 										<th><label for="required-<?php echo esc_attr( $consent_key ); ?>"><?php esc_html_e( 'Required', 'gdpr' ); ?></label></th>
 										<td>
-											<?php if ( 'privacy-policy' === $consent_key ): ?>
-												<span><?php esc_html_e( 'Required', 'gdpr' ) ?></span>
+											<?php if ( 'privacy-policy' === $consent_key ) : ?>
+												<span><?php esc_html_e( 'Required', 'gdpr' ); ?></span>
 												<input type="hidden" name="<?php echo esc_attr( 'gdpr_consent_types' ); ?>[<?php echo esc_attr( $consent_key ); ?>][required]" id="required-<?php echo esc_attr( $consent_key ); ?>" value="1">
-											<?php else: ?>
+											<?php else : ?>
 												<label class="gdpr-switch">
 													<input type="checkbox" name="<?php echo esc_attr( 'gdpr_consent_types' ); ?>[<?php echo esc_attr( $consent_key ); ?>][required]" <?php checked( esc_attr( $consent['required'] ), 'on' ); ?> id="required-<?php echo esc_attr( $consent_key ); ?>">
 													<span class="gdpr-slider round"></span>

@@ -30,21 +30,21 @@ class GDPR_Telemetry {
 		register_post_type(
 			'telemetry',
 			array(
-				'label' => 'Telemetry',
-				'labels' => array(
-					'not_found' => esc_html__( 'No items found. Future connections will be shown at this place.', 'gdpr' ),
+				'label'               => 'Telemetry',
+				'labels'              => array(
+					'not_found'          => esc_html__( 'No items found. Future connections will be shown at this place.', 'gdpr' ),
 					'not_found_in_trash' => esc_html__( 'No items found in trash.', 'gdpr' ),
-					'search_items' => esc_html__( 'Search in destination', 'gdpr' ),
+					'search_items'       => esc_html__( 'Search in destination', 'gdpr' ),
 				),
-				'public' => false,
-				'show_ui' => true,
-				'show_in_menu' => false,
-				'show_in_nav_menus' => false,
-				'query_var' => true, // try setting to false
-				'hierarchical' => false,
-				'capability_type' => 'post',
-				'publicly_queryable' => false,
-				'exclude_from_search' => true
+				'public'              => false,
+				'show_ui'             => true,
+				'show_in_menu'        => false,
+				'show_in_nav_menus'   => false,
+				'query_var'           => true, // try setting to false
+				'hierarchical'        => false,
+				'capability_type'     => 'post',
+				'publicly_queryable'  => false,
+				'exclude_from_search' => true,
 			)
 		);
 	}
@@ -89,7 +89,7 @@ class GDPR_Telemetry {
 
 		/* Extract backtrace data */
 		$file = str_replace( ABSPATH, '', $backtrace['file'] );
-		$line = ( int ) $backtrace['line'];
+		$line = (int) $backtrace['line'];
 
 		/* Response code */
 		$code = ( is_wp_error( $response ) ? -1 : wp_remote_retrieve_response_code( $response ) );
@@ -102,7 +102,7 @@ class GDPR_Telemetry {
 
 		/* Insert CPT */
 		$this->insert_post( array(
-			'url'      => esc_url_raw($url),
+			'url'      => esc_url_raw( $url ),
 			'code'     => $code,
 			'host'     => $host,
 			'file'     => $file,
@@ -120,7 +120,6 @@ class GDPR_Telemetry {
 	 * @return int           The post ID.
 	 */
 	private function insert_post( $meta ) {
-		/* Empty? */
 		if ( empty( $meta ) ) {
 			return;
 		}
@@ -129,13 +128,13 @@ class GDPR_Telemetry {
 		$post_id = wp_insert_post(
 			array(
 				'post_status' => 'publish',
-				'post_type'   => 'telemetry'
+				'post_type'   => 'telemetry',
 			)
 		);
 
 		/* Add meta values */
-		foreach( (array) $meta as $key => $value ) {
-			add_post_meta( $post_id, '_gdpr_telemetry_' .$key, $value, true );
+		foreach ( (array) $meta as $key => $value ) {
+			add_post_meta( $post_id, '_gdpr_telemetry_' . $key, $value, true );
 		}
 
 		return $post_id;
@@ -155,16 +154,16 @@ class GDPR_Telemetry {
 		$url = wp_nonce_url(
 			add_query_arg(
 				array(
-					'action'    => 'delete_all',
-					'post_type' => 'telemetry',
-					'post_status' => 'publish'
+					'action'      => 'delete_all',
+					'post_type'   => 'telemetry',
+					'post_status' => 'publish',
 				),
-				admin_url('edit.php')
+				admin_url( 'edit.php' )
 			),
 			'bulk-posts'
 		);
 		?>
-		<a href="<?php echo esc_url( $url ); ?>" class="button"><?php echo esc_html__('Delete all', 'gdpr'); ?></a>
+		<a href="<?php echo esc_url( $url ); ?>" class="button"><?php echo esc_html__( 'Delete all', 'gdpr' ); ?></a>
 		<?php
 	}
 
@@ -180,7 +179,7 @@ class GDPR_Telemetry {
 			'file'     => esc_html__( 'File', 'gdpr' ),
 			'code'     => esc_html__( 'Code', 'gdpr' ),
 			'created'  => esc_html__( 'Time', 'gdpr' ),
-			'postdata' => esc_html__( 'Data', 'gdpr')
+			'postdata' => esc_html__( 'Data', 'gdpr' ),
 		);
 	}
 
@@ -198,7 +197,7 @@ class GDPR_Telemetry {
 			'file'     => array( __CLASS__, '_html_file' ),
 			'code'     => array( __CLASS__, '_html_code' ),
 			'created'  => array( __CLASS__, '_html_created' ),
-			'postdata' => array( __CLASS__, '_html_postdata' )
+			'postdata' => array( __CLASS__, '_html_postdata' ),
 		);
 
 		/* If type exists */
@@ -222,13 +221,16 @@ class GDPR_Telemetry {
 	 */
 	private static function _html_url( $post_id ) {
 		/* Init data */
-		$url = self::_get_post_meta( $post_id, 'url' );
-		$host = self::_get_post_meta( $post_id, 'host' );
+		$url   = self::_get_post_meta( $post_id, 'url' );
+		$host  = self::_get_post_meta( $post_id, 'host' );
+		$parts = parse_url( $url );
 
 		/* Print output */
 		echo sprintf(
-			'<div>%s</div>',
-			str_replace( $host, '<code>' .$host. '</code>', esc_url( $url ) )
+			'<div>%s://<code>%s</code>%s</div>',
+			esc_html( $parts['scheme'] ),
+			esc_html( $parts['host'] ),
+			esc_html( str_replace( $host, '', strstr( $url, $host ) ) )
 		);
 	}
 
@@ -247,10 +249,10 @@ class GDPR_Telemetry {
 		/* Print output */
 		echo sprintf(
 			'<div>%s: %s<br /><code>/%s:%d</code></div>',
-			$meta['type'],
-			$meta['name'],
-			$file,
-			$line
+			esc_html( $meta['type'] ),
+			esc_html( $meta['name'] ),
+			esc_html( $file ),
+			esc_html( $line )
 		);
 	}
 
@@ -262,7 +264,7 @@ class GDPR_Telemetry {
 	 * @param  int $post_id The post ID.
 	 */
 	private static function _html_code( $post_id ) {
-		echo self::_get_post_meta( $post_id, 'code' );
+		echo esc_html( self::_get_post_meta( $post_id, 'code' ) );
 	}
 
 	/**
@@ -276,7 +278,7 @@ class GDPR_Telemetry {
 		/* translators: Amount of time  */
 		echo sprintf(
 			esc_html__( '%s ago' ),
-			human_time_diff( get_post_time( 'G', true, $post_id ) )
+			esc_html( human_time_diff( get_post_time( 'G', true, $post_id ) ) )
 		);
 	}
 
@@ -301,7 +303,6 @@ class GDPR_Telemetry {
 			wp_parse_str( $postdata, $postdata );
 		}
 
-		/* Empty array? */
 		if ( empty( $postdata ) ) {
 			return;
 		}
@@ -309,7 +310,7 @@ class GDPR_Telemetry {
 		/* Thickbox content start */
 		echo sprintf(
 			'<div id="gdpr-telemetry-thickbox-%d" class="gdpr-hidden"><pre>',
-			$post_id
+			absint( $post_id )
 		);
 
 		/* POST data */
@@ -321,7 +322,7 @@ class GDPR_Telemetry {
 		/* Thickbox button */
 		echo sprintf(
 			'<a href="#TB_inline?width=400&height=300&inlineId=gdpr-telemetry-thickbox-%d" class="button thickbox">%s</a>',
-			$post_id,
+			absint( $post_id ),
 			esc_html__( 'Show', 'gdpr' )
 		);
 	}
@@ -336,7 +337,8 @@ class GDPR_Telemetry {
 	 * @return mixed           The post meta.
 	 */
 	private static function _get_post_meta( $post_id, $key ) {
-		if ( $value = get_post_meta( $post_id, '_gdpr_telemetry_' .$key, true ) ) {
+		$value = get_post_meta( $post_id, '_gdpr_telemetry_' . $key, true );
+		if ( $value ) {
 			return $value;
 		}
 
@@ -355,19 +357,19 @@ class GDPR_Telemetry {
 		$trace = array_reverse( debug_backtrace() );
 
 		/* Loop items */
-  	foreach( $trace as $index => $item ) {
-  		if ( ! empty( $item['function'] ) && strpos( $item['function'], 'wp_remote_' ) !== false ) {
-  			/* Use prev item */
-  			if ( empty( $item['file'] ) ) {
-  				$item = $trace[-- $index];
-  			}
+		foreach ( $trace as $index => $item ) {
+			if ( ! empty( $item['function'] ) && strpos( $item['function'], 'wp_remote_' ) !== false ) {
+				/* Use prev item */
+				if ( empty( $item['file'] ) ) {
+					$item = $trace[ --$index ];
+				}
 
-  			/* Get file and line */
-  			if ( ! empty( $item['file'] ) && ! empty( $item['line'] ) ) {
-  				return $item;
-  			}
-  		}
-  	}
+				/* Get file and line */
+				if ( ! empty( $item['file'] ) && ! empty( $item['line'] ) ) {
+					return $item;
+				}
+			}
+		}
 	}
 
 	/**
@@ -379,10 +381,9 @@ class GDPR_Telemetry {
 	 * @return array        The name of the plugin or theme that made the call.
 	 */
 	private static function _face_detect( $path ) {
-		/* Default */
 		$meta = array(
 			'type' => 'WordPress',
-			'name' => 'Core'
+			'name' => 'Core',
 		);
 
 		/* Empty path */
@@ -391,18 +392,21 @@ class GDPR_Telemetry {
 		}
 
 		/* Search for plugin */
-		if ( $data = self::_localize_plugin( $path ) ) {
+		$data = self::_localize_plugin( $path );
+		if ( $data ) {
 			return array(
 				'type' => 'Plugin',
 				'name' => $data['Name'],
 			);
-
-		/* Search for theme */
-		} else if ( $data = self::_localize_theme( $path ) ) {
-			return array(
-				'type' => 'Theme',
-				'name' => $data->get( 'Name' ),
-			);
+		} else {
+			/* Search for theme */
+			$data = self::_localize_theme( $path );
+			if ( $data ) {
+				return array(
+					'type' => 'Theme',
+					'name' => $data->get( 'Name' ),
+				);
+			}
 		}
 
 		return $meta;
@@ -430,14 +434,14 @@ class GDPR_Telemetry {
 
 		/* Frontend */
 		if ( ! function_exists( 'get_plugins' ) ) {
-			require_once( ABSPATH. 'wp-admin/includes/plugin.php' );
+			require_once( ABSPATH . 'wp-admin/includes/plugin.php' );
 		}
 
 		/* All active plugins */
 		$plugins = get_plugins();
 
 		/* Loop plugins */
-		foreach( $plugins as $path => $plugin ) {
+		foreach ( $plugins as $path => $plugin ) {
 			if ( 0 === strpos( $path, $folder ) ) {
 				return $plugin;
 			}
@@ -485,13 +489,13 @@ class GDPR_Telemetry {
 	 */
 	private static function _get_postdata( $args ) {
 		/* No POST data? */
-		if ( empty( $args['method'] ) OR 'POST' !== $args['method'] ) {
-			return NULL;
+		if ( empty( $args['method'] ) || 'POST' !== $args['method'] ) {
+			return null;
 		}
 
 		/* No body data? */
 		if ( empty( $args['body'] ) ) {
-			return NULL;
+			return null;
 		}
 
 		return $args['body'];

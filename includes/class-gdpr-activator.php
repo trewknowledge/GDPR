@@ -32,7 +32,7 @@ class GDPR_Activator {
 	 * @author Fernando Claussen <fernandoclaussen@gmail.com>
 	 */
 	public static function activate() {
-		if ( ! wp_next_scheduled('telemetry_cleanup') ) {
+		if ( ! wp_next_scheduled( 'telemetry_cleanup' ) ) {
 			wp_schedule_event(
 				time(),
 				'twicedaily',
