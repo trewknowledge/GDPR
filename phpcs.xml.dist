@@ -13,10 +13,11 @@
 		<exclude name="WordPress.VIP.RestrictedFunctions" />
 		<exclude name="WordPress.VIP.SlowDBQuery" />
 		<exclude name="WordPress.VIP.TimezoneChange" />
-		<exclude name="WordPress.VIP.SuperGlobalInputUsage" />
+		<exclude name="WordPress.VIP.RestrictedVariables" />
 		<exclude name="WordPress.WP.I18n.TranslatorsCommentWrongStyle" />
 		<exclude name="WordPress.WP.I18n.MissingTranslatorsComment" />
 		<exclude name="WordPress.WP.AlternativeFunctions" />
+		<exclude name="WordPress.VIP.SuperGlobalInputUsage" />
 	</rule>
 
 	<arg value="ps"/>
