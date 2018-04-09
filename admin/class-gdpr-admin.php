@@ -441,7 +441,6 @@ class GDPR_Admin {
 			$token = sanitize_text_field( wp_unslash( $_POST['token'] ) );
 		}
 
-		error_log($token);
 		$log = GDPR_Audit_log::get_log( $email, $token );
 
 		if ( ! $log ) {
