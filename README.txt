@@ -4,7 +4,7 @@ Tags: gdpr, compliance, privacy, law, general data protection regulation
 Requires at least: 4.0
 Requires PHP: 5.6
 Tested up to: 4.9
-Stable tag: 1.0.4
+Stable tag: 1.0.5
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -219,6 +219,9 @@ Activating this plugin does not guarantee that an organisation is successfully m
 9. Audit Log sample.
 
 == Changelog ==
+
+= 1.0.5 =
+* Allow users to use links on their consent descriptions so they can link to their privacy policy or other pages.
 
 = 1.0.4 =
 * Added a link to the privacy policy page on the cookie bar and on the cookie preferences window.

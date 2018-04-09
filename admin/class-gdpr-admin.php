@@ -42,6 +42,14 @@ class GDPR_Admin {
 	private $version;
 
 	/**
+	 * Allowed HTML for wp_kses.
+	 * @since  1.0.5
+	 * @access private
+	 * @var    array   $allowed_html   The allowed HTML for wp_kses.
+	 */
+	private $allowed_html;
+
+	/**
 	 * Initialize the class and set its properties.
 	 *
 	 * @since  1.0.0
@@ -50,8 +58,14 @@ class GDPR_Admin {
 	 * @author Fernando Claussen <fernandoclaussen@gmail.com>
 	 */
 	public function __construct( $plugin_name, $version ) {
-		$this->plugin_name = $plugin_name;
-		$this->version     = $version;
+		$this->plugin_name  = $plugin_name;
+		$this->version      = $version;
+		$this->allowed_html = array(
+			'a' => array(
+				'href' => true,
+				'title' => true,
+			),
+		);
 	}
 
 	/**
@@ -216,8 +230,8 @@ class GDPR_Admin {
 			$output[ $key ] = array(
 				'name'         => sanitize_text_field( wp_unslash( $props['name'] ) ),
 				'required'     => isset( $props['required'] ) ? boolval( $props['required'] ) : 0,
-				'description'  => sanitize_textarea_field( wp_unslash( $props['description'] ) ),
-				'registration' => sanitize_textarea_field( wp_unslash( $props['registration'] ) ),
+				'description'  => wp_kses( wp_unslash( $props['description'] ), $this->allowed_html ),
+				'registration' => wp_kses( wp_unslash( $props['registration'] ), $this->allowed_html ),
 			);
 		}
 		return $output;
@@ -230,7 +244,7 @@ class GDPR_Admin {
 	 * @author Fernando Claussen <fernandoclaussen@gmail.com>
 	 */
 	public function settings_page_template() {
-		$settings    = get_option( 'gdpr_options', array() );
+		$privacy_policy_page = get_option( 'gdpr_privacy_policy_page', 0 );
 		$tabs        = array(
 			'general'  => esc_html__( 'General', 'gdpr' ),
 			'cookies'  => esc_html__( 'Cookies', 'gdpr' ),
@@ -614,7 +628,7 @@ class GDPR_Admin {
 		<?php foreach ( $consent_types as $key => $consent ): ?>
 			<p>
 				<input type="checkbox" name="user_consents[<?php echo esc_attr( $key ) ?>]" id="<?php echo esc_attr( $key ) ?>-consent" value="1" <?php ( isset( $sent_extras[ $key ] ) ) ? checked( $sent_extras[ $key ], 1 ) : ''; ?>>
-				<label for="<?php echo esc_attr( $key ) ?>-consent"><?php echo esc_html( $consent['registration'] ); ?></label>
+				<label for="<?php echo esc_attr( $key ) ?>-consent"><?php echo wp_kses( $consent['registration'], $this->allowed_html ); ?></label>
 				<br><br>
 			</p>
 		<?php endforeach;

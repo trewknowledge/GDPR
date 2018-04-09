@@ -24,7 +24,6 @@
 						</th>
 						<td>
 							<?php
-								$privacy_policy_page = get_option( 'gdpr_privacy_policy_page', 0 );
 								$pages = get_pages();
 							?>
 							<select name="gdpr_privacy_policy_page" id="gdpr_privacy_policy_page">
@@ -170,14 +169,16 @@
 			<input type="text" id="type-of-consent" class="regular-text" placeholder="<?php esc_attr_e( 'Type of consent', 'gdpr' ); ?>">
 			<button class="button button-primary add-consent"><?php esc_html_e( 'Add consent', 'gdpr' ); ?></button>
 			<div id="consent-tabs">
-				<?php $consent_types = get_option( 'gdpr_consent_types', array(
+				<?php
+				$default_consent_types = array(
 					'privacy-policy' => array(
 						'name' => 'Privacy Policy',
 						'required' => 'on',
-						'description' => esc_html__( 'You read and agreed to our privacy policy.', 'gdpr' ),
-						'registration' => esc_html__( 'You read and agreed to our privacy policy.', 'gdpr' ),
+						'description' => sprintf( __( 'You read and agreed to our %s.', 'gdpr' ), '<a href="" target="_blank">' . esc_html( 'Privacy Policy', 'gdpr' ) . '</a>' ),
+						'registration' => sprintf( __( 'You read and agreed to our %s.', 'gdpr' ), '<a href="" target="_blank">' . esc_html( 'Privacy Policy', 'gdpr' ) . '</a>' ),
 					)
-				) ); ?>
+				);
+				$consent_types = get_option( 'gdpr_consent_types', $default_consent_types ); ?>
 				<?php if ( ! empty( $consent_types ) ) : ?>
 					<?php foreach ( $consent_types as $consent_key => $consent ) : ?>
 						<div class="postbox" id="consent-type-content-<?php echo esc_attr( $consent_key ); ?>">
