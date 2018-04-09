@@ -182,12 +182,13 @@ class GDPR_Admin {
 	 */
 	public function register_settings() {
 		$settings = array(
-			'gdpr_privacy_policy_page'    => 'intval',
-			'gdpr_cookie_banner_content'  => 'sanitize_textarea_field',
-			'gdpr_cookie_privacy_excerpt' => 'sanitize_textarea_field',
-			'gdpr_cookie_popup_content'   => array( $this, 'sanitize_cookie_tabs' ),
-			'gdpr_email_limit'            => 'intval',
-			'gdpr_consent_types'          => array( $this, 'sanitize_consents' ),
+			'gdpr_privacy_policy_page'                      => 'intval',
+			'gdpr_cookie_banner_content'                    => 'sanitize_textarea_field',
+			'gdpr_cookie_banner_privacy_policy_link_label'  => 'sanitize_text_field',
+			'gdpr_cookie_privacy_excerpt'                   => 'sanitize_textarea_field',
+			'gdpr_cookie_popup_content'                     => array( $this, 'sanitize_cookie_tabs' ),
+			'gdpr_email_limit'                              => 'intval',
+			'gdpr_consent_types'                            => array( $this, 'sanitize_consents' ),
 		);
 		foreach ( $settings as $option_name => $sanitize_callback ) {
 			register_setting( 'gdpr', $option_name, array( 'sanitize_callback' => $sanitize_callback ) );

@@ -57,7 +57,16 @@
 						</th>
 						<td>
 							<?php $cookie_banner_content = get_option( 'gdpr_cookie_banner_content', '' ); ?>
-							<textarea name="gdpr_cookie_banner_content" id="gdpr_cookie_banner_content" cols="53" rows="3"><?php echo wp_kses_post( $cookie_banner_content ); ?></textarea>
+							<textarea name="gdpr_cookie_banner_content" id="gdpr_cookie_banner_content" cols="53" rows="3"><?php echo esc_html( $cookie_banner_content ); ?></textarea>
+						</td>
+					</tr>
+					<tr>
+						<th scope="row">
+							<label for="gdpr_cookie_banner_privacy_policy_link_label"><?php esc_html_e( 'Link to privacy page text', 'gdpr' ) ?></label>
+						</th>
+						<td>
+							<?php $cookie_banner_privacy_policy_link_label = get_option( 'gdpr_cookie_banner_privacy_policy_link_label', '' ); ?>
+							<input type="text" name="gdpr_cookie_banner_privacy_policy_link_label" id="gdpr_cookie_banner_privacy_policy_link_label" value="<?php echo esc_attr( $cookie_banner_privacy_policy_link_label ); ?>" />
 						</td>
 					</tr>
 					<tr>
@@ -66,7 +75,7 @@
 						</th>
 						<td>
 							<?php $cookie_privacy_excerpt = get_option( 'gdpr_cookie_privacy_excerpt', '' ); ?>
-							<textarea name="gdpr_cookie_privacy_excerpt" id="gdpr_cookie_privacy_excerpt" cols="53" rows="3"><?php echo wp_kses_post( $cookie_privacy_excerpt ); ?></textarea>
+							<textarea name="gdpr_cookie_privacy_excerpt" id="gdpr_cookie_privacy_excerpt" cols="53" rows="3"><?php echo esc_html( $cookie_privacy_excerpt ); ?></textarea>
 						</td>
 					</tr>
 					<tr>

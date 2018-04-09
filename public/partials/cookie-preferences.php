@@ -32,6 +32,9 @@
 							echo '<li><button type="button" data-target="' . esc_attr( $key ) . '" ' . '>' . esc_html( $tab['name'] ) . '</button></li>';
 						}
 					?>
+					<?php if ( $privacy_policy_page ): ?>
+						<li><a href="<?php echo esc_url( get_permalink( $privacy_policy_page ) ); ?>" target="_blank"><?php esc_html_e( 'More information', 'gdpr' ); ?></a></li>
+					<?php endif ?>
 				</ul>
 				<div class="tab-content">
 					<div class="your-privacy active">
@@ -39,7 +42,9 @@
 							<h4><?php esc_html_e( 'Your Privacy', 'gdpr' ); ?></h4>
 						</header>
 						<div class="info">
-							<p><?php echo nl2br( $cookie_privacy_excerpt ); ?></p>
+							<p>
+								<?php echo nl2br( esc_html( $cookie_privacy_excerpt ) ); ?>
+							</p>
 						</div>
 					</div>
 					<?php foreach ( $tabs as $key => $tab ) : ?>
