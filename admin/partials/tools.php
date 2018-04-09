@@ -42,7 +42,7 @@ if ( isset( $_GET['type'], $_GET['key'] ) ) {
 	<?php settings_errors(); ?>
 	<div class="nav-tab-wrapper">
 		<?php foreach ( $tabs as $key => $value ) : ?>
-			<a href="<?php echo esc_attr( "#{$key}" ); ?>" class="nav-tab">
+			<a href="#<?php echo esc_attr( $key ); ?>" class="nav-tab">
 				<?php echo esc_html( $value ); ?>
 			</a>
 		<?php endforeach; ?>
