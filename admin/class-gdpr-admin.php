@@ -64,6 +64,7 @@ class GDPR_Admin {
 			'a' => array(
 				'href' => true,
 				'title' => true,
+				'target' => true,
 			),
 		);
 	}
