@@ -23,10 +23,7 @@
 							<label for="gdpr_privacy_policy_page"><?php esc_html_e( 'Privacy Policy Page', 'gdpr' ); ?></label>
 						</th>
 						<td>
-							<?php
-							$privacy_policy_page = get_option( 'gdpr_privacy_policy_page', 0 );
-							$pages               = get_pages();
-							?>
+							<?php $pages = get_pages(); ?>
 							<select name="gdpr_privacy_policy_page" id="gdpr_privacy_policy_page">
 								<option value=""><?php esc_html_e( '-- Select --', 'gdpr' ); ?></option>
 								<?php foreach ( $pages as $page ) : ?>
@@ -57,7 +54,16 @@
 						</th>
 						<td>
 							<?php $cookie_banner_content = get_option( 'gdpr_cookie_banner_content', '' ); ?>
-							<textarea name="gdpr_cookie_banner_content" id="gdpr_cookie_banner_content" cols="53" rows="3"><?php echo wp_kses_post( $cookie_banner_content ); ?></textarea>
+							<textarea name="gdpr_cookie_banner_content" id="gdpr_cookie_banner_content" cols="53" rows="3"><?php echo esc_html( $cookie_banner_content ); ?></textarea>
+						</td>
+					</tr>
+					<tr>
+						<th scope="row">
+							<label for="gdpr_cookie_banner_privacy_policy_link_label"><?php esc_html_e( 'Link to privacy page text', 'gdpr' ); ?></label>
+						</th>
+						<td>
+							<?php $cookie_banner_privacy_policy_link_label = get_option( 'gdpr_cookie_banner_privacy_policy_link_label', '' ); ?>
+							<input type="text" name="gdpr_cookie_banner_privacy_policy_link_label" id="gdpr_cookie_banner_privacy_policy_link_label" value="<?php echo esc_attr( $cookie_banner_privacy_policy_link_label ); ?>" />
 						</td>
 					</tr>
 					<tr>
@@ -66,7 +72,7 @@
 						</th>
 						<td>
 							<?php $cookie_privacy_excerpt = get_option( 'gdpr_cookie_privacy_excerpt', '' ); ?>
-							<textarea name="gdpr_cookie_privacy_excerpt" id="gdpr_cookie_privacy_excerpt" cols="53" rows="3"><?php echo wp_kses_post( $cookie_privacy_excerpt ); ?></textarea>
+							<textarea name="gdpr_cookie_privacy_excerpt" id="gdpr_cookie_privacy_excerpt" cols="53" rows="3"><?php echo esc_html( $cookie_privacy_excerpt ); ?></textarea>
 						</td>
 					</tr>
 					<tr>
@@ -162,14 +168,16 @@
 			<button class="button button-primary add-consent"><?php esc_html_e( 'Add consent', 'gdpr' ); ?></button>
 			<div id="consent-tabs">
 				<?php
-				$consent_types = get_option( 'gdpr_consent_types', array(
+				$default_consent_types = array(
 					'privacy-policy' => array(
 						'name'         => 'Privacy Policy',
 						'required'     => 'on',
-						'description'  => esc_html__( 'You read and agreed to our privacy policy.', 'gdpr' ),
-						'registration' => esc_html__( 'You read and agreed to our privacy policy.', 'gdpr' ),
+						'description'  => sprintf( '%s <a href="" target="_blank">%s</a>.', esc_html__( 'You read and agreed to our', 'gdpr' ), esc_html__( 'Privacy Policy', 'gdpr' ) ),
+						'registration' => sprintf( '%s <a href="" target="_blank">%s</a>', esc_html__( 'You read and agreed to our', 'gdpr' ), esc_html__( 'Privacy Policy', 'gdpr' ) ),
 					),
-				) );
+				);
+
+				$consent_types = get_option( 'gdpr_consent_types', $default_consent_types );
 				?>
 				<?php if ( ! empty( $consent_types ) ) : ?>
 					<?php foreach ( $consent_types as $consent_key => $consent ) : ?>

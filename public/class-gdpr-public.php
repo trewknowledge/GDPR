@@ -89,9 +89,12 @@ class GDPR_Public {
 			return;
 		}
 
-		$content = get_option( 'gdpr_cookie_banner_content', '' );
+		$content             = get_option( 'gdpr_cookie_banner_content', '' );
+		$tabs                = get_option( 'gdpr_cookie_popup_content', array() );
+		$link_label          = get_option( 'gdpr_cookie_banner_privacy_policy_link_label', '' );
+		$privacy_policy_page = get_option( 'gdpr_privacy_policy_page', 0 );
 
-		if ( empty( $content ) ) {
+		if ( empty( $content ) || empty( $tabs ) ) {
 			return;
 		}
 
@@ -105,6 +108,7 @@ class GDPR_Public {
 	 */
 	public function cookie_preferences() {
 		$cookie_privacy_excerpt = get_option( 'gdpr_cookie_privacy_excerpt', '' );
+		$privacy_policy_page    = get_option( 'gdpr_privacy_policy_page', 0 );
 		$tabs                   = get_option( 'gdpr_cookie_popup_content', array() );
 		$approved_cookies       = array();
 

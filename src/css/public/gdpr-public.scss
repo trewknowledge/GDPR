@@ -80,6 +80,10 @@
 			.content {
 				flex: 1;
 				padding-right: 200px;
+				a{
+					color: #fff;
+					text-decoration: underline;
+				}
 				@include breakpoint(medium-small) {
 					padding-right: 0;
 					padding-bottom: 20px;
@@ -396,7 +400,8 @@
 					}
 					li {
 						list-style: none;
-						button{
+						button, a {
+							display: block;
 							width: 100%;
 							background: #23282d;
 							color: #fff;
