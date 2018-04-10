@@ -501,7 +501,7 @@ class GDPR_Admin {
 	 * @author Fernando Claussen <fernandoclaussen@gmail.com>
 	 */
 	public function send_data_breach_confirmation_email() {
-		if ( ! isset( $_POST['gdpr_data_breach_nonce'] ) || ! wp_verify_nonce( sanitize_text_field( wp_unslash( $_POST['gdpr_data_breach_nonce'] ) ), 'data-breach' ) ) {
+		if ( ! isset( $_POST['gdpr_data_breach_nonce'] ) || ! wp_verify_nonce( sanitize_key( $_POST['gdpr_data_breach_nonce'] ), 'data-breach' ) ) {
 			wp_die( esc_html__( 'We could not verify the the security token. Please try again.', 'gdpr' ) );
 		}
 
@@ -669,7 +669,7 @@ class GDPR_Admin {
 		GDPR_Audit_Log::log( $user_id, esc_html__( 'User registered to the site.', 'gdpr' ) );
 
 		if ( isset( $_POST['user_consents'] ) ) {
-			$user_consents = sanitize_text_field( wp_unslash( $_POST['user_consents'] ) );
+			$user_consents = array_map( 'sanitize_text_field', wp_unslash( $_POST['user_consents'] ) );
 			if ( ! empty( $user_consents ) && is_array( $user_consents ) ) {
 				foreach ( $user_consents as $consent => $value ) {
 					/* translators: Name of consent */

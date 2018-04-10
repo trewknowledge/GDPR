@@ -70,7 +70,7 @@ class GDPR_Telemetry {
 		}
 
 		/* Validate host */
-		$host = parse_url( $url, PHP_URL_HOST );
+		$host = wp_parse_url( $url, PHP_URL_HOST );
 
 		if ( ! $host ) {
 			return false;
@@ -223,7 +223,7 @@ class GDPR_Telemetry {
 		/* Init data */
 		$url   = self::_get_post_meta( $post_id, 'url' );
 		$host  = self::_get_post_meta( $post_id, 'host' );
-		$parts = parse_url( $url );
+		$parts = wp_parse_url( $url );
 
 		/* Print output */
 		echo sprintf(

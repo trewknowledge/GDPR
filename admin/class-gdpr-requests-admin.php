@@ -40,16 +40,33 @@ class GDPR_Requests_Admin extends GDPR_Requests {
 		if ( ! $user ) {
 			add_settings_error( 'gdpr-requests', 'invalid-user', esc_html__( 'User not found.', 'gdpr' ), 'error' );
 			set_transient( 'settings_errors', get_settings_errors(), 30 );
-			$args = array( 'settings-updated' => true );
+			wp_safe_redirect(
+				esc_url_raw(
+					add_query_arg(
+						array( 'settings-updated' => true ),
+						wp_get_referer() . '#delete'
+					)
+				)
+			);
+			exit;
 		} elseif ( in_array( 'administrator', $user->roles, true ) ) {
 			$admins_query = new WP_User_Query( array(
 				'role' => 'Administrator',
 			) );
+
 			if ( 1 === $admins_query->get_total() ) {
 				/* translators: User email */
 				add_settings_error( 'gdpr-requests', 'invalid-request', sprintf( esc_html__( 'User %s is the only admin of the site. It cannot be deleted.', 'gdpr' ), $email ), 'error' );
 				set_transient( 'settings_errors', get_settings_errors(), 30 );
-				$args = array( 'settings-updated' => true );
+				wp_safe_redirect(
+					esc_url_raw(
+						add_query_arg(
+							array( 'settings-updated' => true ),
+							wp_get_referer() . '#delete'
+						)
+					)
+				);
+				exit;
 			}
 		}
 
@@ -61,39 +78,51 @@ class GDPR_Requests_Admin extends GDPR_Requests {
 			/* translators: User email */
 			add_settings_error( 'gdpr-requests', 'new-request', sprintf( esc_html__( 'User %s was added to the deletion table.', 'gdpr' ), $email ), 'updated' );
 			set_transient( 'settings_errors', get_settings_errors(), 30 );
-			$args = array( 'settings-updated' => true );
-		}
-
-		$deletion_requests = array_filter( $requests, function( $arr ) {
-			return 'delete' === $arr['type'];
-		} );
-		$user_has_already_requested = array_search( $email, array_column( $deletion_requests, 'email' ), true );
-
-		if ( false !== $user_has_already_requested ) {
-			add_settings_error( 'gdpr-requests', 'invalid-user', esc_html__( 'User already placed a deletion request.', 'gdpr' ), 'error' );
-			set_transient( 'settings_errors', get_settings_errors(), 30 );
-			$args = array( 'settings-updated' => true );
-		}
-
-		parent::add_to_requests( $email, 'delete', null, true );
-		GDPR_Audit_Log::log( $user->ID, esc_html__( 'User added to the deletion requests list by admin.', 'gdpr' ) );
-		/* translators: User email */
-		add_settings_error( 'gdpr-requests', 'new-request', sprintf( esc_html__( 'User %s was added to the deletion table.', 'gdpr' ), $email ), 'updated' );
-		if ( set_transient( 'settings_errors', get_settings_errors(), 30 ) ) {
-			$args = array( 'settings-updated' => true );
-		}
-
-		if ( ! empty( $args ) ) {
 			wp_safe_redirect(
 				esc_url_raw(
 					add_query_arg(
-						$args,
+						array( 'settings-updated' => true ),
 						wp_get_referer() . '#delete'
 					)
 				)
 			);
 			exit;
 		}
+
+		$deletion_requests = array_filter( $requests, function( $arr ) {
+			return 'delete' === $arr['type'];
+		});
+
+		$user_has_already_requested = array_search( $email, array_column( $deletion_requests, 'email' ), true );
+
+		if ( false !== $user_has_already_requested ) {
+			add_settings_error( 'gdpr-requests', 'invalid-user', esc_html__( 'User already placed a deletion request.', 'gdpr' ), 'error' );
+			set_transient( 'settings_errors', get_settings_errors(), 30 );
+			wp_safe_redirect(
+				esc_url_raw(
+					add_query_arg(
+						array( 'settings-updated' => true ),
+						wp_get_referer() . '#delete'
+					)
+				)
+			);
+			exit;
+		}
+
+		parent::add_to_requests( $email, 'delete', null, true );
+		GDPR_Audit_Log::log( $user->ID, esc_html__( 'User added to the deletion requests list by admin.', 'gdpr' ) );
+		/* translators: User email */
+		add_settings_error( 'gdpr-requests', 'new-request', sprintf( esc_html__( 'User %s was added to the deletion table.', 'gdpr' ), $email ), 'updated' );
+		set_transient( 'settings_errors', get_settings_errors(), 30 );
+		wp_safe_redirect(
+			esc_url_raw(
+				add_query_arg(
+					array( 'settings-updated' => true ),
+					wp_get_referer() . '#delete'
+				)
+			)
+		);
+		exit;
 	}
 
 	/**
@@ -102,12 +131,12 @@ class GDPR_Requests_Admin extends GDPR_Requests {
 	 * @author Fernando Claussen <fernandoclaussen@gmail.com>
 	 */
 	public function cancel_request() {
-		if ( isset( $_POST['type'] ) ) {
-			$type = sanitize_text_field( wp_unslash( $_POST['type'] ) );
-			$type = trim( strtolower( $type ) );
-		} else {
+		if ( ! isset( $_POST['type'] ) ) {
 			wp_die( esc_html__( 'We could not verify the type of request you want to cancel.', 'gdpr' ) );
 		}
+
+		$type = sanitize_text_field( wp_unslash( $_POST['type'] ) );
+		$type = trim( strtolower( $type ) );
 
 		$allowed_types = parent::get_allowed_types();
 
@@ -122,13 +151,8 @@ class GDPR_Requests_Admin extends GDPR_Requests {
 			wp_die( esc_html__( 'We could not verify the user email or the security token. Please try again.', 'gdpr' ) );
 		}
 
-		if ( isset( $_POST['user_email'] ) ) {
-			$email = sanitize_email( wp_unslash( $_POST['user_email'] ) );
-		}
-
-		if ( isset( $_POST['index'] ) ) {
-			$index = sanitize_text_field( wp_unslash( $_POST['index'] ) );
-		}
+		$email = sanitize_email( wp_unslash( $_POST['user_email'] ) );
+		$index = sanitize_text_field( wp_unslash( $_POST['index'] ) );
 
 		parent::remove_from_requests( $index );
 		$user = get_user_by( 'email', $email );
@@ -155,12 +179,12 @@ class GDPR_Requests_Admin extends GDPR_Requests {
 	 * @author Fernando Claussen <fernandoclaussen@gmail.com>
 	 */
 	public function mark_resolved() {
-		if ( isset( $_POST['type'] ) ) {
-			$type = sanitize_text_field( wp_unslash( $_POST['type'] ) );
-			$type = trim( strtolower( $type ) );
-		} else {
+		if ( ! isset( $_POST['type'] ) ) {
 			wp_die( esc_html__( 'We could not verify the type of request you want to cancel.', 'gdpr' ) );
 		}
+
+		$type = sanitize_text_field( wp_unslash( $_POST['type'] ) );
+		$type = trim( strtolower( $type ) );
 
 		$allowed_types = parent::get_allowed_types();
 
@@ -175,13 +199,8 @@ class GDPR_Requests_Admin extends GDPR_Requests {
 			wp_die( esc_html__( 'We could not verify the user email or the security token. Please try again.', 'gdpr' ) );
 		}
 
-		if ( isset( $_POST['user_email'] ) ) {
-			$email = sanitize_email( wp_unslash( $_POST['user_email'] ) );
-		}
-
-		if ( isset( $_POST['index'] ) ) {
-			$index = sanitize_text_field( wp_unslash( $_POST['index'] ) );
-		}
+		$email = sanitize_email( wp_unslash( $_POST['user_email'] ) );
+		$index = sanitize_text_field( wp_unslash( $_POST['index'] ) );
 
 		parent::remove_from_requests( $index );
 
@@ -210,7 +229,7 @@ class GDPR_Requests_Admin extends GDPR_Requests {
 	 * @author Fernando Claussen <fernandoclaussen@gmail.com>
 	 */
 	public function delete_user() {
-		if ( ! isset( $_POST['gdpr_delete_user'] ) || ! wp_verify_nonce( sanitize_text_field( wp_unslash( $_POST['gdpr_delete_user'] ) ) ) ) {
+		if ( ! isset( $_POST['gdpr_delete_user'] ) || ! wp_verify_nonce( sanitize_key( $_POST['gdpr_delete_user'] ) ) ) {
 			wp_die( esc_html__( 'We could not verify the security token. Please try again.', 'gdpr' ) );
 		}
 
@@ -254,6 +273,9 @@ class GDPR_Requests_Admin extends GDPR_Requests {
 		if ( ! isset( $_POST['nonce'] ) || ! wp_verify_nonce( sanitize_key( wp_unslash( $_POST['nonce'] ) ), 'gdpr-anonymize-comments-action' ) ) {
 			wp_send_json_error( esc_html__( 'We could not verify the security token. Please try again.', 'gdpr' ) );
 		}
+
+		$email         = '';
+		$comment_count = 0;
 
 		if ( isset( $_POST['user_email'] ) ) {
 			$email = sanitize_email( wp_unslash( $_POST['user_email'] ) );
@@ -309,7 +331,7 @@ class GDPR_Requests_Admin extends GDPR_Requests {
 		$post_count  = (int) sanitize_text_field( wp_unslash( $_POST['post_count'] ) );
 
 		$user = get_user_by( 'email', $email );
-		if ( ! $user instanceof WP_User ) {
+		if ( ! $user ) {
 			wp_send_json_error( esc_html__( 'User not found.', 'gdpr' ) );
 		}
 

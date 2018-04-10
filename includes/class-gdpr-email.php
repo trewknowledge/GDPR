@@ -161,7 +161,7 @@ class GDPR_Email {
 
 		foreach ( (array) $emails as $email ) {
 			$user = get_user_by( 'email', $email );
-			if ( $user instanceof WP_User ) {
+			if ( $user ) {
 				GDPR_Audit_Log::log( $user->ID, esc_html__( 'Data breach notification sent to user.', 'gdpr' ) );
 				/* translators: email content */
 				GDPR_Audit_Log::log( $user->ID, sprintf( esc_html__( 'Email content: %s', 'gdpr' ), $content ) );

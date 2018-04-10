@@ -86,7 +86,7 @@ class GDPR_Audit_Log {
 	public static function get_log( $email, $token = null ) {
 		// Try getting an existing user
 		$user = get_user_by( 'email', $email );
-		if ( $user instanceof WP_User ) {
+		if ( $user ) {
 			$user_log = get_user_meta( $user->ID, 'gdpr_audit_log', false );
 			ob_start();
 			foreach ( $user_log as $log ) {
@@ -147,7 +147,7 @@ class GDPR_Audit_Log {
 	 */
 	public static function export_log( $user_id, $token ) {
 		$user = get_user_by( 'ID', $user_id );
-		if ( ! $user instanceof WP_User ) {
+		if ( ! $user ) {
 			return;
 		}
 

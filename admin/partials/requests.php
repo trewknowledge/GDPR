@@ -222,15 +222,18 @@
 												</tr>
 											</thead>
 											<tbody>
-												<?php $post_types = get_post_types( array( 'public' => true ), 'objects' ); ?>
-												<?php foreach ( $post_types as $pt ) : ?>
-													<?php
+												<?php
+												$post_types = get_post_types( array( 'public' => true ), 'objects' );
+
+												foreach ( $post_types as $pt ) :
 													$count = 0;
 													$uid   = get_user_by( 'email', $request['email'] );
+
 													if ( $uid ) {
 														$uid   = $uid->ID;
 														$count = count_user_posts( $uid, $pt->name );
 													}
+
 													if ( $count <= 0 ) {
 														continue;
 													}

@@ -83,17 +83,18 @@ class GDPR_Requests_Public extends GDPR_Requests {
 		$type = sanitize_text_field( wp_unslash( $_POST['type'] ) );
 		$data = isset( $_POST['data'] ) ? sanitize_textarea_field( wp_unslash( $_POST['data'] ) ) : '';
 
+		$user = false;
 		if ( is_user_logged_in() ) {
 			$user = wp_get_current_user();
-		} else {
-			$user = isset( $_POST['user_email'] ) ? get_user_by( 'email', sanitize_email( wp_unslash( $_POST['user_email'] ) ) ) : null;
+		} elseif ( isset( $_POST['user_email'] ) ) {
+			$user = get_user_by( 'email', sanitize_email( wp_unslash( $_POST['user_email'] ) ) );
 		}
 
 		$args = array();
 
 		switch ( $type ) {
 			case 'delete':
-				if ( ! $user instanceof WP_User ) {
+				if ( ! $user ) {
 					$args = array(
 						'notify'         => 1,
 						'user-not-found' => 1,
@@ -125,7 +126,7 @@ class GDPR_Requests_Public extends GDPR_Requests {
 				break;
 
 			case 'export-data':
-				if ( ! $user instanceof WP_User ) {
+				if ( ! $user ) {
 					$args = array(
 						'notify'         => 1,
 						'user-not-found' => 1,
@@ -262,7 +263,7 @@ class GDPR_Requests_Public extends GDPR_Requests {
 	 * @param  string $key    The request array key.
 	 */
 	public function mail_export_data( $email, $format, $key ) {
-		$email    = sanitize_email( $email );
+		$email    = sanitize_email( wp_unslash( $email ) );
 		$format   = sanitize_text_field( wp_unslash( $format ) );
 		$key      = sanitize_text_field( wp_unslash( $key ) );
 		$export   = GDPR::generate_export( $email, $format );

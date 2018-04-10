@@ -76,7 +76,7 @@ if ( ! function_exists( 'is_allowed_cookie' ) ) {
 	 */
 	function is_allowed_cookie( $cookie_name ) {
 		if ( isset( $_COOKIE['gdpr_approved_cookies'] ) ) {
-			$allowed_cookies = json_decode( sanitize_key( wp_unslash( $_COOKIE['gdpr_approved_cookies'] ) ), true );
+			$allowed_cookies = json_decode( sanitize_text_field( wp_unslash( $_COOKIE['gdpr_approved_cookies'] ) ), true );
 			return in_array( $cookie_name, $allowed_cookies, true );
 		}
 

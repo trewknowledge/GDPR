@@ -323,7 +323,7 @@ class GDPR {
 		$email = sanitize_email( $email );
 		$user  = get_user_by( 'email', $email );
 
-		if ( ! $user instanceof WP_User ) {
+		if ( ! $user ) {
 			return false;
 		}
 
