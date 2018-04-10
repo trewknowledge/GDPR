@@ -133,27 +133,28 @@ class GDPR_Requests_Public extends GDPR_Requests {
 					);
 				}
 				break;
+		}
 
-			default:
-				$key = parent::add_to_requests( $user->user_email, $type, $data );
+		if ( empty( $args ) ) {
+			$key = parent::add_to_requests( $user->user_email, $type, $data );
 
-				$email_sent = GDPR_Email::send( $user->user_email, "{$type}-request", array(
-					'user' => $user,
-					'key'  => $key,
-					'data' => $data,
-				) );
+			$email_sent = GDPR_Email::send( $user->user_email, "{$type}-request", array(
+				'user' => $user,
+				'key'  => $key,
+				'data' => $data,
+			) );
 
-				if ( $email_sent ) {
-					$args = array(
-						'notify'     => 1,
-						'email-sent' => 1,
-					);
-				} else {
-					$args = array(
-						'notify' => 1,
-						'error'  => 1,
-					);
-				}
+			if ( $email_sent ) {
+				$args = array(
+					'notify'     => 1,
+					'email-sent' => 1,
+				);
+			} else {
+				$args = array(
+					'notify' => 1,
+					'error'  => 1,
+				);
+			}
 		}
 
 		if ( ! empty( $args ) ) {
