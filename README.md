@@ -179,6 +179,26 @@ Activating this plugin does not guarantee that an organisation is successfully m
 
 ## Changelog
 
+##### 1.0.6
+* Allowing users to add target on their privacy policy links on the consent description.
+
+##### 1.0.5
+* Allow users to use links on their consent descriptions so they can link to their privacy policy or other pages.
+
+##### 1.0.4
+* Added a link to the privacy policy page on the cookie bar and on the cookie preferences window.
+* Added a new option for a text just before the privacy policy link on the cookie bar.
+* Checking if the user actually registered cookies before showing the cookie bar.
+
+##### 1.0.3
+* Added a shortcode for re-opening the cookie or consent management windows.
+
+##### 1.0.2
+* Added new filters for access data so extensions can add more information.
+* Rebuilt the translation pot file and added translation comments.
+
+##### 1.0.1
+* Fix issue on cookie preferences not saving and displaying php errors.
 
 ##### 1.0.0
 * Added cookie management screen
