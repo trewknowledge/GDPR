@@ -2,7 +2,7 @@
 	'use strict';
 
 	$(function() {
-		$(document).on('click', '.gdpr-options .notice-dismiss', function() {
+		$(document).on('click', '.gdpr-settings-form .notice-dismiss', function() {
 			$(this).parent().parent().remove();
 		});
 
