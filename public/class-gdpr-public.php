@@ -108,6 +108,7 @@ class GDPR_Public {
 	 */
 	public function cookie_preferences() {
 		$cookie_privacy_excerpt = get_option( 'gdpr_cookie_privacy_excerpt', '' );
+		$consent_types = get_option( 'gdpr_consent_types', array() );
 		$privacy_policy_page = get_option( 'gdpr_privacy_policy_page', 0 );
 		$approved_cookies = isset( $_COOKIE['gdpr_approved_cookies'] ) ? json_decode( wp_unslash( $_COOKIE['gdpr_approved_cookies'] ) ) : array();
 		$tabs = get_option( 'gdpr_cookie_popup_content', array() );
