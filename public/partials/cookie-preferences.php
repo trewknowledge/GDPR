@@ -28,11 +28,15 @@
 				<ul class="tabs">
 					<li><button type="button" class="active" data-target="your-privacy"><?php esc_html_e( 'Your Privacy', 'gdpr' ); ?></button></li>
 					<?php
-						foreach ( $tabs as $key => $tab ) {
-							echo '<li><button type="button" data-target="' . esc_attr( $key ) . '" ' . '>' . esc_html( $tab['name'] ) . '</button></li>';
-						}
+					if ( ! empty( $tabs ) ) :
+						foreach ( $tabs as $key => $tab ) :
 					?>
-					<?php if ( $privacy_policy_page ): ?>
+						<li><button type="button" data-target="<?php echo esc_attr( $key ); ?>"><?php echo esc_html( $tab['name'] ); ?></button></li>
+					<?php
+						endforeach;
+					endif;
+					?>
+					<?php if ( $privacy_policy_page ) : ?>
 						<li><a href="<?php echo esc_url( get_permalink( $privacy_policy_page ) ); ?>" target="_blank"><?php esc_html_e( 'More information', 'gdpr' ); ?></a></li>
 					<?php endif ?>
 				</ul>
@@ -53,30 +57,31 @@
 								<h4><?php echo esc_html( $tab['name'] ); ?></h4>
 							</header><!-- /header -->
 							<div class="info">
-								<p><?php echo nl2br( $tab['how_we_use'] ); ?></p>
-								<?php if ( isset( $tab['cookies_used'] ) && $tab['cookies_used'] ): ?>
+								<p><?php echo nl2br( esc_html( $tab['how_we_use'] ) ); ?></p>
+								<?php if ( isset( $tab['cookies_used'] ) && $tab['cookies_used'] ) : ?>
 									<div class="cookies-used">
 										<div class="cookie-title">
 											<p><?php esc_html_e( 'Cookies Used', 'gdpr' ); ?></p>
 											<?php
-												$site_cookies = array();
-												$enabled = true;
-												$cookies_used = explode(',', $tab['cookies_used']);
+											$site_cookies = array();
+											$enabled      = true;
+											$cookies_used = explode( ',', $tab['cookies_used'] );
+											if ( ! empty( $cookies_used ) ) {
 												foreach ( $cookies_used as $cookie ) {
 													$site_cookies[] = trim( $cookie );
-													if ( ! empty( $approved_cookies ) ) {
-														if ( ! in_array( trim( $cookie ), $approved_cookies ) ) {
-															$enabled = false;
-														}
+													if ( ! empty( $approved_cookies ) && ! in_array( trim( $cookie ), $approved_cookies, true ) ) {
+														$enabled = false;
+														break;
 													}
 												}
+											}
 											?>
-											<?php if ( $tab['always_active'] ): ?>
+											<?php if ( $tab['always_active'] ) : ?>
 												<span class="always-active"><?php esc_html_e( 'Always Active', 'gdpr' ); ?></span>
-												<input type="checkbox" class="gdpr-hidden" name="approved_cookies" value="<?php echo esc_attr( json_encode( $site_cookies ) ) ?>" checked>
-											<?php else: ?>
+												<input type="checkbox" class="gdpr-hidden" name="approved_cookies" value="<?php echo esc_attr( json_encode( $site_cookies ) ); ?>" checked>
+											<?php else : ?>
 												<label class="gdpr-switch">
-													<input type="checkbox" name="approved_cookies" value="<?php echo esc_attr( json_encode( $site_cookies ) ) ?>" <?php echo ( $enabled ? 'checked' : '' ); ?>>
+													<input type="checkbox" name="approved_cookies" value="<?php echo esc_attr( json_encode( $site_cookies ) ); ?>" <?php echo ( $enabled ? 'checked' : '' ); ?>>
 													<span class="gdpr-slider round"></span>
 												</label>
 											<?php endif; ?>
@@ -86,8 +91,8 @@
 										</div>
 									</div>
 								<?php endif ?>
-								<?php if ( isset( $tab['hosts'] ) && ! empty( $tab['hosts'] ) ): ?>
-									<?php foreach ( $tab['hosts'] as $host_key => $host ): ?>
+								<?php if ( isset( $tab['hosts'] ) && ! empty( $tab['hosts'] ) ) : ?>
+									<?php foreach ( $tab['hosts'] as $host_key => $host ) : ?>
 										<div class="cookies-used">
 											<div class="cookie-title">
 												<p><?php echo esc_html( $host['name'] ); ?></p>
@@ -105,7 +110,7 @@
 				</div>
 			</div>
 			<footer>
-				<input type="submit" value="Save Preferences">
+				<input type="submit" value="<?php esc_html_e( 'Save Preferences', 'gdpr' ); ?>">
 			</footer>
 		</form>
 	</div>

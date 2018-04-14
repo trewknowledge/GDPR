@@ -66,7 +66,7 @@ if ( ! function_exists( 'gdpr_request_form_shortcode' ) ) {
 	add_shortcode( 'gdpr_request_form', 'gdpr_request_form_shortcode' );
 }
 
-if ( ! function_exists( 'is_allowed_cookie') ) {
+if ( ! function_exists( 'is_allowed_cookie' ) ) {
 	/**
 	 * Checks if a cookie is allowed
 	 * @since  1.0.0
@@ -76,10 +76,8 @@ if ( ! function_exists( 'is_allowed_cookie') ) {
 	 */
 	function is_allowed_cookie( $cookie_name ) {
 		if ( isset( $_COOKIE['gdpr_approved_cookies'] ) ) {
-			$allowed_cookies = json_decode( wp_unslash( $_COOKIE['gdpr_approved_cookies'] ), true );
-			if ( in_array( $cookie_name, $allowed_cookies ) ) {
-				return true;
-			}
+			$allowed_cookies = json_decode( sanitize_text_field( wp_unslash( $_COOKIE['gdpr_approved_cookies'] ) ), true );
+			return in_array( $cookie_name, $allowed_cookies, true );
 		}
 
 		return false;
@@ -95,14 +93,9 @@ if ( ! function_exists( 'have_consent' ) ) {
 	 * @return bool            Whether the user gave consent or not.
 	 */
 	function have_consent( $consent ) {
-		$user = wp_get_current_user();
-
+		$user     = wp_get_current_user();
 		$consents = get_user_meta( $user->ID, 'gdpr_consents' );
 
-		if ( in_array( $consent, $consents ) ) {
-			return true;
-		}
-
-		return false;
+		return in_array( $consent, $consents, true );
 	}
 }

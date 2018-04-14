@@ -62,7 +62,7 @@ class GDPR_Admin {
 		$this->version      = $version;
 		$this->allowed_html = array(
 			'a' => array(
-				'href' => true,
+				'href'  => true,
 				'title' => true,
 				'target' => true,
 			),
@@ -104,13 +104,14 @@ class GDPR_Admin {
 		$icon_url    = 'dashicons-id';
 
 		$requests = get_option( 'gdpr_requests', array() );
+
 		$confirmed_requests = array_filter( $requests, function( $item ) {
-			return $item['confirmed'] == true;
+			return true === (bool) $item['confirmed'];
 		} );
 
-		$menu_title  = esc_html__( 'GDPR', 'gdpr' );
+		$menu_title = esc_html__( 'GDPR', 'gdpr' );
 		if ( count( $confirmed_requests ) ) {
-			$menu_title  = sprintf( esc_html( 'GDPR %s' ), '<span class="awaiting-mod">' . count( $confirmed_requests ) . '</span>' );
+			$menu_title = sprintf( 'GDPR %s', '<span class="awaiting-mod">' . count( $confirmed_requests ) . '</span>' );
 		}
 
 		add_menu_page( $page_title, $menu_title, $capability, $parent_slug, $function, $icon_url );
@@ -133,18 +134,16 @@ class GDPR_Admin {
 
 		$settings_hook = add_submenu_page( $parent_slug, $menu_title, $menu_title, $capability, $menu_slug, $function );
 
-
-		$menu_slug  = 'edit.php?post_type=telemetry';
-
-		$cpt = 'telemetry';
-		$cpt_obj = get_post_type_object( $cpt );
+		$menu_slug = 'edit.php?post_type=telemetry';
+		$cpt       = 'telemetry';
+		$cpt_obj   = get_post_type_object( $cpt );
 
 		add_submenu_page( $parent_slug, $cpt_obj->labels->name, $cpt_obj->labels->menu_name, $capability, $menu_slug );
 
 		add_action( "load-{$requests_hook}", array( 'GDPR_Help', 'add_requests_help' ) );
 		add_action( "load-{$tools_hook}", array( 'GDPR_Help', 'add_tools_help' ) );
 		add_action( "load-{$settings_hook}", array( 'GDPR_Help', 'add_settings_help' ) );
-		add_action( "load-edit.php", array( 'GDPR_Help', 'add_telemetry_help' ) );
+		add_action( 'load-edit.php', array( 'GDPR_Help', 'add_telemetry_help' ) );
 	}
 
 	/**
@@ -197,13 +196,13 @@ class GDPR_Admin {
 	 */
 	public function register_settings() {
 		$settings = array(
-			'gdpr_privacy_policy_page'                      => 'intval',
-			'gdpr_cookie_banner_content'                    => 'sanitize_textarea_field',
-			'gdpr_cookie_banner_privacy_policy_link_label'  => 'sanitize_text_field',
-			'gdpr_cookie_privacy_excerpt'                   => 'sanitize_textarea_field',
-			'gdpr_cookie_popup_content'                     => array( $this, 'sanitize_cookie_tabs' ),
-			'gdpr_email_limit'                              => 'intval',
-			'gdpr_consent_types'                            => array( $this, 'sanitize_consents' ),
+			'gdpr_privacy_policy_page'                     => 'intval',
+			'gdpr_cookie_banner_content'                   => 'sanitize_textarea_field',
+			'gdpr_cookie_banner_privacy_policy_link_label' => 'sanitize_text_field',
+			'gdpr_cookie_privacy_excerpt'                  => 'sanitize_textarea_field',
+			'gdpr_cookie_popup_content'                    => array( $this, 'sanitize_cookie_tabs' ),
+			'gdpr_email_limit'                             => 'intval',
+			'gdpr_consent_types'                           => array( $this, 'sanitize_consents' ),
 		);
 		foreach ( $settings as $option_name => $sanitize_callback ) {
 			register_setting( 'gdpr', $option_name, array( 'sanitize_callback' => $sanitize_callback ) );
@@ -246,7 +245,8 @@ class GDPR_Admin {
 	 */
 	public function settings_page_template() {
 		$privacy_policy_page = get_option( 'gdpr_privacy_policy_page', 0 );
-		$tabs        = array(
+
+		$tabs = array(
 			'general'  => esc_html__( 'General', 'gdpr' ),
 			'cookies'  => esc_html__( 'Cookies', 'gdpr' ),
 			'consents' => esc_html__( 'Consents', 'gdpr' ),
@@ -267,7 +267,7 @@ class GDPR_Admin {
 	 * @author Fernando Claussen <fernandoclaussen@gmail.com>
 	 */
 	public function requests_page_template() {
-		$requests = ( array ) get_option( 'gdpr_requests', array() );
+		$requests = (array) get_option( 'gdpr_requests', array() );
 
 		if ( ! empty( $requests ) ) {
 			foreach ( $requests as $index => $request ) {
@@ -279,16 +279,16 @@ class GDPR_Admin {
 		}
 
 		$tabs = array(
-			'rectify' => array(
-				'name' => __( 'Rectify Data', 'gdpr' ),
+			'rectify'   => array(
+				'name'  => __( 'Rectify Data', 'gdpr' ),
 				'count' => isset( $rectify ) ? count( $rectify ) : 0,
 			),
 			'complaint' => array(
-				'name' => __( 'Complaint', 'gdpr' ),
+				'name'  => __( 'Complaint', 'gdpr' ),
 				'count' => isset( $complaint ) ? count( $complaint ) : 0,
 			),
-			'delete' => array(
-				'name' => __( 'Erasure', 'gdpr' ),
+			'delete'    => array(
+				'name'  => __( 'Erasure', 'gdpr' ),
 				'count' => isset( $delete ) ? count( $delete ) : 0,
 			),
 		);
@@ -305,9 +305,9 @@ class GDPR_Admin {
 	public function tools_page_template() {
 
 		$tabs = array(
-			'access' => esc_html__( 'Access Data', 'gdpr' ),
+			'access'      => esc_html__( 'Access Data', 'gdpr' ),
 			'data-breach' => esc_html__( 'Data Breach', 'gdpr' ),
-			'audit-log' => esc_html__( 'Audit Log', 'gdpr' ),
+			'audit-log'   => esc_html__( 'Audit Log', 'gdpr' ),
 		);
 
 		include plugin_dir_path( __FILE__ ) . 'partials/tools.php';
@@ -323,18 +323,18 @@ class GDPR_Admin {
 			wp_send_json_error();
 		}
 
-		$email = sanitize_email( $_POST['email'] );
-		$user = get_user_by( 'email', $email );
+		$email = sanitize_email( wp_unslash( $_POST['email'] ) );
+		$user  = get_user_by( 'email', $email );
 
-		if ( ! $user instanceof WP_User ) {
+		if ( ! $user ) {
 			wp_send_json_error();
 		}
 
-		$usermeta = GDPR::get_user_meta( $user->ID );
+		$usermeta      = GDPR::get_user_meta( $user->ID );
 		$user_consents = get_user_meta( $user->ID, 'gdpr_consents' );
 
 		ob_start();
-		echo '<h2>' . $user->display_name . '<span>( ' . $email . ' )</span></h2>';
+		echo '<h2>' . esc_html( $user->display_name ) . '<span>( ' . esc_html( $email ) . ' )</span></h2>';
 		echo '<table class="widefat">
 			<tr>
 				<td class="row-title">Username</td>
@@ -403,14 +403,16 @@ class GDPR_Admin {
 				echo '<tr>';
 				echo '<td class="row-title">' . esc_html( $k ) . '</td>';
 				echo '<td>';
-					foreach ( $v as $value ) {
-						if ( is_serialized( $value ) ) {
-
-							echo '<pre>' . print_r( maybe_unserialize( $value ), true ) . '</pre><br />';
-						} else {
-							echo print_r( $value, true ) . '<br />';
-						}
+				foreach ( $v as $value ) {
+					if ( is_serialized( $value ) ) {
+						echo '<pre>';
+						print_r( maybe_unserialize( $value ), true );
+						echo '</pre><br />';
+					} else {
+						print_r( $value, true );
+						echo '<br />';
 					}
+				}
 				echo '</td>';
 				echo '</tr>';
 			}
@@ -421,7 +423,10 @@ class GDPR_Admin {
 		do_action( 'admin_access_data_extra_tables', $email );
 
 		$result = ob_get_clean();
-		wp_send_json_success( array( 'user_email' => $email, 'result' => $result ) );
+		wp_send_json_success( array(
+			'user_email' => $email,
+			'result'     => $result,
+		) );
 
 	}
 
@@ -435,7 +440,7 @@ class GDPR_Admin {
 			wp_send_json_error();
 		}
 
-		$email = sanitize_email( $_POST['email'] );
+		$email = sanitize_email( wp_unslash( $_POST['email'] ) );
 		$token = null;
 
 		if ( isset( $_POST['token'] ) ) {
@@ -467,7 +472,7 @@ class GDPR_Admin {
 					<strong><?php echo esc_html__( '[GDPR] You must select a Privacy Policy Page.', 'gdpr' ); ?></strong>
 				</p>
 				<p>
-					<a href="<?php echo esc_url( admin_url( 'admin.php?page=gdpr-settings' ) ) ?>" class="button button-primary"><?php esc_html_e( 'Select your Privacy Policy page', 'gdpr' ); ?></a>
+					<a href="<?php echo esc_url( admin_url( 'admin.php?page=gdpr-settings' ) ); ?>" class="button button-primary"><?php esc_html_e( 'Select your Privacy Policy page', 'gdpr' ); ?></a>
 				</p>
 			</div>
 		<?php
@@ -488,14 +493,14 @@ class GDPR_Admin {
 				<p>
 					<strong><?php echo esc_html__( 'Your Privacy Policy have been updated. In case this was not a small typo fix, you must ask users for explicit consent again.', 'gdpr' ); ?></strong>
 				</p>
-				<form action="<?php echo esc_url( admin_url('admin-post.php') ); ?>" method="post">
+				<form action="<?php echo esc_url( admin_url( 'admin-post.php' ) ); ?>" method="post">
 					<?php wp_nonce_field( 'seek_consent', 'privacy-policy-updated-nonce' ); ?>
 					<input type="hidden" name="action" value="seek_consent">
 					<p>
 						<?php submit_button( esc_html__( 'Ask for consent', 'gdpr' ), 'primary', 'submit', false ); ?>
 					</p>
 				</form>
-				<form action="<?php echo esc_url( admin_url('admin-post.php') ); ?>" method="post" class="frm-ignore-privacy-update">
+				<form action="<?php echo esc_url( admin_url( 'admin-post.php' ) ); ?>" method="post" class="frm-ignore-privacy-update">
 					<?php wp_nonce_field( 'ignore_update', 'privacy-policy-ignore-update-nonce' ); ?>
 					<input type="hidden" name="action" value="ignore_privacy_policy_update">
 					<p>
@@ -512,7 +517,7 @@ class GDPR_Admin {
 	 * @author Fernando Claussen <fernandoclaussen@gmail.com>
 	 */
 	public function send_data_breach_confirmation_email() {
-		if ( ! isset( $_POST['gdpr_data_breach_nonce'] ) || ! wp_verify_nonce( sanitize_key( $_POST[ 'gdpr_data_breach_nonce' ] ), 'data-breach' ) ) {
+		if ( ! isset( $_POST['gdpr_data_breach_nonce'] ) || ! wp_verify_nonce( sanitize_key( $_POST['gdpr_data_breach_nonce'] ), 'data-breach' ) ) {
 			wp_die( esc_html__( 'We could not verify the the security token. Please try again.', 'gdpr' ) );
 		}
 
@@ -528,46 +533,47 @@ class GDPR_Admin {
 			wp_die( esc_html__( 'One or more required fields are missing. Please try again.', 'gdpr' ) );
 		}
 
-		$email = get_bloginfo( 'admin_email' );
-		$user = wp_get_current_user();
-		$content = sanitize_textarea_field( wp_unslash( $_POST['gdpr-data-breach-email-content'] ) );
-		$nature = sanitize_textarea_field( wp_unslash( $_POST['gdpr-data-breach-nature'] ) );
+		$email          = get_bloginfo( 'admin_email' );
+		$user           = wp_get_current_user();
+		$content        = sanitize_textarea_field( wp_unslash( $_POST['gdpr-data-breach-email-content'] ) );
+		$nature         = sanitize_textarea_field( wp_unslash( $_POST['gdpr-data-breach-nature'] ) );
 		$office_contact = sanitize_textarea_field( wp_unslash( $_POST['gdpr-name-contact-details-protection-officer'] ) );
-		$consequences = sanitize_textarea_field( wp_unslash( $_POST['gdpr-likely-consequences'] ) );
-		$measures = sanitize_textarea_field( wp_unslash( $_POST['gdpr-measures-taken'] ) );
+		$consequences   = sanitize_textarea_field( wp_unslash( $_POST['gdpr-likely-consequences'] ) );
+		$measures       = sanitize_textarea_field( wp_unslash( $_POST['gdpr-measures-taken'] ) );
 
 		$key = wp_generate_password( 20, false );
 		update_option( 'gdpr_data_breach_initiated', array(
-			'key' => $key,
-			'content' => $content,
-			'nature' => $nature,
+			'key'            => $key,
+			'content'        => $content,
+			'nature'         => $nature,
 			'office_contact' => $office_contact,
-			'consequences' => $consequences,
-			'measures' => $measures
-		)	);
+			'consequences'   => $consequences,
+			'measures'       => $measures,
+		) );
 
 		$confirm_url = add_query_arg(
-		  array(
-		    'type' => 'data-breach-confirmed',
-		    'key' => $key
-		  ),
-		  get_home_url() . wp_get_referer() . '#data-breach'
+			array(
+				'type' => 'data-breach-confirmed',
+				'key'  => $key,
+			),
+			get_home_url() . wp_get_referer() . '#data-breach'
 		);
 
 		GDPR_Email::send(
 			$email,
 			'data-breach-request',
 			array(
-				'requester' => $user->user_email,
-				'nature'=> $nature,
+				'requester'      => $user->user_email,
+				'nature'         => $nature,
 				'office_contact' => $office_contact,
-				'consequences' => $consequences,
-				'measures' => $measures,
-				'confirm_url' => $confirm_url,
+				'consequences'   => $consequences,
+				'measures'       => $measures,
+				'confirm_url'    => $confirm_url,
 			)
 		);
 
-		if ( $time = wp_next_scheduled( 'clean_gdpr_data_breach_request' ) ) {
+		$time = wp_next_scheduled( 'clean_gdpr_data_breach_request' );
+		if ( $time ) {
 			wp_unschedule_event( $time, 'clean_gdpr_data_breach_request' );
 		}
 		wp_schedule_single_event( time() + 2 * DAY_IN_SECONDS, 'clean_gdpr_data_breach_request' );
@@ -577,9 +583,7 @@ class GDPR_Admin {
 		wp_safe_redirect(
 			esc_url_raw(
 				add_query_arg(
-					array(
-						'settings-updated' => true
-					),
+					array( 'settings-updated' => true ),
 					wp_get_referer() . '#data-breach'
 				)
 			)
@@ -603,9 +607,9 @@ class GDPR_Admin {
 	 */
 	public function telemetry_cleanup() {
 		$args = array(
-			'post_type' => 'telemetry',
+			'post_type'      => 'telemetry',
 			'posts_per_page' => -1,
-			'fields' => 'ids',
+			'fields'         => 'ids',
 		);
 
 		$telemetry_posts = get_posts( $args );
@@ -616,26 +620,31 @@ class GDPR_Admin {
 	}
 
 	/**
-	 * Adds consent checkboxes to the wordpress registration form.
+	 * Adds consent checkboxes to the WordPress registration form.
 	 * @since  1.0.0
 	 * @author Fernando Claussen <fernandoclaussen@gmail.com>
 	 */
 	public function register_form() {
 		$consent_types = get_option( 'gdpr_consent_types', array() );
-		$sent_extras = ( isset( $_POST['user_consents'] ) ) ? $_POST['user_consents'] : '';
+
+		$sent_extras = '';
+		if ( isset( $_POST['user_consents'] ) ) {
+			$sent_extras = sanitize_text_field( wp_unslash( $_POST['user_consents'] ) );
+		}
 		?>
 		<h2><?php esc_html_e( 'Consents', 'gdpr' ); ?></h2><br>
-		<?php foreach ( $consent_types as $key => $consent ): ?>
+		<?php foreach ( $consent_types as $key => $consent ) : ?>
 			<p>
-				<input type="checkbox" name="user_consents[<?php echo esc_attr( $key ) ?>]" id="<?php echo esc_attr( $key ) ?>-consent" value="1" <?php ( isset( $sent_extras[ $key ] ) ) ? checked( $sent_extras[ $key ], 1 ) : ''; ?>>
-				<label for="<?php echo esc_attr( $key ) ?>-consent"><?php echo wp_kses( $consent['registration'], $this->allowed_html ); ?></label>
+				<input type="checkbox" name="user_consents[<?php echo esc_attr( $key ); ?>]" id="<?php echo esc_attr( $key ); ?>-consent" value="1" <?php ( isset( $sent_extras[ $key ] ) ) ? checked( $sent_extras[ $key ], 1 ) : ''; ?>>
+				<label for="<?php echo esc_attr( $key ); ?>-consent"><?php echo wp_kses( $consent['registration'], $this->allowed_html ); ?></label>
 				<br><br>
 			</p>
-		<?php endforeach;
+		<?php
+		endforeach;
 	}
 
 	/**
-	 * Sanitizes the consents during wordpress registration.
+	 * Sanitizes the consents during WordPress registration.
 	 * @since  1.0.0
 	 * @author Fernando Claussen <fernandoclaussen@gmail.com>
 	 * @param  WP_Error $errors             The error object.
@@ -644,24 +653,26 @@ class GDPR_Admin {
 	 * @return WP_Error                     WP_Error object with added errors or not.
 	 */
 	public function registration_errors( $errors, $sanitized_user_login, $user_email ) {
-    $consent_types = get_option( 'gdpr_consent_types', array() );
-    if ( empty( $consent_types ) ) {
-    	return $errors;
-    }
+		$consent_types = get_option( 'gdpr_consent_types', array() );
 
-    foreach ( $consent_types as $key => $consent ) {
-    	if ( $consent['required'] ) {
-    		if ( ! isset( $_POST['user_consents'][ $key ] ) ) {
-			    $errors->add( 'missing_required_consents', sprintf(
-			    	'<strong>%s</strong>: %s %s.',
-			    	__( 'ERROR', 'gdpr' ),
-			    	$consent['name'],
-			    	__( 'is a required consent', 'gdpr' )
-			    ) );
-    		}
-    	}
-    }
-    return $errors;
+		if ( empty( $consent_types ) ) {
+			return $errors;
+		}
+
+		foreach ( $consent_types as $key => $consent ) {
+			if ( $consent['required'] ) {
+				if ( ! isset( $_POST['user_consents'][ $key ] ) ) {
+					$errors->add( 'missing_required_consents', sprintf(
+						'<strong>%s</strong>: %s %s.',
+						esc_html__( 'ERROR', 'gdpr' ),
+						$consent['name'],
+						esc_html__( 'is a required consent', 'gdpr' )
+					) );
+				}
+			}
+		}
+
+		return $errors;
 	}
 
 	/**
@@ -674,10 +685,13 @@ class GDPR_Admin {
 		GDPR_Audit_Log::log( $user_id, esc_html__( 'User registered to the site.', 'gdpr' ) );
 
 		if ( isset( $_POST['user_consents'] ) ) {
-			foreach ( $_POST['user_consents'] as $consent => $value ) {
-				/* translators: Name of consent */
-				GDPR_Audit_Log::log( $user_id, sprintf( esc_html__( 'User gave explicit consent to %s', 'gdpr' ), $consent ) );
-				add_user_meta( $user_id, 'gdpr_consents', $consent );
+			$user_consents = array_map( 'sanitize_text_field', wp_unslash( $_POST['user_consents'] ) );
+			if ( ! empty( $user_consents ) && is_array( $user_consents ) ) {
+				foreach ( $user_consents as $consent => $value ) {
+					/* translators: Name of consent */
+					GDPR_Audit_Log::log( $user_id, sprintf( esc_html__( 'User gave explicit consent to %s', 'gdpr' ), $consent ) );
+					add_user_meta( $user_id, 'gdpr_consents', $consent );
+				}
 			}
 		}
 	}
@@ -694,13 +708,11 @@ class GDPR_Admin {
 
 		delete_option( 'gdpr_privacy_policy_updated' );
 
-		$users = get_users( array(
-			'fields' => 'all_with_meta'
-		) );
+		$users = get_users( array( 'fields' => 'all_with_meta' ) );
 
 		foreach ( $users as $user ) {
 			$usermeta = get_user_meta( $user->ID, 'gdpr_consents' );
-			if ( in_array( 'privacy-policy', $usermeta ) ) {
+			if ( in_array( 'privacy-policy', $usermeta, true ) ) {
 				GDPR_Audit_Log::log( $user->ID, esc_html__( 'Privacy Policy has been updated. Removing the Privacy Policy consent and requesting new consent.', 'gdpr' ) );
 				delete_user_meta( $user->ID, 'gdpr_consents', 'privacy-policy' );
 			}
@@ -711,9 +723,7 @@ class GDPR_Admin {
 		wp_safe_redirect(
 			esc_url_raw(
 				add_query_arg(
-					array(
-						'settings-updated' => true
-					),
+					array( 'settings-updated' => true ),
 					wp_get_referer()
 				)
 			)
@@ -725,18 +735,18 @@ class GDPR_Admin {
 	 * Check if the privacy policy page content has been updated or not.
 	 * @since  1.0.0
 	 * @author Fernando Claussen <fernandoclaussen@gmail.com>
-	 * @param  int     $ID   The page ID.
+	 * @param  int     $id   The page ID.
 	 * @param  WP_Post $post The post object.
 	 */
-	public function privacy_policy_updated( $ID, $post ) {
+	public function privacy_policy_updated( $id, $post ) {
 		$privacy_page = (int) get_option( 'gdpr_privacy_policy_page', 0 );
-		$ID = (int) $ID;
-		if ( $ID === $privacy_page ) {
-			$revisions = wp_get_post_revisions( $ID );
+
+		$id = (int) $id;
+		if ( $id === $privacy_page ) {
+			$revisions = wp_get_post_revisions( $id );
 			$revisions = array_filter( $revisions, function( $rev ) {
 				return strpos( $rev->post_name, 'autosave' ) === false;
-			});
-
+			} );
 			reset( $revisions );
 			if ( current( $revisions )->post_content !== $post->post_content ) {
 				update_option( 'gdpr_privacy_policy_updated', 1 );
@@ -771,28 +781,27 @@ class GDPR_Admin {
 			return;
 		}
 		?>
-    <h3><?php _e( 'Consent Management', 'gdpr' ); ?></h3>
+		<h3><?php esc_html_e( 'Consent Management', 'gdpr' ); ?></h3>
 
-    <table class="form-table">
-    	<?php foreach ( $consent_types as $consent_key => $consent ): ?>
-	      <tr>
-	        <th>
-	        	<label><?php echo esc_html( $consent['name'] ); ?></label>
-	        </th>
-	        <td>
-	        	<?php if ( $consent['required'] ): ?>
-		        	<input type="checkbox" name="user_consents[]" value="<?php echo esc_attr( $consent_key ); ?>" disabled checked>
-		        	<input type="hidden" name="user_consents[]" value="<?php echo esc_attr( $consent_key ); ?>">
-	        	<?php else: ?>
-		        	<input type="checkbox" name="user_consents[]" value="<?php echo esc_attr( $consent_key ); ?>" <?php echo ! empty( $user_consents ) ? checked( in_array( $consent_key, $user_consents, true ), 1, false ) : ''; ?>>
-	        	<?php endif ?>
-	          <span class="description"><?php echo esc_html( $consent['description'] ); ?></span>
-	        </td>
-	      </tr>
-    	<?php endforeach ?>
-    </table>
-
-		<?php
+		<table class="form-table">
+			<?php foreach ( $consent_types as $consent_key => $consent ) : ?>
+			<tr>
+				<th>
+					<label><?php echo esc_html( $consent['name'] ); ?></label>
+				</th>
+				<td>
+					<?php if ( $consent['required'] ) : ?>
+						<input type="checkbox" name="user_consents[]" value="<?php echo esc_attr( $consent_key ); ?>" disabled checked>
+						<input type="hidden" name="user_consents[]" value="<?php echo esc_attr( $consent_key ); ?>">
+					<?php else : ?>
+						<input type="checkbox" name="user_consents[]" value="<?php echo esc_attr( $consent_key ); ?>" <?php echo ! empty( $user_consents ) ? checked( in_array( $consent_key, $user_consents, true ), 1, false ) : ''; ?>>
+					<?php endif ?>
+					<span class="description"><?php echo esc_html( $consent['description'] ); ?></span>
+				</td>
+			</tr>
+			<?php endforeach; ?>
+		</table>
+	<?php
 	}
 
 	/**
@@ -806,11 +815,15 @@ class GDPR_Admin {
 			return;
 		}
 
+		$user_id = absint( $user_id );
+
 		delete_user_meta( $user_id, 'gdpr_consents' );
 
 		GDPR_Audit_Log::log( $user_id, esc_html__( 'Profile Updated. These are the user consents after the save:', 'gdpr' ) );
-		foreach ( (array) $_POST['user_consents'] as $consent ) {
-			$consent = sanitize_text_field( wp_unslash( $consent ) );
+
+		$user_consents = array_map( 'sanitize_text_field', wp_unslash( $_POST['user_consents'] ) );
+
+		foreach ( $user_consents as $consent ) {
 			add_user_meta( $user_id, 'gdpr_consents', $consent );
 			GDPR_Audit_Log::log( $user_id, $consent );
 		}

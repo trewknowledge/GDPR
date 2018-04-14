@@ -75,17 +75,17 @@ class GDPR_Requests {
 	 * @return array The allowed request types.
 	 */
 	protected function get_allowed_types() {
-    return self::$allowed_types;
-  }
+		return self::$allowed_types;
+	}
 
-  /**
-   * Checks if the user has any content published on the site. Including comments.
-   * @since  1.0.0
-   * @author Fernando Claussen <fernandoclaussen@gmail.com>
-   * @static
-   * @param  WP_User/int 	$user The user object or the user ID.
-   * @return bool               Whether the user has content or not.
-   */
+	/**
+	* Checks if the user has any content published on the site. Including comments.
+	* @since  1.0.0
+	* @author Fernando Claussen <fernandoclaussen@gmail.com>
+	* @static
+	* @param  WP_User/int  $user The user object or the user ID.
+	* @return bool               Whether the user has content or not.
+	*/
 	static function user_has_content( $user ) {
 		if ( ! $user instanceof WP_User ) {
 			if ( ! is_int( $user ) ) {
@@ -96,17 +96,17 @@ class GDPR_Requests {
 
 		$post_types = get_post_types( array( 'public' => true ) );
 		foreach ( $post_types as $pt ) {
-			$post_count = count_user_posts( $user->ID, $pt);
+			$post_count = count_user_posts( $user->ID, $pt );
 			if ( $post_count > 0 ) {
 				return true;
 			}
 		}
 
 		$comments = get_comments( array(
-			'author_email' => $user->user_email,
+			'author_email'       => $user->user_email,
 			'include_unapproved' => true,
-			'number' => 1,
-			'count' => true,
+			'number'             => 1,
+			'count'              => true,
 		) );
 
 		if ( $comments ) {
@@ -127,8 +127,8 @@ class GDPR_Requests {
 	 * @return bool          Whether the user was removed from the requests list.
 	 */
 	protected function remove_from_requests( $index ) {
-		$requests = ( array ) get_option( 'gdpr_requests', array() );
-		$index = sanitize_text_field( wp_unslash( $index ) );
+		$requests = (array) get_option( 'gdpr_requests', array() );
+		$index    = sanitize_text_field( wp_unslash( $index ) );
 
 		if ( array_key_exists( $index, $requests ) ) {
 			unset( $requests[ $index ] );
@@ -149,25 +149,33 @@ class GDPR_Requests {
 	 * @return bool        Whether the request was confirmed or not.
 	 */
 	protected function confirm_request( $key ) {
-		$key = sanitize_text_field( wp_unslash( $key ) );
-		$requests = ( array ) get_option( 'gdpr_requests', array() );
+		$key      = sanitize_text_field( wp_unslash( $key ) );
+		$requests = (array) get_option( 'gdpr_requests', array() );
 
 		if ( empty( $requests ) || ! isset( $requests[ $key ] ) ) {
 			return false;
 		}
 
 		$requests[ $key ]['confirmed'] = true;
-		$type = $requests[ $key ]['type'];
+
+		$type  = $requests[ $key ]['type'];
 		$email = $requests[ $key ]['email'];
 
 		$user = get_user_by( 'email', $email );
 
-		if ( $user instanceof WP_User ) {
+		if ( $user ) {
 			$meta_key = self::$plugin_name . "_{$type}_key";
 			update_option( 'gdpr_requests', $requests );
 			delete_user_meta( $user->ID, $meta_key );
-			if ( $time = wp_next_scheduled( 'clean_gdpr_user_request_key', array( 'user_id' => $user->ID, 'meta_key' => $meta_key ) ) ) {
-				wp_unschedule_event( $time, 'clean_gdpr_user_request_key', array( 'user_id' => $user->ID, 'meta_key' => $meta_key ) );
+
+			$args = array(
+				'user_id'  => $user->ID,
+				'meta_key' => $meta_key,
+			);
+
+			$time = wp_next_scheduled( 'clean_gdpr_user_request_key', $args );
+			if ( $time ) {
+				wp_unschedule_event( $time, 'clean_gdpr_user_request_key', $args );
 			}
 		}
 
@@ -182,8 +190,8 @@ class GDPR_Requests {
 	 * @param  string $key The request key.
 	 */
 	function clean_requests( $key ) {
-		$key = sanitize_text_field( $key );
-		$requests = ( array ) get_option( 'gdpr_requests', array() );
+		$key      = sanitize_text_field( $key );
+		$requests = (array) get_option( 'gdpr_requests', array() );
 
 		if ( array_key_exists( $key, $requests ) ) {
 			if ( ! $requests[ $key ]['confirmed'] ) {
@@ -201,11 +209,10 @@ class GDPR_Requests {
 	 * @param  string $meta_key The user meta key.
 	 */
 	function clean_user_request_key( $user_id, $meta_key ) {
-		$user_id = ( int ) $user_id;
+		$user_id  = (int) $user_id;
 		$meta_key = sanitize_text_field( $meta_key );
 
 		$meta = get_user_meta( $user_id, $meta_key, true );
-
 		if ( $meta ) {
 			delete_user_meta( $user_id, $meta_key );
 		}
@@ -225,23 +232,24 @@ class GDPR_Requests {
 	 * @param  string  $confirmed  If the request is confirmed or not.
 	 */
 	protected function add_to_requests( $email, $type, $data = null, $confirmed = false ) {
-		$requests = ( array ) get_option( 'gdpr_requests', array() );
+		$requests = (array) get_option( 'gdpr_requests', array() );
 
 		$email = sanitize_email( $email );
-		$type = sanitize_text_field( wp_unslash( $type ) );
-		$data = sanitize_textarea_field( wp_unslash( $data ) );
+		$type  = sanitize_text_field( wp_unslash( $type ) );
+		$data  = sanitize_textarea_field( wp_unslash( $data ) );
 
-		if ( ! in_array( $type, self::$allowed_types ) ) {
+		if ( ! in_array( $type, self::$allowed_types, true ) ) {
 			return false;
 		}
 
 		$key = wp_generate_password( 20, false );
+
 		$requests[ $key ] = array(
 			'email'     => $email,
-			'date'      => date( "F j, Y" ),
+			'date'      => date( 'F j, Y' ),
 			'type'      => $type,
 			'data'      => $data,
-			'confirmed' => $confirmed
+			'confirmed' => $confirmed,
 		);
 
 		/**
@@ -251,10 +259,19 @@ class GDPR_Requests {
 		if ( $user instanceof WP_User ) {
 			$meta_key = self::$plugin_name . '_' . $type . '_key';
 			update_user_meta( $user->ID, $meta_key, $key );
-			if ( $time = wp_next_scheduled( 'clean_gdpr_user_request_key', array( 'user_id' => $user->ID, 'meta_key' => $meta_key ) ) ) {
-				wp_unschedule_event( $time, 'clean_gdpr_user_request_key', array( 'user_id' => $user->ID, 'meta_key' => $meta_key ) );
+
+			$args = array(
+				'user_id'  => $user->ID,
+				'meta_key' => $meta_key,
+			);
+
+			$time = wp_next_scheduled( 'clean_gdpr_user_request_key', $args );
+
+			if ( $time ) {
+				wp_unschedule_event( $time, 'clean_gdpr_user_request_key', $args );
 			}
-			wp_schedule_single_event( time() + 2 * DAY_IN_SECONDS, 'clean_gdpr_user_request_key', array( 'user_id' => $user->ID, 'meta_key' => $meta_key ) );
+
+			wp_schedule_single_event( time() + 2 * DAY_IN_SECONDS, 'clean_gdpr_user_request_key', $args );
 		}
 
 		update_option( 'gdpr_requests', $requests );

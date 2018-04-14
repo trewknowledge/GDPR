@@ -27,14 +27,14 @@
 				<div class="tab-content">
 					<div class="active">
 						<div class="info">
-							<?php foreach ( $consent_types as $consent_key => $type ): ?>
+							<?php foreach ( $consent_types as $consent_key => $type ) : ?>
 								<div class="cookies-used">
 									<div class="cookie-title">
 										<p><?php echo esc_html( $type['name'] ); ?></p>
-										<?php if ( $type['required'] ): ?>
+										<?php if ( $type['required'] ) : ?>
 											<span class="required"><?php esc_html_e( 'Required', 'gdpr' ); ?></span>
 											<input type="checkbox" name="user_consents[]" value="<?php echo esc_attr( $consent_key ); ?>" checked style="display:none;">
-										<?php else: ?>
+										<?php else : ?>
 											<label class="gdpr-switch">
 												<input type="checkbox" name="user_consents[]" value="<?php echo esc_attr( $consent_key ); ?>" <?php echo ! empty( $user_consents ) ? checked( in_array( $consent_key, $user_consents, true ), 1, false ) : ''; ?>>
 												<span class="gdpr-slider round"></span>
@@ -51,7 +51,7 @@
 				</div>
 			</div>
 			<footer>
-				<input type="submit" value="Save Preferences">
+				<input type="submit" value="<?php esc_html_e( 'Save Preferences', 'gdpr' ); ?>">
 				<span class="error"></span>
 			</footer>
 		</form>

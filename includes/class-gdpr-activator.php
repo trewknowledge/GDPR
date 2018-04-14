@@ -33,7 +33,7 @@ class GDPR_Activator {
 	 */
 	public static function activate() {
 		add_option( 'gdpr_cookie_banner_privacy_policy_link_label', 'Learn more at our' );
-		if ( ! wp_next_scheduled('telemetry_cleanup') ) {
+		if ( ! wp_next_scheduled( 'telemetry_cleanup' ) ) {
 			wp_schedule_event(
 				time(),
 				'twicedaily',
