@@ -187,8 +187,6 @@ class GDPR_Public {
 		setcookie( "gdpr[allowed_cookies]", $cookies_as_json, time() + YEAR_IN_SECONDS, "/" );
 		setcookie( "gdpr[consent_types]", $consents_as_json, time() + YEAR_IN_SECONDS, "/" );
 
-		GDPR::remove_prohibited_cookies();
-
 		if ( is_user_logged_in() ) {
 			$user = wp_get_current_user();
 			GDPR_Audit_Log::log( $user->ID, esc_html__( 'User updated their privacy preferences. These are the new approved cookies and consent preferences:', 'gdpr' ) );
