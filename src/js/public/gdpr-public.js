@@ -10,76 +10,34 @@
 
 	$(function() {
 
-		var approvedCookies = JSON.parse( readCookie('gdpr_approved_cookies') );
+		/**
+		 * This runs when user clicks on privacy preferences bar agree button.
+		 * It submits the form that is still hidden with the cookies and consent options.
+		 */
+		$(document).on('click', '.gdpr.gdpr-privacy-bar .gdpr-agreement', function() {
+      $('.gdpr-privacy-preferences-frm').submit();
+    });
 
-		function createCookie(name, value, days) {
-	    if (days) {
-        var date = new Date();
-        date.setTime(date.getTime() + (days * 24 * 60 * 60 * 1000));
-        var expires = "; expires=" + date.toGMTString();
-	    } else {
-	    	var expires = "";
-	    }
-	    document.cookie = name + "=" + value + expires + "; path=/";
-		}
-
-		function readCookie(name) {
-	    var nameEQ = name + "=";
-	    var ca = document.cookie.split(';');
-	    for (var i = 0; i < ca.length; i++) {
-        var c = ca[i];
-        while (c.charAt(0) == ' ') {
-        	c = c.substring(1, c.length);
-        }
-        if (c.indexOf(nameEQ) == 0) {
-        	return c.substring(nameEQ.length, c.length);
-        }
-	    }
-	    return null;
-		}
-
-		function deleteCookie(name) {
-			createCookie(name, "", -1);
-		}
-
-		var cookieRegistry = [];
-
-		function listenCookieChange(cookieName) {
-	    setInterval(function() {
-        if (cookieRegistry[cookieName]) {
-          if (readCookie(cookieName) != cookieRegistry[cookieName]) {
-            // update registry so we dont get triggered again
-            cookieRegistry[cookieName] = readCookie(cookieName);
-            cookieChanged( cookieName );
-          }
-        } else {
-          cookieRegistry[cookieName] = readCookie(cookieName);
-        }
-	    }, 100);
-		}
-
-		var blockedCookies = ['__utma', '_gid'];
-		blockedCookies.forEach( function( item ) {
-			listenCookieChange(item);
-		} );
-
-		function cookieChanged( cookieName ) {
-			if ( ! $.inArray( cookieName, approvedCookies.site_cookies ) ) {
-				deleteCookie(cookieName);
-			}
-		}
-
+		/**
+		 * Display the privacy preferences modal.
+		 */
 		$(document).on('click', '.gdpr-preferences', function() {
 			var type = $(this).data('type');
 			$('.gdpr-overlay').fadeIn();
 			$('.gdpr.gdpr-privacy-preferences .gdpr-wrapper').fadeIn();
 		});
 
+		/**
+		 * Close the privacy preferences modal.
+		 */
 		$(document).on('click', '.gdpr.gdpr-privacy-preferences .gdpr-close, .gdpr-overlay', function() {
 			$('.gdpr-overlay').fadeOut();
 			$('.gdpr.gdpr-privacy-preferences .gdpr-wrapper').fadeOut();
 		});
 
+		/**
+		 * Tab navigation for the privacy preferences modal.
+		 */
 		$(document).on('click', '.gdpr.gdpr-privacy-preferences .gdpr-tabs button', function() {
 			var target = '.' + $(this).data('target');
 			$('.gdpr.gdpr-privacy-preferences .gdpr-tab-content > div').removeClass('gdpr-active');
@@ -104,6 +62,9 @@
 			}
 		});
 
+		/**
+		 * Mobile menu for privacy preferences modal.
+		 */
 		$(document).on('click', '.gdpr.gdpr-privacy-preferences .gdpr-mobile-menu button', function(e) {
 			$(this).toggleClass('gdpr-active');
 			$('.gdpr.gdpr-privacy-preferences .gdpr-tabs').toggle().addClass('gdpr-mobile-expanded');
@@ -116,55 +77,23 @@
 			}
 		});
 
-		$(document).on('submit', '.gdpr-privacy-preferences-frm', function(e) {
-			e.preventDefault();
-			createApprovedCookiesCookie();
-		});
-
-		$(document).on('click', '.gdpr.gdpr-privacy-bar .gdpr-agreement', function() {
-			createApprovedCookiesCookie();
-		});
-
-		function createApprovedCookiesCookie() {
-			var checkboxes = $('input[type="checkbox"]:checked', '.gdpr-privacy-preferences-frm');
-			var approvedCookies = [];
-			checkboxes.each(function() {
-				var value = JSON.parse( $(this).val() );
-				if ( $.isArray( value ) ) {
-					value.forEach(function( item ) {
-						approvedCookies.push( item );
-					});
-				} else {
-					var key = Object.keys( value );
-					if (approvedCookies.hasOwnProperty( key )) {
-						approvedCookies[key[0]].push( value[key[0]] );
-					} else {
-						approvedCookies[key[0]] = [value[key[0]]];
-					}
+		$('.confirm-delete-request-dialog').dialog({
+			resizable: false,
+			autoOpen: false,
+			height: 'auto',
+			width: 400,
+			modal: true,
+			buttons: {
+				"Close my account": function() {
+					$('form.gdpr-add-to-deletion-requests').addClass('confirmed');
+					$('form.gdpr-add-to-deletion-requests.confirmed').submit();
+					$( this ).dialog( "close" );
+				},
+				Cancel: function() {
+					$( this ).dialog( "close" );
 				}
-			});
-
-			createCookie("gdpr_approved_cookies", JSON.stringify( approvedCookies ));
-			$('.gdpr.gdpr-privacy-preferences .gdpr-wrapper, .gdpr-overlay, .gdpr.gdpr-privacy-bar').fadeOut();
-		}
-
-		// $('.confirm-delete-confirmation').dialog({
-		// 	resizable: false,
-		// 	autoOpen: false,
-		// 	height: 'auto',
-		// 	width: 400,
-		// 	modal: true,
-		// 	buttons: {
-		// 		"Close my account": function() {
-		// 			$('form.gdpr-add-to-deletion-requests').addClass('confirmed');
-		// 			$('form.gdpr-add-to-deletion-requests.confirmed').submit();
-		// 			$( this ).dialog( "close" );
-		// 		},
-		// 		Cancel: function() {
-		// 			$( this ).dialog( "close" );
-		// 		}
-		// 	}
-		// });
+			}
+		});
 
 		$('form.gdpr-add-to-deletion-requests').on('submit', function(e) {
 			if ( ! $(this).hasClass( 'confirmed' ) ) {

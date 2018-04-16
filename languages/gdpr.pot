@@ -109,7 +109,7 @@ msgstr ""
 msgid "Ignore"
 msgstr ""
 
-#: admin/class-gdpr-admin.php:516, admin/class-gdpr-admin.php:692, admin/class-gdpr-admin.php:754, public/class-gdpr-public.php:170, public/class-gdpr-public.php:242, public/class-gdpr-public.php:256
+#: admin/class-gdpr-admin.php:516, admin/class-gdpr-admin.php:692, admin/class-gdpr-admin.php:754, public/class-gdpr-public.php:171, public/class-gdpr-public.php:243, public/class-gdpr-public.php:257
 msgid "We could not verify the the security token. Please try again."
 msgstr ""
 
@@ -146,7 +146,7 @@ msgstr ""
 msgid "Users will have to consent to the updated privacy policy on login."
 msgstr ""
 
-#: admin/class-gdpr-admin.php:774, includes/class-gdpr-help.php:161, public/partials/consent-preferences.php:22
+#: admin/class-gdpr-admin.php:774, includes/class-gdpr-help.php:161, public/partials/consent-preferences.php:22, public/partials/cookie-preferences.php:31, public/partials/cookie-preferences.php:46
 msgid "Consent Management"
 msgstr ""
 
@@ -511,31 +511,31 @@ msgstr ""
 msgid "Consent management"
 msgstr ""
 
-#: public/class-gdpr-public.php:174
+#: public/class-gdpr-public.php:175
 msgid "You can't disable all consents."
 msgstr ""
 
-#: public/class-gdpr-public.php:182
+#: public/class-gdpr-public.php:183
 msgid "User updated consents from modal. These are the user consents after the save:"
 msgstr ""
 
-#: public/class-gdpr-public.php:220
+#: public/class-gdpr-public.php:221
 msgid "Our Privacy Policy has been updated."
 msgstr ""
 
-#: public/class-gdpr-public.php:221
+#: public/class-gdpr-public.php:222
 msgid "To continue using the site you need to read the revised version and agree to the terms."
 msgstr ""
 
-#: public/class-gdpr-public.php:226
+#: public/class-gdpr-public.php:227
 msgid "Agree"
 msgstr ""
 
-#: public/class-gdpr-public.php:227
+#: public/class-gdpr-public.php:228
 msgid "Disagree"
 msgstr ""
 
-#: public/class-gdpr-public.php:261
+#: public/class-gdpr-public.php:262
 msgid "User consented to the Privacy Policies."
 msgstr ""
 
@@ -771,7 +771,7 @@ msgstr ""
 msgid "Unregister this consent."
 msgstr ""
 
-#: admin/partials/settings.php:190, admin/partials/settings.php:193, public/partials/consent-preferences.php:35, admin/partials/templates/tmpl-consents.php:9
+#: admin/partials/settings.php:190, admin/partials/settings.php:193, public/partials/consent-preferences.php:35, public/partials/cookie-preferences.php:55, admin/partials/templates/tmpl-consents.php:9
 msgid "Required"
 msgstr ""
 
@@ -904,39 +904,39 @@ msgid "There was a problem with your request. Please try again later."
 msgstr ""
 
 #: public/partials/cookie-bar.php:26
-msgid "Cookie settings"
+msgid "Privacy Preferences"
 msgstr ""
 
 #: public/partials/cookie-bar.php:27
-msgid "I understand"
+msgid "I Agree"
 msgstr ""
 
-#: public/partials/cookie-preferences.php:20
+#: public/partials/cookie-preferences.php:22
 msgid "Privacy Preference Center"
 msgstr ""
 
-#: public/partials/cookie-preferences.php:25
+#: public/partials/cookie-preferences.php:27
 msgid "Options"
 msgstr ""
 
-#: public/partials/cookie-preferences.php:29, public/partials/cookie-preferences.php:42
-msgid "Your Privacy"
+#: public/partials/cookie-preferences.php:33
+msgid "Cookie Settings"
 msgstr ""
 
-#: public/partials/cookie-preferences.php:36
-msgid "More information"
-msgstr ""
-
-#: public/partials/cookie-preferences.php:60
+#: public/partials/cookie-preferences.php:81
 msgid "Cookies Used"
 msgstr ""
 
-#: public/partials/cookie-preferences.php:75
+#: public/partials/cookie-preferences.php:96
 msgid "Always Active"
 msgstr ""
 
-#: public/partials/cookie-preferences.php:94
+#: public/partials/cookie-preferences.php:115
 msgid "Opt Out"
+msgstr ""
+
+#: public/partials/cookie-preferences.php:131
+msgid "More Information"
 msgstr ""
 
 #: public/partials/delete-form.php:21

@@ -806,14 +806,19 @@ class GDPR_Admin {
 			return;
 		}
 
-		delete_user_meta( $user_id, 'gdpr_consents' );
+		$consents = array_map( 'sanitize_text_field', (array) $_POST['user_consents'] );
 
 		GDPR_Audit_Log::log( $user_id, esc_html__( 'Profile Updated. These are the user consents after the save:', 'gdpr' ) );
-		foreach ( (array) $_POST['user_consents'] as $consent ) {
+
+		delete_user_meta( $user_id, 'gdpr_consents' );
+
+		foreach ( (array) $consents as $consent ) {
 			$consent = sanitize_text_field( wp_unslash( $consent ) );
 			add_user_meta( $user_id, 'gdpr_consents', $consent );
 			GDPR_Audit_Log::log( $user_id, $consent );
 		}
+
+		setcookie( "gdpr[consent_types]", json_encode( $consents ), time() + YEAR_IN_SECONDS, "/" );
 	}
 
 }

@@ -23,7 +23,7 @@
 			</p>
 		</div>
 		<div class="gdpr-right">
-			<button class="gdpr-preferences" type="button" data-type="cookies"><?php esc_html_e( 'Privacy Preferences', 'gdpr' ); ?></button>
+			<button class="gdpr-preferences" type="button"><?php esc_html_e( 'Privacy Preferences', 'gdpr' ); ?></button>
 			<button class="gdpr-agreement" type="button"><?php esc_html_e( 'I Agree', 'gdpr' ); ?></button>
 		</div>
 	</div>

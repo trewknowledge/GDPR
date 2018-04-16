@@ -17,13 +17,12 @@ or
 $type can be `delete`, `rectify`, `complaint`, `export-data`
 
 **Create a button to open the preferences modals**
-`[gdpr_preferences text="$text" type="$type"]`
+`[gdpr_preferences text="$text"]`
 or
 ```php
-<?php gdpr_preferences( $text, $type ); ?>
+<?php gdpr_preferences( $text ); ?>
 ```
-`$text` is the button label
-`$type` is the preferences type. Valid options are `cookies` or `consent`
+`$text` is the button label. It is also optional.
 
 **Checks whether a cookie is allowed**
 ```php
