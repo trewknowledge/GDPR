@@ -158,8 +158,6 @@ class GDPR {
 	 * @access private
 	 */
 	private function define_common_hooks() {
-		add_action( 'init', array( $this, 'block_cookies' ) );
-		add_action( 'admin_init', array( $this, 'block_cookies' ) );
 		add_action( 'wp_ajax_gdpr_generate_data_export', array( $this, 'export_data' ) );
 	}
 
@@ -233,39 +231,22 @@ class GDPR {
 		$plugin_public   = new GDPR_Public( $this->get_plugin_name(), $this->get_version() );
 		$requests_public = new GDPR_Requests_Public( $this->get_plugin_name(), $this->get_version() );
 
-		add_action( 'wp_enqueue_scripts', array( $plugin_public, 'enqueue_styles' ) );
-		add_action( 'wp_enqueue_scripts', array( $plugin_public, 'enqueue_scripts' ) );
-		add_action( 'wp_footer', array( $plugin_public, 'overlay' ) );
-		add_action( 'wp_footer', array( $plugin_public, 'privacy_bar' ) );
-		add_action( 'wp_footer', array( $plugin_public, 'privacy_preferences_modal' ) );
-		add_action( 'wp_footer', array( $plugin_public, 'confirmation_screens' ) );
-		add_action( 'wp_footer', array( $plugin_public, 'is_consent_needed' ) );
-		add_action( 'wp_ajax_update_consents', array( $plugin_public, 'update_consents' ) );
-		add_action( 'wp_ajax_disagree_with_terms', array( $plugin_public, 'logout' ) );
-		add_action( 'wp_ajax_agree_with_terms', array( $plugin_public, 'agree_with_terms' ) );
+		add_action( 'wp_enqueue_scripts',                                array( $plugin_public, 'enqueue_styles' ) );
+		add_action( 'wp_enqueue_scripts',                                array( $plugin_public, 'enqueue_scripts' ) );
+		add_action( 'wp_footer',                                         array( $plugin_public, 'overlay' ) );
+		add_action( 'wp_footer',                                         array( $plugin_public, 'privacy_bar' ) );
+		add_action( 'wp_footer',                                         array( $plugin_public, 'privacy_preferences_modal' ) );
+		add_action( 'wp_footer',                                         array( $plugin_public, 'confirmation_screens' ) );
+		add_action( 'wp_footer',                                         array( $plugin_public, 'is_consent_needed' ) );
+		add_action( 'wp_ajax_disagree_with_terms',                       array( $plugin_public, 'logout' ) );
+		add_action( 'wp_ajax_agree_with_terms',                          array( $plugin_public, 'agree_with_terms' ) );
+		add_action( 'admin_post_gdpr_update_privacy_preferences',        array( $plugin_public, 'update_privacy_preferences' ) );
+		add_action( 'admin_post_nopriv_gdpr_update_privacy_preferences', array( $plugin_public, 'update_privacy_preferences' ) );
 
 		add_action( 'wp', array( $requests_public, 'request_confirmed' ) );
 		add_action( 'admin_post_gdpr_send_request_email', array( $requests_public, 'send_request_email' ) );
 		add_action( 'admin_post_nopriv_gdpr_send_request_email', array( $requests_public, 'send_request_email' ) );
 		add_action( 'mail_export_data', array( $requests_public, 'mail_export_data' ), 10, 3 ); // CRON JOB
-	}
-
-	/**
-	 * Block cookies created by through that are not on the list of allowed cookies.
-	 * @since  1.0.0
-	 * @author Fernando Claussen <fernandoclaussen@gmail.com>
-	 */
-	function block_cookies() {
-		$approved_cookies = ( isset( $_COOKIE['gdpr_approved_cookies'] ) ? json_decode( wp_unslash( $_COOKIE['gdpr_approved_cookies'] ), true ) : array() );
-		foreach ( headers_list() as $header ) {
-			if ( preg_match( '/Set-Cookie/', $header ) ) {
-				$cookie_name = explode( '=', $header );
-				$cookie_name = str_replace( 'Set-Cookie: ', '', $cookie_name[0] );
-				if ( ! in_array( $cookie_name, $approved_cookies ) ) {
-					header_remove( 'Set-Cookie' );
-				}
-			}
-		}
 	}
 
 	/**
