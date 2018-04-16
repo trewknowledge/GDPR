@@ -178,6 +178,8 @@ Activating this plugin does not guarantee that an organisation is successfully m
 
 ## Changelog
 
+##### 1.1.1
+* Forgot to unload jQuery-UI
 ##### 1.1.0
 * Merge the two preferences windows into one.
 * [gdpr_preferences] shortcode doesn't need the 'type' attribute to work anymore.
