@@ -12,9 +12,9 @@
  */
 ?>
 
-<div class="gdpr cookie-bar">
-	<div class="wrapper">
-		<div class="content">
+<div class="gdpr gdpr-privacy-bar">
+	<div class="gdpr-wrapper">
+		<div class="gdpr-content">
 			<p>
 				<?php echo nl2br( esc_html( $content ) ); ?>
 				<?php if ( $privacy_policy_page ): ?>
@@ -22,9 +22,9 @@
 				<?php endif ?>
 			</p>
 		</div>
-		<div class="right">
-			<button class="gdpr-preferences" type="button" data-type="cookies"><?php esc_html_e( 'Cookie settings', 'gdpr' ); ?></button>
-			<button class="accept-cookies" type="button"><?php esc_html_e( 'I understand', 'gdpr' ); ?></button>
+		<div class="gdpr-right">
+			<button class="gdpr-preferences" type="button"><?php esc_html_e( 'Privacy Preferences', 'gdpr' ); ?></button>
+			<button class="gdpr-agreement" type="button"><?php esc_html_e( 'I Agree', 'gdpr' ); ?></button>
 		</div>
 	</div>
 </div>

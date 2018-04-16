@@ -10,225 +10,105 @@
 
 	$(function() {
 
-		var approvedCookies = JSON.parse( readCookie('gdpr_approved_cookies') );
+		/**
+		 * This runs when user clicks on privacy preferences bar agree button.
+		 * It submits the form that is still hidden with the cookies and consent options.
+		 */
+		$(document).on('click', '.gdpr.gdpr-privacy-bar .gdpr-agreement', function() {
+      $('.gdpr-privacy-preferences-frm').submit();
+    });
 
-		function createCookie(name, value, days) {
-	    if (days) {
-        var date = new Date();
-        date.setTime(date.getTime() + (days * 24 * 60 * 60 * 1000));
-        var expires = "; expires=" + date.toGMTString();
-	    } else {
-	    	var expires = "";
-	    }
-	    document.cookie = name + "=" + value + expires + "; path=/";
-		}
-
-		function readCookie(name) {
-	    var nameEQ = name + "=";
-	    var ca = document.cookie.split(';');
-	    for (var i = 0; i < ca.length; i++) {
-        var c = ca[i];
-        while (c.charAt(0) == ' ') {
-        	c = c.substring(1, c.length);
-        }
-        if (c.indexOf(nameEQ) == 0) {
-        	return c.substring(nameEQ.length, c.length);
-        }
-	    }
-	    return null;
-		}
-
-		function deleteCookie(name) {
-			createCookie(name, "", -1);
-		}
-
-		var cookieRegistry = [];
-
-		function listenCookieChange(cookieName) {
-	    setInterval(function() {
-        if (cookieRegistry[cookieName]) {
-          if (readCookie(cookieName) != cookieRegistry[cookieName]) {
-            // update registry so we dont get triggered again
-            cookieRegistry[cookieName] = readCookie(cookieName);
-            cookieChanged( cookieName );
-          }
-        } else {
-          cookieRegistry[cookieName] = readCookie(cookieName);
-        }
-	    }, 100);
-		}
-
-		var blockedCookies = ['__utma', '_gid'];
-		blockedCookies.forEach( function( item ) {
-			listenCookieChange(item);
-		} );
-
-		function cookieChanged( cookieName ) {
-			if ( ! $.inArray( cookieName, approvedCookies.site_cookies ) ) {
-				deleteCookie(cookieName);
-			}
-		}
-
+		/**
+		 * Display the privacy preferences modal.
+		 */
 		$(document).on('click', '.gdpr-preferences', function() {
 			var type = $(this).data('type');
 			$('.gdpr-overlay').fadeIn();
-			switch(type) {
-				case 'cookies':
-					$('.gdpr.cookie-preferences .wrapper').fadeIn();
-					break;
-				case 'consent':
-					$('.gdpr.consent-preferences .wrapper').fadeIn();
-					break;
-			}
+			$('.gdpr.gdpr-privacy-preferences .gdpr-wrapper').fadeIn();
 		});
 
-		$(document).on('click', '.gdpr.cookie-preferences .close', function() {
+		/**
+		 * Close the privacy preferences modal.
+		 */
+		$(document).on('click', '.gdpr.gdpr-privacy-preferences .gdpr-close, .gdpr-overlay', function() {
 			$('.gdpr-overlay').fadeOut();
-			$('.gdpr.cookie-preferences .wrapper').fadeOut();
-		});
-		$(document).on('click', '.gdpr.consent-preferences .close', function() {
-			$('.gdpr-overlay').fadeOut();
-			$('.gdpr.consent-preferences .wrapper').fadeOut();
+			$('.gdpr.gdpr-privacy-preferences .gdpr-wrapper').fadeOut();
 		});
 
-		$(document).on('click', '.gdpr.cookie-preferences .tabs button', function() {
+		/**
+		 * Tab navigation for the privacy preferences modal.
+		 */
+		$(document).on('click', '.gdpr.gdpr-privacy-preferences .gdpr-tabs button', function() {
 			var target = '.' + $(this).data('target');
-			$('.gdpr.cookie-preferences .tab-content > div').removeClass('active');
-			$('.gdpr.cookie-preferences .tab-content ' + target).addClass('active');
+			$('.gdpr.gdpr-privacy-preferences .gdpr-tab-content > div').removeClass('gdpr-active');
+			$('.gdpr.gdpr-privacy-preferences .gdpr-tab-content ' + target).addClass('gdpr-active');
 
-			if ( $('.gdpr.cookie-preferences .tabs').hasClass('mobile-expanded') ) {
-				$('.gdpr.cookie-preferences .mobile-menu button').removeClass('active');
-				$('.gdpr.cookie-preferences .tabs').toggle();
+			if ( $('.gdpr.gdpr-privacy-preferences .gdpr-tabs').hasClass('gdpr-mobile-expanded') ) {
+				$('.gdpr.gdpr-privacy-preferences .gdpr-mobile-menu button').removeClass('gdpr-active');
+				$('.gdpr.gdpr-privacy-preferences .gdpr-tabs').toggle();
 			}
 
-			$('.gdpr.cookie-preferences .tabs button').removeClass('active');
-			$(this).addClass('active');
+			$('.gdpr.gdpr-privacy-preferences .gdpr-tabs button').removeClass('gdpr-active');
+			$('.gdpr-subtabs li button').removeClass('gdpr-active');
+
+			if ( $(this).hasClass('gdpr-tab-button') ) {
+				$(this).addClass('gdpr-active');
+				if ( $(this).hasClass('gdpr-cookie-settings') ) {
+					$('.gdpr-subtabs').find('li button').first().addClass('gdpr-active');
+				}
+			} else {
+				$('.gdpr-cookie-settings').addClass('gdpr-active');
+				$(this).addClass('gdpr-active');
+			}
 		});
 
-		$(document).on('click', '.gdpr.cookie-preferences .mobile-menu button', function(e) {
-			$(this).toggleClass('active');
-			$('.gdpr.cookie-preferences .tabs').toggle().addClass('mobile-expanded');
+		/**
+		 * Mobile menu for privacy preferences modal.
+		 */
+		$(document).on('click', '.gdpr.gdpr-privacy-preferences .gdpr-mobile-menu button', function(e) {
+			$(this).toggleClass('gdpr-active');
+			$('.gdpr.gdpr-privacy-preferences .gdpr-tabs').toggle().addClass('gdpr-mobile-expanded');
 		});
 
 		$(window).resize( function() {
-			if ( $(window).width() > 640 && $('.gdpr.cookie-preferences .tabs').hasClass('mobile-expanded') ) {
-				$('.gdpr.cookie-preferences .mobile-menu button').removeClass('active');
-				$('.gdpr.cookie-preferences .tabs').removeClass('mobile-expanded').removeAttr('style');
+			if ( $(window).width() > 640 && $('.gdpr.gdpr-privacy-preferences .gdpr-tabs').hasClass('gdpr-mobile-expanded') ) {
+				$('.gdpr.gdpr-privacy-preferences .gdpr-mobile-menu button').removeClass('gdpr-active');
+				$('.gdpr.gdpr-privacy-preferences .gdpr-tabs').removeClass('gdpr-mobile-expanded').removeAttr('style');
 			}
 		});
 
-		$(document).on('submit', '.frm-gdpr-cookie-preferences', function(e) {
-			e.preventDefault();
-			createApprovedCookiesCookie();
-		});
-
-		$(document).on('click', '.gdpr.cookie-bar .accept-cookies', function() {
-			createApprovedCookiesCookie();
-		});
-
-		function createApprovedCookiesCookie() {
-			var checkboxes = $('input[type="checkbox"]:checked', '.frm-gdpr-cookie-preferences');
-			var approvedCookies = [];
-			checkboxes.each(function() {
-				var value = JSON.parse( $(this).val() );
-				if ( $.isArray( value ) ) {
-					value.forEach(function( item ) {
-						approvedCookies.push( item );
-					});
-				} else {
-					var key = Object.keys( value );
-					if (approvedCookies.hasOwnProperty( key )) {
-						approvedCookies[key[0]].push( value[key[0]] );
-					} else {
-						approvedCookies[key[0]] = [value[key[0]]];
-					}
-				}
-			});
-
-			createCookie("gdpr_approved_cookies", JSON.stringify( approvedCookies ));
-			$('.gdpr.cookie-preferences .wrapper, .gdpr-overlay, .gdpr.cookie-bar').fadeOut();
-		}
-
-		$('.confirm-delete-request-dialog').dialog({
-			resizable: false,
-			autoOpen: false,
-			height: 'auto',
-			width: 400,
-			modal: true,
-			buttons: {
-				"Close my account": function() {
-					$('form.gdpr-add-to-deletion-requests').addClass('confirmed');
-					$('form.gdpr-add-to-deletion-requests.confirmed').submit();
-					$( this ).dialog( "close" );
-				},
-				Cancel: function() {
-					$( this ).dialog( "close" );
-				}
-			}
-		});
-		// $(document).on('click', '.gdpr-add-to-deletion-requests-button', function() {
-		// 	$('.confirm-delete-request-dialog').dialog('open');
-		// });
-
-		$('form.gdpr-add-to-deletion-requests').on('submit', function(e){
+		$('form.gdpr-add-to-deletion-requests').on('submit', function(e) {
 			if ( ! $(this).hasClass( 'confirmed' ) ) {
 				e.preventDefault();
-				$('.confirm-delete-request-dialog').dialog('open');
+				$('.gdpr-overlay').fadeIn();
+				$('.gdpr.gdpr-delete-confirmation .gdpr-wrapper').css({
+					'display': 'flex',
+				}).hide().fadeIn();
 			}
-		})
+		} );
 
-		if ( $('.gdpr-general-dialog').length > 0 ) {
-			$('.gdpr-general-dialog').dialog({
-				resizable: false,
-				height: 'auto',
-				width: 400,
-				modal: true,
-				buttons: {
-					"Ok": function() {
-						$( this ).dialog( "close" );
-					}
-				}
+		$(document).on('click', '.gdpr.gdpr-general-confirmation .gdpr-close, .gdpr-overlay', function() {
+			$('.gdpr-overlay').fadeOut();
+			$('.gdpr.gdpr-general-confirmation .gdpr-wrapper').fadeOut();
+		});
+
+		$(document).on('click', '.gdpr.gdpr-delete-confirmation button.gdpr-delete-account', function() {
+			$('form.gdpr-add-to-deletion-requests').addClass('confirmed');
+			$('form.gdpr-add-to-deletion-requests.confirmed').submit();
+			$('.gdpr-overlay').fadeOut();
+			$('.gdpr.gdpr-delete-confirmation .gdpr-wrapper').fadeOut();
+		});
+
+		if ( $('.gdpr-accept-confirmation').length > 0 ) {
+			$('.gdpr-overlay').fadeIn();
+			$('.gdpr.gdpr-accept-confirmation .gdpr-wrapper').css({
+				'display': 'flex',
+			}).hide().fadeIn();
+			$(document).on('click', '.gdpr.gdpr-accept-confirmation button.gdpr-ok', function() {
+				$('.gdpr-overlay').fadeOut();
+				$('.gdpr.gdpr-accept-confirmation .gdpr-wrapper').fadeOut();
 			});
 		}
-
-		$(document).on( 'submit', '.frm-gdpr-consent-preferences', function(e) {
-			e.preventDefault();
-
-			var checkboxes = $(this).find('input[type="checkbox"]:checked'),
-					consents = [],
-					action = $(this).find('input[name="action"]').val(),
-					nonce = $(this).find('input[name="update-consents-nonce"]').val(),
-					button = $(this).find('input[type="submit"]'),
-					error = $(this).find('.error');
-
-
-			checkboxes.each(function() {
-				consents.push( $(this).val() );
-			});
-
-			button.prop( 'disabled', true );
-			error.html('');
-
-			$.post(
-				GDPR.ajaxurl,
-				{
-					action: action,
-					nonce: nonce,
-					consents: consents
-				},
-				function( res ) {
-					if( res.success ) {
-						$('.gdpr-overlay').fadeOut();
-						$('.gdpr.consent-preferences .wrapper').fadeOut();
-					} else {
-						error.html( res.data );
-						console.log(res.data);
-					}
-					button.prop( 'disabled', false );
-				}
-			);
-
-		});
 
 		if ( $('.gdpr-consent-modal').length > 0 ) {
 			$('body').css('overflow', 'hidden');

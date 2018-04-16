@@ -5,7 +5,7 @@ Tags: gdpr, compliance, privacy, law, general data protection regulation
 Requires at least: 4.0
 Requires PHP: 5.6
 Tested up to: 4.9
-Stable tag: 1.0.6
+Stable tag: 1.1.0
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -20,6 +20,7 @@ This plugin is meant to assist a Controller, Data Processor, and Data Protection
 You can send your pull request at [https://github.com/trewknowledge/gdpr](https://github.com/trewknowledge/gdpr)
 
 == Shortcodes & helper functions ==
+**WordPress replace the quotes below with the wrong set of quotes. Make sure you replace them if you copy and paste**
 
 **Display one of the request forms**
 `[gdpr_request_form type="$type"]`
@@ -28,17 +29,16 @@ or
 $type can be `delete`, `rectify`, `complaint`, `export-data`
 
 **Create a button to open the preferences modals**
-`[gdpr_preferences text="$text" type="$type"]`
+`[gdpr_preferences text="$text"]`
 or
-`gdpr_preferences( $text, $type );`
-$text is the button label
-$type is the preferences type. Valid options are `cookies` or `consent`
+`gdpr_preferences( $text );`
+$text is the button label. It is also optional.
 
 **Checks whether a cookie is allowed**
 `is_allowed_cookie( $cookie )`
 
 **Checks whether a consent was given**
-`have_consent( $consent_id )`
+`has_consent( $consent_id )`
 
 == Features ==
 
@@ -220,6 +220,13 @@ Activating this plugin does not guarantee that an organisation is successfully m
 9. Audit Log sample.
 
 == Changelog ==
+
+= 1.1.0 =
+* Merge the two preferences windows into one.
+* [gdpr_preferences] shortcode doesn't need the 'type' attribute to work anymore.
+* Removed jQuery UI from the front end and replaced with our own notification window to keep a consistent color scheme, avoid unnecessary requests and avoid style issues from theme to theme.
+* Allow logged out users to keep track of consents too. ( Those are not logged to the audit log for obvious reasons. )
+* Added a refresh after preferences change so users can display forms or count the user visit and so on depending on the new user consent.
 
 = 1.0.6 =
 * Allowing users to add target on their privacy policy links on the consent description.
