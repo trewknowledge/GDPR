@@ -26,6 +26,8 @@
 		text-shadow: none;
 		outline: none;
 		border: none;
+		margin: 0;
+		padding: 0;
 	}
 	button {
 		color: #000;
@@ -33,6 +35,8 @@
 		font-size: 14px;
 		margin: 0;
 		transform: scale(1);
+		line-height: 1.5;
+		display: block;
 		&:before, &:after {
 			display: inline-block;
 			margin: 0;
@@ -41,9 +45,12 @@
 			right: auto;
 			bottom: auto;
 			left: auto;
+			background: none;
 		}
 		&:hover, &:active, &:focus {
 			margin: 0;
+			border: none;
+			box-shadow: none;
 		}
 	}
 	img {
@@ -61,6 +68,7 @@
 			display: flex;
 			justify-content: space-between;
 			align-items: center;
+			box-sizing: border-box;
 			@include breakpoint(medium-small) {
 				flex-direction: column;
 				align-items: center;
@@ -235,8 +243,10 @@
 			display: none;
 			border-radius: 2.5px;
 			padding: 15px;
+			box-sizing: border-box;
 			form {
 				height: 100%;
+				position: relative;
 				> header {
 					display: flex;
 					height: 75px;
@@ -296,15 +306,16 @@
 				}
 				> footer {
 					position: absolute;
-					padding: 20px;
-					bottom: 15px;
-					left: 175px;
-					right: 20px;
+					padding: 0 20px 20px 20px;
+					bottom: 0;
+					left: 160px;
+					right: 0;
 					display: flex;
 					justify-content: space-between;
 					align-items: flex-end;
 					@include breakpoint(small-only) {
-						left: 15px;
+						left: 0;
+						bottom: 5px;
 					}
 					input {
 						font-size: 13px;
@@ -369,6 +380,7 @@
 					display: flex;
 					justify-content: space-between;
 					align-items: center;
+					line-height: 0;
 					&:hover {
 						color: #00b9eb;
 						&:after {
@@ -428,6 +440,7 @@
 							position: relative;
 							@include breakpoint(small-only) {
 								padding: 15px;
+								line-height: 1;
 							}
 							&:hover {
 								background-color: #191e23;
@@ -486,13 +499,14 @@
 				}
 				.gdpr-tab-content {
 					width: 100%;
-					padding-bottom: 48px;
+					padding-bottom: 68px;
 					> div {
 						display: none;
-						padding: 20px;
+						padding: 20px 20px 0 20px;
 						overflow-y: auto;
 						font-size: 13px;
 						height: 100%;
+						box-sizing: border-box;
 						header {
 							display: flex;
 							justify-content: space-between;
