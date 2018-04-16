@@ -49,7 +49,7 @@
 	img {
 		width: 100% !important;
 	}
-	&.gdpr-cookie-bar{
+	&.gdpr-privacy-bar{
 		position: fixed;
 		bottom: 0;
 		background: rgba(0,0,0,0.9);
@@ -468,7 +468,7 @@
 							right: auto;
 							bottom: auto;
 							border: 0;
-							margin-top: 0;
+							margin: 0 0 0 0;
 							box-shadow: none;
 							background-color: #32373c;
 							li {
