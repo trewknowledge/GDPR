@@ -47,14 +47,14 @@
 						</header>
 						<div class="gdpr-info">
 							<p><?php echo nl2br( esc_html( $cookie_privacy_excerpt ) ); ?></p>
-							<?php foreach ( $consent_types as $consent_key => $type ): ?>
+							<?php foreach ( $consent_types as $consent_key => $type ) : ?>
 								<div class="gdpr-cookies-used">
 									<div class="gdpr-cookie-title">
 										<p><?php echo esc_html( $type['name'] ); ?></p>
-										<?php if ( $type['required'] ): ?>
+										<?php if ( $type['required'] ) : ?>
 											<span class="gdpr-always-active"><?php esc_html_e( 'Required', 'gdpr' ); ?></span>
 											<input type="checkbox" name="user_consents[]" value="<?php echo esc_attr( $consent_key ); ?>" checked style="display:none;">
-										<?php else: ?>
+										<?php else : ?>
 											<label class="gdpr-switch">
 												<input type="checkbox" name="user_consents[]" value="<?php echo esc_attr( $consent_key ); ?>" <?php echo ! empty( $user_consents ) ? checked( in_array( $consent_key, $user_consents, true ), 1, false ) : ''; ?>>
 												<span class="gdpr-slider round"></span>
@@ -75,29 +75,29 @@
 							</header><!-- /header -->
 							<div class="gdpr-info">
 								<p><?php echo nl2br( $tab['how_we_use'] ); ?></p>
-								<?php if ( isset( $tab['cookies_used'] ) && $tab['cookies_used'] ): ?>
+								<?php if ( isset( $tab['cookies_used'] ) && $tab['cookies_used'] ) : ?>
 									<div class="gdpr-cookies-used">
 										<div class="gdpr-cookie-title">
 											<p><?php esc_html_e( 'Cookies Used', 'gdpr' ); ?></p>
 											<?php
-												$site_cookies = array();
-												$enabled = true;
-												$cookies_used = explode(',', $tab['cookies_used']);
-												foreach ( $cookies_used as $cookie ) {
-													$site_cookies[] = trim( $cookie );
-													if ( ! empty( $approved_cookies ) ) {
-														if ( ! in_array( trim( $cookie ), $approved_cookies ) ) {
-															$enabled = false;
-														}
+											$site_cookies = array();
+											$enabled      = true;
+											$cookies_used = explode( ',', $tab['cookies_used'] );
+											foreach ( $cookies_used as $cookie ) {
+												$site_cookies[] = trim( $cookie );
+												if ( ! empty( $approved_cookies ) ) {
+													if ( ! in_array( trim( $cookie ), $approved_cookies ) ) {
+														$enabled = false;
 													}
 												}
+											}
 											?>
-											<?php if ( $tab['always_active'] ): ?>
+											<?php if ( $tab['always_active'] ) : ?>
 												<span class="gdpr-always-active"><?php esc_html_e( 'Always Active', 'gdpr' ); ?></span>
-												<input type="checkbox" class="gdpr-hidden" name="approved_cookies" value="<?php echo esc_attr( json_encode( $site_cookies ) ) ?>" checked>
-											<?php else: ?>
+												<input type="checkbox" class="gdpr-hidden" name="approved_cookies" value="<?php echo esc_attr( json_encode( $site_cookies ) ); ?>" checked>
+											<?php else : ?>
 												<label class="gdpr-switch">
-													<input type="checkbox" name="approved_cookies" value="<?php echo esc_attr( json_encode( $site_cookies ) ) ?>" <?php echo ( $enabled ? 'checked' : '' ); ?>>
+													<input type="checkbox" name="approved_cookies" value="<?php echo esc_attr( json_encode( $site_cookies ) ); ?>" <?php echo ( $enabled ? 'checked' : '' ); ?>>
 													<span class="gdpr-slider round"></span>
 												</label>
 											<?php endif; ?>
@@ -107,8 +107,8 @@
 										</div>
 									</div>
 								<?php endif ?>
-								<?php if ( isset( $tab['hosts'] ) && ! empty( $tab['hosts'] ) ): ?>
-									<?php foreach ( $tab['hosts'] as $host_key => $host ): ?>
+								<?php if ( isset( $tab['hosts'] ) && ! empty( $tab['hosts'] ) ) : ?>
+									<?php foreach ( $tab['hosts'] as $host_key => $host ) : ?>
 										<div class="gdpr-cookies-used">
 											<div class="gdpr-cookie-title">
 												<p><?php echo esc_html( $host['name'] ); ?></p>
@@ -125,7 +125,7 @@
 					<?php endforeach; ?>
 				</div>
 			</div>
-			<footer class="gdpr-footer">
+			<footer>
 				<input type="submit" value="Save Preferences">
 				<?php if ( $privacy_policy_page ) : ?>
 					<span><a href="<?php echo esc_url( get_permalink( $privacy_policy_page ) ); ?>" target="_blank"><?php esc_html_e( 'More Information', 'gdpr' ); ?></a></span>
