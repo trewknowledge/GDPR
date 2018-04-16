@@ -220,6 +220,13 @@ Activating this plugin does not guarantee that an organisation is successfully m
 
 == Changelog ==
 
+= 1.1.0 =
+* Merge the two preferences windows into one.
+* [gdpr_preferences] shortcode doesn't need the 'type' attribute to work anymore.
+* Removed jQuery UI from the front end and replaced with our own notification window to keep a consistent color scheme, avoid unnecessary requests and avoid style issues from theme to theme.
+* Allow logged out users to keep track of consents too. ( Those are not logged to the audit log for obvious reasons. )
+* Added a refresh after preferences change so users can display forms or count the user visit and so on depending on the new user consent.
+
 = 1.0.6 =
 * Allowing users to add target on their privacy policy links on the consent description.
 
