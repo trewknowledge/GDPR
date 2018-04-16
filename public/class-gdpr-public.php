@@ -89,9 +89,9 @@ class GDPR_Public {
 			return;
 		}
 
-		$content = get_option( 'gdpr_cookie_banner_content', '' );
-		$tabs = get_option( 'gdpr_cookie_popup_content', array() );
-		$link_label = get_option( 'gdpr_cookie_banner_privacy_policy_link_label', '' );
+		$content             = get_option( 'gdpr_cookie_banner_content', '' );
+		$tabs                = get_option( 'gdpr_cookie_popup_content', array() );
+		$link_label          = get_option( 'gdpr_cookie_banner_privacy_policy_link_label', '' );
 		$privacy_policy_page = get_option( 'gdpr_privacy_policy_page', 0 );
 
 		if ( empty( $content ) || empty( $tabs ) ) {
@@ -108,10 +108,10 @@ class GDPR_Public {
 	 */
 	public function privacy_preferences_modal() {
 		$cookie_privacy_excerpt = get_option( 'gdpr_cookie_privacy_excerpt', '' );
-		$consent_types = get_option( 'gdpr_consent_types', array() );
-		$privacy_policy_page = get_option( 'gdpr_privacy_policy_page', 0 );
-		$approved_cookies = isset( $_COOKIE['gdpr_approved_cookies'] ) ? json_decode( wp_unslash( $_COOKIE['gdpr_approved_cookies'] ) ) : array();
-		$tabs = get_option( 'gdpr_cookie_popup_content', array() );
+		$consent_types          = get_option( 'gdpr_consent_types', array() );
+		$privacy_policy_page    = get_option( 'gdpr_privacy_policy_page', 0 );
+		$approved_cookies       = isset( $_COOKIE['gdpr_approved_cookies'] ) ? json_decode( wp_unslash( $_COOKIE['gdpr_approved_cookies'] ) ) : array();
+		$tabs                   = get_option( 'gdpr_cookie_popup_content', array() );
 		if ( empty( $tabs ) ) {
 			return;
 		}
@@ -151,7 +151,7 @@ class GDPR_Public {
 			wp_send_json_error( esc_html__( "You can't disable all consents.", 'gdpr' ) );
 		}
 
-		$user = wp_get_current_user();
+		$user          = wp_get_current_user();
 		$user_consents = get_user_meta( $user->ID, 'gdpr_consents' );
 
 		delete_user_meta( $user->ID, 'gdpr_consents' );
@@ -187,7 +187,7 @@ class GDPR_Public {
 			return;
 		}
 
-		$user = wp_get_current_user();
+		$user          = wp_get_current_user();
 		$user_consents = get_user_meta( $user->ID, 'gdpr_consents' );
 
 		if ( ! in_array( 'privacy-policy', (array) $user_consents ) ) {
