@@ -75,7 +75,7 @@
 			$('.gdpr.gdpr-privacy-preferences .gdpr-wrapper').fadeIn();
 		});
 
-		$(document).on('click', '.gdpr.gdpr-privacy-preferences .gdpr-close', function() {
+		$(document).on('click', '.gdpr.gdpr-privacy-preferences .gdpr-close, .gdpr-overlay', function() {
 			$('.gdpr-overlay').fadeOut();
 			$('.gdpr.gdpr-privacy-preferences .gdpr-wrapper').fadeOut();
 		});
@@ -176,9 +176,9 @@
 			}
 		} );
 
-		$(document).on('click', '.gdpr.gdpr-delete-confirmation .gdpr-close', function() {
+		$(document).on('click', '.gdpr.gdpr-general-confirmation .gdpr-close, .gdpr-overlay', function() {
 			$('.gdpr-overlay').fadeOut();
-			$('.gdpr.gdpr-delete-confirmation .gdpr-wrapper').fadeOut();
+			$('.gdpr.gdpr-general-confirmation .gdpr-wrapper').fadeOut();
 		});
 
 		$(document).on('click', '.gdpr.gdpr-delete-confirmation button.gdpr-delete-account', function() {
@@ -188,14 +188,14 @@
 			$('.gdpr.gdpr-delete-confirmation .gdpr-wrapper').fadeOut();
 		});
 
-		if ( $('.gdpr-general-confirmation').length > 0 ) {
+		if ( $('.gdpr-accept-confirmation').length > 0 ) {
 			$('.gdpr-overlay').fadeIn();
-			$('.gdpr.gdpr-general-confirmation .gdpr-wrapper').css({
+			$('.gdpr.gdpr-accept-confirmation .gdpr-wrapper').css({
 				'display': 'flex',
 			}).hide().fadeIn();
-			$(document).on('click', '.gdpr.gdpr-general-confirmation button.gdpr-accept-confirmation', function() {
+			$(document).on('click', '.gdpr.gdpr-accept-confirmation button.gdpr-ok', function() {
 				$('.gdpr-overlay').fadeOut();
-				$('.gdpr.gdpr-general-confirmation .gdpr-wrapper').fadeOut();
+				$('.gdpr.gdpr-accept-confirmation .gdpr-wrapper').fadeOut();
 			});
 		}
 

@@ -11,7 +11,7 @@
  */
 ?>
 
-<div class="gdpr gdpr-delete-confirmation">
+<div class="gdpr gdpr-general-confirmation gdpr-delete-confirmation">
 	<div class="gdpr-wrapper">
 		<header>
 			<div class="gdpr-box-title">
@@ -64,7 +64,7 @@
 		$text = __( 'There was a problem with your request. Please try again later.', 'gdpr' );
 	}
 	?>
-	<div class="gdpr gdpr-general-confirmation">
+	<div class="gdpr gdpr-general-confirmation gdpr-accept-confirmation">
 		<div class="gdpr-wrapper">
 			<header>
 				<div class="gdpr-box-title">
@@ -76,7 +76,7 @@
 				<p><?php echo esc_html( $text ); ?></p>
 			</div>
 			<footer>
-				<button class="gdpr-accept-confirmation">OK</button>
+				<button class="gdpr-ok">OK</button>
 			</footer>
 		</div>
 	</div>

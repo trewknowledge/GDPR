@@ -220,7 +220,7 @@
 			}
 		}
 	}
-	&.gdpr-privacy-preferences, &.gdpr-general-confirmation, &.gdpr-delete-confirmation {
+	&.gdpr-privacy-preferences, &.gdpr-general-confirmation {
 		.gdpr-wrapper {
 			position: fixed;
 			top: 50%;
@@ -575,7 +575,7 @@
 			}
 		}
 	}
-	&.gdpr-general-confirmation, &.gdpr-delete-confirmation {
+	&.gdpr-delete-confirmation, &.gdpr-accept-confirmation {
 		.gdpr-wrapper {
 			flex-direction: column;
 			justify-content: center;
