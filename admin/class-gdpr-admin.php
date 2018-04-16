@@ -674,11 +674,14 @@ class GDPR_Admin {
 		GDPR_Audit_Log::log( $user_id, esc_html__( 'User registered to the site.', 'gdpr' ) );
 
 		if ( isset( $_POST['user_consents'] ) ) {
-			foreach ( $_POST['user_consents'] as $consent => $value ) {
+
+			$consents = array_map( 'sanitize_text_field', array_keys( $_POST['user_consents'] ) );
+			foreach ( $consents as $consent ) {
 				/* translators: Name of consent */
 				GDPR_Audit_Log::log( $user_id, sprintf( esc_html__( 'User gave explicit consent to %s', 'gdpr' ), $consent ) );
 				add_user_meta( $user_id, 'gdpr_consents', $consent );
 			}
+			setcookie( "gdpr[consent_types]", json_encode( $consents ), time() + YEAR_IN_SECONDS, "/" );
 		}
 	}
 
