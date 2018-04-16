@@ -326,7 +326,7 @@ class GDPR {
 
 		$usermeta      = self::get_user_meta( $user->ID );
 		$user_consents = get_user_meta( $user->ID, 'gdpr_consents' );
-		$extra_content = apply_filters( 'export_data_extra_tables', '', $email );
+		$extra_content = apply_filters( 'gdpr_export_data_extra_tables', '', $email );
 
 		switch ( strtolower( $format ) ) {
 			case 'json':

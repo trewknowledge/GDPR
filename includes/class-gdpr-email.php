@@ -145,8 +145,6 @@ class GDPR_Email {
 	 * @param  string $data   The contents of the email.
 	 */
 	public function send_data_breach_emails( $emails, $data ) {
-		$subject = apply_filters( 'gdpr_data_breach_notification_email_subject', esc_html__( 'Data Breach Notification', 'gdpr' ) );
-
 		$content = isset( $data['content'] ) ? sanitize_textarea_field( $data['content'] ) : '';
 
 		$nature = sanitize_textarea_field( wp_unslash( $data['nature'] ) );
