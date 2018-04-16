@@ -148,45 +148,52 @@
 			$('.gdpr.gdpr-privacy-preferences .gdpr-wrapper, .gdpr-overlay, .gdpr.gdpr-privacy-bar').fadeOut();
 		}
 
-		$('.confirm-delete-request-dialog').dialog({
-			resizable: false,
-			autoOpen: false,
-			height: 'auto',
-			width: 400,
-			modal: true,
-			buttons: {
-				"Close my account": function() {
-					$('form.gdpr-add-to-deletion-requests').addClass('confirmed');
-					$('form.gdpr-add-to-deletion-requests.confirmed').submit();
-					$( this ).dialog( "close" );
-				},
-				Cancel: function() {
-					$( this ).dialog( "close" );
-				}
-			}
-		});
-		// $(document).on('click', '.gdpr-add-to-deletion-requests-button', function() {
-		// 	$('.confirm-delete-request-dialog').dialog('open');
+		// $('.confirm-delete-confirmation').dialog({
+		// 	resizable: false,
+		// 	autoOpen: false,
+		// 	height: 'auto',
+		// 	width: 400,
+		// 	modal: true,
+		// 	buttons: {
+		// 		"Close my account": function() {
+		// 			$('form.gdpr-add-to-deletion-requests').addClass('confirmed');
+		// 			$('form.gdpr-add-to-deletion-requests.confirmed').submit();
+		// 			$( this ).dialog( "close" );
+		// 		},
+		// 		Cancel: function() {
+		// 			$( this ).dialog( "close" );
+		// 		}
+		// 	}
 		// });
 
-		$('form.gdpr-add-to-deletion-requests').on('submit', function(e){
+		$('form.gdpr-add-to-deletion-requests').on('submit', function(e) {
 			if ( ! $(this).hasClass( 'confirmed' ) ) {
 				e.preventDefault();
-				$('.confirm-delete-request-dialog').dialog('open');
+				$('.gdpr-overlay').fadeIn();
+				$('.gdpr.gdpr-delete-confirmation .gdpr-wrapper').css({
+					'display': 'flex',
+				}).hide().fadeIn();
 			}
-		})
+		} );
+
+		$(document).on('click', '.gdpr.gdpr-delete-confirmation .gdpr-close', function() {
+			$('.gdpr-overlay').fadeOut();
+			$('.gdpr.gdpr-delete-confirmation .gdpr-wrapper').fadeOut();
+		});
+
+		$(document).on('click', '.gdpr.gdpr-delete-confirmation button.gdpr-delete-account', function() {
+			$('form.gdpr-add-to-deletion-requests').addClass('confirmed');
+			$('form.gdpr-add-to-deletion-requests.confirmed').submit();
+			$('.gdpr-overlay').fadeOut();
+			$('.gdpr.gdpr-delete-confirmation .gdpr-wrapper').fadeOut();
+		});
 
 		if ( $('.gdpr-general-dialog').length > 0 ) {
-			$('.gdpr-general-dialog').dialog({
-				resizable: false,
-				height: 'auto',
-				width: 400,
-				modal: true,
-				buttons: {
-					"Ok": function() {
-						$( this ).dialog( "close" );
-					}
-				}
+			$('.gdpr-overlay').fadeIn();
+			$('.gdpr-general-confirmation').fadeIn();
+			$(document).on('click', '.gdpr.gdpr-general-confirmation button.gdpr-accept-confirmation', function() {
+				$('.gdpr-overlay').fadeOut();
+				$('.gdpr.gdpr-general-confirmation .gdpr-wrapper').fadeOut();
 			});
 		}
 
