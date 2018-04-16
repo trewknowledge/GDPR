@@ -524,6 +524,9 @@
 							flex: 1;
 							margin-top: 20px;
 							position: relative;
+							> p {
+								margin-bottom: 16px;
+							}
 							strong{
 								border-bottom: 1px solid rgba(0,0,0,0.4);
 								display: block;
