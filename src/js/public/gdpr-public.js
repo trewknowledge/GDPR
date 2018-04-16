@@ -188,9 +188,11 @@
 			$('.gdpr.gdpr-delete-confirmation .gdpr-wrapper').fadeOut();
 		});
 
-		if ( $('.gdpr-general-dialog').length > 0 ) {
+		if ( $('.gdpr-general-confirmation').length > 0 ) {
 			$('.gdpr-overlay').fadeIn();
-			$('.gdpr-general-confirmation').fadeIn();
+			$('.gdpr.gdpr-general-confirmation .gdpr-wrapper').css({
+				'display': 'flex',
+			}).hide().fadeIn();
 			$(document).on('click', '.gdpr.gdpr-general-confirmation button.gdpr-accept-confirmation', function() {
 				$('.gdpr-overlay').fadeOut();
 				$('.gdpr.gdpr-general-confirmation .gdpr-wrapper').fadeOut();
