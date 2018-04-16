@@ -238,9 +238,8 @@ class GDPR {
 		add_action( 'wp_enqueue_scripts',          array( $plugin_public, 'enqueue_styles' ) );
 		add_action( 'wp_enqueue_scripts',          array( $plugin_public, 'enqueue_scripts' ) );
 		add_action( 'wp_footer',                   array( $plugin_public, 'overlay' ) );
-		add_action( 'wp_footer',                   array( $plugin_public, 'cookie_bar' ) );
-		add_action( 'wp_footer',                   array( $plugin_public, 'cookie_preferences' ) );
-		add_action( 'wp_footer',                   array( $plugin_public, 'consents_preferences' ) );
+		add_action( 'wp_footer',                   array( $plugin_public, 'privacy_bar' ) );
+		add_action( 'wp_footer',                   array( $plugin_public, 'privacy_preferences_modal' ) );
 		add_action( 'wp_footer',                   array( $plugin_public, 'confirmation_screens' ) );
 		add_action( 'wp_footer',                   array( $plugin_public, 'is_consent_needed' ) );
 		add_action( 'wp_ajax_update_consents',     array( $plugin_public, 'update_consents' ) );

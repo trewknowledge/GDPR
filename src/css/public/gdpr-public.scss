@@ -149,7 +149,7 @@
 				margin: 0;
 			}
 		}
-		.accept-cookies {
+		.gdpr-agreement {
 			position: relative;
 			font-size: 13px;
 			font-weight: normal;
@@ -220,12 +220,7 @@
 			}
 		}
 	}
-	&.consent-preferences{
-		footer{
-			left: initial !important;
-		}
-	}
-	&.gdpr-privacy-preferences, &.consent-preferences {
+	&.gdpr-privacy-preferences {
 		.gdpr-wrapper {
 			position: fixed;
 			top: 50%;
@@ -636,7 +631,7 @@
 }
 
 
-.gdpr-consent-modal{
+.gdpr-reconsent-modal {
 	width: 100%;
 	height: 100%;
 	position: fixed;
@@ -644,7 +639,7 @@
 	left: 0;
 	background: #fff;
 	z-index: 99999;
-	.gdpr-consent-modal-content{
+	.gdpr-reconsent-modal-content{
 		width: 90%;
 		margin: 0 auto;
 		position: absolute;
@@ -654,7 +649,7 @@
 		@include breakpoint('medium') {
 			width: 50%;
 		}
-		.privacy-viewer {
+		.gdpr-privacy-viewer {
 			height: 50vh;
 			width: 100%;
 			border: 1px solid #cecece;
