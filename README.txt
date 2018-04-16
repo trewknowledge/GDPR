@@ -1,5 +1,6 @@
 === GDPR ===
 Contributors: fclaussen, matthewfarlymn, trewknowledge
+Donate link: http://gdpr-wp.com/donate/
 Tags: gdpr, compliance, privacy, law, general data protection regulation
 Requires at least: 4.0
 Requires PHP: 5.6
