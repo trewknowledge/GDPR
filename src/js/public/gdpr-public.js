@@ -77,24 +77,6 @@
 			}
 		});
 
-		$('.confirm-delete-request-dialog').dialog({
-			resizable: false,
-			autoOpen: false,
-			height: 'auto',
-			width: 400,
-			modal: true,
-			buttons: {
-				"Close my account": function() {
-					$('form.gdpr-add-to-deletion-requests').addClass('confirmed');
-					$('form.gdpr-add-to-deletion-requests.confirmed').submit();
-					$( this ).dialog( "close" );
-				},
-				Cancel: function() {
-					$( this ).dialog( "close" );
-				}
-			}
-		});
-
 		$('form.gdpr-add-to-deletion-requests').on('submit', function(e) {
 			if ( ! $(this).hasClass( 'confirmed' ) ) {
 				e.preventDefault();

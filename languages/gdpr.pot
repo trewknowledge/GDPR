@@ -109,7 +109,7 @@ msgstr ""
 msgid "Ignore"
 msgstr ""
 
-#: admin/class-gdpr-admin.php:516, admin/class-gdpr-admin.php:692, admin/class-gdpr-admin.php:754, public/class-gdpr-public.php:171, public/class-gdpr-public.php:243, public/class-gdpr-public.php:257
+#: admin/class-gdpr-admin.php:516, admin/class-gdpr-admin.php:692, admin/class-gdpr-admin.php:754, public/class-gdpr-public.php:164, public/class-gdpr-public.php:252, public/class-gdpr-public.php:266
 msgid "We could not verify the the security token. Please try again."
 msgstr ""
 
@@ -146,7 +146,7 @@ msgstr ""
 msgid "Users will have to consent to the updated privacy policy on login."
 msgstr ""
 
-#: admin/class-gdpr-admin.php:774, includes/class-gdpr-help.php:161, public/partials/consent-preferences.php:22, public/partials/cookie-preferences.php:31, public/partials/cookie-preferences.php:46
+#: admin/class-gdpr-admin.php:774, includes/class-gdpr-help.php:161, public/partials/privacy-preferences-modal.php:31, public/partials/privacy-preferences-modal.php:46
 msgid "Consent Management"
 msgstr ""
 
@@ -158,7 +158,7 @@ msgstr ""
 msgid "We could not verify the user email or the security token. Please try again."
 msgstr ""
 
-#: admin/class-gdpr-requests-admin.php:37, admin/class-gdpr-requests-admin.php:286, admin/class-gdpr-requests-admin.php:331, public/partials/confirmation-screens.php:37
+#: admin/class-gdpr-requests-admin.php:37, admin/class-gdpr-requests-admin.php:286, admin/class-gdpr-requests-admin.php:331, public/partials/confirmation-screens.php:47
 msgid "User not found."
 msgstr ""
 
@@ -507,35 +507,19 @@ msgstr ""
 msgid "User request expired. Removing %s user_meta."
 msgstr ""
 
-#: includes/helper-functions.php:27
-msgid "Consent management"
+#: includes/helper-functions.php:26, public/partials/privacy-bar.php:26
+msgid "Privacy Preferences"
 msgstr ""
 
-#: public/class-gdpr-public.php:175
-msgid "You can't disable all consents."
+#: public/class-gdpr-public.php:168
+msgid "You need to at least consent to our Privacy Policy."
 msgstr ""
 
-#: public/class-gdpr-public.php:183
-msgid "User updated consents from modal. These are the user consents after the save:"
+#: public/class-gdpr-public.php:194
+msgid "User updated their privacy preferences. These are the new approved cookies and consent preferences:"
 msgstr ""
 
-#: public/class-gdpr-public.php:221
-msgid "Our Privacy Policy has been updated."
-msgstr ""
-
-#: public/class-gdpr-public.php:222
-msgid "To continue using the site you need to read the revised version and agree to the terms."
-msgstr ""
-
-#: public/class-gdpr-public.php:227
-msgid "Agree"
-msgstr ""
-
-#: public/class-gdpr-public.php:228
-msgid "Disagree"
-msgstr ""
-
-#: public/class-gdpr-public.php:262
+#: public/class-gdpr-public.php:271
 msgid "User consented to the Privacy Policies."
 msgstr ""
 
@@ -771,7 +755,7 @@ msgstr ""
 msgid "Unregister this consent."
 msgstr ""
 
-#: admin/partials/settings.php:190, admin/partials/settings.php:193, public/partials/consent-preferences.php:35, public/partials/cookie-preferences.php:55, admin/partials/templates/tmpl-consents.php:9
+#: admin/partials/settings.php:190, admin/partials/settings.php:193, public/partials/privacy-preferences-modal.php:55, admin/partials/templates/tmpl-consents.php:9
 msgid "Required"
 msgstr ""
 
@@ -843,100 +827,64 @@ msgstr ""
 msgid "Send Request"
 msgstr ""
 
-#: public/partials/confirmation-screens.php:14
+#: public/partials/confirmation-screens.php:18
 msgid "Close your account?"
 msgstr ""
 
-#: public/partials/confirmation-screens.php:16
+#: public/partials/confirmation-screens.php:23
 msgid "Your account will be closed and all data will be permanently deleted and cannot be recovered. Are you sure?"
 msgstr ""
 
-#: public/partials/confirmation-screens.php:23
+#: public/partials/confirmation-screens.php:33
 msgid "Error!"
 msgstr ""
 
-#: public/partials/confirmation-screens.php:25
+#: public/partials/confirmation-screens.php:35
 msgid "Your account"
 msgstr ""
 
-#: public/partials/confirmation-screens.php:27
+#: public/partials/confirmation-screens.php:37
 msgid "Your account has been closed. We are sorry to see you go."
 msgstr ""
 
-#: public/partials/confirmation-screens.php:29
+#: public/partials/confirmation-screens.php:39
 msgid "Seems like you have published content on the site. We can't close your account right away before doing some review. You will receive an email when we are done reviewing your request."
 msgstr ""
 
-#: public/partials/confirmation-screens.php:33
+#: public/partials/confirmation-screens.php:43
 msgid "Email confirmation"
 msgstr ""
 
-#: public/partials/confirmation-screens.php:34
+#: public/partials/confirmation-screens.php:44
 msgid "We've sent you a confirmation email."
 msgstr ""
 
-#: public/partials/confirmation-screens.php:40
+#: public/partials/confirmation-screens.php:50
 msgid "We can't delete this user."
 msgstr ""
 
-#: public/partials/confirmation-screens.php:43
+#: public/partials/confirmation-screens.php:53
 msgid "Required information is missing from the form."
 msgstr ""
 
-#: public/partials/confirmation-screens.php:46
+#: public/partials/confirmation-screens.php:56
 msgid "Request Received"
 msgstr ""
 
-#: public/partials/confirmation-screens.php:47
+#: public/partials/confirmation-screens.php:57
 msgid "Your request has been received. We will be in touch soon."
 msgstr ""
 
-#: public/partials/confirmation-screens.php:50
+#: public/partials/confirmation-screens.php:60
 msgid "Data Export"
 msgstr ""
 
-#: public/partials/confirmation-screens.php:51
+#: public/partials/confirmation-screens.php:61
 msgid "Your export file is being generated. You will receive an email with your file soon."
 msgstr ""
 
-#: public/partials/confirmation-screens.php:54
+#: public/partials/confirmation-screens.php:64
 msgid "There was a problem with your request. Please try again later."
-msgstr ""
-
-#: public/partials/cookie-bar.php:26
-msgid "Privacy Preferences"
-msgstr ""
-
-#: public/partials/cookie-bar.php:27
-msgid "I Agree"
-msgstr ""
-
-#: public/partials/cookie-preferences.php:22
-msgid "Privacy Preference Center"
-msgstr ""
-
-#: public/partials/cookie-preferences.php:27
-msgid "Options"
-msgstr ""
-
-#: public/partials/cookie-preferences.php:33
-msgid "Cookie Settings"
-msgstr ""
-
-#: public/partials/cookie-preferences.php:81
-msgid "Cookies Used"
-msgstr ""
-
-#: public/partials/cookie-preferences.php:96
-msgid "Always Active"
-msgstr ""
-
-#: public/partials/cookie-preferences.php:115
-msgid "Opt Out"
-msgstr ""
-
-#: public/partials/cookie-preferences.php:131
-msgid "More Information"
 msgstr ""
 
 #: public/partials/delete-form.php:21
@@ -945,6 +893,54 @@ msgstr ""
 
 #: public/partials/export-data-form.php:8
 msgid "Download my data"
+msgstr ""
+
+#: public/partials/privacy-bar.php:27
+msgid "I Agree"
+msgstr ""
+
+#: public/partials/privacy-preferences-modal.php:22
+msgid "Privacy Preference Center"
+msgstr ""
+
+#: public/partials/privacy-preferences-modal.php:27
+msgid "Options"
+msgstr ""
+
+#: public/partials/privacy-preferences-modal.php:33
+msgid "Cookie Settings"
+msgstr ""
+
+#: public/partials/privacy-preferences-modal.php:81
+msgid "Cookies Used"
+msgstr ""
+
+#: public/partials/privacy-preferences-modal.php:96
+msgid "Always Active"
+msgstr ""
+
+#: public/partials/privacy-preferences-modal.php:115
+msgid "Opt Out"
+msgstr ""
+
+#: public/partials/privacy-preferences-modal.php:131
+msgid "More Information"
+msgstr ""
+
+#: public/partials/reconsent-modal.php:3
+msgid "Our Privacy Policy has been updated."
+msgstr ""
+
+#: public/partials/reconsent-modal.php:4
+msgid "To continue using the site you need to read the revised version and agree to the terms."
+msgstr ""
+
+#: public/partials/reconsent-modal.php:9
+msgid "Agree"
+msgstr ""
+
+#: public/partials/reconsent-modal.php:10
+msgid "Disagree"
 msgstr ""
 
 #: templates/email/complaint-request.php:22
