@@ -117,20 +117,29 @@
 		$(document).on('click', '.gdpr-agree', function(e) {
 			e.preventDefault();
 			var that = $(this);
+			$('.gdpr-consent-buttons').fadeOut(300, function() {
+				$('.gdpr-consent-loading').fadeIn(300);
+			});
+			var dotCount = 0;
+			var dotsAnimation = setInterval(function() {
+				var dots = $('.gdpr-ellipsis').html();
+				if ( dotCount < 3 ) {
+					$('.gdpr-ellipsis').append('.');
+					dotCount++;
+				} else {
+					$('.gdpr-ellipsis').html('');
+					dotCount = 0;
+				}
+			}, 600);
 			$.post(
 				GDPR.ajaxurl,
 				{
 					action: 'agree_with_terms',
 					nonce: $(this).data('nonce'),
-					beforeSend: function() {
-						$('.gdpr-reconsent-modal-content').hide().html(
-							'<h3 class="loading">Loading</h3>'
-						).fadeIn();
-					}
 				},
 				function(res) {
 					if ( res.success ) {
-						$('.gdpr-reconsent-modal').delay(2500).fadeOut(300, function(){
+						$('.gdpr-reconsent-modal').fadeOut(300, function(){
 							$(this).remove();
 							$('body').css('overflow', 'auto');
 						});
@@ -141,6 +150,23 @@
 
 		$(document).on('click', '.gdpr-disagree', function(e) {
 			e.preventDefault();
+			$('.gdpr-consent-buttons').fadeOut(300, function() {
+				$('.gdpr-updating').html(
+					'Aborting'
+				);
+				$('.gdpr-consent-loading').fadeIn(300);
+			});
+			var dotCount = 0;
+			var dotsAnimation = setInterval(function() {
+				var dots = $('.gdpr-ellipsis').html();
+				if ( dotCount < 3 ) {
+					$('.gdpr-ellipsis').append('.');
+					dotCount++;
+				} else {
+					$('.gdpr-ellipsis').html('');
+					dotCount = 0;
+				}
+			}, 600);
 			$.post(
 				GDPR.ajaxurl,
 				{

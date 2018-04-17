@@ -9,5 +9,8 @@
 			<a href="#" class="gdpr-agree" data-nonce="<?php echo esc_attr( wp_create_nonce( 'user_agree_with_terms' ) ); ?>"><?php esc_html_e( 'Agree', 'gdpr' ); ?></a>
 			<a href="#" class="gdpr-disagree" data-nonce="<?php echo esc_attr( wp_create_nonce( 'user_disagree_with_terms' ) ); ?>"><?php esc_html_e( 'Disagree', 'gdpr' ); ?></a>
 		</div>
+		<div class="gdpr-consent-loading">
+			<p class="gdpr-loading"><span class="gdpr-updating">Updating</span><span class="gdpr-ellipsis"></span></p>
+		</div>
 	</div>
 </div>
