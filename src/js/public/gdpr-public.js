@@ -122,10 +122,15 @@
 				{
 					action: 'agree_with_terms',
 					nonce: $(this).data('nonce'),
+					beforeSend: function() {
+						$('.gdpr-reconsent-modal-content').hide().html(
+							'<h3 class="loading">Loading</h3>'
+						).fadeIn();
+					}
 				},
 				function(res) {
 					if ( res.success ) {
-						$('.gdpr-reconsent-modal').fadeOut(300, function(){
+						$('.gdpr-reconsent-modal').delay(2500).fadeOut(300, function(){
 							$(this).remove();
 							$('body').css('overflow', 'auto');
 						});

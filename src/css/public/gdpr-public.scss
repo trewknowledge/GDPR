@@ -800,3 +800,14 @@
 		}
 	}
 }
+
+@keyframes loading {
+  0%   { opacity:0; }
+  50%  { opacity:1; }
+  100% { opacity:0; }
+}
+
+.loading {
+	animation: loading 2.5s infinite;
+	text-align: center;
+}
