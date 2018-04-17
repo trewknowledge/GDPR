@@ -178,6 +178,9 @@ Activating this plugin does not guarantee that an organisation is successfully m
 
 ## Changelog
 
+##### 1.1.2
+* Fixed reconsent modal not closing after agreeing to the new policy.
+
 ##### 1.1.1
 * Forgot to unload jQuery-UI
 ##### 1.1.0

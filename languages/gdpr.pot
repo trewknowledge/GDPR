@@ -109,7 +109,7 @@ msgstr ""
 msgid "Ignore"
 msgstr ""
 
-#: admin/class-gdpr-admin.php:516, admin/class-gdpr-admin.php:692, admin/class-gdpr-admin.php:754, public/class-gdpr-public.php:164, public/class-gdpr-public.php:252, public/class-gdpr-public.php:266
+#: admin/class-gdpr-admin.php:516, admin/class-gdpr-admin.php:695, admin/class-gdpr-admin.php:757, public/class-gdpr-public.php:164, public/class-gdpr-public.php:250, public/class-gdpr-public.php:264
 msgid "We could not verify the the security token. Please try again."
 msgstr ""
 
@@ -134,23 +134,23 @@ msgid "User registered to the site."
 msgstr ""
 
 #. translators: Name of consent
-#: admin/class-gdpr-admin.php:679
+#: admin/class-gdpr-admin.php:681
 msgid "User gave explicit consent to %s"
 msgstr ""
 
-#: admin/class-gdpr-admin.php:704
+#: admin/class-gdpr-admin.php:707
 msgid "Privacy Policy has been updated. Removing the Privacy Policy consent and requesting new consent."
 msgstr ""
 
-#: admin/class-gdpr-admin.php:709
+#: admin/class-gdpr-admin.php:712
 msgid "Users will have to consent to the updated privacy policy on login."
 msgstr ""
 
-#: admin/class-gdpr-admin.php:774, includes/class-gdpr-help.php:161, public/partials/privacy-preferences-modal.php:31, public/partials/privacy-preferences-modal.php:46
+#: admin/class-gdpr-admin.php:777, includes/class-gdpr-help.php:161, public/partials/privacy-preferences-modal.php:31, public/partials/privacy-preferences-modal.php:46
 msgid "Consent Management"
 msgstr ""
 
-#: admin/class-gdpr-admin.php:811
+#: admin/class-gdpr-admin.php:814
 msgid "Profile Updated. These are the user consents after the save:"
 msgstr ""
 
@@ -278,68 +278,64 @@ msgstr ""
 msgid "Show"
 msgstr ""
 
-#: includes/class-gdpr-email.php:148, includes/class-gdpr-help.php:89
-msgid "Data Breach Notification"
-msgstr ""
-
-#: includes/class-gdpr-email.php:160
+#: includes/class-gdpr-email.php:158
 msgid "Data breach notification sent to user."
 msgstr ""
 
 #. translators: email content
-#: includes/class-gdpr-email.php:162
+#: includes/class-gdpr-email.php:160
 msgid "Email content: %s"
 msgstr ""
 
 #. translators: nature of the data breach
-#: includes/class-gdpr-email.php:164
+#: includes/class-gdpr-email.php:162
 msgid "Nature of data breach: %s"
 msgstr ""
 
 #. translators: data protection officer contact information
-#: includes/class-gdpr-email.php:166
+#: includes/class-gdpr-email.php:164
 msgid "Data protection officer contact: %s"
 msgstr ""
 
 #. translators: likely consequences
-#: includes/class-gdpr-email.php:168
+#: includes/class-gdpr-email.php:166
 msgid "Likely consequences of breach: %s"
 msgstr ""
 
 #. translators: measures taken
-#: includes/class-gdpr-email.php:170
+#: includes/class-gdpr-email.php:168
 msgid "Measures taken or proposed to be taken: %s"
 msgstr ""
 
-#: includes/class-gdpr-email.php:199
+#: includes/class-gdpr-email.php:197
 msgid "Someone requested to close your account."
 msgstr ""
 
-#: includes/class-gdpr-email.php:200
+#: includes/class-gdpr-email.php:198
 msgid "Your account has been closed."
 msgstr ""
 
-#: includes/class-gdpr-email.php:201
+#: includes/class-gdpr-email.php:199
 msgid "Someone requested that we rectify data of your account."
 msgstr ""
 
-#: includes/class-gdpr-email.php:202, includes/class-gdpr-email.php:204, includes/class-gdpr-email.php:206
+#: includes/class-gdpr-email.php:200, includes/class-gdpr-email.php:202, includes/class-gdpr-email.php:204
 msgid "Your request has been completed."
 msgstr ""
 
-#: includes/class-gdpr-email.php:203
+#: includes/class-gdpr-email.php:201
 msgid "Someone made complaint on behalf of your account."
 msgstr ""
 
-#: includes/class-gdpr-email.php:205
+#: includes/class-gdpr-email.php:203
 msgid "Someone requested to download your data."
 msgstr ""
 
-#: includes/class-gdpr-email.php:207
+#: includes/class-gdpr-email.php:205
 msgid "Someone requested to send a data breach notification."
 msgstr ""
 
-#: includes/class-gdpr-email.php:208
+#: includes/class-gdpr-email.php:206
 msgid "Data Breach Notification."
 msgstr ""
 
@@ -389,6 +385,10 @@ msgstr ""
 
 #: includes/class-gdpr-help.php:82
 msgid "Use this page to look for all known data about a user. You can look it up using the user's email address and are able to download it in XML and JSON formats."
+msgstr ""
+
+#: includes/class-gdpr-help.php:89
+msgid "Data Breach Notification"
 msgstr ""
 
 #: includes/class-gdpr-help.php:90
@@ -515,11 +515,11 @@ msgstr ""
 msgid "You need to at least consent to our Privacy Policy."
 msgstr ""
 
-#: public/class-gdpr-public.php:194
+#: public/class-gdpr-public.php:192
 msgid "User updated their privacy preferences. These are the new approved cookies and consent preferences:"
 msgstr ""
 
-#: public/class-gdpr-public.php:271
+#: public/class-gdpr-public.php:269
 msgid "User consented to the Privacy Policies."
 msgstr ""
 

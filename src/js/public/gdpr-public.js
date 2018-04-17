@@ -110,7 +110,7 @@
 			});
 		}
 
-		if ( $('.gdpr-consent-modal').length > 0 ) {
+		if ( $('.gdpr-reconsent-modal').length > 0 ) {
 			$('body').css('overflow', 'hidden');
 		}
 
@@ -125,11 +125,9 @@
 				},
 				function(res) {
 					if ( res.success ) {
-						that.closest('.gdpr-consent-modal').fadeOut(300, function(){
+						$('.gdpr-reconsent-modal').fadeOut(300, function(){
 							$(this).remove();
-							if ( $('.gdpr-consent-modal').length == 0 ) {
-								$('body').css('overflow', 'auto');
-							}
+							$('body').css('overflow', 'auto');
 						});
 					}
 				}
