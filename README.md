@@ -178,6 +178,13 @@ Activating this plugin does not guarantee that an organisation is successfully m
 
 ## Changelog
 
+##### 1.1.3
+* Changed Complaint and Rectification form submit button wording.
+* Added a loading indicator on the reconsent window. Slow servers will not give the impression that this featured is not working anymore.
+* Fixed user notification not showing after confirming deletion email.
+* Fixed consent "required" toggle not displaying the correct state.
+* Added a second confirmation after disagreeing to reconsent.
+
 ##### 1.1.2
 * Fixed reconsent modal not closing after agreeing to the new policy.
 
