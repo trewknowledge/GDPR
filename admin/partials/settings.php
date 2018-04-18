@@ -194,7 +194,7 @@
 												<input type="hidden" name="<?php echo esc_attr( 'gdpr_consent_types' ); ?>[<?php echo esc_attr( $consent_key ); ?>][required]" id="required-<?php echo esc_attr( $consent_key ); ?>" value="1">
 											<?php else: ?>
 												<label class="gdpr-switch">
-													<input type="checkbox" name="<?php echo esc_attr( 'gdpr_consent_types' ); ?>[<?php echo esc_attr( $consent_key ); ?>][required]" <?php checked( esc_attr( $consent['required'] ), 'on' ); ?> id="required-<?php echo esc_attr( $consent_key ); ?>">
+													<input type="checkbox" name="<?php echo esc_attr( 'gdpr_consent_types' ); ?>[<?php echo esc_attr( $consent_key ); ?>][required]" <?php checked( esc_attr( $consent['required'] ), 1 ); ?> id="required-<?php echo esc_attr( $consent_key ); ?>">
 													<span class="gdpr-slider round"></span>
 												</label>
 											<?php endif; ?>
