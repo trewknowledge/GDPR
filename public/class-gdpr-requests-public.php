@@ -41,10 +41,11 @@ class GDPR_Requests_Public extends GDPR_Requests {
 		if ( parent::remove_from_requests( $index ) ) {
 			$token = GDPR::generate_pin();
 			GDPR_Email::send( $user->user_email, 'delete-resolved', array( 'token' => $token ) );
-			GDPR_Audit_Log::log( $user->ID, esc_html__( 'User was removed from the site.', 'gdpr') );
+			GDPR_Audit_Log::log( $user->ID, esc_html__( 'User was removed from the site.', 'gdpr' ) );
 			GDPR_Audit_Log::export_log( $user->ID, $token );
 			wp_delete_user( $user->ID );
 			wp_logout();
+			return true;
 		}
 	}
 
@@ -96,7 +97,7 @@ class GDPR_Requests_Public extends GDPR_Requests {
 						esc_url_raw(
 							add_query_arg(
 								array(
-									'notify' => 1,
+									'notify'         => 1,
 									'user-not-found' => 1,
 								),
 								wp_get_referer()
@@ -108,21 +109,21 @@ class GDPR_Requests_Public extends GDPR_Requests {
 
 				if ( in_array( 'administrator', $user->roles ) ) {
 					$admins_query = new WP_User_Query( array(
-							'role' => 'Administrator'
-					)	);
+						'role' => 'Administrator',
+					) );
 					if ( 1 === $admins_query->get_total() ) {
 						wp_safe_redirect(
-						esc_url_raw(
-							add_query_arg(
-								array(
-									'notify' => 1,
-									'cannot-delete' => 1,
-								),
-								wp_get_referer()
+							esc_url_raw(
+								add_query_arg(
+									array(
+										'notify'        => 1,
+										'cannot-delete' => 1,
+									),
+									wp_get_referer()
+								)
 							)
-						)
-					);
-					exit;
+						);
+						exit;
 					}
 				}
 				break;
@@ -149,7 +150,7 @@ class GDPR_Requests_Public extends GDPR_Requests {
 						esc_url_raw(
 							add_query_arg(
 								array(
-									'notify' => 1,
+									'notify'         => 1,
 									'user-not-found' => 1,
 								),
 								wp_get_referer()
@@ -162,12 +163,20 @@ class GDPR_Requests_Public extends GDPR_Requests {
 		}
 
 		$key = parent::add_to_requests( $user->user_email, $type, $data );
-		if ( GDPR_Email::send( $user->user_email, "{$type}-request", array( 'user' => $user, 'key' => $key, 'data' => $data ) ) ) {
+		if ( GDPR_Email::send(
+			$user->user_email,
+			"{$type}-request",
+			array(
+				'user' => $user,
+				'key'  => $key,
+				'data' => $data,
+			)
+		) ) {
 			wp_safe_redirect(
 				esc_url_raw(
 					add_query_arg(
 						array(
-							'notify' => 1,
+							'notify'     => 1,
 							'email-sent' => 1,
 						),
 						wp_get_referer()
@@ -181,7 +190,7 @@ class GDPR_Requests_Public extends GDPR_Requests {
 					add_query_arg(
 						array(
 							'notify' => 1,
-							'error' => 1,
+							'error'  => 1,
 						),
 						wp_get_referer()
 					)
@@ -202,10 +211,9 @@ class GDPR_Requests_Public extends GDPR_Requests {
 			return;
 		}
 
-		$type = sanitize_text_field( wp_unslash( $_GET['type'] ) );
-		$key = sanitize_text_field( wp_unslash( $_GET['key'] ) );
+		$type  = sanitize_text_field( wp_unslash( $_GET['type'] ) );
+		$key   = sanitize_text_field( wp_unslash( $_GET['key'] ) );
 		$email = sanitize_email( $_GET['email'] );
-
 
 		$user = get_user_by( 'email', $email );
 		if ( ! $user instanceof WP_User ) {
@@ -223,15 +231,15 @@ class GDPR_Requests_Public extends GDPR_Requests {
 					$found_posts = parent::user_has_content( $user );
 					if ( $found_posts ) {
 						parent::confirm_request( $key );
-						GDPR_Audit_Log::log( $user->ID, esc_html__( 'User confirmed a request to be deleted.', 'gdpr') );
-						GDPR_Audit_Log::log( $user->ID, esc_html__( 'Content was found for that user.', 'gdpr') );
-						GDPR_Audit_Log::log( $user->ID, esc_html__( 'User added to the erasure review table.', 'gdpr') );
+						GDPR_Audit_Log::log( $user->ID, esc_html__( 'User confirmed a request to be deleted.', 'gdpr' ) );
+						GDPR_Audit_Log::log( $user->ID, esc_html__( 'Content was found for that user.', 'gdpr' ) );
+						GDPR_Audit_Log::log( $user->ID, esc_html__( 'User added to the erasure review table.', 'gdpr' ) );
 						wp_safe_redirect(
 							esc_url_raw(
 								add_query_arg(
 									array(
 										'user-deleted' => 0,
-										'notify' => 1
+										'notify'       => 1,
 									),
 									home_url()
 								)
@@ -245,7 +253,7 @@ class GDPR_Requests_Public extends GDPR_Requests {
 									add_query_arg(
 										array(
 											'user-deleted' => 1,
-											'notify' => 1
+											'notify'       => 1,
 										),
 										home_url()
 									)
@@ -258,13 +266,13 @@ class GDPR_Requests_Public extends GDPR_Requests {
 				case 'rectify':
 				case 'complaint':
 					parent::confirm_request( $key );
-					GDPR_Audit_Log::log( $user->ID, esc_html__( 'User placed a request for rectification or a complaint.', 'gdpr') );
+					GDPR_Audit_Log::log( $user->ID, esc_html__( 'User placed a request for rectification or a complaint.', 'gdpr' ) );
 					wp_safe_redirect(
 						esc_url_raw(
 							add_query_arg(
 								array(
 									'request-confirmed' => 1,
-									'notify' => 1
+									'notify'            => 1,
 								),
 								home_url()
 							)
@@ -274,14 +282,22 @@ class GDPR_Requests_Public extends GDPR_Requests {
 					break;
 				case 'export-data':
 					$format = isset( $_GET['format'] ) ? sanitize_text_field( wp_unslash( $_GET['format'] ) ) : 'xml';
-					wp_schedule_single_event( time(), 'mail_export_data', array( 'email' => $user->user_email, 'format' => $format, 'key' => $key ) );
-					GDPR_Audit_Log::log( $user->ID, esc_html__( 'User requested to have all their data sent to their email.', 'gdpr') );
+					wp_schedule_single_event(
+						time(),
+						'mail_export_data',
+						array(
+							'email'  => $user->user_email,
+							'format' => $format,
+							'key'    => $key,
+						)
+					);
+					GDPR_Audit_Log::log( $user->ID, esc_html__( 'User requested to have all their data sent to their email.', 'gdpr' ) );
 					wp_safe_redirect(
 						esc_url_raw(
 							add_query_arg(
 								array(
 									'export-started' => 1,
-									'notify' => 1
+									'notify'         => 1,
 								),
 								home_url()
 							)
@@ -302,11 +318,11 @@ class GDPR_Requests_Public extends GDPR_Requests {
 	 * @param  string $key    The request array key.
 	 */
 	public function mail_export_data( $email, $format, $key ) {
-		$email = sanitize_email( $email );
+		$email  = sanitize_email( $email );
 		$format = sanitize_text_field( wp_unslash( $format ) );
-		$key = sanitize_text_field( wp_unslash( $key ) );
+		$key    = sanitize_text_field( wp_unslash( $key ) );
 
-		$export = GDPR::generate_export( $email, $format );
+		$export   = GDPR::generate_export( $email, $format );
 		$filename = get_temp_dir() . $email . '.' . $format;
 		if ( $export ) {
 			file_put_contents( $filename, $export );
