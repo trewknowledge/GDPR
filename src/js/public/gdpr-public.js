@@ -87,7 +87,7 @@
 			}
 		} );
 
-		$(document).on('click', '.gdpr.gdpr-general-confirmation .gdpr-close, .gdpr-overlay', function() {
+		$(document).on('click', '.gdpr.gdpr-general-confirmation .gdpr-close, .gdpr-overlay, .gdpr-cancel', function() {
 			$('.gdpr-overlay').fadeOut();
 			$('.gdpr.gdpr-general-confirmation .gdpr-wrapper').fadeOut();
 		});
@@ -149,10 +149,19 @@
 		});
 
 		$(document).on('click', '.gdpr-disagree', function(e) {
+			$('.gdpr-overlay').fadeIn();
+			$('.gdpr.gdpr-disagree-confirmation .gdpr-wrapper').css({
+				'display': 'flex',
+			}).hide().fadeIn();
+		});
+
+		$(document).on('click', '.gdpr-disagree-confirm', function(e) {
 			e.preventDefault();
+			$('.gdpr-overlay').fadeOut();
+			$('.gdpr.gdpr-disagree-confirmation .gdpr-wrapper').fadeOut();
 			$('.gdpr-consent-buttons').fadeOut(300, function() {
 				$('.gdpr-updating').html(
-					'Aborting'
+					GDPR.aborting
 				);
 				$('.gdpr-consent-loading').fadeIn(300);
 			});

@@ -91,6 +91,7 @@ class GDPR_Public {
 		wp_enqueue_script( $this->plugin_name, plugin_dir_url( dirname( __FILE__ ) ) . 'assets/js/gdpr-public.js', array( 'jquery' ), $this->version, false );
 		wp_localize_script( $this->plugin_name, 'GDPR', array(
 			'ajaxurl' => admin_url( 'admin-ajax.php' ),
+			'aborting' => esc_html__( 'Aborting', 'gdpr' ),
 		) );
 	}
 

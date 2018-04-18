@@ -592,7 +592,7 @@
 			}
 		}
 	}
-	&.gdpr-delete-confirmation, &.gdpr-accept-confirmation {
+	&.gdpr-general-confirmation {
 		.gdpr-wrapper {
 			flex-direction: column;
 			justify-content: center;
@@ -676,6 +676,7 @@
 					color: #fff;
 					text-decoration: none;
 					text-shadow: 0 -1px 1px #006799, 1px 0 1px #006799, 0 1px 1px #006799, -1px 0 1px #006799;
+					display: inline;
 					&:hover {
 						background: #008ec2;
 						border-color: #006799;
@@ -685,6 +686,26 @@
 						border-color: #006799;
 						box-shadow: inset 0 2px 0 #006799;
 						vertical-align: top;
+					}
+					&.gdpr-cancel {
+						color: #555;
+						border-color: #ccc;
+						background: #f7f7f7;
+						box-shadow: 0 1px 0 #ccc;
+						text-shadow: none;
+						&:hover {
+							background: #fafafa;
+							border-color: #999;
+							color: #23282d;
+							box-shadow: 0 1px 0 #ccc;
+						}
+						&:active, &:focus {
+							background: #eee;
+							border-color: #999;
+							box-shadow: inset 0 2px 5px -3px rgba(0,0,0,.5);
+							transform: translateY(1px);
+							color: #23282d;
+						}
 					}
 				}
 			}

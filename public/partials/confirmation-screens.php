@@ -23,7 +23,8 @@
 			<p><?php esc_html_e( 'Your account will be closed and all data will be permanently deleted and cannot be recovered. Are you sure?', 'gdpr' ); ?></p>
 		</div>
 		<footer>
-			<button class="gdpr-delete-account">Delete</button>
+			<button class="gdpr-delete-account">Continue</button>
+			<button class="gdpr-cancel"><?php esc_html_e( 'Cancel', 'gdpr' ); ?></button>
 		</footer>
 	</div>
 </div>
