@@ -12,7 +12,7 @@
  */
 ?>
 
-<div class="gdpr gdpr-privacy-bar">
+<div class="gdpr gdpr-privacy-bar" style="display:none;">
 	<div class="gdpr-wrapper">
 		<div class="gdpr-content">
 			<p>
