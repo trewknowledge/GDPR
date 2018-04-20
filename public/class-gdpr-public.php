@@ -92,6 +92,7 @@ class GDPR_Public {
 		wp_localize_script( $this->plugin_name, 'GDPR', array(
 			'ajaxurl' => admin_url( 'admin-ajax.php' ),
 			'aborting' => esc_html__( 'Aborting', 'gdpr' ),
+			'is_user_logged_in' => is_user_logged_in(),
 		) );
 	}
 
