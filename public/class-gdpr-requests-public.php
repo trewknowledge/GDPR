@@ -41,6 +41,7 @@ class GDPR_Requests_Public extends GDPR_Requests {
 		if ( parent::remove_from_requests( $index ) ) {
 			$token = GDPR::generate_pin();
 			GDPR_Email::send( $user->user_email, 'delete-resolved', array( 'token' => $token ) );
+			GDPR_Email::send( get_option('admin_email'), 'delete-resolved-notification', array( 'user' => $user->user_email,'token' => $token ) );
 			GDPR_Audit_Log::log( $user->ID, esc_html__( 'User was removed from the site.', 'gdpr' ) );
 			GDPR_Audit_Log::export_log( $user->ID, $token );
 			wp_delete_user( $user->ID );
@@ -326,8 +327,8 @@ class GDPR_Requests_Public extends GDPR_Requests {
 		$filename = get_temp_dir() . $email . '.' . $format;
 		if ( $export ) {
 			file_put_contents( $filename, $export );
-			if ( GDPR_Email::send( $email, 'export-data-resolved', array(), array( $filename ) ) ) {
-				unlink( $filename );
+			if (( GDPR_Email::send( $email, 'export-data-resolved', array(), array( $filename ) ) )&&(GDPR_Email::send( get_option('admin_email'), 'export-data-resolved-notification', array('user' => $email), array($filename ) ))) {
+                unlink( $filename );
 				parent::remove_from_requests( $key );
 			}
 		}
