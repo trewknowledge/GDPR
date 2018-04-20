@@ -426,6 +426,55 @@ class GDPR {
 	}
 
 	/**
+	 * Save a consent to the user meta.
+	 * @since  1.1.4
+	 * @author Fernando Claussen <fernandoclaussen@gmail.com>
+	 * @param  integer $user_id The user ID.
+	 * @param  string $consent The consent ID.
+	 * @return void
+	 */
+	public static function save_consent( $user_id, $consent ) {
+		$registered_consent = get_option( 'gdpr_consent_types', array( 'privacy-policy' ) );
+		$consent_ids = array_keys( $registered_consent );
+		$user = get_user_by( 'ID', $user_id );
+
+		if ( ! $user ) {
+			return;
+		}
+
+		$user_consent = get_user_meta( $user_id, 'gdpr_consents' );
+
+		if ( ! in_array( $consent, $consent_ids ) || in_array( $consent, $user_consent ) ) {
+			return;
+		}
+
+		add_user_meta( $user_id, 'gdpr_consents', $consent );
+	}
+
+	/**
+	 * Remove a user consent.
+	 * @since  1.1.4
+	 * @author Fernando Claussen <fernandoclaussen@gmail.com>
+	 * @param  integer $user_id The user ID.
+	 * @param  string $consent The consent ID.
+	 * @return void
+	 */
+	public static function remove_consent( $user_id, $consent ) {
+		$user = get_user_by( 'ID', $user_id );
+
+		if ( ! $user ) {
+			return;
+		}
+
+		$user_consent = get_user_meta( $user_id, 'gdpr_consents' );
+
+		if ( in_array( $consent, $user_consent ) ) {
+			delete_user_meta( $user_id, 'gdpr_consents', $consent );
+		}
+	}
+
+
+	/**
 	 * Generates a random 6 digit pin.
 	 * This pin is necessary to use with the audit log files.
 	 *
