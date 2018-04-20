@@ -5,7 +5,6 @@ echo sprintf(
     esc_html__(
         'User account %s has been closed.
 
-Data about account:
-Token: %s', 'gdpr' ),
+Audit Token: %s', 'gdpr' ),
    $args['user'], $args['token']
 );
