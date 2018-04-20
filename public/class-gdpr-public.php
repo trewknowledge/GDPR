@@ -102,10 +102,6 @@ class GDPR_Public {
 	 * @author Fernando Claussen <fernandoclaussen@gmail.com>
 	 */
 	public function privacy_bar() {
-		if ( isset( $_COOKIE['gdpr']['allowed_cookies'] ) ) { // Input var okay.
-			return;
-		}
-
 		$content             = get_option( 'gdpr_cookie_banner_content', '' );
 		$tabs                = get_option( 'gdpr_cookie_popup_content', array() );
 		$link_label          = get_option( 'gdpr_cookie_banner_privacy_policy_link_label', '' );
@@ -220,26 +216,16 @@ class GDPR_Public {
 	 * @return bool     Whether the user consented or not.
 	 */
 	public function is_consent_needed() {
-		if ( ! is_user_logged_in() ) {
-			return;
-		}
-
 		$privacy_policy_page = get_option( 'gdpr_privacy_policy_page' );
 		if ( ! $privacy_policy_page ) {
 			return;
 		}
 
-		$page_obj = get_post( $privacy_policy_page );
-		if ( empty( $page_obj->post_content ) ) {
-			return;
-		}
-
+		$page_obj      = get_post( $privacy_policy_page );
 		$user          = wp_get_current_user();
 		$user_consents = get_user_meta( $user->ID, 'gdpr_consents' );
 
-		if ( ! in_array( 'privacy-policy', (array) $user_consents ) ) {
-			include plugin_dir_path( __FILE__ ) . 'partials/reconsent-modal.php';
-		}
+		include plugin_dir_path( __FILE__ ) . 'partials/reconsent-modal.php';
 	}
 
 	/**
