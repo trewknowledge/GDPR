@@ -253,9 +253,53 @@ class GDPR_Public {
 		}
 
 		$user = wp_get_current_user();
+		$user_consents = get_user_meta( $user->ID, 'gdpr_consents' );
+		$user_consents[] = 'privacy-policy';
+		$user_consents = array_unique( $user_consents );
 		add_user_meta( $user->ID, 'gdpr_consents', 'privacy-policy' );
+		setcookie( "gdpr[consent_types]", json_encode( $user_consents ), time() + YEAR_IN_SECONDS, "/" );
 		GDPR_Audit_Log::log( $user->ID, esc_html__( 'User consented to the Privacy Policies.', 'gdpr' ) );
 		wp_send_json_success();
+	}
+
+	public function set_plugin_cookies() {
+		$user_id = get_current_user_id();
+
+		if ( ! isset( $_COOKIE['gdpr']['consent_types'] ) && ! $user_id ) {
+			setcookie( 'gdpr[consent_types]', '[]', time() + YEAR_IN_SECONDS, "/" );
+		}
+
+		if ( $user_id ) {
+			$user_consents = get_user_meta( $user_id, 'gdpr_consents' );
+			$cookie_consents = json_decode( $_COOKIE['gdpr']['consent_types'] );
+			if ( ! empty( array_diff( (array) $user_consents, (array) $cookie_consents ) ) ) {
+				setcookie( "gdpr[consent_types]", json_encode( $user_consents ), time() + YEAR_IN_SECONDS, "/" );
+			}
+		}
+
+		if ( ! isset( $_COOKIE['gdpr']['allowed_cookies'] ) ) {
+			$registered_cookies = get_option( 'gdpr_cookie_popup_content', array() );
+			$cookies = array();
+			if ( ! empty( $registered_cookies ) ) {
+				$required_cookies = array_filter( $registered_cookies, function( $item ) {
+					return $item['always_active'] == 1;
+				});
+				if ( ! empty( $required_cookies ) ) {
+					foreach ( $required_cookies as $category ) {
+						$cookies_used = explode( ',', $category['cookies_used'] );
+						foreach ( $cookies_used as $cookie ) {
+							$cookies[] = trim( $cookie );
+						}
+					}
+				}
+			}
+
+			if ( ! empty( $cookies ) ) {
+				setcookie( "gdpr[allowed_cookies]", json_encode( $cookies ), time() + YEAR_IN_SECONDS, "/" );
+			} else {
+				setcookie( "gdpr[allowed_cookies]", '[]', time() + YEAR_IN_SECONDS, "/" );
+			}
+		}
 	}
 
 }
