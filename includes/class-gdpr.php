@@ -188,9 +188,9 @@ class GDPR {
 		add_action( 'admin_enqueue_scripts', array( $plugin_admin, 'enqueue_scripts' ) );
 		add_action( 'admin_menu', array( $plugin_admin, 'add_menu' ) );
 		add_action( 'admin_init', array( $plugin_admin, 'register_settings' ) );
-		add_action( 'register_form', array( $plugin_admin, 'register_form' ) );
+		add_action( 'register_form', array( __CLASS__, 'consent_checkboxes' ) );
 		add_action( 'registration_errors', array( $plugin_admin, 'registration_errors' ), 10, 3 );
-		add_action( 'user_register', array( $plugin_admin, 'user_register' ) );
+		add_action( 'user_register', array( __CLASS__, 'save_user_consent_on_registration' ) );
 		add_action( 'wp_ajax_gdpr_access_data', array( $plugin_admin, 'access_data' ) );
 		add_action( 'wp_ajax_gdpr_audit_log', array( $plugin_admin, 'audit_log' ) );
 		add_action( 'admin_post_gdpr_data_breach', array( $plugin_admin, 'send_data_breach_confirmation_email' ) );
@@ -248,6 +248,51 @@ class GDPR {
 		add_action( 'admin_post_gdpr_send_request_email', array( $requests_public, 'send_request_email' ) );
 		add_action( 'admin_post_nopriv_gdpr_send_request_email', array( $requests_public, 'send_request_email' ) );
 		add_action( 'mail_export_data', array( $requests_public, 'mail_export_data' ), 10, 3 ); // CRON JOB
+	}
+
+	/**
+	 * Save the extra fields on a successful registration.
+	 * @since  1.0.0
+	 * @author Fernando Claussen <fernandoclaussen@gmail.com>
+	 * @param  int $user_id The user ID.
+	 */
+	public static function save_user_consent_on_registration( $user_id ) {
+		GDPR_Audit_Log::log( $user_id, esc_html__( 'User registered to the site.', 'gdpr' ) );
+
+		if ( isset( $_POST['user_consents'] ) ) {
+
+			$consents = array_map( 'sanitize_text_field', array_keys( $_POST['user_consents'] ) );
+			foreach ( $consents as $consent ) {
+				/* translators: Name of consent */
+				GDPR_Audit_Log::log( $user_id, sprintf( esc_html__( 'User gave explicit consent to %s', 'gdpr' ), $consent ) );
+				add_user_meta( $user_id, 'gdpr_consents', $consent );
+			}
+			setcookie( "gdpr[consent_types]", json_encode( $consents ), time() + YEAR_IN_SECONDS, "/" );
+		}
+	}
+
+	/**
+	 * Renders consent checkboxes to be used across the site.
+	 * @since  1.1.4
+	 * @author Fernando Claussen <fernandoclaussen@gmail.com>
+	 */
+	public static function consent_checkboxes() {
+		$consent_types = get_option( 'gdpr_consent_types', array() );
+		$sent_extras = ( isset( $_POST['user_consents'] ) ) ? $_POST['user_consents'] : array();
+		$allowed_html = array(
+			'a' => array(
+				'href' => true,
+				'title' => true,
+				'target' => true,
+			),
+		);
+		foreach ( $consent_types as $key => $consent ): ?>
+			<p>
+				<input type="checkbox" name="user_consents[<?php echo esc_attr( $key ) ?>]" id="<?php echo esc_attr( $key ) ?>-consent" value="1" <?php echo ( isset( $consent['required'] ) && $consent['required'] ) ? 'required' : ''; ?> <?php ( isset( $sent_extras[ $key ] ) ) ? checked( $sent_extras[ $key ], 1 ) : ''; ?>>
+				<label for="<?php echo esc_attr( $key ) ?>-consent"><?php echo wp_kses( $consent['registration'], $allowed_html ); ?></label>
+			</p>
+		<?php endforeach;
+		echo '<br>';
 	}
 
 	/**
