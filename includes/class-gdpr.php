@@ -279,6 +279,7 @@ class GDPR {
 			'gdpr_rectify_key',
 			'gdpr_complaint_key',
 			'gdpr_export-data_key',
+			'gdpr_file-export-data_key',
 		);
 
 		return array_diff_key( $usermeta, array_flip( $remove_metadata ) );
@@ -405,7 +406,7 @@ class GDPR {
 	 * @author Fernando Claussen <fernandoclaussen@gmail.com>
 	 */
 	function export_data() {
-		if ( ! isset( $_POST['nonce'], $_POST['email'], $_POST['type'] ) || ! wp_verify_nonce( sanitize_key( wp_unslash( $_POST['nonce'] ) ), 'export-data' ) ) {
+		if ( ! isset( $_POST['nonce'], $_POST['email'], $_POST['type'] ) || ! wp_verify_nonce( sanitize_key( wp_unslash( $_POST['nonce'] ) ), 'export-data' )|| ! wp_verify_nonce( sanitize_key( wp_unslash( $_POST['nonce'] ) ), 'file-export-data' ) ) {
 			wp_send_json_error();
 		}
 

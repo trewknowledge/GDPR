@@ -202,6 +202,7 @@ class GDPR_Email {
 			'complaint-request'                  => apply_filters( 'gdpr_complaint_request_email_subject', esc_html__( 'Someone made complaint on behalf of your account.', 'gdpr' ) ),
 			'complaint-resolved'                 => apply_filters( 'gdpr_complaint_resolved_email_subject', esc_html__( 'Your request has been completed.', 'gdpr' ) ),
 			'export-data-request'                => apply_filters( 'gdpr_export_data_request_email_subject', esc_html__( 'Someone requested to download your data.', 'gdpr' ) ),
+			'file-export-data-request'           => apply_filters( 'gdpr_file_export_data_request_email_subject', esc_html__( 'Someone requested to download your data.', 'gdpr' ) ),
 			'export-data-resolved'               => apply_filters( 'gdpr_export_data_resolved_email_subject', esc_html__( 'Your request has been completed.', 'gdpr' ) ),
 			'export-data-resolved-notification'  => apply_filters( 'gdpr_export_data_resolved_notification_email_subject', esc_html__( 'GDPR Notification: A user Download My Data request has been completed.', 'gdpr' ) ),
 			'data-breach-request'                => apply_filters( 'gdpr_data_breach_request_email_subject', esc_html__( 'Someone requested to send a data breach notification.', 'gdpr' ) ),
