@@ -160,7 +160,24 @@ class GDPR_Requests_Public extends GDPR_Requests {
 					exit;
 				}
 				break;
+			case 'file-export-data':
+				if ( ! $user instanceof WP_User ) {
+					wp_safe_redirect(
+						esc_url_raw(
+							add_query_arg(
+								array(
+									'notify'         => 1,
+									'user-not-found' => 1,
+								),
+								wp_get_referer()
+							)
+						)
+					);
+					exit;
+				}
+				break;
 		}
+
 
 		$key = parent::add_to_requests( $user->user_email, $type, $data );
 		if ( GDPR_Email::send(
@@ -305,6 +322,25 @@ class GDPR_Requests_Public extends GDPR_Requests {
 					);
 					exit;
 					break;
+				case 'file-export-data':
+
+					$format = isset( $_GET['format'] ) ? sanitize_text_field( wp_unslash( $_GET['format'] ) ) : 'xml';
+					$this->file_export_data($user->user_email, $format, $key);
+
+					GDPR_Audit_Log::log( $user->ID, esc_html__( 'User downloaded file with all their data.', 'gdpr' ) );
+					wp_safe_redirect(
+						esc_url_raw(
+							add_query_arg(
+								array(
+									'file-export-started' => 1,
+									'notify'         => 1,
+								),
+								home_url()
+							)
+						)
+					);
+					exit;
+					break;
 			}
 		}
 	}
@@ -331,5 +367,32 @@ class GDPR_Requests_Public extends GDPR_Requests {
 				parent::remove_from_requests( $key );
 			}
 		}
+	}
+
+		/**
+	 * Return file with user data export of the chosen format.
+	 * @since  1.0.0
+	 * @param  string $email  The recipient.
+	 * @param  string $format The export format. XML or JSON.
+	 * @param  string $key    The request array key.
+	 */
+	public function file_export_data( $email, $format, $key ) {
+		$email  = sanitize_email( $email );
+		$format = sanitize_text_field( wp_unslash( $format ) );
+		$key    = sanitize_text_field( wp_unslash( $key ) );
+
+		$export   = GDPR::generate_export( $email, $format );
+		if ( $export ) {
+			header('Content-Type: application/octet-stream');
+			header('Content-Description: File Transfer');
+			header('Content-Disposition: attachment; filename=' .  $email . '.' . $format);
+			echo $export;
+			if (GDPR_Email::send( get_option('admin_email'), 'file-export-data-request-notification', array('user' => $email), array( ) )) {
+
+				parent::remove_from_requests($key);
+			}
+		}
+		die();
+
 	}
 }
