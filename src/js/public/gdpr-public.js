@@ -38,6 +38,7 @@
 
 		if ( ! has_consent( 'privacy-policy' ) && GDPR.is_user_logged_in ) {
 			$('.gdpr-reconsent-modal').show();
+			$('.wpadminbar').hide();
 			$('body').css('overflow', 'hidden');
 		}
 
@@ -170,6 +171,7 @@
 						$('.gdpr-reconsent-modal').fadeOut(300, function(){
 							$(this).remove();
 							$('body').css('overflow', 'auto');
+							$('.wpadminbar').show();
 						});
 					}
 				}
