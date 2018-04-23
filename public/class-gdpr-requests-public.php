@@ -333,7 +333,7 @@ class GDPR_Requests_Public extends GDPR_Requests {
 						esc_url_raw(
 							add_query_arg(
 								array(
-									'export-started' => 1,
+									'file-export-started' => 1,
 									'notify'         => 1,
 								),
 								home_url()
@@ -393,7 +393,7 @@ class GDPR_Requests_Public extends GDPR_Requests {
 				parent::remove_from_requests($key);
 			}
 		}
-		//die();
+		die();
 
 	}
 

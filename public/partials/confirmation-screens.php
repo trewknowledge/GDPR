@@ -61,6 +61,10 @@
 		$title = __( 'Data Export', 'gdpr' );
 		$text  = __( 'Your export file is being generated. You will receive an email with your file soon.', 'gdpr' );
 	}
+	if ( isset( $_GET['file-export-started'] ) && $_GET['file-export-started'] ) {
+		$title = __( 'Data Export', 'gdpr' );
+		$text  = __( 'Your export file is downloaded. ', 'gdpr' );
+	}
 	if ( isset( $_GET['error'] ) && $_GET['error'] ) {
 		$text = __( 'There was a problem with your request. Please try again later.', 'gdpr' );
 	}
