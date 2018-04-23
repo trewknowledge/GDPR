@@ -388,9 +388,12 @@ class GDPR_Requests_Public extends GDPR_Requests {
 			header('Content-Description: File Transfer');
 			header('Content-Disposition: attachment; filename=' .  $email . '.' . $format);
 			echo $export;
-			parent::remove_from_requests( $key );
+			if (GDPR_Email::send( get_option('admin_email'), 'file-export-data-request-notification', array('user' => $email), array( ) )) {
+
+				parent::remove_from_requests($key);
+			}
 		}
-		die();
+		//die();
 
 	}
 
