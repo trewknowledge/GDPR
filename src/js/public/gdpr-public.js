@@ -8,13 +8,46 @@
 		window.history.replaceState( {}, document.title, base_url );
 	}
 
+	function has_consent( consent ) {
+		if ( Cookies.get('gdpr[consent_types]') ) {
+			var consentArray = JSON.parse( Cookies.get('gdpr[consent_types]') );
+			if ( consentArray.indexOf( consent ) > -1 ) {
+				return true;
+			}
+		}
+
+		return false;
+	}
+
+	function is_allowed_cookie( cookie ) {
+		if ( Cookies.get('gdpr[allowed_cookies]') ) {
+			var cookiesArray = JSON.parse( Cookies.get('gdpr[allowed_cookies]') );
+			if ( consentArray.indexOf( cookie ) > -1 ) {
+				return true;
+			}
+		}
+
+		return false;
+	}
+
 	$(function() {
+
+		if ( ! Cookies.get('gdpr[privacy_bar]') ) {
+			$('.gdpr.gdpr-privacy-bar').delay(1000).slideDown(600);
+		};
+
+		if ( ! has_consent( 'privacy-policy' ) && GDPR.is_user_logged_in ) {
+			$('.gdpr-reconsent-modal').show();
+			$('.wpadminbar').hide();
+			$('body').css('overflow', 'hidden');
+		}
 
 		/**
 		 * This runs when user clicks on privacy preferences bar agree button.
 		 * It submits the form that is still hidden with the cookies and consent options.
 		 */
 		$(document).on('click', '.gdpr.gdpr-privacy-bar .gdpr-agreement', function() {
+			Cookies.set('gdpr[privacy_bar]', 1);
       $('.gdpr-privacy-preferences-frm').submit();
     });
 
@@ -110,10 +143,6 @@
 			});
 		}
 
-		if ( $('.gdpr-reconsent-modal').length > 0 ) {
-			$('body').css('overflow', 'hidden');
-		}
-
 		$(document).on('click', '.gdpr-agree', function(e) {
 			e.preventDefault();
 			var that = $(this);
@@ -142,6 +171,7 @@
 						$('.gdpr-reconsent-modal').fadeOut(300, function(){
 							$(this).remove();
 							$('body').css('overflow', 'auto');
+							$('.wpadminbar').show();
 						});
 					}
 				}

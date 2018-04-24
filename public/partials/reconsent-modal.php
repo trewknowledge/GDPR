@@ -1,4 +1,4 @@
-<div class="gdpr-reconsent-modal">
+<div class="gdpr-reconsent-modal" style="display:none;">
 	<div class="gdpr-reconsent-modal-content">
 		<h3><?php esc_html_e( 'Our Privacy Policy has been updated.', 'gdpr' ); ?></h3>
 		<h4><?php esc_html_e( 'To continue using the site you need to read the revised version and agree to the terms.', 'gdpr' ); ?></h4>
