@@ -15,6 +15,9 @@ This plugin is meant to assist with the GDPR obligations of a Data processor and
 
 This plugin is meant to assist a Controller, Data Processor, and Data Protection Officer (DPO) with efforts to meet the obligations and rights enacted under the GDPR.
 
+== Documentation ==
+[http://gdpr-wp.com/knowledge-base/](http://gdpr-wp.com/knowledge-base/)
+
 == Collaboration ==
 
 You can send your pull request at [https://github.com/trewknowledge/gdpr](https://github.com/trewknowledge/gdpr)
