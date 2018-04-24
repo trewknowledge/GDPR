@@ -23,25 +23,7 @@ This plugin is meant to assist a Controller, Data Processor, and Data Protection
 You can send your pull request at [https://github.com/trewknowledge/gdpr](https://github.com/trewknowledge/gdpr)
 
 == Shortcodes & helper functions ==
-**WordPress replace the quotes below with the wrong set of quotes. Make sure you replace them if you copy and paste**
-
-**Display one of the request forms**
-`[gdpr_request_form type="$type"]`
-or
-`gdpr_request_form( $type );`
-$type can be `delete`, `rectify`, `complaint`, `export-data`
-
-**Create a button to open the preferences modals**
-`[gdpr_preferences text="$text"]`
-or
-`gdpr_preferences( $text );`
-$text is the button label. It is also optional.
-
-**Checks whether a cookie is allowed**
-`is_allowed_cookie( $cookie )`
-
-**Checks whether a consent was given**
-`has_consent( $consent_id )`
+[http://gdpr-wp.com/knowledge-base/functions-shortcodes/](http://gdpr-wp.com/knowledge-base/functions-shortcodes/)
 
 == Features ==
 
