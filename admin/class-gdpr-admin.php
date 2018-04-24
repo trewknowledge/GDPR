@@ -204,6 +204,7 @@ class GDPR_Admin {
 			'gdpr_cookie_popup_content'                     => array( $this, 'sanitize_cookie_tabs' ),
 			'gdpr_email_limit'                              => 'intval',
 			'gdpr_consent_types'                            => array( $this, 'sanitize_consents' ),
+			'gdpr_erasure'                                  => 'sanitize_text_field',
 		);
 		foreach ( $settings as $option_name => $sanitize_callback ) {
 			register_setting( 'gdpr', $option_name, array( 'sanitize_callback' => $sanitize_callback ) );
@@ -250,6 +251,7 @@ class GDPR_Admin {
 			'general'  => esc_html__( 'General', 'gdpr' ),
 			'cookies'  => esc_html__( 'Cookies', 'gdpr' ),
 			'consents' => esc_html__( 'Consents', 'gdpr' ),
+			'erasure'  => esc_html__( 'Erasure', 'gdpr' ),
 		);
 
 		$tabs = apply_filters( 'gdpr_settings_pages', $tabs );

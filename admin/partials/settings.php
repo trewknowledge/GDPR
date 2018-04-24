@@ -215,6 +215,24 @@
 				<?php endif ?>
 			</div>
 		</div>
+		<div class="tab hidden" data-id="erasure">
+			<h2><?php esc_html_e( 'Erasure', 'gdpr' ) ?></h2>
+			<table class="form-table" data-id="general">
+				<tbody>
+				<tr>
+					<th scope="row">
+						<label for="erasure-chanel"><?php esc_html_e( 'Erasure', 'gdpr' ) ?></label>
+					</th>
+					<td>
+						<?php
+						$erasure_status = get_option('gdpr_erasure');
+						?>
+						<input name="<?php echo esc_attr( 'gdpr_erasure' ); ?>" type="checkbox" value="erasure"  <?php if ($erasure_status == 'erasure') { ?> checked <?php } ?> ><?php esc_html_e( 'Send all delete user requests to erasure table', 'gdpr' ) ?> <br>
+					</td>
+				</tr>
+				</tbody>
+			</table>
+		</div>
 		<?php
 		do_action( 'gdpr_extra_settings' );
 		submit_button();
