@@ -5,7 +5,7 @@ Tags: gdpr, compliance, privacy, law, general data protection regulation
 Requires at least: 4.0
 Requires PHP: 5.6
 Tested up to: 4.9
-Stable tag: 1.1.3
+Stable tag: 1.1.4
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -220,6 +220,12 @@ Activating this plugin does not guarantee that an organisation is successfully m
 9. Audit Log sample.
 
 == Changelog ==
+
+= 1.1.4 =
+* Possible fix for cached sites.
+* Added has_consent and is_allowed_cookie functions to javascript.
+* Changed how the privacy bar and re-consent modal show up based on javascript.
+* Better sync of consent and cookies with a cookie.
 
 = 1.1.3 =
 * Changed Complaint and Rectification form submit button wording.

@@ -178,6 +178,12 @@ Activating this plugin does not guarantee that an organisation is successfully m
 
 ## Changelog
 
+##### 1.1.4
+* Possible fix for cached sites.
+* Added has_consent and is_allowed_cookie functions to javascript.
+* Changed how the privacy bar and re-consent modal show up based on javascript.
+* Better sync of consent and cookies with a cookie.
+
 ##### 1.1.3
 * Changed Complaint and Rectification form submit button wording.
 * Added a loading indicator on the reconsent window. Slow servers will not give the impression that this featured is not working anymore.
