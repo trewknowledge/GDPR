@@ -265,17 +265,23 @@ class GDPR_Public {
 	public function set_plugin_cookies() {
 		$user_id = get_current_user_id();
 
-		if ( ! isset( $_COOKIE['gdpr']['consent_types'] ) && ! $user_id ) {
-			setcookie( 'gdpr[consent_types]', '[]', time() + YEAR_IN_SECONDS, "/" );
-		}
-
-		if ( $user_id ) {
-			$user_consents = get_user_meta( $user_id, 'gdpr_consents' );
-			$cookie_consents = json_decode( $_COOKIE['gdpr']['consent_types'] );
-			if ( ! empty( array_diff( (array) $user_consents, (array) $cookie_consents ) ) ) {
+		if ( ! isset( $_COOKIE['gdpr']['consent_types'] ) ) {
+			if ( ! $user_id ) {
+				setcookie( 'gdpr[consent_types]', '[]', time() + YEAR_IN_SECONDS, "/" );
+			} else {
+				$user_consents = get_user_meta( $user_id, 'gdpr_consents' );
 				setcookie( "gdpr[consent_types]", json_encode( $user_consents ), time() + YEAR_IN_SECONDS, "/" );
 			}
+		} else {
+			if ( $user_id ) {
+				$user_consents = get_user_meta( $user_id, 'gdpr_consents' );
+				$cookie_consents = json_decode( $_COOKIE['gdpr']['consent_types'] );
+				if ( ! empty( array_diff( (array) $user_consents, (array) $cookie_consents ) ) ) {
+					setcookie( "gdpr[consent_types]", json_encode( $user_consents ), time() + YEAR_IN_SECONDS, "/" );
+				}
+			}
 		}
+
 
 		if ( ! isset( $_COOKIE['gdpr']['allowed_cookies'] ) ) {
 			$registered_cookies = get_option( 'gdpr_cookie_popup_content', array() );
