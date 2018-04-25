@@ -274,9 +274,10 @@ class GDPR_Public {
 			}
 		} else {
 			if ( $user_id ) {
-				$user_consents = get_user_meta( $user_id, 'gdpr_consents' );
-				$cookie_consents = json_decode( $_COOKIE['gdpr']['consent_types'] );
-				if ( ! empty( array_diff( (array) $user_consents, (array) $cookie_consents ) ) ) {
+				$user_consents = (array) get_user_meta( $user_id, 'gdpr_consents' );
+				$cookie_consents = (array) json_decode( wp_unslash( $_COOKIE['gdpr']['consent_types'] ) );
+				$diff = array_diff( $user_consents, $cookie_consents );
+				if ( ! empty( $diff ) ) {
 					setcookie( "gdpr[consent_types]", json_encode( $user_consents ), time() + YEAR_IN_SECONDS, "/" );
 				}
 			}
