@@ -134,7 +134,7 @@
 
 		$(document).on('click', '.gdpr.gdpr-delete-confirmation button.gdpr-delete-account', function() {
 			$('form.gdpr-add-to-deletion-requests').addClass('confirmed');
-			$('form.gdpr-add-to-deletion-requests.confirmed').submit();
+			$('form.gdpr-add-to-deletion-requests.confirmed input[type="submit"]').click();
 			$('.gdpr-overlay').fadeOut();
 			$('.gdpr.gdpr-delete-confirmation .gdpr-wrapper').fadeOut();
 		});
