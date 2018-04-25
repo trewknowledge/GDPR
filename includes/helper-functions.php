@@ -40,7 +40,7 @@ add_shortcode( 'gdpr_preferences', 'gdpr_preferences_shortcode' );
  * @param  string $type The type of request.
  */
 function gdpr_request_form( $type ) {
-	return GDPR_Requests_Public::request_form( $type );
+	echo GDPR_Requests_Public::request_form( $type );
 }
 
 /**
