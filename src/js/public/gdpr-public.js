@@ -47,8 +47,15 @@
 		 * It submits the form that is still hidden with the cookies and consent options.
 		 */
 		$(document).on('click', '.gdpr.gdpr-privacy-bar .gdpr-agreement', function() {
-			Cookies.set('gdpr[privacy_bar]', 1);
       $('.gdpr-privacy-preferences-frm').submit();
+    });
+
+		/**
+		 * Set the privacy bar cookie after privacy preference submission.
+		 * This hides the privacy bar from showing after saving privacy preferences.
+		 */
+    $(document).on('submit', '.gdpr-privacy-preferences-frm', function() {
+    	Cookies.set('gdpr[privacy_bar]', 1);
     });
 
 		/**
