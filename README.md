@@ -157,6 +157,11 @@ Activating this plugin does not guarantee that an organisation is successfully m
 
 ## Changelog
 
+##### 1.1.5
+* The gdpr_request_form PHP function was returning instead of echoing. That is now fixed.
+* Fix issue when syncing consent cookie and database values.
+* Fix issue that prevented the privacy bar from disappearing after saving privacy preferences.
+
 ##### 1.1.4
 * Possible fix for cached sites.
 * Added has_consent and is_allowed_cookie functions to javascript.
