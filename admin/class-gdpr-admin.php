@@ -619,25 +619,6 @@ class GDPR_Admin {
 	}
 
 	/**
-	 * Adds consent checkboxes to the wordpress registration form.
-	 * @since  1.0.0
-	 * @author Fernando Claussen <fernandoclaussen@gmail.com>
-	 */
-	public function register_form() {
-		$consent_types = get_option( 'gdpr_consent_types', array() );
-		$sent_extras = ( isset( $_POST['user_consents'] ) ) ? $_POST['user_consents'] : '';
-		?>
-		<h2><?php esc_html_e( 'Consents', 'gdpr' ); ?></h2><br>
-		<?php foreach ( $consent_types as $key => $consent ): ?>
-			<p>
-				<input type="checkbox" name="user_consents[<?php echo esc_attr( $key ) ?>]" id="<?php echo esc_attr( $key ) ?>-consent" value="1" <?php ( isset( $sent_extras[ $key ] ) ) ? checked( $sent_extras[ $key ], 1 ) : ''; ?>>
-				<label for="<?php echo esc_attr( $key ) ?>-consent"><?php echo wp_kses( $consent['registration'], $this->allowed_html ); ?></label>
-				<br><br>
-			</p>
-		<?php endforeach;
-	}
-
-	/**
 	 * Sanitizes the consents during wordpress registration.
 	 * @since  1.0.0
 	 * @author Fernando Claussen <fernandoclaussen@gmail.com>
@@ -665,27 +646,6 @@ class GDPR_Admin {
     	}
     }
     return $errors;
-	}
-
-	/**
-	 * Save the extra fields on a successful registration.
-	 * @since  1.0.0
-	 * @author Fernando Claussen <fernandoclaussen@gmail.com>
-	 * @param  int $user_id The user ID.
-	 */
-	public function user_register( $user_id ) {
-		GDPR_Audit_Log::log( $user_id, esc_html__( 'User registered to the site.', 'gdpr' ) );
-
-		if ( isset( $_POST['user_consents'] ) ) {
-
-			$consents = array_map( 'sanitize_text_field', array_keys( $_POST['user_consents'] ) );
-			foreach ( $consents as $consent ) {
-				/* translators: Name of consent */
-				GDPR_Audit_Log::log( $user_id, sprintf( esc_html__( 'User gave explicit consent to %s', 'gdpr' ), $consent ) );
-				add_user_meta( $user_id, 'gdpr_consents', $consent );
-			}
-			setcookie( "gdpr[consent_types]", json_encode( $consents ), time() + YEAR_IN_SECONDS, "/" );
-		}
 	}
 
 	/**

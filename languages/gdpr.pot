@@ -45,8 +45,8 @@ msgstr ""
 msgid "Cookies"
 msgstr ""
 
-#: admin/class-gdpr-admin.php:252, admin/class-gdpr-admin.php:627, admin/partials/settings.php:168
-msgid "Consents"
+#: admin/class-gdpr-admin.php:252
+msgid "Consent"
 msgstr ""
 
 #: admin/class-gdpr-admin.php:283, includes/class-gdpr-help.php:38, includes/class-gdpr-help.php:43, admin/partials/requests.php:32
@@ -109,7 +109,7 @@ msgstr ""
 msgid "Ignore"
 msgstr ""
 
-#: admin/class-gdpr-admin.php:516, admin/class-gdpr-admin.php:695, admin/class-gdpr-admin.php:757, public/class-gdpr-public.php:165, public/class-gdpr-public.php:251, public/class-gdpr-public.php:265
+#: admin/class-gdpr-admin.php:516, admin/class-gdpr-admin.php:655, admin/class-gdpr-admin.php:717, public/class-gdpr-public.php:162, public/class-gdpr-public.php:238, public/class-gdpr-public.php:252
 msgid "We could not verify the the security token. Please try again."
 msgstr ""
 
@@ -121,36 +121,27 @@ msgstr ""
 msgid "Data breach notification has been initialized. An email confirmation has been sent to the website controller."
 msgstr ""
 
-#: admin/class-gdpr-admin.php:657
+#: admin/class-gdpr-admin.php:638
 msgid "ERROR"
 msgstr ""
 
-#: admin/class-gdpr-admin.php:659
+#: admin/class-gdpr-admin.php:640
 msgid "is a required consent"
 msgstr ""
 
-#: admin/class-gdpr-admin.php:674
-msgid "User registered to the site."
-msgstr ""
-
-#. translators: Name of consent
-#: admin/class-gdpr-admin.php:681
-msgid "User gave explicit consent to %s"
-msgstr ""
-
-#: admin/class-gdpr-admin.php:707
+#: admin/class-gdpr-admin.php:667
 msgid "Privacy Policy has been updated. Removing the Privacy Policy consent and requesting new consent."
 msgstr ""
 
-#: admin/class-gdpr-admin.php:712
+#: admin/class-gdpr-admin.php:672
 msgid "Users will have to consent to the updated privacy policy on login."
 msgstr ""
 
-#: admin/class-gdpr-admin.php:777, includes/class-gdpr-help.php:161, public/partials/privacy-preferences-modal.php:31, public/partials/privacy-preferences-modal.php:46
+#: admin/class-gdpr-admin.php:737, includes/class-gdpr-help.php:161, public/partials/privacy-preferences-modal.php:31, public/partials/privacy-preferences-modal.php:46
 msgid "Consent Management"
 msgstr ""
 
-#: admin/class-gdpr-admin.php:814
+#: admin/class-gdpr-admin.php:774
 msgid "Profile Updated. These are the user consents after the save:"
 msgstr ""
 
@@ -507,6 +498,15 @@ msgstr ""
 msgid "User request expired. Removing %s user_meta."
 msgstr ""
 
+#: includes/class-gdpr.php:260
+msgid "User registered to the site."
+msgstr ""
+
+#. translators: Name of consent
+#: includes/class-gdpr.php:267
+msgid "User gave explicit consent to %s"
+msgstr ""
+
 #: includes/helper-functions.php:26, public/partials/privacy-bar.php:26
 msgid "Privacy Preferences"
 msgstr ""
@@ -515,15 +515,15 @@ msgstr ""
 msgid "Aborting"
 msgstr ""
 
-#: public/class-gdpr-public.php:169
+#: public/class-gdpr-public.php:166
 msgid "You need to at least consent to our Privacy Policy."
 msgstr ""
 
-#: public/class-gdpr-public.php:193
+#: public/class-gdpr-public.php:190
 msgid "User updated their privacy preferences. These are the new approved cookies and consent preferences:"
 msgstr ""
 
-#: public/class-gdpr-public.php:270
+#: public/class-gdpr-public.php:261
 msgid "User consented to the Privacy Policies."
 msgstr ""
 
@@ -741,6 +741,10 @@ msgstr ""
 
 #: admin/partials/settings.php:148, admin/partials/templates/tmpl-cookies.php:65
 msgid "Url with instructions on how to opt out."
+msgstr ""
+
+#: admin/partials/settings.php:168
+msgid "Consents"
 msgstr ""
 
 #: admin/partials/settings.php:169
