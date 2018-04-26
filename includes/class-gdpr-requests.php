@@ -51,7 +51,7 @@ class GDPR_Requests {
 	 * @static
 	 * @var    array
 	 */
-	protected static $allowed_types = array( 'export-data','file-export-data', 'rectify', 'complaint', 'delete' );
+	protected static $allowed_types = array( 'export-data', 'rectify', 'complaint', 'delete' );
 
 
 	/**

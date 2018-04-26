@@ -325,7 +325,6 @@ class GDPR {
 			'gdpr_rectify_key',
 			'gdpr_complaint_key',
 			'gdpr_export-data_key',
-			'gdpr_file-export-data_key',
 
 		);
 

@@ -142,25 +142,10 @@ class GDPR_Requests_Public extends GDPR_Requests {
 							)
 						)
 					);
-				}
-				break;
-			case 'export-data':
-				if ( ! $user instanceof WP_User ) {
-					wp_safe_redirect(
-						esc_url_raw(
-							add_query_arg(
-								array(
-									'notify'         => 1,
-									'user-not-found' => 1,
-								),
-								wp_get_referer()
-							)
-						)
-					);
 					exit;
 				}
 				break;
-			case 'file-export-data':
+			case 'export-data':
 				if ( ! $user instanceof WP_User ) {
 					wp_safe_redirect(
 						esc_url_raw(
@@ -299,47 +284,9 @@ class GDPR_Requests_Public extends GDPR_Requests {
 					break;
 				case 'export-data':
 					$format = isset( $_GET['format'] ) ? sanitize_text_field( wp_unslash( $_GET['format'] ) ) : 'xml';
-					wp_schedule_single_event(
-						time(),
-						'mail_export_data',
-						array(
-							'email'  => $user->user_email,
-							'format' => $format,
-							'key'    => $key,
-						)
-					);
-					GDPR_Audit_Log::log( $user->ID, esc_html__( 'User requested to have all their data sent to their email.', 'gdpr' ) );
-					wp_safe_redirect(
-						esc_url_raw(
-							add_query_arg(
-								array(
-									'export-started' => 1,
-									'notify'         => 1,
-								),
-								home_url()
-							)
-						)
-					);
-					exit;
-					break;
-				case 'file-export-data':
-
-					$format = isset( $_GET['format'] ) ? sanitize_text_field( wp_unslash( $_GET['format'] ) ) : 'xml';
-					$this->file_export_data($user->user_email, $format, $key);
-
-					GDPR_Audit_Log::log( $user->ID, esc_html__( 'User downloaded file with all their data.', 'gdpr' ) );
-					wp_safe_redirect(
-						esc_url_raw(
-							add_query_arg(
-								array(
-									'file-export-started' => 1,
-									'notify'         => 1,
-								),
-								home_url()
-							)
-						)
-					);
-					exit;
+					/* translators: File format. Can be XML or JSON */
+					GDPR_Audit_Log::log( $user->ID, sprintf( esc_html__( 'User downloaded all their data in %s format.', 'gdpr' ), $format ) );
+					$this->file_export_data( $user->user_email, $format, $key );
 					break;
 			}
 		}
