@@ -276,7 +276,7 @@ class GDPR {
 	 * @since  1.1.4
 	 * @author Fernando Claussen <fernandoclaussen@gmail.com>
 	 */
-	public static function consent_checkboxes() {
+	public static function consent_checkboxes($print = true) {
 		$consent_types = get_option( 'gdpr_consent_types', array() );
 		$sent_extras = ( isset( $_POST['user_consents'] ) ) ? $_POST['user_consents'] : array();
 		$allowed_html = array(
@@ -286,13 +286,23 @@ class GDPR {
 				'target' => true,
 			),
 		);
-		foreach ( $consent_types as $key => $consent ): ?>
-			<p>
-				<input type="checkbox" name="user_consents[<?php echo esc_attr( $key ) ?>]" id="<?php echo esc_attr( $key ) ?>-consent" value="1" <?php echo ( isset( $consent['required'] ) && $consent['required'] ) ? 'required' : ''; ?> <?php ( isset( $sent_extras[ $key ] ) ) ? checked( $sent_extras[ $key ], 1 ) : ''; ?>>
-				<label for="<?php echo esc_attr( $key ) ?>-consent"><?php echo wp_kses( $consent['registration'], $allowed_html ); ?></label>
-			</p>
-		<?php endforeach;
-		echo '<br>';
+		$html = '';
+		foreach ( $consent_types as $key => $consent ){
+			$required = ( isset( $consent['required'] ) && $consent['required'] ) ? 'required' : ''; 
+			$checked = ( isset( $sent_extras[ $key ] ) ) ? checked( $sent_extras[ $key ], 1 ) : '';
+			$html .= '<p>';
+			$html .= '<input type="checkbox" name="user_consents['. esc_attr( $key ).']" id="'.  esc_attr( $key ) .'-consent" value="1" '.$required.' '.$checked.'>';
+			$html .= '<label for="'.  esc_attr( $key ) .'-consent">'. wp_kses( $consent['registration'], $allowed_html ).'</label>';
+			$html .= '</p>';
+		}
+		if($print === true){
+			echo $html;
+			return;
+		}else{
+		    return $html;
+			
+		}
+		
 	}
 
 	/**
