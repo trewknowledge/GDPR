@@ -272,11 +272,11 @@ class GDPR {
 	}
 
 	/**
-	 * Renders consent checkboxes to be used across the site.
-	 * @since  1.1.4
+	 * Returns the consent checkboxes to be used across the site.
+	 * @since  1.1.7
 	 * @author Fernando Claussen <fernandoclaussen@gmail.com>
 	 */
-	public static function consent_checkboxes($print = true) {
+	public static function get_consent_checkboxes() {
 		$consent_types = get_option( 'gdpr_consent_types', array() );
 		$sent_extras = ( isset( $_POST['user_consents'] ) ) ? $_POST['user_consents'] : array();
 		$allowed_html = array(
@@ -286,23 +286,27 @@ class GDPR {
 				'target' => true,
 			),
 		);
-		$html = '';
-		foreach ( $consent_types as $key => $consent ){
-			$required = ( isset( $consent['required'] ) && $consent['required'] ) ? 'required' : ''; 
+
+		ob_start();
+		foreach ( $consent_types as $key => $consent ) {
+			$required = ( isset( $consent['required'] ) && $consent['required'] ) ? 'required' : '';
 			$checked = ( isset( $sent_extras[ $key ] ) ) ? checked( $sent_extras[ $key ], 1 ) : '';
-			$html .= '<p>';
-			$html .= '<input type="checkbox" name="user_consents['. esc_attr( $key ).']" id="'.  esc_attr( $key ) .'-consent" value="1" '.$required.' '.$checked.'>';
-			$html .= '<label for="'.  esc_attr( $key ) .'-consent">'. wp_kses( $consent['registration'], $allowed_html ).'</label>';
-			$html .= '</p>';
+			echo '<p>' .
+				'<input type="checkbox" name="user_consents[' . esc_attr( $key ) . ']" id="' . esc_attr( $key ) . '-consent" value="1" ' . $required . ' ' . $checked . '>' .
+				'<label for="' . esc_attr( $key ) . '-consent">' . wp_kses( $consent['registration'], $allowed_html ) . '</label>' .
+			'</p>';
 		}
-		if($print === true){
-			echo $html;
-			return;
-		}else{
-		    return $html;
-			
-		}
-		
+
+		return ob_get_clean();
+	}
+
+	/**
+	 * Renders consent checkboxes to be used across the site.
+	 * @since  1.1.4
+	 * @author Fernando Claussen <fernandoclaussen@gmail.com>
+	 */
+	public static function consent_checkboxes() {
+		echo self::get_consent_checkboxes();
 	}
 
 	/**
