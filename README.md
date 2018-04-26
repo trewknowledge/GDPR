@@ -157,6 +157,9 @@ Activating this plugin does not guarantee that an organisation is successfully m
 
 ## Changelog
 
+##### 1.1.6
+* Fix weird javascript issue that was preventing users from using the "Close my account" feature.
+
 ##### 1.1.5
 * The gdpr_request_form PHP function was returning instead of echoing. That is now fixed.
 * Fix issue when syncing consent cookie and database values.

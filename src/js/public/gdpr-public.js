@@ -8,7 +8,7 @@
 		window.history.replaceState( {}, document.title, base_url );
 	}
 
-	function has_consent( consent ) {
+	window.has_consent = function( consent ) {
 		if ( Cookies.get('gdpr[consent_types]') ) {
 			var consentArray = JSON.parse( Cookies.get('gdpr[consent_types]') );
 			if ( consentArray.indexOf( consent ) > -1 ) {
@@ -19,7 +19,7 @@
 		return false;
 	}
 
-	function is_allowed_cookie( cookie ) {
+	window.is_allowed_cookie = function ( cookie ) {
 		if ( Cookies.get('gdpr[allowed_cookies]') ) {
 			var cookiesArray = JSON.parse( Cookies.get('gdpr[allowed_cookies]') );
 			if ( consentArray.indexOf( cookie ) > -1 ) {
@@ -134,7 +134,7 @@
 
 		$(document).on('click', '.gdpr.gdpr-delete-confirmation button.gdpr-delete-account', function() {
 			$('form.gdpr-add-to-deletion-requests').addClass('confirmed');
-			$('form.gdpr-add-to-deletion-requests.confirmed').submit();
+			$('form.gdpr-add-to-deletion-requests.confirmed input[type="submit"]').click();
 			$('.gdpr-overlay').fadeOut();
 			$('.gdpr.gdpr-delete-confirmation .gdpr-wrapper').fadeOut();
 		});

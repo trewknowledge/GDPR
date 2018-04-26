@@ -204,7 +204,7 @@ class GDPR_Admin {
 			'gdpr_cookie_popup_content'                     => array( $this, 'sanitize_cookie_tabs' ),
 			'gdpr_email_limit'                              => 'intval',
 			'gdpr_consent_types'                            => array( $this, 'sanitize_consents' ),
-
+			'gdpr_deletion_needs_review'                    => 'boolval',
 		);
 		foreach ( $settings as $option_name => $sanitize_callback ) {
 			register_setting( 'gdpr', $option_name, array( 'sanitize_callback' => $sanitize_callback ) );

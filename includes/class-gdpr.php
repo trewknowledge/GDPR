@@ -271,11 +271,11 @@ class GDPR {
 	}
 
 	/**
-	 * Renders consent checkboxes to be used across the site.
-	 * @since  1.1.4
+	 * Returns the consent checkboxes to be used across the site.
+	 * @since  1.1.7
 	 * @author Fernando Claussen <fernandoclaussen@gmail.com>
 	 */
-	public static function consent_checkboxes() {
+	public static function get_consent_checkboxes() {
 		$consent_types = get_option( 'gdpr_consent_types', array() );
 		$sent_extras = ( isset( $_POST['user_consents'] ) ) ? $_POST['user_consents'] : array();
 		$allowed_html = array(
@@ -285,13 +285,27 @@ class GDPR {
 				'target' => true,
 			),
 		);
-		foreach ( $consent_types as $key => $consent ): ?>
-			<p>
-				<input type="checkbox" name="user_consents[<?php echo esc_attr( $key ) ?>]" id="<?php echo esc_attr( $key ) ?>-consent" value="1" <?php echo ( isset( $consent['required'] ) && $consent['required'] ) ? 'required' : ''; ?> <?php ( isset( $sent_extras[ $key ] ) ) ? checked( $sent_extras[ $key ], 1 ) : ''; ?>>
-				<label for="<?php echo esc_attr( $key ) ?>-consent"><?php echo wp_kses( $consent['registration'], $allowed_html ); ?></label>
-			</p>
-		<?php endforeach;
-		echo '<br>';
+
+		ob_start();
+		foreach ( $consent_types as $key => $consent ) {
+			$required = ( isset( $consent['required'] ) && $consent['required'] ) ? 'required' : '';
+			$checked = ( isset( $sent_extras[ $key ] ) ) ? checked( $sent_extras[ $key ], 1 ) : '';
+			echo '<p>' .
+				'<input type="checkbox" name="user_consents[' . esc_attr( $key ) . ']" id="' . esc_attr( $key ) . '-consent" value="1" ' . $required . ' ' . $checked . '>' .
+				'<label for="' . esc_attr( $key ) . '-consent">' . wp_kses( $consent['registration'], $allowed_html ) . '</label>' .
+			'</p>';
+		}
+
+		return ob_get_clean();
+	}
+
+	/**
+	 * Renders consent checkboxes to be used across the site.
+	 * @since  1.1.4
+	 * @author Fernando Claussen <fernandoclaussen@gmail.com>
+	 */
+	public static function consent_checkboxes() {
+		echo self::get_consent_checkboxes();
 	}
 
 	/**

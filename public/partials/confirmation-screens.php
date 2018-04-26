@@ -37,7 +37,7 @@
 		if ( $_GET['user-deleted'] ) {
 			$text = __( 'Your account has been closed. We are sorry to see you go.', 'gdpr' );
 		} else {
-			$text = __( 'Seems like you have published content on the site. We can\'t close your account right away before doing some review. You will receive an email when we are done reviewing your request.', 'gdpr' );
+			$text = __( 'Your request has been received and is being reviewed. You will receive an email when we are done.', 'gdpr' );
 		}
 	}
 	if ( isset( $_GET['email-sent'] ) && $_GET['email-sent'] ) {
