@@ -43,6 +43,15 @@
 							<input type="number" name="gdpr_email_limit" id="gdpr_email_limit" value="<?php echo esc_attr( $limit ); ?>">
 						</td>
 					</tr>
+					<tr>
+						<th scope="row">
+							<label for="gdpr_deletion_needs_review"><?php esc_html_e( 'User deletion', 'gdpr' ) ?></label>
+						</th>
+						<td>
+							<?php $needs_review = get_option( 'gdpr_deletion_needs_review', true ); ?>
+							<input type="checkbox" name="<?php echo esc_attr( 'gdpr_deletion_needs_review' ); ?>" id="gdpr_deletion_needs_review" value="1"  <?php checked( $needs_review, true ); ?>><?php esc_html_e( 'Send all deletion requests to the review table.', 'gdpr' ); ?>
+						</td>
+					</tr>
 				</tbody>
 			</table>
 		</div>
@@ -214,6 +223,25 @@
 					<?php endforeach ?>
 				<?php endif ?>
 			</div>
+		</div>
+		<div class="tab hidden" data-id="export-chanel">
+			<h2><?php esc_html_e( 'Data Export Chanel', 'gdpr' ) ?></h2>
+			<table class="form-table" data-id="general">
+				<tbody>
+				<tr>
+					<th scope="row">
+						<label for="data-export-chanel"><?php esc_html_e( 'Data Export Chanel', 'gdpr' ) ?></label>
+					</th>
+					<td>
+						<?php
+						$export_data = get_option('gdpr_export_data');
+						?>
+						<input name="<?php echo esc_attr( 'gdpr_export_data' ); ?>" type="radio" value="export-data" <?php if ($export_data == 'export-data') { ?> checked <?php } ?> ><?php esc_html_e( 'Data Export with email attachment', 'gdpr' ) ?> <br>
+						<input name="<?php echo esc_attr( 'gdpr_export_data' ); ?>" type="radio" value="file-export-data" <?php if ($export_data == 'file-export-data') { ?> checked <?php } ?>><?php esc_html_e( 'Data Export with download link', 'gdpr' ) ?> <br>
+					</td>
+				</tr>
+				</tbody>
+			</table>
 		</div>
 		<?php
 		do_action( 'gdpr_extra_settings' );

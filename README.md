@@ -2,37 +2,16 @@
 
 This plugin is meant to assist a Controller, Data Processor, and Data Protection Officer (DPO) with efforts to meet the obligations and rights enacted under the GDPR.
 
+## Documentation
+[http://gdpr-wp.com/knowledge-base/](http://gdpr-wp.com/knowledge-base/)
+
 ## Installation
 1.  Upload the plugin to the `/wp-content/plugins/` directory or install directly from the [http://wordpress.org/plugins/gdpr](WordPress Plugin Repository).
 1.  Activate the plugin through the 'Plugins' menu in WordPress
 1.  Fill out all sections of the settings page.
 
 ## Shortcodes & helper functions
-**Display one of the request forms**
-`[gdpr_request_form type="$type"]`
-or
-```php
-<?php gdpr_request_form( $type ); ?>
-```
-$type can be `delete`, `rectify`, `complaint`, `export-data`
-
-**Create a button to open the preferences modals**
-`[gdpr_preferences text="$text"]`
-or
-```php
-<?php gdpr_preferences( $text ); ?>
-```
-`$text` is the button label. It is also optional.
-
-**Checks whether a cookie is allowed**
-```php
-<?php is_allowed_cookie( $cookie ); ?>
-```
-
-**Checks wheter a consent was given**
-```php
-<?php have_consent( $consent_id ); ?>
-```
+[http://gdpr-wp.com/knowledge-base/functions-shortcodes/](http://gdpr-wp.com/knowledge-base/functions-shortcodes/)
 
 ## Features
 
@@ -177,6 +156,26 @@ Activating this plugin does not guarantee that an organisation is successfully m
 
 
 ## Changelog
+
+##### 1.2.0
+* Fix has_consent and is_allowed_cookie JavaScript functions not being available globally.
+* Add a function to get the consent checkbox without echoing them.
+* Change how the user deletion request works. We removed the email attachment to avoid being considered spam. The user can now download it immediatelly by clicking on their email link.
+* Adding an option for user deletions always be added to the request review table. That will allow you to remove your users from third-party services before removing them from your site.
+
+##### 1.1.6
+* Fix weird javascript issue that was preventing users from using the "Close my account" feature.
+
+##### 1.1.5
+* The gdpr_request_form PHP function was returning instead of echoing. That is now fixed.
+* Fix issue when syncing consent cookie and database values.
+* Fix issue that prevented the privacy bar from disappearing after saving privacy preferences.
+
+##### 1.1.4
+* Possible fix for cached sites.
+* Added has_consent and is_allowed_cookie functions to javascript.
+* Changed how the privacy bar and re-consent modal show up based on javascript.
+* Better sync of consent and cookies with a cookie.
 
 ##### 1.1.3
 * Changed Complaint and Rectification form submit button wording.

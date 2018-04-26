@@ -143,6 +143,7 @@ class GDPR_Requests_Public extends GDPR_Requests {
 							)
 						)
 					);
+					exit;
 				}
 				break;
 			case 'export-data':
@@ -162,6 +163,7 @@ class GDPR_Requests_Public extends GDPR_Requests {
 				}
 				break;
 		}
+
 
 		$key = parent::add_to_requests( $user->user_email, $type, $data );
 		if ( GDPR_Email::send(
@@ -230,7 +232,8 @@ class GDPR_Requests_Public extends GDPR_Requests {
 			switch ( $type ) {
 				case 'delete':
 					$found_posts = parent::user_has_content( $user );
-					if ( $found_posts ) {
+					$needs_review = get_option( 'gdpr_deletion_needs_review', true );
+					if ( $found_posts || $needs_review ) {
 						parent::confirm_request( $key );
 						GDPR_Audit_Log::log( $user->ID, esc_html__( 'User confirmed a request to be deleted.', 'gdpr' ) );
 						GDPR_Audit_Log::log( $user->ID, esc_html__( 'Content was found for that user.', 'gdpr' ) );
@@ -283,28 +286,9 @@ class GDPR_Requests_Public extends GDPR_Requests {
 					break;
 				case 'export-data':
 					$format = isset( $_GET['format'] ) ? sanitize_text_field( wp_unslash( $_GET['format'] ) ) : 'xml';
-					wp_schedule_single_event(
-						time(),
-						'mail_export_data',
-						array(
-							'email'  => $user->user_email,
-							'format' => $format,
-							'key'    => $key,
-						)
-					);
-					GDPR_Audit_Log::log( $user->ID, esc_html__( 'User requested to have all their data sent to their email.', 'gdpr' ) );
-					wp_safe_redirect(
-						esc_url_raw(
-							add_query_arg(
-								array(
-									'export-started' => 1,
-									'notify'         => 1,
-								),
-								home_url()
-							)
-						)
-					);
-					exit;
+					/* translators: File format. Can be XML or JSON */
+					GDPR_Audit_Log::log( $user->ID, sprintf( esc_html__( 'User downloaded all their data in %s format.', 'gdpr' ), $format ) );
+					$this->file_export_data( $user->user_email, $format, $key );
 					break;
 			}
 		}
@@ -332,5 +316,28 @@ class GDPR_Requests_Public extends GDPR_Requests {
 				parent::remove_from_requests( $key );
 			}
 		}
+	}
+
+	/**
+	 * Downloads the user data export in the chosen format.
+	 * @since  1.2.0
+	 * @param  string $email  The recipient.
+	 * @param  string $format The export format. XML or JSON.
+	 * @param  string $key    The request array key.
+	 */
+	private function file_export_data( $email, $format, $key ) {
+		$email  = sanitize_email( $email );
+		$format = sanitize_text_field( wp_unslash( $format ) );
+		$key    = sanitize_text_field( wp_unslash( $key ) );
+
+		$export = GDPR::generate_export( $email, $format );
+		if ( $export ) {
+			parent::remove_from_requests( $key );
+			header('Content-Type: application/octet-stream');
+			header('Content-Description: File Transfer');
+			header('Content-Disposition: attachment; filename=' .  $email . '.' . $format);
+			echo $export;
+		}
+		die();
 	}
 }

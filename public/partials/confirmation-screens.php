@@ -37,7 +37,7 @@
 		if ( $_GET['user-deleted'] ) {
 			$text = __( 'Your account has been closed. We are sorry to see you go.', 'gdpr' );
 		} else {
-			$text = __( 'Seems like you have published content on the site. We can\'t close your account right away before doing some review. You will receive an email when we are done reviewing your request.', 'gdpr' );
+			$text = __( 'Your request has been received and is being reviewed. You will receive an email when we are done.', 'gdpr' );
 		}
 	}
 	if ( isset( $_GET['email-sent'] ) && $_GET['email-sent'] ) {
@@ -56,10 +56,6 @@
 	if ( isset( $_GET['request-confirmed'] ) && $_GET['request-confirmed'] ) {
 		$title = __( 'Request Received', 'gdpr' );
 		$text  = __( 'Your request has been received. We will be in touch soon.', 'gdpr' );
-	}
-	if ( isset( $_GET['export-started'] ) && $_GET['export-started'] ) {
-		$title = __( 'Data Export', 'gdpr' );
-		$text  = __( 'Your export file is being generated. You will receive an email with your file soon.', 'gdpr' );
 	}
 	if ( isset( $_GET['error'] ) && $_GET['error'] ) {
 		$text = __( 'There was a problem with your request. Please try again later.', 'gdpr' );
