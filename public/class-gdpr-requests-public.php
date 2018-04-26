@@ -316,30 +316,26 @@ class GDPR_Requests_Public extends GDPR_Requests {
 		}
 	}
 
-		/**
-	 * Return file with user data export of the chosen format.
-	 * @since  1.0.0
+	/**
+	 * Downloads the user data export in the chosen format.
+	 * @since  1.2.0
 	 * @param  string $email  The recipient.
 	 * @param  string $format The export format. XML or JSON.
 	 * @param  string $key    The request array key.
 	 */
-	public function file_export_data( $email, $format, $key ) {
+	private function file_export_data( $email, $format, $key ) {
 		$email  = sanitize_email( $email );
 		$format = sanitize_text_field( wp_unslash( $format ) );
 		$key    = sanitize_text_field( wp_unslash( $key ) );
 
-		$export   = GDPR::generate_export( $email, $format );
+		$export = GDPR::generate_export( $email, $format );
 		if ( $export ) {
+			parent::remove_from_requests( $key );
 			header('Content-Type: application/octet-stream');
 			header('Content-Description: File Transfer');
 			header('Content-Disposition: attachment; filename=' .  $email . '.' . $format);
 			echo $export;
-			if (GDPR_Email::send( get_option('admin_email'), 'file-export-data-request-notification', array('user' => $email), array( ) )) {
-
-				parent::remove_from_requests($key);
-			}
 		}
 		die();
-
 	}
 }
