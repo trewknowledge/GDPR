@@ -224,6 +224,25 @@
 				<?php endif ?>
 			</div>
 		</div>
+		<div class="tab hidden" data-id="export-chanel">
+			<h2><?php esc_html_e( 'Data Export Chanel', 'gdpr' ) ?></h2>
+			<table class="form-table" data-id="general">
+				<tbody>
+				<tr>
+					<th scope="row">
+						<label for="data-export-chanel"><?php esc_html_e( 'Data Export Chanel', 'gdpr' ) ?></label>
+					</th>
+					<td>
+						<?php
+						$export_data = get_option('gdpr_export_data');
+						?>
+						<input name="<?php echo esc_attr( 'gdpr_export_data' ); ?>" type="radio" value="export-data" <?php if ($export_data == 'export-data') { ?> checked <?php } ?> ><?php esc_html_e( 'Data Export with email attachment', 'gdpr' ) ?> <br>
+						<input name="<?php echo esc_attr( 'gdpr_export_data' ); ?>" type="radio" value="file-export-data" <?php if ($export_data == 'file-export-data') { ?> checked <?php } ?>><?php esc_html_e( 'Data Export with download link', 'gdpr' ) ?> <br>
+					</td>
+				</tr>
+				</tbody>
+			</table>
+		</div>
 		<?php
 		do_action( 'gdpr_extra_settings' );
 		submit_button();

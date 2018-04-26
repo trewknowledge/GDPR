@@ -247,7 +247,6 @@ class GDPR {
 		add_action( 'wp', array( $requests_public, 'request_confirmed' ) );
 		add_action( 'admin_post_gdpr_send_request_email', array( $requests_public, 'send_request_email' ) );
 		add_action( 'admin_post_nopriv_gdpr_send_request_email', array( $requests_public, 'send_request_email' ) );
-		add_action( 'mail_export_data', array( $requests_public, 'mail_export_data' ), 10, 3 ); // CRON JOB
 	}
 
 	/**
@@ -339,6 +338,7 @@ class GDPR {
 			'gdpr_rectify_key',
 			'gdpr_complaint_key',
 			'gdpr_export-data_key',
+
 		);
 
 		return array_diff_key( $usermeta, array_flip( $remove_metadata ) );
