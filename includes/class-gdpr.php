@@ -272,7 +272,7 @@ class GDPR {
 
 	/**
 	 * Returns the consent checkboxes to be used across the site.
-	 * @since  1.1.7
+	 * @since  1.2.0
 	 * @author Fernando Claussen <fernandoclaussen@gmail.com>
 	 */
 	public static function get_consent_checkboxes() {
