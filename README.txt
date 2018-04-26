@@ -5,7 +5,7 @@ Tags: gdpr, compliance, privacy, law, general data protection regulation
 Requires at least: 4.0
 Requires PHP: 5.6
 Tested up to: 4.9
-Stable tag: 1.1.6
+Stable tag: 1.2.0
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -205,6 +205,12 @@ Activating this plugin does not guarantee that an organisation is successfully m
 9. Audit Log sample.
 
 == Changelog ==
+
+= 1.2.0 =
+* Fix has_consent and is_allowed_cookie JavaScript functions not being available globally.
+* Add a function to get the consent checkbox without echoing them.
+* Change how the user deletion request works. We removed the email attachment to avoid being considered spam. The user can now download it immediatelly by clicking on their email link.
+* Adding an option for user deletions always be added to the request review table. That will allow you to remove your users from third-party services before removing them from your site.
 
 = 1.1.6 =
 * Fix weird javascript issue that was preventing users from using the "Close my account" feature.
