@@ -229,7 +229,8 @@ class GDPR_Requests_Public extends GDPR_Requests {
 			switch ( $type ) {
 				case 'delete':
 					$found_posts = parent::user_has_content( $user );
-					if ( $found_posts || get_option('gdpr_erasure') == 'erasure') {
+					$needs_review = get_option( 'gdpr_deletion_needs_review', true );
+					if ( $found_posts || $needs_review ) {
 						parent::confirm_request( $key );
 						GDPR_Audit_Log::log( $user->ID, esc_html__( 'User confirmed a request to be deleted.', 'gdpr' ) );
 						GDPR_Audit_Log::log( $user->ID, esc_html__( 'Content was found for that user.', 'gdpr' ) );
