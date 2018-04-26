@@ -43,6 +43,15 @@
 							<input type="number" name="gdpr_email_limit" id="gdpr_email_limit" value="<?php echo esc_attr( $limit ); ?>">
 						</td>
 					</tr>
+					<tr>
+						<th scope="row">
+							<label for="gdpr_deletion_needs_review"><?php esc_html_e( 'User deletion', 'gdpr' ) ?></label>
+						</th>
+						<td>
+							<?php $needs_review = get_option( 'gdpr_deletion_needs_review', true ); ?>
+							<input type="checkbox" name="<?php echo esc_attr( 'gdpr_deletion_needs_review' ); ?>" id="gdpr_deletion_needs_review" value="1"  <?php checked( $needs_review, true ); ?>><?php esc_html_e( 'Send all deletion requests to the review table.', 'gdpr' ); ?>
+						</td>
+					</tr>
 				</tbody>
 			</table>
 		</div>
