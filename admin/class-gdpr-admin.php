@@ -139,7 +139,10 @@ class GDPR_Admin {
 		$cpt = 'telemetry';
 		$cpt_obj = get_post_type_object( $cpt );
 
-		add_submenu_page( $parent_slug, $cpt_obj->labels->name, $cpt_obj->labels->menu_name, $capability, $menu_slug );
+		if ( $cpt_obj ) {
+			add_submenu_page( $parent_slug, $cpt_obj->labels->name, $cpt_obj->labels->menu_name, $capability, $menu_slug );
+		}
+
 
 		add_action( "load-{$requests_hook}", array( 'GDPR_Help', 'add_requests_help' ) );
 		add_action( "load-{$tools_hook}", array( 'GDPR_Help', 'add_tools_help' ) );
