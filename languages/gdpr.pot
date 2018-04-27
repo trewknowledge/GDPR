@@ -13,14 +13,6 @@ msgstr ""
 "X-Poedit-SourceCharset: UTF-8\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
-#: ../gdpr-mailchimp/gdpr-mailchimp.php:51
-msgid "This plugin needs the GDPR plugin to be active to function. You can get it %s."
-msgstr ""
-
-#: ../gdpr-mailchimp/gdpr-mailchimp.php:51
-msgid "here"
-msgstr ""
-
 #: admin/class-gdpr-admin.php:100, admin/class-gdpr-admin.php:111
 msgid "GDPR"
 msgstr ""
@@ -37,111 +29,111 @@ msgstr ""
 msgid "Settings"
 msgstr ""
 
-#: admin/class-gdpr-admin.php:251, admin/partials/settings.php:18
+#: admin/class-gdpr-admin.php:254, admin/partials/settings.php:18
 msgid "General"
 msgstr ""
 
-#: admin/class-gdpr-admin.php:252, admin/partials/settings.php:59
+#: admin/class-gdpr-admin.php:255, admin/partials/settings.php:59
 msgid "Cookies"
 msgstr ""
 
-#: admin/class-gdpr-admin.php:253, admin/partials/settings.php:177
+#: admin/class-gdpr-admin.php:256, admin/partials/settings.php:177
 msgid "Consents"
 msgstr ""
 
-#: admin/class-gdpr-admin.php:284, includes/class-gdpr-help.php:38, includes/class-gdpr-help.php:43, admin/partials/requests.php:32
+#: admin/class-gdpr-admin.php:287, includes/class-gdpr-help.php:38, includes/class-gdpr-help.php:43, admin/partials/requests.php:32
 msgid "Rectify Data"
 msgstr ""
 
-#: admin/class-gdpr-admin.php:288
+#: admin/class-gdpr-admin.php:291
 msgid "Complaint"
 msgstr ""
 
-#: admin/class-gdpr-admin.php:292, includes/class-gdpr-help.php:56
+#: admin/class-gdpr-admin.php:295, includes/class-gdpr-help.php:56
 msgid "Erasure"
 msgstr ""
 
-#: admin/class-gdpr-admin.php:309, includes/class-gdpr-help.php:81, includes/class-gdpr-help.php:85, admin/partials/tools.php:55
+#: admin/class-gdpr-admin.php:312, includes/class-gdpr-help.php:81, includes/class-gdpr-help.php:85, admin/partials/tools.php:55
 msgid "Access Data"
 msgstr ""
 
-#: admin/class-gdpr-admin.php:310, includes/class-gdpr-help.php:95, admin/partials/tools.php:72
+#: admin/class-gdpr-admin.php:313, includes/class-gdpr-help.php:95, admin/partials/tools.php:72
 msgid "Data Breach"
 msgstr ""
 
-#: admin/class-gdpr-admin.php:311, includes/class-gdpr-help.php:99, includes/class-gdpr-help.php:106, admin/partials/tools.php:117
+#: admin/class-gdpr-admin.php:314, includes/class-gdpr-help.php:99, includes/class-gdpr-help.php:106, admin/partials/tools.php:117
 msgid "Audit Log"
 msgstr ""
 
-#: admin/class-gdpr-admin.php:383
+#: admin/class-gdpr-admin.php:386
 msgid "Consent ID"
 msgstr ""
 
-#: admin/class-gdpr-admin.php:399
+#: admin/class-gdpr-admin.php:402
 msgid "Name"
 msgstr ""
 
-#: admin/class-gdpr-admin.php:400, ../gdpr-mailchimp/includes/class-mailchimp.php:229
+#: admin/class-gdpr-admin.php:403
 msgid "Value"
 msgstr ""
 
-#: admin/class-gdpr-admin.php:449
+#: admin/class-gdpr-admin.php:452
 msgid "No logs found for this email."
 msgstr ""
 
-#: admin/class-gdpr-admin.php:468
+#: admin/class-gdpr-admin.php:471
 msgid "[GDPR] You must select a Privacy Policy Page."
 msgstr ""
 
-#: admin/class-gdpr-admin.php:471
+#: admin/class-gdpr-admin.php:474
 msgid "Select your Privacy Policy page"
 msgstr ""
 
-#: admin/class-gdpr-admin.php:490
+#: admin/class-gdpr-admin.php:493
 msgid "Your Privacy Policy have been updated. In case this was not a small typo fix, you must ask users for explicit consent again."
 msgstr ""
 
-#: admin/class-gdpr-admin.php:496
+#: admin/class-gdpr-admin.php:499
 msgid "Ask for consent"
 msgstr ""
 
-#: admin/class-gdpr-admin.php:503
+#: admin/class-gdpr-admin.php:506
 msgid "Ignore"
 msgstr ""
 
-#: admin/class-gdpr-admin.php:517, admin/class-gdpr-admin.php:656, admin/class-gdpr-admin.php:718, public/class-gdpr-public.php:162, public/class-gdpr-public.php:238, public/class-gdpr-public.php:252
+#: admin/class-gdpr-admin.php:520, admin/class-gdpr-admin.php:659, admin/class-gdpr-admin.php:721, public/class-gdpr-public.php:162, public/class-gdpr-public.php:238, public/class-gdpr-public.php:252
 msgid "We could not verify the the security token. Please try again."
 msgstr ""
 
-#: admin/class-gdpr-admin.php:529
+#: admin/class-gdpr-admin.php:532
 msgid "One or more required fields are missing. Please try again."
 msgstr ""
 
-#: admin/class-gdpr-admin.php:576
+#: admin/class-gdpr-admin.php:579
 msgid "Data breach notification has been initialized. An email confirmation has been sent to the website controller."
 msgstr ""
 
-#: admin/class-gdpr-admin.php:639
+#: admin/class-gdpr-admin.php:642
 msgid "ERROR"
 msgstr ""
 
-#: admin/class-gdpr-admin.php:641
+#: admin/class-gdpr-admin.php:644
 msgid "is a required consent"
 msgstr ""
 
-#: admin/class-gdpr-admin.php:668
+#: admin/class-gdpr-admin.php:671
 msgid "Privacy Policy has been updated. Removing the Privacy Policy consent and requesting new consent."
 msgstr ""
 
-#: admin/class-gdpr-admin.php:673
+#: admin/class-gdpr-admin.php:676
 msgid "Users will have to consent to the updated privacy policy on login."
 msgstr ""
 
-#: admin/class-gdpr-admin.php:738, includes/class-gdpr-help.php:161, public/partials/privacy-preferences-modal.php:31, public/partials/privacy-preferences-modal.php:46
+#: admin/class-gdpr-admin.php:741, includes/class-gdpr-help.php:161, public/partials/privacy-preferences-modal.php:31, public/partials/privacy-preferences-modal.php:46
 msgid "Consent Management"
 msgstr ""
 
-#: admin/class-gdpr-admin.php:775
+#: admin/class-gdpr-admin.php:778
 msgid "Profile Updated. These are the user consents after the save:"
 msgstr ""
 
@@ -229,6 +221,10 @@ msgstr ""
 msgid "Something went wrong. Please try again."
 msgstr ""
 
+#: admin/class-gdpr-telemetry.php:33
+msgid "Telemetry"
+msgstr ""
+
 #: admin/class-gdpr-telemetry.php:35
 msgid "No items found. Future connections will be shown at this place."
 msgstr ""
@@ -261,7 +257,7 @@ msgstr ""
 msgid "Time"
 msgstr ""
 
-#: admin/class-gdpr-telemetry.php:183, ../gdpr-mailchimp/includes/class-mailchimp.php:217
+#: admin/class-gdpr-telemetry.php:183
 msgid "Data"
 msgstr ""
 
@@ -531,40 +527,25 @@ msgstr ""
 msgid "Invalid type of request. Please try again."
 msgstr ""
 
-#: public/class-gdpr-requests-public.php:235
+#: public/class-gdpr-requests-public.php:237
 msgid "User confirmed a request to be deleted."
 msgstr ""
 
-#: public/class-gdpr-requests-public.php:236
+#: public/class-gdpr-requests-public.php:238
 msgid "Content was found for that user."
 msgstr ""
 
-#: public/class-gdpr-requests-public.php:237
+#: public/class-gdpr-requests-public.php:239
 msgid "User added to the erasure review table."
 msgstr ""
 
-#: public/class-gdpr-requests-public.php:270
+#: public/class-gdpr-requests-public.php:272
 msgid "User placed a request for rectification or a complaint."
 msgstr ""
 
-#: public/class-gdpr-requests-public.php:295
-msgid "User requested to have all their data sent to their email."
-msgstr ""
-
-#: ../gdpr-mailchimp/includes/class-mailchimp.php:148, ../gdpr-mailchimp/includes/class-mailchimp.php:189
-msgid "Mailchimp"
-msgstr ""
-
-#: ../gdpr-mailchimp/includes/class-mailchimp.php:194
-msgid "API Key"
-msgstr ""
-
-#: ../gdpr-mailchimp/includes/class-mailchimp.php:216
-msgid "List ID"
-msgstr ""
-
-#: ../gdpr-mailchimp/includes/class-mailchimp.php:228
-msgid "Field"
+#. translators: File format. Can be XML or JSON
+#: public/class-gdpr-requests-public.php:289
+msgid "User downloaded all their data in %s format."
 msgstr ""
 
 #: admin/partials/requests.php:36, admin/partials/requests.php:79, admin/partials/requests.php:93, admin/partials/requests.php:136, admin/partials/requests.php:163, admin/partials/requests.php:313
@@ -779,6 +760,18 @@ msgstr ""
 msgid "Registration message"
 msgstr ""
 
+#: admin/partials/settings.php:228, admin/partials/settings.php:233
+msgid "Data Export Chanel"
+msgstr ""
+
+#: admin/partials/settings.php:239
+msgid "Data Export with email attachment"
+msgstr ""
+
+#: admin/partials/settings.php:240
+msgid "Data Export with download link"
+msgstr ""
+
 #: admin/partials/tools.php:32
 msgid "Data Breach confirmed. Preparing bulk emails."
 msgstr ""
@@ -888,14 +881,6 @@ msgid "Your request has been received. We will be in touch soon."
 msgstr ""
 
 #: public/partials/confirmation-screens.php:61
-msgid "Data Export"
-msgstr ""
-
-#: public/partials/confirmation-screens.php:62
-msgid "Your export file is being generated. You will receive an email with your file soon."
-msgstr ""
-
-#: public/partials/confirmation-screens.php:65
 msgid "There was a problem with your request. Please try again later."
 msgstr ""
 
@@ -933,6 +918,10 @@ msgstr ""
 
 #: public/partials/privacy-preferences-modal.php:115
 msgid "Opt Out"
+msgstr ""
+
+#: public/partials/privacy-preferences-modal.php:129
+msgid "Save Preferences"
 msgstr ""
 
 #: public/partials/privacy-preferences-modal.php:131
@@ -1100,13 +1089,6 @@ msgid ""
 "---------------------------------------------------------------------------------\n"
 "If that wasn't you, reset your password: %s\n"
 ""
-msgstr ""
-
-#: templates/email/export-data-resolved.php:3
-msgid ""
-"Here is all the data we have on you.\n"
-"\n"
-"If you need this on a different format, submit another request and choose a different file format."
 msgstr ""
 
 #: templates/email/rectify-request.php:22
