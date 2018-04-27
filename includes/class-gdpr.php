@@ -178,6 +178,9 @@ class GDPR {
 		$plugin_emails  = new GDPR_Email();
 
 		add_action( 'bp_account_details_fields', array( __CLASS__, 'consent_checkboxes' ) );
+		add_action( 'woocommerce_register_form', array( __CLASS__, 'consent_checkboxes' ) );
+		add_action( 'woocommerce_checkout_update_user_meta', array( $plugin_admin, 'woocommerce_checkout_save_consent' ), 10, 2 );
+		add_filter( 'woocommerce_checkout_fields', array( $plugin_admin, 'woocommerce_consent_checkboxes' ) );
 		add_action( 'show_user_profile', array( $plugin_admin, 'edit_user_profile' ) );
 		add_action( 'personal_options_update', array( $plugin_admin, 'user_profile_update' ) );
 		add_action( 'admin_notices', array( $plugin_admin, 'privacy_policy_page_missing' ) );

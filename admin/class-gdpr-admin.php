@@ -788,4 +788,51 @@ class GDPR_Admin {
 		setcookie( "gdpr[consent_types]", json_encode( $consents ), time() + YEAR_IN_SECONDS, "/" );
 	}
 
+	/**
+	 * Add the consent checkboxes to the checkout page.
+	 * @since  1.3.0
+	 * @author Fernando Claussen <fernandoclaussen@gmail.com>
+	 * @param  int $fields The checkout fields.
+	 */
+	public function woocommerce_consent_checkboxes( $fields ) {
+		$consent_types = get_option( 'gdpr_consent_types', array() );
+		$allowed_html = array(
+			'a' => array(
+				'href' => true,
+				'title' => true,
+				'target' => true,
+			),
+		);
+
+		foreach ( $consent_types as $key => $consent ) {
+			$required = ( isset( $consent['required'] ) && $consent['required'] ) ? 'required' : '';
+
+			$fields['account']['user_consents_' . esc_attr( $key ) ] = array(
+				'type'         => 'checkbox',
+				'label'        => wp_kses( $consent['registration'], $allowed_html ),
+				'required'     => $required,
+			);
+		}
+		return $fields;
+	}
+
+	/**
+	 * Save the user consent when registering from the checkout page.
+	 * @since  1.3.0
+	 * @author Fernando Claussen <fernandoclaussen@gmail.com>
+	 * @param  int $customer_id The user ID.
+	 * @param  array $data All data submitted during checkout.
+	 */
+	public function woocommerce_checkout_save_consent( $customer_id, $data ) {
+		$data = array_filter( $data );
+		$consent_arr = array_filter( array_keys( $data ), function( $item ) {
+			return false !== strpos( $item, 'user_consents_' );
+		} );
+
+		foreach ( $consent_arr as $key => $value ) {
+			$consent = str_replace( 'user_consents_', '', $value );
+			add_user_meta( $customer_id, 'gdpr_consents', $consent );
+		}
+	}
+
 }
