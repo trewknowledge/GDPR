@@ -295,34 +295,38 @@ msgid "Measures taken or proposed to be taken: %s"
 msgstr ""
 
 #: includes/class-gdpr-email.php:197
-msgid "Someone requested to close your account."
+msgid "GDPR Notification: There is a new request waiting to be reviewed."
 msgstr ""
 
 #: includes/class-gdpr-email.php:198
-msgid "Your account has been closed."
+msgid "Someone requested to close your account."
 msgstr ""
 
 #: includes/class-gdpr-email.php:199
+msgid "Your account has been closed."
+msgstr ""
+
+#: includes/class-gdpr-email.php:200
 msgid "Someone requested that we rectify data of your account."
 msgstr ""
 
-#: includes/class-gdpr-email.php:200, includes/class-gdpr-email.php:202, includes/class-gdpr-email.php:204
+#: includes/class-gdpr-email.php:201, includes/class-gdpr-email.php:203, includes/class-gdpr-email.php:205
 msgid "Your request has been completed."
 msgstr ""
 
-#: includes/class-gdpr-email.php:201
+#: includes/class-gdpr-email.php:202
 msgid "Someone made complaint on behalf of your account."
 msgstr ""
 
-#: includes/class-gdpr-email.php:203
+#: includes/class-gdpr-email.php:204
 msgid "Someone requested to download your data."
 msgstr ""
 
-#: includes/class-gdpr-email.php:205
+#: includes/class-gdpr-email.php:206
 msgid "Someone requested to send a data breach notification."
 msgstr ""
 
-#: includes/class-gdpr-email.php:206
+#: includes/class-gdpr-email.php:207
 msgid "Data Breach Notification."
 msgstr ""
 
@@ -494,12 +498,12 @@ msgstr ""
 msgid "User request expired. Removing %s user_meta."
 msgstr ""
 
-#: includes/class-gdpr.php:260
+#: includes/class-gdpr.php:263
 msgid "User registered to the site."
 msgstr ""
 
 #. translators: Name of consent
-#: includes/class-gdpr.php:267
+#: includes/class-gdpr.php:270
 msgid "User gave explicit consent to %s"
 msgstr ""
 
@@ -527,24 +531,24 @@ msgstr ""
 msgid "Invalid type of request. Please try again."
 msgstr ""
 
-#: public/class-gdpr-requests-public.php:237
+#: public/class-gdpr-requests-public.php:281
 msgid "User confirmed a request to be deleted."
 msgstr ""
 
-#: public/class-gdpr-requests-public.php:238
+#: public/class-gdpr-requests-public.php:283
 msgid "Content was found for that user."
 msgstr ""
 
-#: public/class-gdpr-requests-public.php:239
+#: public/class-gdpr-requests-public.php:285
 msgid "User added to the erasure review table."
 msgstr ""
 
-#: public/class-gdpr-requests-public.php:272
+#: public/class-gdpr-requests-public.php:319
 msgid "User placed a request for rectification or a complaint."
 msgstr ""
 
 #. translators: File format. Can be XML or JSON
-#: public/class-gdpr-requests-public.php:289
+#: public/class-gdpr-requests-public.php:336
 msgid "User downloaded all their data in %s format."
 msgstr ""
 
@@ -960,7 +964,7 @@ msgstr ""
 msgid "Continue"
 msgstr ""
 
-#: templates/email/complaint-request.php:22
+#: templates/email/complaint-request.php:4
 msgid ""
 "Someone placed a complaint on your behalf on our site.\n"
 "By clicking confirm a request will be made and we will do our best to fulfil it.\n"
@@ -1047,7 +1051,7 @@ msgid ""
 ""
 msgstr ""
 
-#: templates/email/delete-request.php:21
+#: templates/email/delete-request.php:4
 msgid ""
 "Someone placed a request for your information to be removed from our site.\n"
 "By clicking confirm your account will be removed from our site and all data we collected\n"
@@ -1076,7 +1080,7 @@ msgid ""
 "%s"
 msgstr ""
 
-#: templates/email/export-data-request.php:31
+#: templates/email/export-data-request.php:4
 msgid ""
 "Someone requested to download your data from our site.\n"
 "By clicking confirm we will redirect you back to our site where a download will begin.\n"
@@ -1091,7 +1095,14 @@ msgid ""
 ""
 msgstr ""
 
-#: templates/email/rectify-request.php:22
+#: templates/email/new-request.php:5
+msgid ""
+"There is a new %1$s request waiting for review.\n"
+"\n"
+"Review your requests: %2$s"
+msgstr ""
+
+#: templates/email/rectify-request.php:4
 msgid ""
 "Someone placed a request for your information to be rectified on our site.\n"
 "By clicking confirm a request will be made and we will do our best to fulfil it.\n"
