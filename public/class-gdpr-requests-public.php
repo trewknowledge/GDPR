@@ -294,30 +294,6 @@ class GDPR_Requests_Public extends GDPR_Requests {
 	}
 
 	/**
-	 * Sends the user data export email with the chosen format.
-	 * @since  1.0.0
-	 * @author Fernando Claussen <fernandoclaussen@gmail.com>
-	 * @param  string $email  The recipient.
-	 * @param  string $format The export format. XML or JSON.
-	 * @param  string $key    The request array key.
-	 */
-	public function mail_export_data( $email, $format, $key ) {
-		$email  = sanitize_email( $email );
-		$format = sanitize_text_field( wp_unslash( $format ) );
-		$key    = sanitize_text_field( wp_unslash( $key ) );
-
-		$export   = GDPR::generate_export( $email, $format );
-		$filename = get_temp_dir() . $email . '.' . $format;
-		if ( $export ) {
-			file_put_contents( $filename, $export );
-			if ( GDPR_Email::send( $email, 'export-data-resolved', array(), array( $filename ) ) ) {
-				unlink( $filename );
-				parent::remove_from_requests( $key );
-			}
-		}
-	}
-
-	/**
 	 * Downloads the user data export in the chosen format.
 	 * @since  1.2.0
 	 * @param  string $email  The recipient.
