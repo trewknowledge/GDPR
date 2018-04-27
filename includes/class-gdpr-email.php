@@ -194,16 +194,17 @@ class GDPR_Email {
 	 */
 	public static function send( $emails, $type, $args = array(), $attachments = array() ) {
 		$possible_types = apply_filters( 'gdpr_email_types', array(
-			'delete-request'                         => apply_filters( 'gdpr_delete_request_email_subject', esc_html__( 'Someone requested to close your account.', 'gdpr' ) ),
-			'delete-resolved'                        => apply_filters( 'gdpr_delete_resolved_email_subject', esc_html__( 'Your account has been closed.', 'gdpr' ) ),
-			'rectify-request'                        => apply_filters( 'gdpr_rectify_request_email_subject', esc_html__( 'Someone requested that we rectify data of your account.', 'gdpr' ) ),
-			'rectify-resolved'                       => apply_filters( 'gdpr_rectify_resolved_email_subject', esc_html__( 'Your request has been completed.', 'gdpr' ) ),
-			'complaint-request'                      => apply_filters( 'gdpr_complaint_request_email_subject', esc_html__( 'Someone made complaint on behalf of your account.', 'gdpr' ) ),
-			'complaint-resolved'                     => apply_filters( 'gdpr_complaint_resolved_email_subject', esc_html__( 'Your request has been completed.', 'gdpr' ) ),
-			'export-data-request'                    => apply_filters( 'gdpr_export_data_request_email_subject', esc_html__( 'Someone requested to download your data.', 'gdpr' ) ),
-			'export-data-resolved'                   => apply_filters( 'gdpr_export_data_resolved_email_subject', esc_html__( 'Your request has been completed.', 'gdpr' ) ),
-			'data-breach-request'                    => apply_filters( 'gdpr_data_breach_request_email_subject', esc_html__( 'Someone requested to send a data breach notification.', 'gdpr' ) ),
-			'data-breach-notification'               => apply_filters( 'gdpr_data_breach_resolved_email_subject', esc_html__( 'Data Breach Notification.', 'gdpr' ) ),
+			'new-request'                        => apply_filters( 'gdpr_new_request_email_subject', esc_html__( 'GDPR Notification: There is a new request waiting to be reviewed.', 'gdpr' ) ),
+			'delete-request'                     => apply_filters( 'gdpr_delete_request_email_subject', esc_html__( 'Someone requested to close your account.', 'gdpr' ) ),
+			'delete-resolved'                    => apply_filters( 'gdpr_delete_resolved_email_subject', esc_html__( 'Your account has been closed.', 'gdpr' ) ),
+			'rectify-request'                    => apply_filters( 'gdpr_rectify_request_email_subject', esc_html__( 'Someone requested that we rectify data of your account.', 'gdpr' ) ),
+			'rectify-resolved'                   => apply_filters( 'gdpr_rectify_resolved_email_subject', esc_html__( 'Your request has been completed.', 'gdpr' ) ),
+			'complaint-request'                  => apply_filters( 'gdpr_complaint_request_email_subject', esc_html__( 'Someone made complaint on behalf of your account.', 'gdpr' ) ),
+			'complaint-resolved'                 => apply_filters( 'gdpr_complaint_resolved_email_subject', esc_html__( 'Your request has been completed.', 'gdpr' ) ),
+			'export-data-request'                => apply_filters( 'gdpr_export_data_request_email_subject', esc_html__( 'Someone requested to download your data.', 'gdpr' ) ),
+			'export-data-resolved'               => apply_filters( 'gdpr_export_data_resolved_email_subject', esc_html__( 'Your request has been completed.', 'gdpr' ) ),
+			'data-breach-request'                => apply_filters( 'gdpr_data_breach_request_email_subject', esc_html__( 'Someone requested to send a data breach notification.', 'gdpr' ) ),
+			'data-breach-notification'           => apply_filters( 'gdpr_data_breach_resolved_email_subject', esc_html__( 'Data Breach Notification.', 'gdpr' ) ),
 		) );
 
 		if ( ! in_array( $type, array_keys( $possible_types ), true ) ) {
@@ -213,7 +214,7 @@ class GDPR_Email {
 		$no_reply = self::get_do_not_reply_address();
     $headers = array( 'From: ' . get_bloginfo( 'name' ) . ' <' . $no_reply . '>' );
 		foreach ( (array) $emails as $email ) {
-			$headers[] = 'Bcc: ' . $email;
+			$headers[] = 'Bcc: ' . sanitize_email( $email );
 		}
 
 		$content = self::get_email_content( $type . '.php', $args );
