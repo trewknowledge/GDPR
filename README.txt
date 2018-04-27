@@ -34,11 +34,11 @@ You can send your pull request at [https://github.com/trewknowledge/gdpr](https:
 * Re-assignment of user data on erasure requests & pseudonymization of user website data
 * Data Processor settings and publishing of contact information
 * Right to access data by admin dashboard with email look up and export
-* Right to access data by Data User with front-end requests button & double opt-in confirmation email
-* Right to portability & export of data by Admin or Data User in XML or JSON formats
-* Encrypted audit logs for the lifetime of Data User compliance activity
-* Data User Secret Token for two-factor decryption and recovery of data
-* Data breach notification logs and batch email notifications to data users
+* Right to access data by Data Subject with front-end requests button & double opt-in confirmation email
+* Right to portability & export of data by Admin or Data Subject in XML or JSON formats
+* Encrypted audit logs for the lifetime of Data Subject compliance activity
+* Data Subject Secret Token for two-factor decryption and recovery of data
+* Data breach notification logs and batch email notifications to Data Subjects
 * Telemetry Tracker for visualizing plugins and website data
 
 == Settings ==
@@ -72,28 +72,28 @@ For optional consents, there's a wrapper function `have_consent( $consent_id )` 
 Consents are logged to the user record for auditing or for access purposes.
 
 
-== Requests Table & Rights of Data User ==
+== Requests Table & Rights of Data Subject ==
 
 **Right to Erasure Requests**
 
-1. The Data User is able to submit a request to be erased from the site using a shortcode.
-1. When a request is made, the Data User will receive an email confirmation to confirm the deletion request.
+1. The Data Subject is able to submit a request to be erased from the site using a shortcode.
+1. When a request is made, the Data Subject will receive an email confirmation to confirm the deletion request.
 
    1. After email confirmation, the user request is added to the requests table for review by the Administrator. The Administrator can also add a user manually with an email look up and review.
-   1. If the Data User has content published on the site for any post types or comments, they will be added to this table. If they do not have any content, they will receive a confirmation of erasure request and be provided a 6 digit Token for safekeeping after erasure in case of recover data needs.
+   1. If the Data Subject has content published on the site for any post types or comments, they will be added to this table. If they do not have any content, they will receive a confirmation of erasure request and be provided a 6 digit Token for safekeeping after erasure in case of recover data needs.
    1. The requests table allows the Administrator to reassign any content to another user or delete it.
-   1. In the event of comments, the Data User’s content would be made anonymous.
+   1. In the event of comments, the Data Subject’s content would be made anonymous.
 
 1. Admin can also manually add users to the erasure requests table with a manual email search
 
 **Right to Access Data Request & User Data Portability**
 
-1.   The Data User can place a request to download their data with the shortcode.
+1.   The Data Subject can place a request to download their data with the shortcode.
 1.   After requesting their data, the user will receive a double opt-in confirmation email then the plugin will generate an XML or JSON file, which will be emailed to them for download with an expiration time of 48 hours.
 
 **Right to Rectify & Complaint Requests**
 
-1.   The Data User can place a request to rectify data or file a complaint with the shortcode.
+1.   The Data Subject can place a request to rectify data or file a complaint with the shortcode.
 1.   After making their request, the user will receive a double opt-in confirmation email and then add them to the table for admin to handle the request.
 
 
@@ -101,18 +101,18 @@ Consents are logged to the user record for auditing or for access purposes.
 
 **Access Data**
 
-The Access Data tool allows the Admin to look up a user email and view the data of a particular user. The Admin can download and export the data in a JSON or XML format and provide to the Data User if manually requested.
+The Access Data tool allows the Admin to look up a user email and view the data of a particular user. The Admin can download and export the data in a JSON or XML format and provide to the Data Subject if manually requested.
 
-NOTE: This method should not be used without the Data User confirming their identity.
+NOTE: This method should not be used without the Data Subject confirming their identity.
 
 **Audit Log**
 
-Everything the Data User does from registration, providing consent to the privacy policy, terms of service and other requests are logged and encrypted in a database. Data breach notifications are also logged to all data users upon confirmation by Controller.
+Everything the Data Subject does from registration, providing consent to the privacy policy, terms of service and other requests are logged and encrypted in a database. Data breach notifications are also logged to all Data Subjects upon confirmation by Controller.
 
-1.   Using the Data User's email, you can look up and retrieve the user information and display it.
-1.   If the Data User has been removed from the site, this encrypted log is deleted from the database and saved as an encrypted file inside the plugin folder.
+1.   Using the Data Subject's email, you can look up and retrieve the user information and display it.
+1.   If the Data Subject has been removed from the site, this encrypted log is deleted from the database and saved as an encrypted file inside the plugin folder.
 
-If in the future, the Data User makes a complaint or there is a need to recover the data, the user can provide their email address and the 6 digit token they received from the deletion confirmation email to decrypt and retrieve the file.
+If in the future, the Data Subject makes a complaint or there is a need to recover the data, the user can provide their email address and the 6 digit token they received from the deletion confirmation email to decrypt and retrieve the file.
 
 **Data Breach & Notifications**
 
@@ -184,7 +184,7 @@ For other special categories of personal data, there are more strict regulations
 
 Organizations can be fined up to 4% of annual global turnover for breaching GDPR or €20 Million. This is the maximum fine that can be imposed for the most serious infringements.
 
-There is a tiered approach to the fines whereby a company can be fined 2% for not having their records in order (Article 28), not notifying the supervising authority and Data User about a security breach or for investigating and assessing the breach.
+There is a tiered approach to the fines whereby a company can be fined 2% for not having their records in order (Article 28), not notifying the supervising authority and Data Subject about a security breach or for investigating and assessing the breach.
 
 = Am I compliant just by activating this plugin? =
 
