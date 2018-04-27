@@ -157,6 +157,11 @@ Activating this plugin does not guarantee that an organisation is successfully m
 
 ## Changelog
 
+#### 1.3.0
+* Added BuddyPress registration form integration.
+* Added WooCommerce registration and checkout registration form integration.
+* Added admin notifications when a user makes a request that requires interaction.
+
 ##### 1.2.2
 * Adding a couple missing translation strings.
 * Wrapping the telemetry post type page in an `if` so people can unregister it if they want to.
