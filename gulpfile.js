@@ -4,7 +4,7 @@ var	$ = require('gulp-load-plugins')();
 
 var paths = {
 	src: {
-		php: '../**/*.php',
+		php: './**/*.php',
 		admin: {
 			js: './src/js/admin/*.js',
 			css: './src/css/admin/*.scss'

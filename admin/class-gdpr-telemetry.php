@@ -30,7 +30,7 @@ class GDPR_Telemetry {
 		register_post_type(
 			'telemetry',
 			array(
-				'label' => 'Telemetry',
+				'label' => esc_html__( 'Telemetry', 'gdpr' ),
 				'labels' => array(
 					'not_found' => esc_html__( 'No items found. Future connections will be shown at this place.', 'gdpr' ),
 					'not_found_in_trash' => esc_html__( 'No items found in trash.', 'gdpr' ),

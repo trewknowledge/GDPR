@@ -157,6 +157,13 @@ Activating this plugin does not guarantee that an organisation is successfully m
 
 ## Changelog
 
+##### 1.2.2
+* Adding a couple missing translation strings.
+* Wrapping the telemetry post type page in an `if` so people can unregister it if they want to.
+
+##### 1.2.1
+* After one user reported that their scroll bar disappeared I decided to remove the code that do that when the reconsent modal shows up. This has no impact on anything, but it might fix this user problem.
+
 ##### 1.2.0
 * Fix has_consent and is_allowed_cookie JavaScript functions not being available globally.
 * Add a function to get the consent checkbox without echoing them.

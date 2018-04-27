@@ -126,7 +126,7 @@
 				</div>
 			</div>
 			<footer>
-				<input type="submit" value="Save Preferences">
+				<input type="submit" value="<?php esc_attr_e( 'Save Preferences', 'gdpr' ); ?>">
 				<?php if ( $privacy_policy_page ) : ?>
 					<span><a href="<?php echo esc_url( get_permalink( $privacy_policy_page ) ); ?>" target="_blank"><?php esc_html_e( 'More Information', 'gdpr' ); ?></a></span>
 				<?php endif ?>

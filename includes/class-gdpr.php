@@ -177,6 +177,10 @@ class GDPR {
 		$requests       = new GDPR_Requests( $this->get_plugin_name(), $this->get_version() );
 		$plugin_emails  = new GDPR_Email();
 
+		add_action( 'bp_account_details_fields', array( __CLASS__, 'consent_checkboxes' ) );
+		add_action( 'woocommerce_register_form', array( __CLASS__, 'consent_checkboxes' ) );
+		add_action( 'woocommerce_checkout_update_user_meta', array( $plugin_admin, 'woocommerce_checkout_save_consent' ), 10, 2 );
+		add_filter( 'woocommerce_checkout_fields', array( $plugin_admin, 'woocommerce_consent_checkboxes' ) );
 		add_action( 'show_user_profile', array( $plugin_admin, 'edit_user_profile' ) );
 		add_action( 'personal_options_update', array( $plugin_admin, 'user_profile_update' ) );
 		add_action( 'admin_notices', array( $plugin_admin, 'privacy_policy_page_missing' ) );
@@ -289,7 +293,7 @@ class GDPR {
 		ob_start();
 		foreach ( $consent_types as $key => $consent ) {
 			$required = ( isset( $consent['required'] ) && $consent['required'] ) ? 'required' : '';
-			$checked = ( isset( $sent_extras[ $key ] ) ) ? checked( $sent_extras[ $key ], 1 ) : '';
+			$checked = ( isset( $sent_extras[ $key ] ) ) ? checked( $sent_extras[ $key ], 1, false ) : '';
 			echo '<p>' .
 				'<input type="checkbox" name="user_consents[' . esc_attr( $key ) . ']" id="' . esc_attr( $key ) . '-consent" value="1" ' . $required . ' ' . $checked . '>' .
 				'<label for="' . esc_attr( $key ) . '-consent">' . wp_kses( $consent['registration'], $allowed_html ) . '</label>' .
