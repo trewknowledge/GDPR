@@ -22,7 +22,7 @@
 	window.is_allowed_cookie = function ( cookie ) {
 		if ( Cookies.get('gdpr[allowed_cookies]') ) {
 			var cookiesArray = JSON.parse( Cookies.get('gdpr[allowed_cookies]') );
-			if ( consentArray.indexOf( cookie ) > -1 ) {
+			if ( cookiesArray.indexOf( cookie ) > -1 ) {
 				return true;
 			}
 		}

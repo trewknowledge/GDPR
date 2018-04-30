@@ -157,6 +157,9 @@ Activating this plugin does not guarantee that an organisation is successfully m
 
 ## Changelog
 
+##### 1.3.2
+* Fix issue with the is_allowed_cookie JS function.
+
 ##### 1.3.1
 * Fix consent syncing when difference comes from database and not the cookie.
 * Might allow people to use external services like iubenda.
