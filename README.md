@@ -157,7 +157,11 @@ Activating this plugin does not guarantee that an organisation is successfully m
 
 ## Changelog
 
-#### 1.3.0
+##### 1.3.1
+* Fix consent syncing when difference comes from database and not the cookie.
+* Might allow people to use external services like iubenda.
+
+##### 1.3.0
 * Added BuddyPress registration form integration.
 * Added WooCommerce registration and checkout registration form integration.
 * Added admin notifications when a user makes a request that requires interaction.
