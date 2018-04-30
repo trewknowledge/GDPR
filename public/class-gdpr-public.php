@@ -276,7 +276,10 @@ class GDPR_Public {
 			if ( $user_id ) {
 				$user_consents = (array) get_user_meta( $user_id, 'gdpr_consents' );
 				$cookie_consents = (array) json_decode( wp_unslash( $_COOKIE['gdpr']['consent_types'] ) );
-				$diff = array_diff( $user_consents, $cookie_consents );
+
+				$intersect = array_intersect( $user_consents, $cookie_consents );
+				$diff = array_merge( array_diff( $user_consents, $intersect ), array_diff( $cookie_consents, $intersect ) );
+
 				if ( ! empty( $diff ) ) {
 					setcookie( "gdpr[consent_types]", json_encode( $user_consents ), time() + YEAR_IN_SECONDS, "/" );
 				}
