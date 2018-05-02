@@ -157,6 +157,9 @@ Activating this plugin does not guarantee that an organisation is successfully m
 
 ## Changelog
 
+##### 1.3.3
+* Fix translation error everybody has been complaining about.
+
 ##### 1.3.2
 * Fix issue with the is_allowed_cookie JS function.
 
