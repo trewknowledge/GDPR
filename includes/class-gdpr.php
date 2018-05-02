@@ -69,7 +69,6 @@ class GDPR {
 		$this->plugin_name = 'gdpr';
 
 		$this->load_dependencies();
-		$this->set_locale();
 		$this->define_common_hooks();
 		$this->define_admin_hooks();
 		$this->define_public_hooks();
@@ -139,9 +138,8 @@ class GDPR {
 	 * Define the locale for this plugin for internationalization.
 	 * @since  1.0.0
 	 * @author Fernando Claussen <fernandoclaussen@gmail.com>
-	 * @access private
 	 */
-	private function set_locale() {
+	public function set_locale() {
 
 		load_plugin_textdomain(
 			'gdpr',
@@ -177,6 +175,7 @@ class GDPR {
 		$requests       = new GDPR_Requests( $this->get_plugin_name(), $this->get_version() );
 		$plugin_emails  = new GDPR_Email();
 
+		add_action( 'plugins_loaded', 'set_locale' );
 		add_action( 'bp_account_details_fields', array( __CLASS__, 'consent_checkboxes' ) );
 		add_action( 'woocommerce_register_form', array( __CLASS__, 'consent_checkboxes' ) );
 		add_action( 'woocommerce_checkout_update_user_meta', array( $plugin_admin, 'woocommerce_checkout_save_consent' ), 10, 2 );
