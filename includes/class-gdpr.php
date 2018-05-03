@@ -434,10 +434,10 @@ class GDPR {
 				$dom->appendChild( $meta_data );
 
 				foreach ( $usermeta as $k => $v ) {
-					$key = $dom->createElement( $k );
+					$key = $dom->createElement( htmlspecialchars( $k ) );
 					$meta_data->appendChild( $key );
 					foreach ( $v as $value ) {
-						$key->appendChild( $dom->createElement( 'item', $value ) );
+						$key->appendChild( $dom->createElement( 'item', htmlspecialchars( $value ) ) );
 					}
 				}
 
