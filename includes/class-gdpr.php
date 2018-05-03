@@ -175,7 +175,8 @@ class GDPR {
 		$requests       = new GDPR_Requests( $this->get_plugin_name(), $this->get_version() );
 		$plugin_emails  = new GDPR_Email();
 
-		add_action( 'plugins_loaded', 'set_locale' );
+		add_filter( 'nonce_user_logged_out', array( $this, 'woo_nonce_fix' ), 100, 2 );
+		add_action( 'plugins_loaded', array( $this, 'set_locale' ) );
 		add_action( 'bp_account_details_fields', array( __CLASS__, 'consent_checkboxes' ) );
 		add_action( 'woocommerce_register_form', array( __CLASS__, 'consent_checkboxes' ) );
 		add_action( 'woocommerce_checkout_update_user_meta', array( $plugin_admin, 'woocommerce_checkout_save_consent' ), 10, 2 );
@@ -219,6 +220,23 @@ class GDPR {
 		add_action( 'clean_gdpr_user_request_key', array( $requests, 'clean_user_request_key' ), 10, 2 );
 
 		add_action( 'send_data_breach_emails', array( $plugin_emails, 'send_data_breach_emails' ), 10, 2 );
+	}
+
+	/**
+	 * Fixes nonce manipulation made by Woocommerce.
+	 * @param  int $user_id The user id.
+	 * @param  string $action  The nonce Action.
+	 * @return int          The user id.
+	 */
+	function woo_nonce_fix( $user_id, $action ) {
+		if ( class_exists( 'WooCommerce' ) ) {
+			if ( $user_id && $user_id != 0 && $action && ( false !== strpos( $action, 'gdpr-' ) ) ) {
+				$user_id = 0;
+			}
+
+		}
+
+		return $user_id;
 	}
 
 	/**
