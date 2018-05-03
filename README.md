@@ -157,6 +157,12 @@ Activating this plugin does not guarantee that an organisation is successfully m
 
 ## Changelog
 
+##### 1.3.4
+* Prefixed all nonce actions.
+* Fixed cookies being checked by default when they should have been unchecked.
+* Possible fix for strange characters causing XML export to throw an error.
+* Fix for WooCommerce nonce manipulation for logged out users that was preventing visitors from updating their privacy preferences.
+
 ##### 1.3.3
 * Fix translation error everybody has been complaining about.
 

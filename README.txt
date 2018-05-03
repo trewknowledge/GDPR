@@ -5,7 +5,7 @@ Tags: gdpr, compliance, privacy, law, general data protection regulation
 Requires at least: 4.0
 Requires PHP: 5.6
 Tested up to: 4.9
-Stable tag: 1.3.3
+Stable tag: 1.3.4
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -205,6 +205,12 @@ Activating this plugin does not guarantee that an organisation is successfully m
 9. Audit Log sample.
 
 == Changelog ==
+
+= 1.3.4 =
+* Prefixed all nonce actions.
+* Fixed cookies being checked by default when they should have been unchecked.
+* Possible fix for strange characters causing XML export to throw an error.
+* Fix for WooCommerce nonce manipulation for logged out users that was preventing visitors from updating their privacy preferences.
 
 = 1.3.3 =
 * Fix translation error everybody has been complaining about.
