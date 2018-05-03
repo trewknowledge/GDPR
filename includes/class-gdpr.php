@@ -175,7 +175,9 @@ class GDPR {
 		$requests       = new GDPR_Requests( $this->get_plugin_name(), $this->get_version() );
 		$plugin_emails  = new GDPR_Email();
 
-		add_filter( 'nonce_user_logged_out', array( $this, 'woo_nonce_fix' ), 100, 2 );
+		if ( class_exists( 'WooCommerce' ) ) {
+			add_filter( 'nonce_user_logged_out', array( $this, 'woo_nonce_fix' ), 100, 2 );
+		}
 		add_action( 'plugins_loaded', array( $this, 'set_locale' ) );
 		add_action( 'bp_account_details_fields', array( __CLASS__, 'consent_checkboxes' ) );
 		add_action( 'woocommerce_register_form', array( __CLASS__, 'consent_checkboxes' ) );
@@ -229,11 +231,8 @@ class GDPR {
 	 * @return int          The user id.
 	 */
 	function woo_nonce_fix( $user_id, $action ) {
-		if ( class_exists( 'WooCommerce' ) ) {
-			if ( $user_id && $user_id != 0 && $action && ( false !== strpos( $action, 'gdpr-' ) ) ) {
-				$user_id = 0;
-			}
-
+		if ( ( 0 !== $user_id ) && $action && ( false !== strpos( $action, 'gdpr-' ) ) ) {
+			$user_id = 0;
 		}
 
 		return $user_id;
