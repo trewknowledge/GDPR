@@ -81,13 +81,14 @@
 											<p><?php esc_html_e( 'Cookies Used', 'gdpr' ); ?></p>
 											<?php
 											$site_cookies = array();
-											$enabled      = true;
+											$enabled      = false;
 											$cookies_used = explode( ',', $tab['cookies_used'] );
+											$approved_cookies = isset( $_COOKIE['gdpr']['allowed_cookies'] ) ? json_decode( wp_unslash( $_COOKIE['gdpr']['allowed_cookies'] ) ) : array();
 											foreach ( $cookies_used as $cookie ) {
 												$site_cookies[] = trim( $cookie );
 												if ( ! empty( $approved_cookies ) ) {
-													if ( ! in_array( trim( $cookie ), $approved_cookies ) ) {
-														$enabled = false;
+													if ( in_array( trim( $cookie ), $approved_cookies ) ) {
+														$enabled = true;
 													}
 												}
 											}
@@ -97,7 +98,7 @@
 												<input type="checkbox" class="gdpr-hidden" name="approved_cookies[]" value="<?php echo esc_attr( json_encode( $site_cookies ) ) ?>" checked>
 											<?php else: ?>
 												<label class="gdpr-switch">
-													<input type="checkbox" name="approved_cookies[]" value="<?php echo esc_attr( json_encode( $site_cookies ) ) ?>" <?php echo ( $enabled ? 'checked' : '' ); ?>>
+													<input type="checkbox" name="approved_cookies[]" value="<?php echo esc_attr( json_encode( $site_cookies ) ) ?>" <?php checked( $enabled, true ); ?>>
 													<span class="gdpr-slider round"></span>
 												</label>
 											<?php endif; ?>
