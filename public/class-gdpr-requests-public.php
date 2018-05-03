@@ -77,7 +77,7 @@ class GDPR_Requests_Public extends GDPR_Requests {
 				wp_die( esc_html__( 'Invalid type of request. Please try again.', 'gdpr' ) );
 		}
 
-		if ( ! isset( $_POST['gdpr_request_nonce'] ) || ! wp_verify_nonce( sanitize_key( $_POST['gdpr_request_nonce'] ), 'add-to-requests' ) ) {
+		if ( ! isset( $_POST['gdpr_request_nonce'] ) || ! wp_verify_nonce( sanitize_key( $_POST['gdpr_request_nonce'] ), 'gdpr-add-to-requests' ) ) {
 			wp_die( esc_html__( 'We could not verify the security token. Please try again.', 'gdpr' ) );
 		}
 

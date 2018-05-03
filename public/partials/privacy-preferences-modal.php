@@ -16,7 +16,7 @@
 	<div class="gdpr-wrapper">
 		<form method="post" class="gdpr-privacy-preferences-frm" action="<?php echo esc_url( admin_url('admin-post.php') ); ?>">
 			<input type="hidden" name="action" value="gdpr_update_privacy_preferences">
-			<?php wp_nonce_field( 'update_privacy_preferences', 'update-privacy-preferences-nonce' ); ?>
+			<?php wp_nonce_field( 'gdpr-update_privacy_preferences', 'update-privacy-preferences-nonce' ); ?>
 			<header>
 				<div class="gdpr-box-title">
 					<h3><?php esc_html_e( 'Privacy Preference Center', 'gdpr' ); ?></h3>

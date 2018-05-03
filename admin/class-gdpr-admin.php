@@ -323,7 +323,7 @@ class GDPR_Admin {
 	 * @author Fernando Claussen <fernandoclaussen@gmail.com>
 	 */
 	public function access_data() {
-		if ( ! isset( $_POST['nonce'], $_POST['email'] ) || ! wp_verify_nonce( sanitize_key( wp_unslash( $_POST['nonce'] ) ), 'access-data' ) ) {
+		if ( ! isset( $_POST['nonce'], $_POST['email'] ) || ! wp_verify_nonce( sanitize_key( wp_unslash( $_POST['nonce'] ) ), 'gdpr-access-data' ) ) {
 			wp_send_json_error();
 		}
 
@@ -435,7 +435,7 @@ class GDPR_Admin {
 	 * @author Fernando Claussen <fernandoclaussen@gmail.com>
 	 */
 	public function audit_log() {
-		if ( ! isset( $_POST['nonce'], $_POST['email'] ) || ! wp_verify_nonce( sanitize_key( wp_unslash( $_POST['nonce'] ) ), 'audit-log' ) ) {
+		if ( ! isset( $_POST['nonce'], $_POST['email'] ) || ! wp_verify_nonce( sanitize_key( wp_unslash( $_POST['nonce'] ) ), 'gdpr-audit-log' ) ) {
 			wp_send_json_error();
 		}
 
@@ -493,14 +493,14 @@ class GDPR_Admin {
 					<strong><?php echo esc_html__( 'Your Privacy Policy have been updated. In case this was not a small typo fix, you must ask users for explicit consent again.', 'gdpr' ); ?></strong>
 				</p>
 				<form action="<?php echo esc_url( admin_url('admin-post.php') ); ?>" method="post">
-					<?php wp_nonce_field( 'seek_consent', 'privacy-policy-updated-nonce' ); ?>
+					<?php wp_nonce_field( 'gdpr-seek_consent', 'privacy-policy-updated-nonce' ); ?>
 					<input type="hidden" name="action" value="seek_consent">
 					<p>
 						<?php submit_button( esc_html__( 'Ask for consent', 'gdpr' ), 'primary', 'submit', false ); ?>
 					</p>
 				</form>
 				<form action="<?php echo esc_url( admin_url('admin-post.php') ); ?>" method="post" class="frm-ignore-privacy-update">
-					<?php wp_nonce_field( 'ignore_update', 'privacy-policy-ignore-update-nonce' ); ?>
+					<?php wp_nonce_field( 'gdpr-ignore_update', 'privacy-policy-ignore-update-nonce' ); ?>
 					<input type="hidden" name="action" value="ignore_privacy_policy_update">
 					<p>
 						<?php submit_button( esc_html__( 'Ignore', 'gdpr' ), 'secondary', 'submit', false ); ?>
@@ -516,7 +516,7 @@ class GDPR_Admin {
 	 * @author Fernando Claussen <fernandoclaussen@gmail.com>
 	 */
 	public function send_data_breach_confirmation_email() {
-		if ( ! isset( $_POST['gdpr_data_breach_nonce'] ) || ! wp_verify_nonce( sanitize_key( $_POST[ 'gdpr_data_breach_nonce' ] ), 'data-breach' ) ) {
+		if ( ! isset( $_POST['gdpr_data_breach_nonce'] ) || ! wp_verify_nonce( sanitize_key( $_POST[ 'gdpr_data_breach_nonce' ] ), 'gdpr-data-breach' ) ) {
 			wp_die( esc_html__( 'We could not verify the the security token. Please try again.', 'gdpr' ) );
 		}
 
@@ -655,7 +655,7 @@ class GDPR_Admin {
 	 * @author Fernando Claussen <fernandoclaussen@gmail.com>
 	 */
 	public function seek_consent() {
-		if ( ! isset( $_POST['privacy-policy-updated-nonce'] ) || ! wp_verify_nonce( sanitize_key( $_POST['privacy-policy-updated-nonce'] ), 'seek_consent' ) ) {
+		if ( ! isset( $_POST['privacy-policy-updated-nonce'] ) || ! wp_verify_nonce( sanitize_key( $_POST['privacy-policy-updated-nonce'] ), 'gdpr-seek_consent' ) ) {
 			wp_die( esc_html__( 'We could not verify the the security token. Please try again.', 'gdpr' ) );
 		}
 
@@ -717,7 +717,7 @@ class GDPR_Admin {
 	 * @author Fernando Claussen <fernandoclaussen@gmail.com>
 	 */
 	public function ignore_privacy_policy_update() {
-		if ( ! isset( $_POST['nonce'] ) || ! wp_verify_nonce( sanitize_key( $_POST['nonce'] ), 'ignore_update' ) ) {
+		if ( ! isset( $_POST['nonce'] ) || ! wp_verify_nonce( sanitize_key( $_POST['nonce'] ), 'gdpr-ignore_update' ) ) {
 			wp_send_json_error( esc_html__( 'We could not verify the the security token. Please try again.', 'gdpr' ) );
 		}
 

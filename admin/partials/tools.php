@@ -56,7 +56,7 @@ if ( isset( $_GET['type'], $_GET['key'] ) ) {
 		<div class="postbox not-full">
 			<form class="gdpr-access-data-lookup" method="post">
 				<div class="inside">
-					<?php wp_nonce_field( 'access-data', 'gdpr_access_data_nonce' ); ?>
+					<?php wp_nonce_field( 'gdpr-access-data', 'gdpr_access_data_nonce' ); ?>
 					<h4>
 						<label for="gdpr-request-email-lookup"><?php esc_html_e( 'Search by email', 'gdpr' ); ?></label>
 					</h4>
@@ -71,7 +71,7 @@ if ( isset( $_GET['type'], $_GET['key'] ) ) {
 	<div class="tab hidden" data-id="data-breach">
 		<h2><?php esc_html_e( 'Data Breach', 'gdpr' ) ?></h2>
 		<form class="gdpr-data-breach-form" method="post" action="<?php echo esc_url( admin_url('admin-post.php') ); ?>">
-			<?php wp_nonce_field( 'data-breach', 'gdpr_data_breach_nonce' ); ?>
+			<?php wp_nonce_field( 'gdpr-data-breach', 'gdpr_data_breach_nonce' ); ?>
 			<input type="hidden" name="action" value="gdpr_data_breach">
 			<table class="form-table">
 				<tr>
@@ -118,7 +118,7 @@ if ( isset( $_GET['type'], $_GET['key'] ) ) {
 		<div class="postbox not-full">
 			<form class="gdpr-audit-log-lookup" method="post">
 				<div class="inside">
-					<?php wp_nonce_field( 'audit-log', 'gdpr_audit_log_nonce' ); ?>
+					<?php wp_nonce_field( 'gdpr-audit-log', 'gdpr_audit_log_nonce' ); ?>
 					<h4>
 						<label for="gdpr-request-email-lookup"><?php esc_html_e( 'Search by email', 'gdpr' ); ?></label>
 					</h4>

@@ -148,7 +148,7 @@
 			<form class="gdpr-manual-email-lookup" method="post" action="<?php echo esc_url( admin_url('admin-post.php') ); ?>">
 				<div class="inside">
 					<input type="hidden" name="action" value="gdpr_add_to_deletion_requests">
-					<?php wp_nonce_field( 'add-to-deletion-requests', 'gdpr_deletion_requests_nonce' ); ?>
+					<?php wp_nonce_field( 'gdpr-add-to-deletion-requests', 'gdpr_deletion_requests_nonce' ); ?>
 					<h4>
 						<label for="gdpr-request-email-lookup"><?php esc_html_e( 'Manually add a user', 'gdpr' ); ?></label>
 					</h4>
