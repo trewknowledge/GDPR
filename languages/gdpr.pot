@@ -498,12 +498,12 @@ msgstr ""
 msgid "User request expired. Removing %s user_meta."
 msgstr ""
 
-#: includes/class-gdpr.php:263
+#: includes/class-gdpr.php:279
 msgid "User registered to the site."
 msgstr ""
 
 #. translators: Name of consent
-#: includes/class-gdpr.php:270
+#: includes/class-gdpr.php:286
 msgid "User gave explicit consent to %s"
 msgstr ""
 
@@ -916,19 +916,19 @@ msgstr ""
 msgid "Cookies Used"
 msgstr ""
 
-#: public/partials/privacy-preferences-modal.php:96
+#: public/partials/privacy-preferences-modal.php:97
 msgid "Always Active"
 msgstr ""
 
-#: public/partials/privacy-preferences-modal.php:115
+#: public/partials/privacy-preferences-modal.php:116
 msgid "Opt Out"
 msgstr ""
 
-#: public/partials/privacy-preferences-modal.php:129
+#: public/partials/privacy-preferences-modal.php:130
 msgid "Save Preferences"
 msgstr ""
 
-#: public/partials/privacy-preferences-modal.php:131
+#: public/partials/privacy-preferences-modal.php:132
 msgid "More Information"
 msgstr ""
 
