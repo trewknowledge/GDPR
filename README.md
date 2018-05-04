@@ -157,6 +157,19 @@ Activating this plugin does not guarantee that an organisation is successfully m
 
 ## Changelog
 
+##### 1.4.0
+* Adding the option to disable the plugin CSS. Be careful when using this option. Make sure you know what you are doing.
+* Adding the option to enable or disable the telemetry feature.
+* Adding the option to add reCaptcha to the request forms.
+* Adding comments to the personal data export.
+* Moved privacy bar content field and privacy excerpt field to the general settings tab.
+* Removed automatic privacy policy link from the privacy bar.
+* We now accept links in the privacy bar content to get around the last change.
+* Changed Telemetry cleanup schedule to hourly.
+* Forcing the privacy bar to stay on the left to avoid CSS incompatibilities.
+* Renaming the tab classes in the admin panel to again avoid incompatibilities.
+* Fix privacy preference centre only showing up when cookies were registered.
+
 ##### 1.3.5
 * Fix undefined variable warning.
 * Fix WooCommerce and possibly other plugins nonce manipulation for logged out users. For real this time.
