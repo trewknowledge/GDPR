@@ -72,6 +72,24 @@ class GDPR_Public {
 	}
 
 	/**
+	 * Checks if recaptcha is being used and add the code.
+	 * Should be called from the request forms.
+	 * @since  1.4.0
+	 * @author Fernando Claussen <fernandoclaussen@gmail.com>
+	 */
+	public static function add_recaptcha() {
+		$use_recaptcha = get_option( 'gdpr_use_recaptcha', false );
+		if ( $use_recaptcha ) {
+			$site_key = get_option( 'gdpr_recaptcha_site_key', '' );
+			$secret_key = get_option( 'gdpr_recaptcha_secret_key', '' );
+
+			if ( $site_key && $secret_key ) {
+				echo '<div class="g-recaptcha" data-sitekey="' . $site_key . '"></div>';
+			}
+		}
+	}
+
+	/**
 	 * Register the stylesheets for the public-facing side of the site.
 	 *
 	 * @since  1.0.0
@@ -91,6 +109,15 @@ class GDPR_Public {
 	 * @author Fernando Claussen <fernandoclaussen@gmail.com>
 	 */
 	public function enqueue_scripts() {
+		$use_recaptcha = get_option( 'gdpr_use_recaptcha', false );
+		if ( $use_recaptcha ) {
+			$site_key = get_option( 'gdpr_recaptcha_site_key', '' );
+			$secret_key = get_option( 'gdpr_recaptcha_secret_key', '' );
+
+			if ( $site_key && $secret_key ) {
+				wp_enqueue_script( $this->plugin_name . '-recaptcha', 'https://www.google.com/recaptcha/api.js' );
+			}
+		}
 		wp_enqueue_script( $this->plugin_name, plugin_dir_url( dirname( __FILE__ ) ) . 'assets/js/gdpr-public.js', array( 'jquery' ), $this->version, false );
 		wp_localize_script( $this->plugin_name, 'GDPR', array(
 			'ajaxurl' => admin_url( 'admin-ajax.php' ),
