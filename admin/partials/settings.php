@@ -72,15 +72,40 @@
 					</tr>
 				</tbody>
 			</table>
+			<h2 class="title"><?php esc_html_e( 'Privacy Center', 'gdpr' ); ?></h2>
+			<p><?php esc_html_e( 'This section handles the privacy bar and some of the privacy preferences window.') ?></p>
+			<table class="form-table" data-id="general">
+				<tbody>
+					<tr>
+						<th scope="row">
+							<label for="gdpr_cookie_banner_content"><?php esc_html_e( 'Privacy Banner Text', 'gdpr' ) ?></label>
+						</th>
+						<td>
+							<?php $privacy_bar_content = get_option( 'gdpr_cookie_banner_content', '' ); ?>
+							<textarea name="gdpr_cookie_banner_content" id="gdpr_cookie_banner_content" cols="80" rows="6"><?php echo esc_html( $privacy_bar_content ); ?></textarea>
+						</td>
+					</tr>
+					<tr>
+						<th scope="row">
+							<label for="gdpr_cookie_privacy_excerpt"><?php esc_html_e( 'Privacy Excerpt', 'gdpr' ) ?></label>
+						</th>
+						<td>
+							<?php $privacy_excerpt = get_option( 'gdpr_cookie_privacy_excerpt', '' ); ?>
+							<textarea name="gdpr_cookie_privacy_excerpt" id="gdpr_cookie_privacy_excerpt" cols="80" rows="6"><?php echo esc_html( $privacy_excerpt ); ?></textarea>
+							<p class="description"><?php esc_html_e( 'This will appear in the consent section of the privacy preference window.', 'gdpr' ); ?></p>
+						</td>
+					</tr>
+				</tbody>
+			</table>
 			<h2 class="title"><?php esc_html_e( 'Request Forms reCAPTCHA', 'gdpr' ); ?></h2>
 			<p><?php esc_html_e( 'To prevent spam attacks, you have the option to enable reCAPTCHA. Configure below your keys to make it work with our request forms.', 'gdpr' ); ?></p>
 			<p>
 				<?php echo sprintf(
 					/* translators: External link with instructions on how to proceed. */
-					esc_html__( 'You can find the necessary information %s', 'gdpr' ),
-					'<a href="https://www.google.com/recaptcha/admin" target="_blank">' . esc_html__( 'here', 'gdpr' ) . '</a>.'
+					esc_html__( 'You can find the necessary information %s.', 'gdpr' ),
+					'<a href="https://www.google.com/recaptcha/admin" target="_blank">' . esc_html__( 'here', 'gdpr' ) . '</a>'
 				) ?></p>
-			<table class="form-table" data-id="cookies">
+			<table class="form-table" data-id="general">
 				<tbody>
 					<tr>
 						<th scope="row">
@@ -114,42 +139,8 @@
 		</div>
 		<div class="gdpr-tab hidden" data-id="cookies">
 			<h2><?php esc_html_e( 'Cookies', 'gdpr' ) ?></h2>
-			<table class="form-table" data-id="cookies">
-				<tbody>
-					<tr>
-						<th scope="row">
-							<label for="gdpr_cookie_banner_content"><?php esc_html_e( 'Cookie Banner Text', 'gdpr' ) ?></label>
-						</th>
-						<td>
-							<?php $cookie_banner_content = get_option( 'gdpr_cookie_banner_content', '' ); ?>
-							<textarea name="gdpr_cookie_banner_content" id="gdpr_cookie_banner_content" cols="53" rows="3"><?php echo esc_html( $cookie_banner_content ); ?></textarea>
-						</td>
-					</tr>
-					<tr>
-						<th scope="row">
-							<label for="gdpr_cookie_banner_privacy_policy_link_label"><?php esc_html_e( 'Link to privacy page text', 'gdpr' ) ?></label>
-						</th>
-						<td>
-							<?php $cookie_banner_privacy_policy_link_label = get_option( 'gdpr_cookie_banner_privacy_policy_link_label', '' ); ?>
-							<input type="text" name="gdpr_cookie_banner_privacy_policy_link_label" id="gdpr_cookie_banner_privacy_policy_link_label" value="<?php echo esc_attr( $cookie_banner_privacy_policy_link_label ); ?>" />
-						</td>
-					</tr>
-					<tr>
-						<th scope="row">
-							<label for="gdpr_cookie_privacy_excerpt"><?php esc_html_e( 'Cookie Privacy Excerpt', 'gdpr' ) ?></label>
-						</th>
-						<td>
-							<?php $cookie_privacy_excerpt = get_option( 'gdpr_cookie_privacy_excerpt', '' ); ?>
-							<textarea name="gdpr_cookie_privacy_excerpt" id="gdpr_cookie_privacy_excerpt" cols="53" rows="3"><?php echo esc_html( $cookie_privacy_excerpt ); ?></textarea>
-						</td>
-					</tr>
-					<tr>
-						<th scope="row">
-							<label for="cookie-tabs"><?php esc_html_e( 'Cookie Categories', 'gdpr' ) ?></label>
-						</th>
-						<td>
-							<input type="text" id="cookie-tabs" class="regular-text" placeholder="<?php esc_attr_e( 'Category name', 'gdpr' ); ?>">
-							<button class="button button-primary add-tab"><?php esc_html_e( 'Add tab', 'gdpr' ); ?></button>
+			<input type="text" id="cookie-tabs" class="regular-text" placeholder="<?php esc_attr_e( 'Category name', 'gdpr' ); ?>">
+			<button class="button button-primary add-tab"><?php esc_html_e( 'Add tab', 'gdpr' ); ?></button>
 							<div id="tabs">
 								<?php $cookie_tabs = get_option( 'gdpr_cookie_popup_content', array() ); ?>
 								<?php if ( ! empty( $cookie_tabs ) ) : ?>
@@ -183,7 +174,7 @@
 													<tr>
 														<th><label for="hosts-<?php echo esc_attr( $tab_key ); ?>"><?php esc_html_e( 'Third party domains', 'gdpr' ); ?></label></th>
 														<td>
-															<input type="text" id="hosts-<?php echo esc_attr( $tab_key ); ?>" class="regular-text" placeholder="facebook.com" />
+															<input type="text" id="hosts-<?php echo esc_attr( $tab_key ); ?>" class="regular-text" placeholder="domain.com" />
 															<button class="button button-primary add-host" data-tabid="<?php echo esc_attr( $tab_key ); ?>"><?php esc_html_e( 'Add', 'gdpr' ); ?></button>
 															<br>
 															<span class="description"><?php esc_html_e( 'Cookies that are set by a third party, like facebook.com.', 'gdpr' ); ?></span>
@@ -225,10 +216,6 @@
 									<?php endforeach ?>
 								<?php endif ?>
 							</div>
-						</td>
-					</tr>
-				</tbody>
-			</table>
 		</div>
 		<div class="gdpr-tab hidden" data-id="consents">
 			<h2><?php esc_html_e( 'Consents', 'gdpr' ) ?></h2>
