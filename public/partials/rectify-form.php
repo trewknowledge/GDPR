@@ -6,5 +6,6 @@
 		<input type="email" name="user_email" placeholder="user@domain.com" required>
 	<?php endif ?>
 	<textarea name="data" rows="5" required></textarea>
+	<?php GDPR_Public::add_recaptcha(); ?>
 	<input type="submit" value="<?php esc_attr_e( 'Submit', 'gdpr' ); ?>">
 </form>
