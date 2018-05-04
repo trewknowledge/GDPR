@@ -37,7 +37,7 @@ class GDPR_Activator {
 		if ( ! wp_next_scheduled('telemetry_cleanup') ) {
 			wp_schedule_event(
 				time(),
-				'twicedaily',
+				'hourly',
 				'telemetry_cleanup'
 			);
 		}
