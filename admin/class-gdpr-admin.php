@@ -201,7 +201,7 @@ class GDPR_Admin {
 	public function register_settings() {
 		$settings = array(
 			'gdpr_privacy_policy_page'                      => 'intval',
-			'gdpr_cookie_banner_content'                    => 'sanitize_textarea_field',
+			'gdpr_cookie_banner_content'                    => array( $this, 'sanitize_with_links' ),
 			'gdpr_cookie_privacy_excerpt'                   => 'sanitize_textarea_field',
 			'gdpr_cookie_popup_content'                     => array( $this, 'sanitize_cookie_tabs' ),
 			'gdpr_email_limit'                              => 'intval',
@@ -216,6 +216,17 @@ class GDPR_Admin {
 		foreach ( $settings as $option_name => $sanitize_callback ) {
 			register_setting( 'gdpr', $option_name, array( 'sanitize_callback' => $sanitize_callback ) );
 		}
+	}
+
+	/**
+	 * Sanitize content but allow links.
+	 * @param  string $string The string that will be sanitized.
+	 * @return string         Sanitized string.
+	 * @since  1.4.0
+	 * @author Fernando Claussen <fernandoclaussen@gmail.com>
+	 */
+	public function sanitize_with_links( $string ) {
+		return wp_kses( $string, $this->allowed_html );
 	}
 
 	/**
@@ -846,20 +857,13 @@ class GDPR_Admin {
 	 */
 	public function woocommerce_consent_checkboxes( $fields ) {
 		$consent_types = get_option( 'gdpr_consent_types', array() );
-		$allowed_html = array(
-			'a' => array(
-				'href' => true,
-				'title' => true,
-				'target' => true,
-			),
-		);
 
 		foreach ( $consent_types as $key => $consent ) {
 			$required = ( isset( $consent['required'] ) && $consent['required'] ) ? 'required' : '';
 
 			$fields['account']['user_consents_' . esc_attr( $key ) ] = array(
 				'type'         => 'checkbox',
-				'label'        => wp_kses( $consent['registration'], $allowed_html ),
+				'label'        => wp_kses( $consent['registration'], $this->allowed_html ),
 				'required'     => $required,
 			);
 		}

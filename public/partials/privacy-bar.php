@@ -16,7 +16,7 @@
 	<div class="gdpr-wrapper">
 		<div class="gdpr-content">
 			<p>
-				<?php echo nl2br( esc_html( $content ) ); ?>
+				<?php echo nl2br( wp_kses_post( $content ) ); ?>
 			</p>
 		</div>
 		<div class="gdpr-right">
