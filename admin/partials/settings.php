@@ -14,7 +14,7 @@
 
 		<?php settings_fields( 'gdpr' ); ?>
 
-		<div class="tab hidden" data-id="general">
+		<div class="gdpr-tab hidden" data-id="general">
 			<h2><?php esc_html_e( 'General', 'gdpr' ) ?></h2>
 			<table class="form-table" data-id="general">
 				<tbody>
@@ -55,7 +55,7 @@
 				</tbody>
 			</table>
 		</div>
-		<div class="tab hidden" data-id="cookies">
+		<div class="gdpr-tab hidden" data-id="cookies">
 			<h2><?php esc_html_e( 'Cookies', 'gdpr' ) ?></h2>
 			<table class="form-table" data-id="cookies">
 				<tbody>
@@ -173,7 +173,7 @@
 				</tbody>
 			</table>
 		</div>
-		<div class="tab hidden" data-id="consents">
+		<div class="gdpr-tab hidden" data-id="consents">
 			<h2><?php esc_html_e( 'Consents', 'gdpr' ) ?></h2>
 			<input type="text" id="type-of-consent" class="regular-text" placeholder="<?php esc_attr_e( 'Type of consent', 'gdpr' ); ?>">
 			<button class="button button-primary add-consent"><?php esc_html_e( 'Add consent', 'gdpr' ); ?></button>
@@ -224,7 +224,7 @@
 				<?php endif ?>
 			</div>
 		</div>
-		<div class="tab hidden" data-id="export-chanel">
+		<div class="gdpr-tab hidden" data-id="export-chanel">
 			<h2><?php esc_html_e( 'Data Export Chanel', 'gdpr' ) ?></h2>
 			<table class="form-table" data-id="general">
 				<tbody>

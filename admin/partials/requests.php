@@ -28,7 +28,7 @@
 		<?php endforeach; ?>
 	</div>
 
-	<div class="tab hidden" data-id="rectify">
+	<div class="gdpr-tab hidden" data-id="rectify">
 		<h2><?php esc_html_e( 'Rectify Data', 'gdpr' ) ?></h2>
 		<table class="widefat gdpr-request-table">
 			<thead>
@@ -85,7 +85,7 @@
 		</table>
 	</div>
 
-	<div class="tab hidden" data-id="complaint">
+	<div class="gdpr-tab hidden" data-id="complaint">
 		<h2><?php esc_html_e( 'Complaints', 'gdpr' ) ?></h2>
 		<table class="widefat gdpr-request-table">
 			<thead>
@@ -142,7 +142,7 @@
 		</table>
 	</div>
 
-	<div class="tab hidden" data-id="delete">
+	<div class="gdpr-tab hidden" data-id="delete">
 		<h2><?php esc_html_e( 'Right to erasure', 'gdpr' ) ?></h2>
 		<div class="postbox not-full">
 			<form class="gdpr-manual-email-lookup" method="post" action="<?php echo esc_url( admin_url('admin-post.php') ); ?>">

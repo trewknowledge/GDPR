@@ -51,7 +51,7 @@ if ( isset( $_GET['type'], $_GET['key'] ) ) {
 		<?php endforeach; ?>
 	</div>
 
-	<div class="tab hidden" data-id="access">
+	<div class="gdpr-tab hidden" data-id="access">
 		<h2><?php esc_html_e( 'Access Data', 'gdpr' ) ?></h2>
 		<div class="postbox not-full">
 			<form class="gdpr-access-data-lookup" method="post">
@@ -68,7 +68,7 @@ if ( isset( $_GET['type'], $_GET['key'] ) ) {
 		</div>
 	</div>
 
-	<div class="tab hidden" data-id="data-breach">
+	<div class="gdpr-tab hidden" data-id="data-breach">
 		<h2><?php esc_html_e( 'Data Breach', 'gdpr' ) ?></h2>
 		<form class="gdpr-data-breach-form" method="post" action="<?php echo esc_url( admin_url('admin-post.php') ); ?>">
 			<?php wp_nonce_field( 'gdpr-data-breach', 'gdpr_data_breach_nonce' ); ?>
@@ -113,7 +113,7 @@ if ( isset( $_GET['type'], $_GET['key'] ) ) {
 		</form>
 	</div>
 
-	<div class="tab hidden" data-id="audit-log">
+	<div class="gdpr-tab hidden" data-id="audit-log">
 		<h2><?php esc_html_e( 'Audit Log', 'gdpr' ) ?></h2>
 		<div class="postbox not-full">
 			<form class="gdpr-audit-log-lookup" method="post">
