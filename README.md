@@ -157,6 +157,11 @@ Activating this plugin does not guarantee that an organisation is successfully m
 
 ## Changelog
 
+##### 1.3.5
+* Fix undefined variable warning.
+* Fix WooCommerce and possibly other plugins nonce manipulation for logged out users. For real this time.
+* Fix XML export fatal error when meta key starts with a number.
+
 ##### 1.3.4
 * Prefixed all nonce actions.
 * Fixed cookies being checked by default when they should have been unchecked.

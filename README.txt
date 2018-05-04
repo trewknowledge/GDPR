@@ -5,7 +5,7 @@ Tags: gdpr, compliance, privacy, law, general data protection regulation
 Requires at least: 4.0
 Requires PHP: 5.6
 Tested up to: 4.9
-Stable tag: 1.3.4
+Stable tag: 1.3.5
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -205,6 +205,11 @@ Activating this plugin does not guarantee that an organisation is successfully m
 9. Audit Log sample.
 
 == Changelog ==
+
+= 1.3.5 =
+* Fix undefined variable warning.
+* Fix WooCommerce and possibly other plugins nonce manipulation for logged out users. For real this time.
+* Fix XML export fatal error when meta key starts with a number.
 
 = 1.3.4 =
 * Prefixed all nonce actions.
