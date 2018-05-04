@@ -169,8 +169,8 @@ class GDPR_Public {
 		$consents = array_map( 'sanitize_text_field', (array) $_POST['user_consents'] );
 		$cookies = isset( $_POST['approved_cookies'] ) ? array_map( 'sanitize_text_field', (array) $_POST['approved_cookies'] ) : array();
 
+		$approved_cookies = array();
 		if ( ! empty( $cookies ) ) {
-			$approved_cookies = array();
 			foreach ( $cookies as $cookieArr ) {
 				$cookieArr = json_decode( wp_unslash( $cookieArr ) );
 				foreach ( $cookieArr as $cookie ) {
