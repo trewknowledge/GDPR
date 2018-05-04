@@ -210,6 +210,9 @@ class GDPR_Admin {
 			'gdpr_deletion_needs_review'                    => 'boolval',
 			'gdpr_disable_css'                              => 'boolval',
 			'gdpr_enable_telemetry_tracker'                 => 'boolval',
+			'gdpr_use_recaptcha'                            => 'boolval',
+			'gdpr_recaptcha_site_key'                       => 'sanitize_text_field',
+			'gdpr_recaptcha_secret_key'                     => 'sanitize_text_field',
 		);
 		foreach ( $settings as $option_name => $sanitize_callback ) {
 			register_setting( 'gdpr', $option_name, array( 'sanitize_callback' => $sanitize_callback ) );

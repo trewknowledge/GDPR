@@ -35,6 +35,10 @@ class GDPR_Activator {
 		add_option( 'gdpr_cookie_banner_privacy_policy_link_label', 'Learn more at our' );
 		add_option( 'gdpr_disable_css', false );
 		add_option( 'gdpr_enable_telemetry_tracker', false );
+		add_option( 'gdpr_use_recaptcha', false );
+		add_option( 'gdpr_recaptcha_site_key', '' );
+		add_option( 'gdpr_recaptcha_secret_key', '' );
+
 	}
 
 }

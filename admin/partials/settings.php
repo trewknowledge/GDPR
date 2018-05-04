@@ -72,6 +72,45 @@
 					</tr>
 				</tbody>
 			</table>
+			<h2 class="title"><?php esc_html_e( 'Request Forms reCAPTCHA', 'gdpr' ); ?></h2>
+			<p><?php esc_html_e( 'To prevent spam attacks, you have the option to enable reCAPTCHA. Configure below your keys to make it work with our request forms.', 'gdpr' ); ?></p>
+			<p>
+				<?php echo sprintf(
+					/* translators: External link with instructions on how to proceed. */
+					esc_html__( 'You can find the necessary information %s', 'gdpr' ),
+					'<a href="https://www.google.com/recaptcha/admin" target="_blank">' . esc_html__( 'here', 'gdpr' ) . '</a>.'
+				) ?></p>
+			<table class="form-table" data-id="cookies">
+				<tbody>
+					<tr>
+						<th scope="row">
+							<label for="gdpr_use_recaptcha"><?php esc_html_e( 'Enable reCAPTCHA', 'gdpr' ) ?></label>
+						</th>
+						<td>
+							<?php $use_recaptcha = get_option( 'gdpr_use_recaptcha', false ); ?>
+							<input type="checkbox" name="<?php echo esc_attr( 'gdpr_use_recaptcha' ); ?>" id="gdpr_use_recaptcha" value="1"  <?php checked( $use_recaptcha, true ); ?>>
+						</td>
+					</tr>
+					<tr>
+						<th scope="row">
+							<label for="gdpr_recaptcha_site_key"><?php esc_html_e( 'Site Key', 'gdpr' ) ?></label>
+						</th>
+						<td>
+							<?php $site_key = get_option( 'gdpr_recaptcha_site_key', '' ); ?>
+							<input type="text" name="gdpr_recaptcha_site_key" value="<?php echo esc_attr( $site_key ); ?>" placeholder="">
+						</td>
+					</tr>
+					<tr>
+						<th scope="row">
+							<label for="gdpr_recaptcha_secret_key"><?php esc_html_e( 'Secret Key', 'gdpr' ) ?></label>
+						</th>
+						<td>
+							<?php $secret_key = get_option( 'gdpr_recaptcha_secret_key', '' ); ?>
+							<input type="password" name="gdpr_recaptcha_secret_key" value="<?php echo esc_attr( $secret_key ); ?>" placeholder="">
+						</td>
+					</tr>
+				</tbody>
+			</table>
 		</div>
 		<div class="gdpr-tab hidden" data-id="cookies">
 			<h2><?php esc_html_e( 'Cookies', 'gdpr' ) ?></h2>
