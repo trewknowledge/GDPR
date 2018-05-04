@@ -49,7 +49,16 @@
 						</th>
 						<td>
 							<?php $needs_review = get_option( 'gdpr_deletion_needs_review', true ); ?>
-							<input type="checkbox" name="<?php echo esc_attr( 'gdpr_deletion_needs_review' ); ?>" id="gdpr_deletion_needs_review" value="1"  <?php checked( $needs_review, true ); ?>><?php esc_html_e( 'Send all deletion requests to the review table.', 'gdpr' ); ?>
+							<input type="checkbox" name="<?php echo esc_attr( 'gdpr_deletion_needs_review' ); ?>" id="gdpr_deletion_needs_review" value="1"  <?php checked( $needs_review, true ); ?>><label for="gdpr_deletion_needs_review"><?php esc_html_e( 'Send all deletion requests to the review table.', 'gdpr' ); ?></label>
+						</td>
+					</tr>
+					<tr>
+						<th scope="row">
+							<label for="gdpr_disable_css"><?php esc_html_e( 'Disable CSS', 'gdpr' ) ?></label>
+						</th>
+						<td>
+							<?php $disable_css = get_option( 'gdpr_disable_css', false ); ?>
+							<input type="checkbox" name="<?php echo esc_attr( 'gdpr_disable_css' ); ?>" id="gdpr_disable_css" value="1"  <?php checked( $disable_css, true ); ?>><label for="gdpr_disable_css"><?php esc_html_e( 'Make sure you know what you are doing before checking this.', 'gdpr' ); ?></label>
 						</td>
 					</tr>
 				</tbody>
