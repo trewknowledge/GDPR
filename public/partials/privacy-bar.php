@@ -17,9 +17,6 @@
 		<div class="gdpr-content">
 			<p>
 				<?php echo nl2br( esc_html( $content ) ); ?>
-				<?php if ( $privacy_policy_page ): ?>
-					<?php echo sprintf( '%s %s', esc_html( $link_label ), '<a href="' . esc_url( get_permalink( $privacy_policy_page ) ) . '" title="' . esc_attr( get_the_title( $privacy_policy_page ) ) . '">' . esc_html( get_the_title( $privacy_policy_page ) ) . '</a>' ) ?>
-				<?php endif ?>
 			</p>
 		</div>
 		<div class="gdpr-right">
