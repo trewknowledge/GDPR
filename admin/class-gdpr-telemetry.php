@@ -73,6 +73,10 @@ class GDPR_Telemetry {
 	 * @since  1.0.0
 	 */
 	public function log_request( $response, $type, $class, $args, $url ) {
+		$telemetry_enabled = get_option( 'gdpr_enable_telemetry_tracker', false );
+		if ( ! $telemetry_enabled ) {
+			return;
+		}
 		/* Only response type */
 		if ( 'response' !== $type ) {
 			return false;
