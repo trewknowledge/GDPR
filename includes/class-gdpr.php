@@ -175,9 +175,7 @@ class GDPR {
 		$requests       = new GDPR_Requests( $this->get_plugin_name(), $this->get_version() );
 		$plugin_emails  = new GDPR_Email();
 
-		if ( class_exists( 'WooCommerce' ) ) {
-			add_filter( 'nonce_user_logged_out', array( $this, 'woo_nonce_fix' ), 100, 2 );
-		}
+		add_filter( 'nonce_user_logged_out', array( $this, 'woo_nonce_fix' ), 100, 2 );
 		add_action( 'plugins_loaded', array( $this, 'set_locale' ) );
 		add_action( 'bp_account_details_fields', array( __CLASS__, 'consent_checkboxes' ) );
 		add_action( 'woocommerce_register_form', array( __CLASS__, 'consent_checkboxes' ) );
