@@ -32,7 +32,6 @@ class GDPR_Activator {
 	 * @author Fernando Claussen <fernandoclaussen@gmail.com>
 	 */
 	public static function activate() {
-		add_option( 'gdpr_cookie_banner_privacy_policy_link_label', 'Learn more at our' );
 		add_option( 'gdpr_disable_css', false );
 		add_option( 'gdpr_enable_telemetry_tracker', false );
 		add_option( 'gdpr_use_recaptcha', false );
