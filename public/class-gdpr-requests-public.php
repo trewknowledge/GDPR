@@ -81,6 +81,32 @@ class GDPR_Requests_Public extends GDPR_Requests {
 			wp_die( esc_html__( 'We could not verify the security token. Please try again.', 'gdpr' ) );
 		}
 
+		$use_recaptcha = get_option( 'gdpr_use_recaptcha', false );
+		if ( $use_recaptcha ) {
+			$site_key = get_option( 'gdpr_recaptcha_site_key', '' );
+			$secret_key = get_option( 'gdpr_recaptcha_secret_key', '' );
+
+			if ( $site_key && $secret_key ) {
+				if ( ! isset( $_POST['g-recaptcha-response'] ) || ! $_POST['g-recaptcha-response'] ) {
+					wp_die( esc_html__( 'Please verify that you are not a robot.', 'gdpr' ) );
+				}
+
+				$response = wp_remote_post( 'https://www.google.com/recaptcha/api/siteverify', array(
+					'body' => array(
+						'secret' => $secret_key,
+						'response' => $_POST['g-recaptcha-response'],
+					),
+				) );
+
+				$recaptcha_result = wp_remote_retrieve_body( $response );
+				$recaptcha_result = json_decode( $recaptcha_result );
+				if ( ! $recaptcha_result || ! $recaptcha_result->success ) {
+					wp_die( esc_html__( 'Please verify that you are not a robot.', 'gdpr' ) );
+				}
+
+			}
+		}
+
 		$type = sanitize_text_field( wp_unslash( $_POST['type'] ) );
 		$data = isset( $_POST['data'] ) ? sanitize_textarea_field( $_POST['data'] ) : '';
 
