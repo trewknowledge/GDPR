@@ -498,12 +498,12 @@ msgstr ""
 msgid "User request expired. Removing %s user_meta."
 msgstr ""
 
-#: includes/class-gdpr.php:279
+#: includes/class-gdpr.php:277
 msgid "User registered to the site."
 msgstr ""
 
 #. translators: Name of consent
-#: includes/class-gdpr.php:286
+#: includes/class-gdpr.php:284
 msgid "User gave explicit consent to %s"
 msgstr ""
 
