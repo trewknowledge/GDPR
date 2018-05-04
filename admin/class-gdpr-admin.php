@@ -339,6 +339,10 @@ class GDPR_Admin {
 		}
 
 		$usermeta = GDPR::get_user_meta( $user->ID );
+		$comments      = get_comments( array(
+			'author_email'       => $user->user_email,
+			'include_unapproved' => true,
+		) );
 		$user_consents = get_user_meta( $user->ID, 'gdpr_consents' );
 
 		ob_start();
@@ -396,6 +400,48 @@ class GDPR_Admin {
 				echo '</tr>';
 			}
 			echo '</table>';
+		}
+
+		if ( ! empty( $comments ) ) {
+			echo '<h2>Comments</h2>';
+			foreach ( $comments as $v ) {
+				echo '<table class="widefat">
+					<thead>
+						<tr>
+							<th class="row-title">' . esc_html__( 'Comment Field', 'gdpr' ) . '</th>
+							<th class="row-title">' . esc_html__( 'Comment Data', 'gdpr' ) . '</th>
+						</tr>
+					</thead>
+					<tr>
+						<td class="row-title">comment_author</td>
+						<td>' . esc_html( $v->comment_author ) . '</td>
+					</tr>
+					<tr>
+						<td class="row-title">comment_author_email</td>
+						<td>' . esc_html( $v->comment_author_email ) . '</td>
+					</tr>
+					<tr>
+						<td class="row-title">comment_author_url</td>
+						<td>' . esc_html( $v->comment_author_url ) . '</td>
+					</tr>
+					<tr>
+						<td class="row-title">comment_author_IP</td>
+						<td>' . esc_html( $v->comment_author_IP ) . '</td>
+					</tr>
+					<tr>
+						<td class="row-title">comment_date</td>
+						<td>' . esc_html( $v->comment_date ) . '</td>
+					</tr>
+					<tr>
+						<td class="row-title">comment_agent</td>
+						<td>' . esc_html( $v->comment_agent ) . '</td>
+					</tr>
+					<tr>
+						<td class="row-title">comment_content</td>
+						<td>' . esc_html( $v->comment_content ) . '</td>
+					</tr>
+				</table><br>';
+			}
 		}
 
 		if ( ! empty( $usermeta ) ) {

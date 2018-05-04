@@ -381,6 +381,10 @@ class GDPR {
 		}
 
 		$usermeta      = self::get_user_meta( $user->ID );
+		$comments      = get_comments( array(
+			'author_email'       => $user->user_email,
+			'include_unapproved' => true,
+		) );
 		$user_consents = get_user_meta( $user->ID, 'gdpr_consents' );
 		$extra_content = apply_filters( 'gdpr_export_data_extra_tables', '', $email );
 
@@ -399,6 +403,21 @@ class GDPR {
 					}
 				}
 
+				$comments_array = array();
+				if ( ! empty( $comments ) ) {
+					foreach ( $comments as $k => $v ) {
+						$comments_array[ $k ] = array(
+							'comment_author' => $v->comment_author,
+							'comment_author_email' => $v->comment_author_email,
+							'comment_author_url' => $v->comment_author_url,
+							'comment_author_IP' => $v->comment_author_IP,
+							'comment_date' => $v->comment_date,
+							'comment_agent' => $v->comment_agent,
+							'comment_content' => $v->comment_content,
+						);
+					}
+				}
+
 				$json = array(
 					'Personal Information' => array(
 						'Username'     => $user->user_login,
@@ -412,6 +431,7 @@ class GDPR {
 					),
 					'Consents'             => $user_consents,
 					'Metadata'             => $metadata,
+					'Comments'             => $comments_array,
 				);
 
 				if ( $extra_content ) {
@@ -442,6 +462,22 @@ class GDPR {
 					$dom->appendChild( $consents );
 					foreach ( $user_consents as $consent_item ) {
 						$consents->appendChild( $dom->createElement( 'consent', $consent_item ) );
+					}
+				}
+
+				if ( ! empty( $comments ) ) {
+					$comments_node = $dom->createElement( 'Comments' );
+					$dom->appendChild( $comments_node );
+					foreach ( $comments as $k => $v ) {
+						$single_comment = $dom->createElement( 'Comment' );
+						$comments_node->appendChild( $single_comment );
+						$single_comment->appendChild( $dom->createElement( 'comment_author', htmlspecialchars( $v->comment_author ) ) );
+						$single_comment->appendChild( $dom->createElement( 'comment_author_email', htmlspecialchars( $v->comment_author_email ) ) );
+						$single_comment->appendChild( $dom->createElement( 'comment_author_url', htmlspecialchars( $v->comment_author_url ) ) );
+						$single_comment->appendChild( $dom->createElement( 'comment_author_IP', htmlspecialchars( $v->comment_author_IP ) ) );
+						$single_comment->appendChild( $dom->createElement( 'comment_date', htmlspecialchars( $v->comment_date ) ) );
+						$single_comment->appendChild( $dom->createElement( 'comment_agent', htmlspecialchars( $v->comment_agent ) ) );
+						$single_comment->appendChild( $dom->createElement( 'comment_content', htmlspecialchars( $v->comment_content ) ) );
 					}
 				}
 
