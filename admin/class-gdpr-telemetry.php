@@ -27,6 +27,20 @@ class GDPR_Telemetry {
 	 * @author Fernando Claussen <fernandoclaussen@gmail.com>
 	 */
 	public function register_post_type() {
+		$telemetry_enabled = get_option( 'gdpr_enable_telemetry_tracker', false );
+		if ( ! $telemetry_enabled ) {
+			wp_clear_scheduled_hook( 'telemetry_cleanup' );
+			return;
+		}
+
+		if ( ! wp_next_scheduled( 'telemetry_cleanup' ) ) {
+			wp_schedule_event(
+				time(),
+				'hourly',
+				'telemetry_cleanup'
+			);
+		}
+
 		register_post_type(
 			'telemetry',
 			array(

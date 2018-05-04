@@ -34,13 +34,7 @@ class GDPR_Activator {
 	public static function activate() {
 		add_option( 'gdpr_cookie_banner_privacy_policy_link_label', 'Learn more at our' );
 		add_option( 'gdpr_disable_css', false );
-		if ( ! wp_next_scheduled('telemetry_cleanup') ) {
-			wp_schedule_event(
-				time(),
-				'hourly',
-				'telemetry_cleanup'
-			);
-		}
+		add_option( 'gdpr_enable_telemetry_tracker', false );
 	}
 
 }

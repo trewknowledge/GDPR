@@ -209,6 +209,7 @@ class GDPR_Admin {
 			'gdpr_consent_types'                            => array( $this, 'sanitize_consents' ),
 			'gdpr_deletion_needs_review'                    => 'boolval',
 			'gdpr_disable_css'                              => 'boolval',
+			'gdpr_enable_telemetry_tracker'                 => 'boolval',
 		);
 		foreach ( $settings as $option_name => $sanitize_callback ) {
 			register_setting( 'gdpr', $option_name, array( 'sanitize_callback' => $sanitize_callback ) );

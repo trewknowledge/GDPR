@@ -49,7 +49,7 @@
 						</th>
 						<td>
 							<?php $needs_review = get_option( 'gdpr_deletion_needs_review', true ); ?>
-							<input type="checkbox" name="<?php echo esc_attr( 'gdpr_deletion_needs_review' ); ?>" id="gdpr_deletion_needs_review" value="1"  <?php checked( $needs_review, true ); ?>><label for="gdpr_deletion_needs_review"><?php esc_html_e( 'Send all deletion requests to the review table.', 'gdpr' ); ?></label>
+							<input type="checkbox" name="<?php echo esc_attr( 'gdpr_deletion_needs_review' ); ?>" id="gdpr_deletion_needs_review" value="1"  <?php checked( $needs_review, true ); ?>><span class="description"><label for="gdpr_deletion_needs_review"><?php esc_html_e( 'Send all deletion requests to the review table.', 'gdpr' ); ?></label></label>
 						</td>
 					</tr>
 					<tr>
@@ -58,7 +58,16 @@
 						</th>
 						<td>
 							<?php $disable_css = get_option( 'gdpr_disable_css', false ); ?>
-							<input type="checkbox" name="<?php echo esc_attr( 'gdpr_disable_css' ); ?>" id="gdpr_disable_css" value="1"  <?php checked( $disable_css, true ); ?>><label for="gdpr_disable_css"><?php esc_html_e( 'Make sure you know what you are doing before checking this.', 'gdpr' ); ?></label>
+							<input type="checkbox" name="<?php echo esc_attr( 'gdpr_disable_css' ); ?>" id="gdpr_disable_css" value="1"  <?php checked( $disable_css, true ); ?>><label for="gdpr_disable_css"><span class="description"><?php esc_html_e( 'Make sure you know what you are doing before checking this.', 'gdpr' ); ?></span></label>
+						</td>
+					</tr>
+					<tr>
+						<th scope="row">
+							<label for="gdpr_enable_telemetry_tracker"><?php esc_html_e( 'Enable the Telemetry Scanner', 'gdpr' ) ?></label>
+						</th>
+						<td>
+							<?php $enable_telemetry = get_option( 'gdpr_enable_telemetry_tracker', false ); ?>
+							<input type="checkbox" name="<?php echo esc_attr( 'gdpr_enable_telemetry_tracker' ); ?>" id="gdpr_enable_telemetry_tracker" value="1"  <?php checked( $enable_telemetry, true ); ?>><label for="gdpr_enable_telemetry_tracker"><span class="description"><?php esc_html_e( 'Toggles the Telemetry Scanner On/Off. (experimental)', 'gdpr' ); ?></span></label>
 						</td>
 					</tr>
 				</tbody>
