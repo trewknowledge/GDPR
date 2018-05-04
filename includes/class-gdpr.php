@@ -449,6 +449,7 @@ class GDPR {
 				$dom->appendChild( $meta_data );
 
 				foreach ( $usermeta as $k => $v ) {
+					$k = is_numeric( substr( $k, 0, 1 ) ) ? '_' . $k : $k;
 					$key = $dom->createElement( htmlspecialchars( $k ) );
 					$meta_data->appendChild( $key );
 					foreach ( $v as $value ) {
