@@ -795,6 +795,13 @@ class GDPR_Admin {
 	public function edit_user_profile( $user ) {
 		$consent_types = get_option( 'gdpr_consent_types', array() );
 		$user_consents = get_user_meta( $user->ID, 'gdpr_consents' );
+		$allowed_html = array(
+			'a' => array(
+				'href' => true,
+				'title' => true,
+				'target' => true,
+			),
+		);
 		if ( empty( $consent_types ) ) {
 			return;
 		}
@@ -814,7 +821,7 @@ class GDPR_Admin {
 	        	<?php else: ?>
 		        	<input type="checkbox" name="user_consents[]" value="<?php echo esc_attr( $consent_key ); ?>" <?php echo ! empty( $user_consents ) ? checked( in_array( $consent_key, $user_consents, true ), 1, false ) : ''; ?>>
 	        	<?php endif ?>
-	          <span class="description"><?php echo esc_html( $consent['description'] ); ?></span>
+	          <span class="description"><?php echo wp_kses( $consent['description'], $allowed_html ); ?></span>
 	        </td>
 	      </tr>
     	<?php endforeach ?>
