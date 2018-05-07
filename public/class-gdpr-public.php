@@ -311,6 +311,14 @@ class GDPR_Public {
 			}
 		}
 
+		if ( ! isset( $_COOKIE['gdpr']['disable_pp_modal'] ) ) {
+				$disable_pp_modal = get_option('gdpr_pp_modal_disable');
+				setcookie( "gdpr[disable_pp_modal]", $disable_pp_modal, time() + YEAR_IN_SECONDS, "/" );
+
+		} else {
+				$disable_pp_modal = get_option('gdpr_pp_modal_disable');
+				setcookie( "gdpr[disable_pp_modal]", $disable_pp_modal, time() + YEAR_IN_SECONDS, "/" );
+		}
 
 		if ( ! isset( $_COOKIE['gdpr']['allowed_cookies'] ) ) {
 			$registered_cookies = get_option( 'gdpr_cookie_popup_content', array() );
