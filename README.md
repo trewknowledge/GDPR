@@ -157,6 +157,15 @@ Activating this plugin does not guarantee that an organisation is successfully m
 
 ## Changelog
 
+##### 1.4.1
+* Allow links in the consent description in the wp profile page.
+* Force tabs to be an array when empty to fix the notices and fatal error in the front end.
+* Hide cookies sidebar in the privacy centre window if no cookies were registered.
+* Adding a filter so the privacy bar button text can be changed.
+* Changing Telemetry Scanner to Telemetry Tracker for consistency across the plugin.
+* Translating missing strings.
+* Adding options to add or remove consent checkboxes to woocommerce registration form and checkout registration form.
+
 ##### 1.4.0
 * Adding the option to disable the plugin CSS. Be careful when using this option. Make sure you know what you are doing.
 * Adding the option to enable or disable the telemetry feature.
