@@ -54,7 +54,7 @@
 		 * This hides the privacy bar from showing after saving privacy preferences.
 		 */
     $(document).on('submit', '.gdpr-privacy-preferences-frm', function() {
-    	Cookies.set('gdpr[privacy_bar]', 1);
+    	Cookies.set('gdpr[privacy_bar]', 1, { expires: 365 });
     });
 
 		/**
