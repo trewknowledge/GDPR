@@ -29,11 +29,11 @@
 			<div class="gdpr-content">
 				<ul class="gdpr-tabs">
 					<li><button type="button" class="gdpr-tab-button gdpr-active" data-target="gdpr-consent-management"><?php esc_html_e( 'Consent Management', 'gdpr' ); ?></button></li>
-					<?php reset( $tabs ); ?>
+					<?php reset( (array) $tabs ); ?>
 					<li><button type="button" class="gdpr-tab-button gdpr-cookie-settings" data-target="<?php echo esc_attr( key( $tabs ) ); ?>"><?php esc_html_e( 'Cookie Settings', 'gdpr' ); ?></button>
 						<ul class="gdpr-subtabs">
 							<?php
-							foreach ( $tabs as $key => $tab ) {
+							foreach ( (array) $tabs as $key => $tab ) {
 								echo '<li><button type="button" data-target="' . esc_attr( $key ) . '" ' . '>' . esc_html( $tab['name'] ) . '</button></li>';
 							}
 							?>
