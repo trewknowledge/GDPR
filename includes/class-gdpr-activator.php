@@ -37,8 +37,8 @@ class GDPR_Activator {
 		add_option( 'gdpr_use_recaptcha', false );
 		add_option( 'gdpr_recaptcha_site_key', '' );
 		add_option( 'gdpr_recaptcha_secret_key', '' );
-		add_option( 'gdpr_add_consent_checkboxes_registration', true ),
-		add_option( 'gdpr_add_consent_checkboxes_checkout', true ),
+		add_option( 'gdpr_add_consent_checkboxes_registration', true );
+		add_option( 'gdpr_add_consent_checkboxes_checkout', true );
 	}
 
 }
