@@ -161,7 +161,7 @@ class GDPR_Admin {
 
 		$output = array();
 		if ( ! is_array( $tabs ) ) {
-			return $tabs;
+			return array();
 		}
 
 		foreach ( $tabs as $key => $props ) {
