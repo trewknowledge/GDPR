@@ -398,7 +398,7 @@ class GDPR_Admin {
 		</table>';
 
 		if ( ! empty( $user_consents ) ) {
-			echo '<h2>Consent Given</h2>';
+			echo '<h2>' . esc_html__( 'Consent Given', 'gdpr' ) . '</h2>';
 			echo '<table class="widefat">
 				<thead>
 					<tr>
@@ -414,7 +414,7 @@ class GDPR_Admin {
 		}
 
 		if ( ! empty( $comments ) ) {
-			echo '<h2>Comments</h2>';
+			echo '<h2>' . esc_html__( 'Comments', 'gdpr' ) . '</h2>';
 			foreach ( $comments as $v ) {
 				echo '<table class="widefat">
 					<thead>
@@ -456,7 +456,7 @@ class GDPR_Admin {
 		}
 
 		if ( ! empty( $usermeta ) ) {
-			echo '<h2>Metadata</h2>';
+			echo '<h2>' . esc_html__( 'Metadata', 'gdpr' ) . '</h2>';
 			echo '<table class="widefat">
 				<thead>
 					<tr>
