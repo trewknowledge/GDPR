@@ -134,6 +134,7 @@ class GDPR_Public {
 	public function privacy_bar() {
 		$content             = get_option( 'gdpr_cookie_banner_content', '' );
 		$tabs                = get_option( 'gdpr_cookie_popup_content', array() );
+		$button_text = apply_filters( 'gdpr_privacy_bar_button_text', esc_html__( 'I Agree', 'gdpr' ) );
 
 		if ( empty( $content ) ) {
 			return;
