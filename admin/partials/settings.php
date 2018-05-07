@@ -63,7 +63,7 @@
 					</tr>
 					<tr>
 						<th scope="row">
-							<label for="gdpr_enable_telemetry_tracker"><?php esc_html_e( 'Enable the Telemetry Scanner', 'gdpr' ) ?></label>
+							<label for="gdpr_enable_telemetry_tracker"><?php esc_html_e( 'Enable the Telemetry Tracker', 'gdpr' ) ?></label>
 						</th>
 						<td>
 							<?php $enable_telemetry = get_option( 'gdpr_enable_telemetry_tracker', false ); ?>
