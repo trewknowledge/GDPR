@@ -70,12 +70,6 @@
 							<input type="checkbox" name="<?php echo esc_attr( 'gdpr_enable_telemetry_tracker' ); ?>" id="gdpr_enable_telemetry_tracker" value="1"  <?php checked( $enable_telemetry, true ); ?>><label for="gdpr_enable_telemetry_tracker"><span class="description"><?php esc_html_e( 'Toggles the Telemetry Scanner On/Off. (experimental)', 'gdpr' ); ?></span></label>
 						</td>
 					</tr>
-				</tbody>
-			</table>
-			<h2 class="title"><?php esc_html_e( 'Privacy Center', 'gdpr' ); ?></h2>
-			<p><?php esc_html_e( 'This section handles the privacy bar and some of the privacy preferences window.') ?></p>
-			<table class="form-table" data-id="general">
-				<tbody>
 					<tr>
 						<th scope="row">
 							<label for="gdpr_privacy_policy_checkbox"><?php esc_html_e( 'Privacy Policy Modal', 'gdpr' ) ?></label>
@@ -85,7 +79,12 @@
 							<input type="checkbox" name="<?php echo esc_attr( 'gdpr_pp_modal_disable' ); ?>" id="gdpr_pp_modal_disable" value="1"  <?php checked( $pp_modal_disable, true ); ?>><span class="description"><label for="gdpr_privacy_policy_checkbox"><?php esc_html_e( 'Disable Privacy Policy Modal Window', 'gdpr' ); ?></label></label>
 						</td>
 					</tr>
-
+				</tbody>
+			</table>
+			<h2 class="title"><?php esc_html_e( 'Privacy Center', 'gdpr' ); ?></h2>
+			<p><?php esc_html_e( 'This section handles the privacy bar and some of the privacy preferences window.') ?></p>
+			<table class="form-table" data-id="general">
+				<tbody>
 					<tr>
 						<th scope="row">
 							<label for="gdpr_cookie_banner_content"><?php esc_html_e( 'Privacy Banner Text', 'gdpr' ) ?></label>
