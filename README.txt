@@ -5,7 +5,7 @@ Tags: gdpr, compliance, privacy, law, general data protection regulation
 Requires at least: 4.0
 Requires PHP: 5.6
 Tested up to: 4.9
-Stable tag: 1.4.0
+Stable tag: 1.4.1
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -205,6 +205,15 @@ Activating this plugin does not guarantee that an organisation is successfully m
 9. Audit Log sample.
 
 == Changelog ==
+
+= 1.4.1 =
+* Allow links in the consent description in the wp profile page.
+* Force tabs to be an array when empty to fix the notices and fatal error in the front end.
+* Hide cookies sidebar in the privacy centre window if no cookies were registered.
+* Adding a filter so the privacy bar button text can be changed.
+* Changing Telemetry Scanner to Telemetry Tracker for consistency across the plugin.
+* Translating missing strings.
+* Adding options to add or remove consent checkboxes to woocommerce registration form and checkout registration form.
 
 = 1.4.0 =
 * Adding the option to disable the plugin CSS. Be careful when using this option. Make sure you know what you are doing.

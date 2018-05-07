@@ -63,7 +63,7 @@
 					</tr>
 					<tr>
 						<th scope="row">
-							<label for="gdpr_enable_telemetry_tracker"><?php esc_html_e( 'Enable the Telemetry Scanner', 'gdpr' ) ?></label>
+							<label for="gdpr_enable_telemetry_tracker"><?php esc_html_e( 'Enable the Telemetry Tracker', 'gdpr' ) ?></label>
 						</th>
 						<td>
 							<?php $enable_telemetry = get_option( 'gdpr_enable_telemetry_tracker', false ); ?>
@@ -145,6 +145,31 @@
 					</tr>
 				</tbody>
 			</table>
+			<?php if ( class_exists( 'WooCommerce' ) ): ?>
+				<h2 class="title"><?php esc_html_e( 'WooCommerce', 'gdpr' ); ?></h2>
+				<table class="form-table" data-id="general">
+					<tbody>
+						<tr>
+							<th scope="row">
+								<label for="gdpr_add_consent_checkboxes_registration"><?php esc_html_e( 'Add consent checkboxes to the registration page', 'gdpr' ) ?></label>
+							</th>
+							<td>
+								<?php $add_checkboxes_to_registration = get_option( 'gdpr_add_consent_checkboxes_registration', false ); ?>
+								<input type="checkbox" name="<?php echo esc_attr( 'gdpr_add_consent_checkboxes_registration' ); ?>" id="gdpr_add_consent_checkboxes_registration" value="1"  <?php checked( $add_checkboxes_to_registration, true ); ?>>
+							</td>
+						</tr>
+						<tr>
+							<th scope="row">
+								<label for="gdpr_add_consent_checkboxes_checkout"><?php esc_html_e( 'Add consent checkboxes to the checkout registration form', 'gdpr' ) ?></label>
+							</th>
+							<td>
+								<?php $add_checkboxes_to_checkout = get_option( 'gdpr_add_consent_checkboxes_checkout', false ); ?>
+								<input type="checkbox" name="<?php echo esc_attr( 'gdpr_add_consent_checkboxes_checkout' ); ?>" id="gdpr_add_consent_checkboxes_checkout" value="1"  <?php checked( $add_checkboxes_to_checkout, true ); ?>>
+							</td>
+						</tr>
+					</tbody>
+				</table>
+			<?php endif ?>
 		</div>
 		<div class="gdpr-tab hidden" data-id="cookies">
 			<h2><?php esc_html_e( 'Cookies', 'gdpr' ) ?></h2>

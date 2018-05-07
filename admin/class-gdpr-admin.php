@@ -161,7 +161,7 @@ class GDPR_Admin {
 
 		$output = array();
 		if ( ! is_array( $tabs ) ) {
-			return $tabs;
+			return array();
 		}
 
 		foreach ( $tabs as $key => $props ) {
@@ -200,19 +200,21 @@ class GDPR_Admin {
 	 */
 	public function register_settings() {
 		$settings = array(
-			'gdpr_privacy_policy_page'                      => 'intval',
-			'gdpr_cookie_banner_content'                    => array( $this, 'sanitize_with_links' ),
-			'gdpr_cookie_privacy_excerpt'                   => 'sanitize_textarea_field',
-			'gdpr_cookie_popup_content'                     => array( $this, 'sanitize_cookie_tabs' ),
-			'gdpr_email_limit'                              => 'intval',
-			'gdpr_consent_types'                            => array( $this, 'sanitize_consents' ),
-			'gdpr_deletion_needs_review'                    => 'boolval',
+			'gdpr_privacy_policy_page'                 => 'intval',
+			'gdpr_cookie_banner_content'               => array( $this, 'sanitize_with_links' ),
+			'gdpr_cookie_privacy_excerpt'              => 'sanitize_textarea_field',
+			'gdpr_cookie_popup_content'                => array( $this, 'sanitize_cookie_tabs' ),
+			'gdpr_email_limit'                         => 'intval',
+			'gdpr_consent_types'                       => array( $this, 'sanitize_consents' ),
+			'gdpr_deletion_needs_review'               => 'boolval',
 			'gdpr_pp_modal_disable'                         => 'boolval',
-			'gdpr_disable_css'                              => 'boolval',
-			'gdpr_enable_telemetry_tracker'                 => 'boolval',
-			'gdpr_use_recaptcha'                            => 'boolval',
-			'gdpr_recaptcha_site_key'                       => 'sanitize_text_field',
-			'gdpr_recaptcha_secret_key'                     => 'sanitize_text_field',
+			'gdpr_disable_css'                         => 'boolval',
+			'gdpr_enable_telemetry_tracker'            => 'boolval',
+			'gdpr_use_recaptcha'                       => 'boolval',
+			'gdpr_recaptcha_site_key'                  => 'sanitize_text_field',
+			'gdpr_recaptcha_secret_key'                => 'sanitize_text_field',
+			'gdpr_add_consent_checkboxes_registration' => 'boolval',
+			'gdpr_add_consent_checkboxes_checkout'     => 'boolval',
 		);
 		foreach ( $settings as $option_name => $sanitize_callback ) {
 			register_setting( 'gdpr', $option_name, array( 'sanitize_callback' => $sanitize_callback ) );
@@ -399,7 +401,7 @@ class GDPR_Admin {
 		</table>';
 
 		if ( ! empty( $user_consents ) ) {
-			echo '<h2>Consent Given</h2>';
+			echo '<h2>' . esc_html__( 'Consent Given', 'gdpr' ) . '</h2>';
 			echo '<table class="widefat">
 				<thead>
 					<tr>
@@ -415,7 +417,7 @@ class GDPR_Admin {
 		}
 
 		if ( ! empty( $comments ) ) {
-			echo '<h2>Comments</h2>';
+			echo '<h2>' . esc_html__( 'Comments', 'gdpr' ) . '</h2>';
 			foreach ( $comments as $v ) {
 				echo '<table class="widefat">
 					<thead>
@@ -457,7 +459,7 @@ class GDPR_Admin {
 		}
 
 		if ( ! empty( $usermeta ) ) {
-			echo '<h2>Metadata</h2>';
+			echo '<h2>' . esc_html__( 'Metadata', 'gdpr' ) . '</h2>';
 			echo '<table class="widefat">
 				<thead>
 					<tr>
@@ -795,7 +797,7 @@ class GDPR_Admin {
 	 */
 	public function edit_user_profile( $user ) {
 		$consent_types = get_option( 'gdpr_consent_types', array() );
-		$user_consents = get_user_meta( $user->ID, 'gdpr_consents' );		
+		$user_consents = get_user_meta( $user->ID, 'gdpr_consents' );
 		if ( empty( $consent_types ) ) {
 			return;
 		}

@@ -174,13 +174,19 @@ class GDPR {
 		$telemetry      = new GDPR_Telemetry( $this->get_plugin_name(), $this->get_version() );
 		$requests       = new GDPR_Requests( $this->get_plugin_name(), $this->get_version() );
 		$plugin_emails  = new GDPR_Email();
+		$woo_add_to_registration = get_option( 'gdpr_add_consent_checkboxes_registration', false );
+		$woo_add_to_checkout = get_option( 'gdpr_add_consent_checkboxes_checkout', false );
 
 		add_filter( 'nonce_user_logged_out', array( $this, 'woo_nonce_fix' ), 100, 2 );
 		add_action( 'plugins_loaded', array( $this, 'set_locale' ) );
 		add_action( 'bp_account_details_fields', array( __CLASS__, 'consent_checkboxes' ) );
-		add_action( 'woocommerce_register_form', array( __CLASS__, 'consent_checkboxes' ) );
-		add_action( 'woocommerce_checkout_update_user_meta', array( $plugin_admin, 'woocommerce_checkout_save_consent' ), 10, 2 );
-		add_filter( 'woocommerce_checkout_fields', array( $plugin_admin, 'woocommerce_consent_checkboxes' ) );
+		if ( $woo_add_to_registration ) {
+			add_action( 'woocommerce_register_form', array( __CLASS__, 'consent_checkboxes' ) );
+		}
+		if ( $woo_add_to_checkout ) {
+			add_action( 'woocommerce_checkout_update_user_meta', array( $plugin_admin, 'woocommerce_checkout_save_consent' ), 10, 2 );
+			add_filter( 'woocommerce_checkout_fields', array( $plugin_admin, 'woocommerce_consent_checkboxes' ) );
+		}
 		add_action( 'show_user_profile', array( $plugin_admin, 'edit_user_profile' ) );
 		add_action( 'personal_options_update', array( $plugin_admin, 'user_profile_update' ) );
 		add_action( 'admin_notices', array( $plugin_admin, 'privacy_policy_page_missing' ) );

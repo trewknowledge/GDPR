@@ -30,15 +30,17 @@
 				<ul class="gdpr-tabs">
 					<li><button type="button" class="gdpr-tab-button gdpr-active" data-target="gdpr-consent-management"><?php esc_html_e( 'Consent Management', 'gdpr' ); ?></button></li>
 					<?php reset( $tabs ); ?>
-					<li><button type="button" class="gdpr-tab-button gdpr-cookie-settings" data-target="<?php echo esc_attr( key( $tabs ) ); ?>"><?php esc_html_e( 'Cookie Settings', 'gdpr' ); ?></button>
-						<ul class="gdpr-subtabs">
-							<?php
-							foreach ( $tabs as $key => $tab ) {
-								echo '<li><button type="button" data-target="' . esc_attr( $key ) . '" ' . '>' . esc_html( $tab['name'] ) . '</button></li>';
-							}
-							?>
-						</ul>
-					</li>
+					<?php if ( ! empty( $tabs ) ): ?>
+						<li><button type="button" class="gdpr-tab-button gdpr-cookie-settings" data-target="<?php echo esc_attr( key( $tabs ) ); ?>"><?php esc_html_e( 'Cookie Settings', 'gdpr' ); ?></button>
+							<ul class="gdpr-subtabs">
+								<?php
+								foreach ( $tabs as $key => $tab ) {
+									echo '<li><button type="button" data-target="' . esc_attr( $key ) . '" ' . '>' . esc_html( $tab['name'] ) . '</button></li>';
+								}
+								?>
+							</ul>
+						</li>
+					<?php endif ?>
 				</ul>
 				<div class="gdpr-tab-content">
 					<div class="gdpr-consent-management gdpr-active">
@@ -53,7 +55,7 @@
 										<p><?php echo esc_html( $type['name'] ); ?></p>
 										<?php if ( $type['required'] ) : ?>
 											<span class="gdpr-always-active"><?php esc_html_e( 'Required', 'gdpr' ); ?></span>
-											<input type="checkbox" name="user_consents[]" value="<?php echo esc_attr( $consent_key ); ?>" checked style="display:none;">
+											<input type="hidden" name="user_consents[]" value="<?php echo esc_attr( $consent_key ); ?>" checked style="display:none;">
 										<?php else : ?>
 											<label class="gdpr-switch">
 												<input type="checkbox" name="user_consents[]" value="<?php echo esc_attr( $consent_key ); ?>" <?php echo ! empty( $user_consents ) ? checked( in_array( $consent_key, $user_consents, true ), 1, false ) : ''; ?>>
@@ -95,7 +97,7 @@
 											?>
 											<?php if ( $tab['always_active'] ) : ?>
 												<span class="gdpr-always-active"><?php esc_html_e( 'Always Active', 'gdpr' ); ?></span>
-												<input type="checkbox" class="gdpr-hidden" name="approved_cookies[]" value="<?php echo esc_attr( json_encode( $site_cookies ) ) ?>" checked>
+												<input type="hidden" name="approved_cookies[]" value="<?php echo esc_attr( json_encode( $site_cookies ) ) ?>" checked>
 											<?php else: ?>
 												<label class="gdpr-switch">
 													<input type="checkbox" name="approved_cookies[]" value="<?php echo esc_attr( json_encode( $site_cookies ) ) ?>" <?php checked( $enabled, true ); ?>>
