@@ -53,7 +53,7 @@
 										<p><?php echo esc_html( $type['name'] ); ?></p>
 										<?php if ( $type['required'] ) : ?>
 											<span class="gdpr-always-active"><?php esc_html_e( 'Required', 'gdpr' ); ?></span>
-											<input type="checkbox" name="user_consents[]" value="<?php echo esc_attr( $consent_key ); ?>" checked style="display:none;">
+											<input type="hidden" name="user_consents[]" value="<?php echo esc_attr( $consent_key ); ?>" checked style="display:none;">
 										<?php else : ?>
 											<label class="gdpr-switch">
 												<input type="checkbox" name="user_consents[]" value="<?php echo esc_attr( $consent_key ); ?>" <?php echo ! empty( $user_consents ) ? checked( in_array( $consent_key, $user_consents, true ), 1, false ) : ''; ?>>
@@ -95,7 +95,7 @@
 											?>
 											<?php if ( $tab['always_active'] ) : ?>
 												<span class="gdpr-always-active"><?php esc_html_e( 'Always Active', 'gdpr' ); ?></span>
-												<input type="checkbox" class="gdpr-hidden" name="approved_cookies[]" value="<?php echo esc_attr( json_encode( $site_cookies ) ) ?>" checked>
+												<input type="hidden" name="approved_cookies[]" value="<?php echo esc_attr( json_encode( $site_cookies ) ) ?>" checked>
 											<?php else: ?>
 												<label class="gdpr-switch">
 													<input type="checkbox" name="approved_cookies[]" value="<?php echo esc_attr( json_encode( $site_cookies ) ) ?>" <?php checked( $enabled, true ); ?>>
