@@ -9,6 +9,13 @@
 	}
 
 	window.has_consent = function( consent ) {
+		if ( Cookies.get('gdpr[disable_pp_modal]') ) {
+			var ppmodalArray = JSON.parse( Cookies.get('gdpr[disable_pp_modal]') );
+			if ( ppmodalArray.indexOf( consent ) > -1 ) {
+				return true;
+			}
+		}
+
 		if ( Cookies.get('gdpr[consent_types]') ) {
 			var consentArray = JSON.parse( Cookies.get('gdpr[consent_types]') );
 			if ( consentArray.indexOf( consent ) > -1 ) {

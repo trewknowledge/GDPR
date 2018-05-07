@@ -207,6 +207,7 @@ class GDPR_Admin {
 			'gdpr_email_limit'                         => 'intval',
 			'gdpr_consent_types'                       => array( $this, 'sanitize_consents' ),
 			'gdpr_deletion_needs_review'               => 'boolval',
+			'gdpr_pp_modal_disable'                         => 'boolval',
 			'gdpr_disable_css'                         => 'boolval',
 			'gdpr_enable_telemetry_tracker'            => 'boolval',
 			'gdpr_use_recaptcha'                       => 'boolval',
