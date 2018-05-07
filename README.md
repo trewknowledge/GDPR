@@ -157,6 +157,9 @@ Activating this plugin does not guarantee that an organisation is successfully m
 
 ## Changelog
 
+##### 1.4.2
+* Fix privacy bar reapearing. Cookie was not set to expire in a year.
+
 ##### 1.4.1
 * Allow links in the consent description in the wp profile page.
 * Force tabs to be an array when empty to fix the notices and fatal error in the front end.
