@@ -8,5 +8,6 @@
 	<textarea name="data" rows="5" required></textarea>
 
 	<?php GDPR_Public::add_recaptcha(); ?>
-	<input type="submit" value="<?php esc_attr_e( 'Submit', 'gdpr' ); ?>">
+	<?php $submit_button_text = apply_filters( "gdpr_complaint_request_form_submit_text", esc_attr__( 'Submit', 'gdpr' ) ); ?>
+	<input type="submit" value="<?php echo esc_attr( $submit_button_text ); ?>">
 </form>

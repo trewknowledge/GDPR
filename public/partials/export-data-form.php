@@ -6,5 +6,6 @@
 		<input type="email" name="user_email" placeholder="user@domain.com" required>
 	<?php endif ?>
 	<?php GDPR_Public::add_recaptcha(); ?>
-	<input type="submit" value="<?php esc_attr_e( 'Download my data', 'gdpr' ); ?>">
+	<?php $submit_button_text = apply_filters( "gdpr_export_data_request_form_submit_text", esc_attr__( 'Download my data', 'gdpr' ) ); ?>
+	<input type="submit" value="<?php echo esc_attr( $submit_button_text ); ?>">
 </form>

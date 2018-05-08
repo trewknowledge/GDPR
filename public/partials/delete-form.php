@@ -19,5 +19,6 @@
 		<input type="email" name="user_email" placeholder="user@domain.com" required>
 	<?php endif ?>
 	<?php GDPR_Public::add_recaptcha(); ?>
-	<input type="submit" value="<?php esc_attr_e( 'Close my account', 'gdpr' ); ?>">
+	<?php $submit_button_text = apply_filters( "gdpr_delete_request_form_submit_text", esc_attr__( 'Close my account', 'gdpr' ) ); ?>
+	<input type="submit" value="<?php echo esc_attr( $submit_button_text ); ?>">
 </form>
