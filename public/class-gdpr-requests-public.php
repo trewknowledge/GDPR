@@ -281,6 +281,7 @@ class GDPR_Requests_Public extends GDPR_Requests {
 		$type  = sanitize_text_field( wp_unslash( $_GET['type'] ) );
 		$key   = sanitize_text_field( wp_unslash( $_GET['key'] ) );
 		$email = sanitize_email( $_GET['email'] );
+		$notification_email = sanitize_email( apply_filters( 'gdpr_admin_notification_email', get_option( 'admin_email' ) ) );
 
 		$user = get_user_by( 'email', $email );
 		if ( ! $user instanceof WP_User ) {
@@ -303,7 +304,7 @@ class GDPR_Requests_Public extends GDPR_Requests {
 					$needs_review = get_option( 'gdpr_deletion_needs_review', true );
 					if ( $found_posts || $needs_review ) {
 						parent::confirm_request( $key );
-						GDPR_Email::send( get_option( 'admin_email' ), 'new-request', $notification_email_args );
+						GDPR_Email::send( $notification_email, 'new-request', $notification_email_args );
 						GDPR_Audit_Log::log( $user->ID, esc_html__( 'User confirmed a request to be deleted.', 'gdpr' ) );
 						if ( $found_posts ) {
 							GDPR_Audit_Log::log( $user->ID, esc_html__( 'Content was found for that user.', 'gdpr' ) );
@@ -341,7 +342,7 @@ class GDPR_Requests_Public extends GDPR_Requests {
 				case 'rectify':
 				case 'complaint':
 					parent::confirm_request( $key );
-					GDPR_Email::send( get_option( 'admin_email' ), 'new-request', $notification_email_args );
+					GDPR_Email::send( $notification_email, 'new-request', $notification_email_args );
 					GDPR_Audit_Log::log( $user->ID, esc_html__( 'User placed a request for rectification or a complaint.', 'gdpr' ) );
 					wp_safe_redirect(
 						esc_url_raw(
