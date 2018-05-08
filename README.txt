@@ -5,7 +5,7 @@ Tags: gdpr, compliance, privacy, law, general data protection regulation
 Requires at least: 4.0
 Requires PHP: 5.6
 Tested up to: 4.9
-Stable tag: 1.4.2
+Stable tag: 1.4.3
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -205,6 +205,14 @@ Activating this plugin does not guarantee that an organisation is successfully m
 9. Audit Log sample.
 
 == Changelog ==
+
+= 1.4.3 =
+* Found one more instance of Telemetry Scanner, changed to Telemetry Tracker.
+* Delete cookies when users change their preferences and disable some cookies.
+* Changed cookies used field to textarea for easier reading when lots of cookies are set.
+* Added a text to the settings page explaining that even if cookies are registered, if the user does not input some text for the privacy banner, it won't show up.
+* Adding filters for the admin notification email. [https://gdpr-wp.com/knowledge-base/actions-filters/](https://gdpr-wp.com/knowledge-base/actions-filters/)
+* Adding filters for the request forms button label. [https://gdpr-wp.com/knowledge-base/actions-filters/](https://gdpr-wp.com/knowledge-base/actions-filters/)
 
 = 1.4.2 =
 * Fix privacy bar reapearing. Cookie was not set to expire in a year.
