@@ -274,6 +274,22 @@ class GDPR {
 	}
 
 	/**
+	 * Checks in an array if a value is found using LIKE instead of =.
+	 * @since  1.4.3
+	 * @author Fernando Claussen <fernandoclaussen@gmail.com>
+	 * @return Bool
+	 */
+	public static function similar_in_array( $needle, $haystack ) {
+		foreach ( $haystack as $value ) {
+			if( stripos( strtolower($value) , strtolower($needle) ) !== false ) {
+				return true;
+			}
+		}
+
+		return false;
+	}
+
+	/**
 	 * Save the extra fields on a successful registration.
 	 * @since  1.0.0
 	 * @author Fernando Claussen <fernandoclaussen@gmail.com>

@@ -192,8 +192,9 @@ class GDPR_Public {
 			wp_die( esc_html__( "You need to at least consent to our Privacy Policy.", 'gdpr' ) );
 		}
 
-		$consents = array_map( 'sanitize_text_field', (array) $_POST['user_consents'] );
-		$cookies = isset( $_POST['approved_cookies'] ) ? array_map( 'sanitize_text_field', (array) $_POST['approved_cookies'] ) : array();
+		$consents    = array_map( 'sanitize_text_field', (array) $_POST['user_consents'] );
+		$cookies     = isset( $_POST['approved_cookies'] ) ? array_map( 'sanitize_text_field', (array) $_POST['approved_cookies'] ) : array();
+		$all_cookies = isset( $_POST['all_cookies'] ) ? array_map( 'sanitize_text_field', (array) json_decode( wp_unslash( $_POST['all_cookies'] ) ) ) : array();
 
 		$approved_cookies = array();
 		if ( ! empty( $cookies ) ) {
@@ -205,11 +206,23 @@ class GDPR_Public {
 			}
 		}
 
+		$cookies_to_remove = array_diff( $all_cookies, $approved_cookies );
+
 		$cookies_as_json = json_encode( $approved_cookies );
 		$consents_as_json = json_encode( $consents );
 
 		setcookie( "gdpr[allowed_cookies]", $cookies_as_json, time() + YEAR_IN_SECONDS, "/" );
 		setcookie( "gdpr[consent_types]", $consents_as_json, time() + YEAR_IN_SECONDS, "/" );
+
+		foreach ( $cookies_to_remove as $cookie ) {
+			if ( GDPR::similar_in_array( $cookie, array_keys( $_COOKIE ) ) ) {
+				$domain = get_site_url();
+				$domain = wp_parse_url( $domain, PHP_URL_HOST );
+				unset( $_COOKIE[ $cookie ] );
+				setcookie( $cookie, NULL, -1, "/", $domain );
+				setcookie( $cookie, NULL, -1, "/", '.' . $domain );
+			}
+		}
 
 		if ( is_user_logged_in() ) {
 			$user = wp_get_current_user();

@@ -70,6 +70,7 @@
 							<?php endforeach; ?>
 						</div>
 					</div>
+					<?php $all_cookies = array(); ?>
 					<?php foreach ( $tabs as $key => $tab ) : ?>
 						<div class="<?php echo esc_attr( $key ); ?>">
 							<header>
@@ -88,6 +89,7 @@
 											$approved_cookies = isset( $_COOKIE['gdpr']['allowed_cookies'] ) ? json_decode( wp_unslash( $_COOKIE['gdpr']['allowed_cookies'] ) ) : array();
 											foreach ( $cookies_used as $cookie ) {
 												$site_cookies[] = trim( $cookie );
+												$all_cookies[] = trim( $cookie );
 												if ( ! empty( $approved_cookies ) ) {
 													if ( in_array( trim( $cookie ), $approved_cookies ) ) {
 														$enabled = true;
@@ -127,6 +129,7 @@
 						</div>
 					<?php endforeach; ?>
 				</div>
+				<input type="text" name="all_cookies" value="<?php echo esc_attr( json_encode( $all_cookies ) ); ?>">
 			</div>
 			<footer>
 				<input type="submit" value="<?php esc_attr_e( 'Save Preferences', 'gdpr' ); ?>">
