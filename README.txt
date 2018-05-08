@@ -5,7 +5,7 @@ Tags: gdpr, compliance, privacy, law, general data protection regulation
 Requires at least: 4.0
 Requires PHP: 5.6
 Tested up to: 4.9
-Stable tag: 1.4.3
+Stable tag: 1.4.4
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -205,6 +205,9 @@ Activating this plugin does not guarantee that an organisation is successfully m
 9. Audit Log sample.
 
 == Changelog ==
+
+= 1.4.4 =
+* Fix all_cookies field being displayed as text field instead of hidden.
 
 = 1.4.3 =
 * Found one more instance of Telemetry Scanner, changed to Telemetry Tracker.

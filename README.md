@@ -157,6 +157,9 @@ Activating this plugin does not guarantee that an organisation is successfully m
 
 ## Changelog
 
+##### 1.4.4
+* Fix all_cookies field being displayed as text field instead of hidden.
+
 ##### 1.4.3
 * Found one more instance of Telemetry Scanner, changed to Telemetry Tracker.
 * Delete cookies when users change their preferences and disable some cookies.
