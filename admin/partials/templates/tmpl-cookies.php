@@ -20,7 +20,7 @@
 				<tr>
 					<th><label for="cookies-used-{{data.key}}"><?php esc_html_e( 'Cookies used by the site', 'gdpr' ); ?></label></th>
 					<td>
-						<input type="text" name="{{data.option_name}}[{{data.key}}][cookies_used]" id="cookies-used-{{data.key}}" class="regular-text" />
+						<textarea cols="53" rows="3" name="{{data.option_name}}[{{data.key}}][cookies_used]" id="cookies-used-{{data.key}}" required></textarea>
 						<br>
 						<span class="description"><?php esc_html_e( 'Comma separated list.', 'gdpr' ); ?></span>
 					</td>
@@ -28,7 +28,7 @@
 				<tr>
 					<th><label for="hosts-{{data.key}}"><?php esc_html_e( 'Third Party Domains', 'gdpr' ); ?></label></th>
 					<td>
-						<input type="text" id="hosts-{{data.key}}" class="regular-text" placeholder="facebook.com" />
+						<input type="text" id="hosts-{{data.key}}" class="regular-text" placeholder="domain.com" />
 						<button class="button button-primary add-host" data-tabid="{{data.key}}"><?php esc_html_e( 'Add', 'gdpr' ); ?></button>
 						<br>
 						<span class="description"><?php esc_html_e( 'Cookies that are set by a third party, like facebook.com', 'gdpr' ); ?></span>
@@ -52,7 +52,7 @@
 				<tr>
 					<th><label for="hosts-cookies-used-{{data.host_key}}"><?php esc_html_e( 'Cookies used', 'gdpr' ); ?></label></th>
 					<td>
-						<input type="text" name="{{data.option_name}}[{{data.tab_key}}][hosts][{{data.host_key}}][cookies_used]" id="hosts-cookies-used-{{data.host_key}}" class="regular-text" required />
+						<textarea cols="53" rows="3" name="{{data.option_name}}[{{data.tab_key}}][hosts][{{data.host_key}}][cookies_used]" id="hosts-cookies-used-{{data.host_key}}" required></textarea>
 						<br>
 						<span class="description"><?php esc_html_e( 'Comma separated list.', 'gdpr' ); ?></span>
 					</td>

@@ -191,7 +191,7 @@
 													<tr>
 														<th><label for="cookies-used-<?php echo esc_attr( $tab_key ); ?>"><?php esc_html_e( 'Cookies used by the site', 'gdpr' ); ?></label></th>
 														<td>
-															<input type="text" name="<?php echo esc_attr( 'gdpr_cookie_popup_content' ); ?>[<?php echo esc_attr( $tab_key ); ?>][cookies_used]" value="<?php echo esc_attr( $tab['cookies_used'] ); ?>" id="cookies-used-<?php echo esc_attr( $tab_key ); ?>" class="regular-text" />
+															<textarea cols="53" rows="3" name="<?php echo esc_attr( 'gdpr_cookie_popup_content' ); ?>[<?php echo esc_attr( $tab_key ); ?>][cookies_used]" id="cookies-used-<?php echo esc_attr( $tab_key ); ?>" required><?php echo esc_attr( $tab['cookies_used'] ); ?></textarea>
 															<br>
 															<span class="description"><?php esc_html_e( 'Comma separated list.', 'gdpr' ); ?></span>
 														</td>
@@ -217,7 +217,7 @@
 																		<tr>
 																			<th><label for="hosts-cookies-used-<?php echo esc_attr( $host_key ); ?>"><?php esc_html_e( 'Cookies used', 'gdpr' ); ?></label></th>
 																			<td>
-																				<input type="text" name="<?php echo esc_attr( 'gdpr_cookie_popup_content' ); ?>[<?php echo esc_attr( $tab_key ); ?>][hosts][<?php echo esc_attr( $host_key ); ?>][cookies_used]" value="<?php echo esc_attr( $host['cookies_used'] ); ?>" id="hosts-cookies-used-<?php echo esc_attr( $host_key ); ?>" class="regular-text" required />
+																				<textarea cols="53" rows="3" name="<?php echo esc_attr( 'gdpr_cookie_popup_content' ); ?>[<?php echo esc_attr( $tab_key ); ?>][hosts][<?php echo esc_attr( $host_key ); ?>][cookies_used]" id="hosts-cookies-used-<?php echo esc_attr( $host_key ); ?>" required><?php echo esc_attr( $host['cookies_used'] ); ?></textarea>
 																				<br>
 																				<span class="description"><?php esc_html_e( 'Comma separated list.', 'gdpr' ); ?></span>
 																			</td>
