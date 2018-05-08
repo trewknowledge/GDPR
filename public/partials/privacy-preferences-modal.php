@@ -129,7 +129,7 @@
 						</div>
 					<?php endforeach; ?>
 				</div>
-				<input type="text" name="all_cookies" value="<?php echo esc_attr( json_encode( $all_cookies ) ); ?>">
+				<input type="hidden" name="all_cookies" value="<?php echo esc_attr( json_encode( $all_cookies ) ); ?>">
 			</div>
 			<footer>
 				<input type="submit" value="<?php esc_attr_e( 'Save Preferences', 'gdpr' ); ?>">
