@@ -2,7 +2,7 @@
 Contributors: fclaussen, matthewfarlymn, trewknowledge
 Donate link: http://gdpr-wp.com/donate/
 Tags: gdpr, compliance, privacy, law, general data protection regulation
-Requires at least: 4.0
+Requires at least: 4.7
 Requires PHP: 5.6
 Tested up to: 4.9
 Stable tag: 1.4.4
