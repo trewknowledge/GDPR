@@ -38,6 +38,7 @@
 
 		if ( ! has_consent( 'privacy-policy' ) && GDPR.is_user_logged_in ) {
 			$('.gdpr-reconsent-modal').show();
+			$('body').addClass('gdpr-noscroll');
 			$('.wpadminbar').hide();
 		}
 
