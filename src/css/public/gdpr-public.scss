@@ -426,6 +426,7 @@
 				.gdpr-tabs {
 					border: none !important;
 					min-width: 160px;
+					max-width: 160px;
 					padding: 0;
 					margin: 0;
 					overflow-y: auto;
@@ -435,6 +436,7 @@
 						position: absolute;
 						height: 100%;
 						width: 100%;
+						max-width: 100%;
 						display: none;
 						z-index: 1;
 					}
