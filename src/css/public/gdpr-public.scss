@@ -512,7 +512,7 @@
 				.gdpr-tab-content {
 					width: 100%;
 					margin-bottom: 68px;
-					overflow: scroll;
+					overflow-y: auto;
 					> div {
 						display: none;
 						padding: 20px 20px 0 20px;
@@ -794,7 +794,7 @@
 	top: 0;
 	left: 0;
 	background: #fff;
-	z-index: 99999;
+	z-index: 9999999;
 	.gdpr-reconsent-modal-content{
 		width: 90%;
 		margin: 0 auto;
