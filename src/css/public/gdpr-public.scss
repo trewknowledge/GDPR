@@ -35,7 +35,7 @@
 		margin: 0;
 		padding: 0;
 	}
-	button {
+	button, input[type="submit"] {
 		color: #000;
 		font-weight: normal;
 		font-size: 14px;
@@ -43,6 +43,8 @@
 		transform: scale(1);
 		line-height: 1.5;
 		display: block;
+		min-width: auto;
+		max-width: auto;
 		&:before, &:after {
 			display: inline-block;
 			margin: 0;
@@ -324,7 +326,7 @@
 						left: 0;
 						bottom: 5px;
 					}
-					input {
+					input[type="submit"] {
 						font-size: 13px;
 						font-weight: normal;
 						line-height: 26px;
@@ -402,6 +404,9 @@
 						border-right: 7.5px solid transparent;
 						border-top: 7.5px solid #fff;
 						transition: all 0.2s;
+						right: 15px;
+						top: 12px;
+						position: absolute;
 					}
 					&.gdpr-active {
 						&:after {
@@ -735,7 +740,7 @@
   min-width: 45px;
 	height: 24px;
 	margin-bottom: 0;
-	input{
+	input {
 		display: none;
 	}
 	.gdpr-slider {
