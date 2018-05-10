@@ -132,7 +132,9 @@
 
 		$(document).on('click', '.gdpr.gdpr-general-confirmation .gdpr-close, .gdpr-overlay, .gdpr-cancel', function() {
 			$('.gdpr-overlay').fadeOut();
-			$('body').removeClass('gdpr-noscroll');
+			if ( ! $('.gdpr-reconsent-modal').is(':visible') ) {
+				$('body').removeClass('gdpr-noscroll');
+			}
 			$('.gdpr.gdpr-general-confirmation .gdpr-wrapper').fadeOut();
 		});
 
@@ -203,7 +205,6 @@
 		$(document).on('click', '.gdpr-disagree-confirm', function(e) {
 			e.preventDefault();
 			$('.gdpr-overlay').fadeOut();
-			$('body').removeClass('gdpr-noscroll');
 			$('.gdpr.gdpr-disagree-confirmation .gdpr-wrapper').fadeOut();
 			$('.gdpr-consent-buttons').fadeOut(300, function() {
 				$('.gdpr-updating').html(
