@@ -1,5 +1,11 @@
 @import '../../utils';
 
+.gdpr-noscroll {
+	overflow: hidden;
+	position: fixed;
+	width: 100%;
+}
+
 .gdpr-hidden {
 	display: none;
 }
@@ -500,7 +506,8 @@
 				}
 				.gdpr-tab-content {
 					width: 100%;
-					padding-bottom: 68px;
+					margin-bottom: 68px;
+					overflow: scroll;
 					> div {
 						display: none;
 						padding: 20px 20px 0 20px;
