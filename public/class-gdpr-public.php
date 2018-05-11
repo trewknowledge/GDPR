@@ -135,6 +135,11 @@ class GDPR_Public {
 		$content             = get_option( 'gdpr_cookie_banner_content', '' );
 		$tabs                = get_option( 'gdpr_cookie_popup_content', array() );
 		$button_text = apply_filters( 'gdpr_privacy_bar_button_text', esc_html__( 'I Agree', 'gdpr' ) );
+		$should_display = apply_filters( 'gdpr_privacy_bar_display', true );
+
+		if( !$should_display ) {
+			return;
+		}
 
 		if ( empty( $content ) ) {
 			return;
