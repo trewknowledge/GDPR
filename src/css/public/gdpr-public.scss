@@ -1,5 +1,11 @@
 @import '../../utils';
 
+.gdpr-noscroll {
+	overflow: hidden;
+	position: fixed;
+	width: 100%;
+}
+
 .gdpr-hidden {
 	display: none;
 }
@@ -29,7 +35,7 @@
 		margin: 0;
 		padding: 0;
 	}
-	button {
+	button, input[type="submit"] {
 		color: #000;
 		font-weight: normal;
 		font-size: 14px;
@@ -37,6 +43,8 @@
 		transform: scale(1);
 		line-height: 1.5;
 		display: block;
+		min-width: auto;
+		max-width: auto;
 		&:before, &:after {
 			display: inline-block;
 			margin: 0;
@@ -318,7 +326,7 @@
 						left: 0;
 						bottom: 5px;
 					}
-					input {
+					input[type="submit"] {
 						font-size: 13px;
 						font-weight: normal;
 						line-height: 26px;
@@ -396,6 +404,9 @@
 						border-right: 7.5px solid transparent;
 						border-top: 7.5px solid #fff;
 						transition: all 0.2s;
+						right: 15px;
+						top: 12px;
+						position: absolute;
 					}
 					&.gdpr-active {
 						&:after {
@@ -415,6 +426,7 @@
 				.gdpr-tabs {
 					border: none !important;
 					min-width: 160px;
+					max-width: 160px;
 					padding: 0;
 					margin: 0;
 					overflow-y: auto;
@@ -424,6 +436,7 @@
 						position: absolute;
 						height: 100%;
 						width: 100%;
+						max-width: 100%;
 						display: none;
 						z-index: 1;
 					}
@@ -500,7 +513,8 @@
 				}
 				.gdpr-tab-content {
 					width: 100%;
-					padding-bottom: 68px;
+					margin-bottom: 68px;
+					overflow-y: auto;
 					> div {
 						display: none;
 						padding: 20px 20px 0 20px;
@@ -728,7 +742,7 @@
   min-width: 45px;
 	height: 24px;
 	margin-bottom: 0;
-	input{
+	input {
 		display: none;
 	}
 	.gdpr-slider {
@@ -782,7 +796,7 @@
 	top: 0;
 	left: 0;
 	background: #fff;
-	z-index: 99999;
+	z-index: 9999999;
 	.gdpr-reconsent-modal-content{
 		width: 90%;
 		margin: 0 auto;
