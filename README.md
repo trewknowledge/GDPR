@@ -157,6 +157,11 @@ Activating this plugin does not guarantee that an organisation is successfully m
 
 ## Changelog
 
+##### 1.4.5
+* Minor style adjustments
+* Body scroll is disabled when modal is active
+* Adjusting privacy bar to sit behind re-consent modal
+
 ##### 1.4.4
 * Fix all_cookies field being displayed as text field instead of hidden.
 
