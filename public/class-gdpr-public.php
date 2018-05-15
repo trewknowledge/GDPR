@@ -256,13 +256,17 @@ class GDPR_Public {
 	 */
 	public function is_consent_needed() {
 		$privacy_policy_page = get_option( 'gdpr_privacy_policy_page' );
-		if ( ! $privacy_policy_page ) {
+		if ( ! $privacy_policy_page || ! is_user_logged_in() ) {
 			return;
 		}
 
 		$page_obj      = get_post( $privacy_policy_page );
 		$user          = wp_get_current_user();
 		$user_consents = get_user_meta( $user->ID, 'gdpr_consents' );
+
+		if ( in_array( 'privacy-policy', $user_consents ) ) {
+			return;
+		}
 
 		include plugin_dir_path( __FILE__ ) . 'partials/reconsent-modal.php';
 	}
