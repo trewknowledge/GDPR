@@ -36,7 +36,7 @@
 			$('.gdpr.gdpr-privacy-bar').delay(1000).slideDown(600);
 		};
 
-		if ( ! has_consent( 'privacy-policy' ) && GDPR.is_user_logged_in ) {
+		if ( ! has_consent( 'privacy-policy' ) && GDPR.is_user_logged_in && GDPR.privacy_page_id != 0 ) {
 			$('.gdpr-reconsent-modal').show();
 			$('body').addClass('gdpr-noscroll');
 			$('.wpadminbar').hide();
