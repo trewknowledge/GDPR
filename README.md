@@ -157,6 +157,9 @@ Activating this plugin does not guarantee that an organisation is successfully m
 
 ## Changelog
 
+##### 1.4.7
+* Fix for users who were complaining about their scroll bars missing if they did not select a privacy policy page.
+
 ##### 1.4.6
 * Change re-consent logic so it doesn't influence SEO with repeated content.
 
