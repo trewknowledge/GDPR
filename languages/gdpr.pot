@@ -121,7 +121,7 @@ msgstr ""
 msgid "Ignore"
 msgstr ""
 
-#: admin/class-gdpr-admin.php:583, admin/class-gdpr-admin.php:722, admin/class-gdpr-admin.php:784, public/class-gdpr-public.php:188, public/class-gdpr-public.php:277, public/class-gdpr-public.php:291
+#: admin/class-gdpr-admin.php:583, admin/class-gdpr-admin.php:722, admin/class-gdpr-admin.php:784, public/class-gdpr-public.php:188, public/class-gdpr-public.php:281, public/class-gdpr-public.php:295
 msgid "We could not verify the the security token. Please try again."
 msgstr ""
 
@@ -547,7 +547,7 @@ msgstr ""
 msgid "User updated their privacy preferences. These are the new approved cookies and consent preferences:"
 msgstr ""
 
-#: public/class-gdpr-public.php:300
+#: public/class-gdpr-public.php:304
 msgid "User consented to the Privacy Policies."
 msgstr ""
 

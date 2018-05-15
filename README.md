@@ -157,6 +157,9 @@ Activating this plugin does not guarantee that an organisation is successfully m
 
 ## Changelog
 
+##### 1.4.6
+* Change re-consent logic so it doesn't influence SEO with repeated content.
+
 ##### 1.4.5
 * Minor style adjustments
 * Body scroll is disabled when modal is active
