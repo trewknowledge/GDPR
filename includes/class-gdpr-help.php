@@ -55,7 +55,7 @@ class GDPR_Help {
 
 		$erasure_help = '<h2>' . esc_html__( 'Erasure', 'gdpr' ) . '</h2>' .
 			'<p>' . esc_html__( 'Users may request to be deleted from the site. If they don\'t have any content published on the site (including comments) they will be removed from the site automatically. Otherwise, they will show up at this review table where you can reassign or delete their published content and anonymize his comments.', 'gdpr' ) . '</p>' .
-			'<p>' . esc_html__( 'When you are ready to delete the user, they will get a notification that their account has been closed. According to GDPR, you have 30 days to fulfill this request. On some occasions, you can ask to extend this time.', 'gdpr' ) . '</p>';
+			'<p>' . esc_html__( 'When a user requests the deletion of his account the data controller has 30 days to comply. This time limit can be extended. After the account has been deleted the user will receive a confirmation.', 'gdpr' ) . '</p>';
 		get_current_screen()->add_help_tab( array(
 			'id' => 'erasure',
 			'title' => esc_html__( 'Erasures', 'gdpr' ),
