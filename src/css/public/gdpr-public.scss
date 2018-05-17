@@ -79,6 +79,7 @@
 			align-items: center;
 			box-sizing: border-box;
 			@include breakpoint(medium-small) {
+				padding: 20px;
 				flex-direction: column;
 				align-items: center;
 			}
@@ -94,9 +95,13 @@
 			}
 			.gdpr-content {
 				flex: 1;
-				padding-right: 200px;
+				padding-right: 100px;
 				p {
 					color: #ffffff;
+					&.h5{
+						font-size: 20px;
+						font-weight: bold;
+					}
 				}
 				a{
 					color: #fff;
@@ -105,6 +110,19 @@
 				@include breakpoint(medium-small) {
 					padding-right: 0;
 					padding-bottom: 20px;
+				}
+				.gdpr-cookie-categories {
+					list-style: none;
+					padding:0;
+					margin: 5px 0 0;
+					li {
+						display: inline-block;
+						label{
+							color: #fff;
+							margin: 0 10px 0 3px;
+					    font-size: 14px;
+						}
+					}
 				}
 			}
 			.gdpr-right {
@@ -185,6 +203,9 @@
 			color: #fff;
 			text-decoration: none;
 			text-shadow: 0 -1px 1px #006799, 1px 0 1px #006799, 0 1px 1px #006799, -1px 0 1px #006799;
+			@include breakpoint(small-only) {
+				padding: 7px 16px 7px 56px;
+			}
 			&:hover {
 				background: #008ec2;
 				border-color: #006799;
