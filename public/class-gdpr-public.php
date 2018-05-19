@@ -133,9 +133,9 @@ class GDPR_Public {
 	 * @author Fernando Claussen <fernandoclaussen@gmail.com>
 	 */
 	public function privacy_bar() {
-		$content             = get_option( 'gdpr_cookie_banner_content', '' );
-		$tabs                = get_option( 'gdpr_cookie_popup_content', array() );
-		$button_text = apply_filters( 'gdpr_privacy_bar_button_text', esc_html__( 'I Agree', 'gdpr' ) );
+		$content            = get_option( 'gdpr_cookie_banner_content', '' );
+		$registered_cookies = get_option( 'gdpr_registered_cookies', array() );
+		$button_text        = apply_filters( 'gdpr_privacy_bar_button_text', esc_html__( 'I Agree', 'gdpr' ) );
 
 		if ( empty( $content ) ) {
 			return;
@@ -155,7 +155,7 @@ class GDPR_Public {
 		$privacy_policy_page = get_option( 'gdpr_privacy_policy_page', 0 );
 		$approved_cookies = isset( $_COOKIE['gdpr']['allowed_cookies'] ) ? json_decode( wp_unslash( $_COOKIE['gdpr']['allowed_cookies'] ) ) : array();
 		$user_consents = isset( $_COOKIE['gdpr']['consent_types'] ) ? json_decode( wp_unslash( $_COOKIE['gdpr']['consent_types'] ) ) : array();
-		$tabs = get_option( 'gdpr_cookie_popup_content', array() );
+		$tabs = get_option( 'gdpr_registered_cookies', array() );
 
 		include plugin_dir_path( __FILE__ ) . 'partials/privacy-preferences-modal.php';
 	}

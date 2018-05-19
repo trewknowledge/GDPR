@@ -42,25 +42,25 @@ class GDPR_Activator {
 		add_option( 'gdpr_registered_cookies', array(
 			'necessary' => array(
 				'name' => 'Necessary',
-				'status' => '',
+				'status' => 'required',
 				'cookies_used' => '',
 				'how_we_use' => '',
 			),
 			'advertising' => array(
 				'name' => 'Advertising',
-				'status' => '',
+				'status' => 'on',
 				'cookies_used' => '',
 				'how_we_use' => '',
 			),
 			'analytics' => array(
 				'name' => 'Analytics',
-				'status' => '',
+				'status' => 'on',
 				'cookies_used' => '',
 				'how_we_use' => '',
 			),
 			'other' => array(
 				'name' => 'Other',
-				'status' => '',
+				'status' => 'on',
 				'cookies_used' => '',
 				'how_we_use' => '',
 			),

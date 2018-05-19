@@ -32,6 +32,12 @@
 
 	$(function() {
 
+		$(document).on('change', '.gdpr-cookie-category', function() {
+			var target = $(this).data('category');
+			var checked = $(this).prop('checked');
+			$('[data-category="' + target + '"]').prop('checked', checked);
+		});
+
 		if ( ! Cookies.get('gdpr[privacy_bar]') ) {
 			$('.gdpr.gdpr-privacy-bar').delay(1000).slideDown(600);
 		};

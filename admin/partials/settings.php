@@ -181,8 +181,8 @@
 								<th>
 									<label for="status-<?php echo esc_attr( $cat_id ); ?>">
 										<?php esc_html_e( 'Status', 'gdpr' ); ?>:
-										<span class="screen-reader-text"><?php esc_attr_e( 'Required cookies are cookies that cannot be opt out. They need to be created for the site to function properly. Default On will set the cookie after agreement. Default Off will set the cookie only if the user changes their preferences and enable them. Default on except DNT will set the cookie, except when the user has Do Not Track enabled.', 'gdpr' ); ?></span>
-										<span data-tooltip="<?php esc_attr_e( 'Required cookies are cookies that cannot be opt out. They need to be created for the site to function properly. Default On will set the cookie after agreement. Default Off will set the cookie only if the user changes their preferences and enable them. Default on except DNT will set the cookie, except when the user has Do Not Track enabled.', 'gdpr' ); ?>">
+										<span class="screen-reader-text"><?php esc_attr_e( 'Required cookies are cookies that cannot be opt out. They need to be created for the site to function properly. Status ON means that the cookie will be set after agreement. Status OFF means the user needs to check the checkbox to activate this category.', 'gdpr' ); ?></span>
+										<span data-tooltip="<?php esc_attr_e( 'Required cookies are cookies that cannot be opt out. They need to be created for the site to function properly. Status ON means that the cookie will be set after agreement. Status OFF means the user needs to check the checkbox to activate this category.', 'gdpr' ); ?>">
 											<span class="dashicons dashicons-info"></span>
 										</span>
 									</label>
@@ -191,9 +191,8 @@
 									<select name="gdpr_registered_cookies[<?php echo esc_attr( $cat_id ); ?>][status]" id="status-<?php echo esc_attr( $cat_id ); ?>">
 										<option value=""></option>
 										<option value="required" <?php selected( $registered_cookies[ $cat_id ]['status'], 'required' ); ?>><?php esc_html_e( 'Required', 'gdpr' ); ?></option>
-										<option value="default-off" <?php selected( $registered_cookies[ $cat_id ]['status'], 'default-off' ); ?>><?php esc_html_e( 'Default to OFF', 'gdpr' ); ?></option>
-										<option value="default-on" <?php selected( $registered_cookies[ $cat_id ]['status'], 'default-on' ); ?>><?php esc_html_e( 'Default to ON', 'gdpr' ); ?></option>
-										<option value="default-on-dnt" <?php selected( $registered_cookies[ $cat_id ]['status'], 'default-on-dnt' ); ?>><?php esc_html_e( 'Default to ON unless DNT', 'gdpr' ); ?></option>
+										<option value="on" <?php selected( $registered_cookies[ $cat_id ]['status'], 'on' ); ?>><?php esc_html_e( 'ON', 'gdpr' ); ?></option>
+										<option value="off" <?php selected( $registered_cookies[ $cat_id ]['status'], 'off' ); ?>><?php esc_html_e( 'OFF', 'gdpr' ); ?></option>
 									</select>
 								</td>
 							</tr>
