@@ -302,7 +302,6 @@
 						<h2 class="hndle"><?php echo esc_html( $consent['name'] ); ?> <span>(id: <?php echo esc_html( $consent_id ); ?>)</span><button class="notice-dismiss" type="button" aria-label="<?php esc_attr_e( 'Unregister this consent.', 'gdpr' ) ?>"></button></h2>
 						<input type="hidden" name="gdpr_consent_types[<?php echo esc_attr( $consent_id ); ?>][name]" value="<?php echo esc_attr( $consent['name'] ); ?>">
 						<div class="inside">
-							<small class="gdpr-required"><?php esc_html_e( 'Required fields are marked with a *', 'gdpr' ); ?></small>
 							<table class="form-table">
 								<tr>
 									<th>
