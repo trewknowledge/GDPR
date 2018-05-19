@@ -332,11 +332,11 @@ class GDPR_Public {
 
 
 		if ( ! isset( $_COOKIE['gdpr']['allowed_cookies'] ) ) {
-			$registered_cookies = get_option( 'gdpr_cookie_popup_content', array() );
+			$registered_cookies = get_option( 'gdpr_registered_cookies', array() );
 			$cookies = array();
 			if ( ! empty( $registered_cookies ) ) {
 				$required_cookies = array_filter( $registered_cookies, function( $item ) {
-					return $item['always_active'] == 1;
+					return 'required' === $item['status'];
 				});
 				if ( ! empty( $required_cookies ) ) {
 					foreach ( $required_cookies as $category ) {
