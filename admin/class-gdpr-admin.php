@@ -151,41 +151,35 @@ class GDPR_Admin {
 	}
 
 	/**
-	 * Sanitizing user input on the cookie tabs.
+	 * Sanitizing user input on the cookie categories.
 	 * @since  1.0.0
 	 * @author Fernando Claussen <fernandoclaussen@gmail.com>
 	 * @param  array $tabs The cookie tabs.
 	 * @return array       The sanitized options.
 	 */
-	public function sanitize_cookie_tabs( $tabs ) {
+	public function sanitize_cookie_categories( $cookie_categories ) {
 
 		$output = array();
-		if ( ! is_array( $tabs ) ) {
+		if ( ! is_array( $cookie_categories ) ) {
 			return array();
 		}
 
-		foreach ( $tabs as $key => $props ) {
-			if ( '' === $props['name'] || '' === $props['how_we_use'] ) {
-				unset( $tabs[ $key ] );
-				continue;
-			}
+		foreach ( $cookie_categories as $key => $props ) {
+			$key = sanitize_text_field( $key );
 			$output[ $key ] = array(
-				'name'          => sanitize_text_field( wp_unslash( $props['name'] ) ),
-				'always_active' => isset( $props['always_active'] ) ? boolval( $props['always_active'] ) : 0,
-				'how_we_use'    => wp_kses_post( $props['how_we_use'] ),
-				'cookies_used'  => sanitize_text_field( wp_unslash( $props['cookies_used'] ) ),
+				'name' => isset( $props['name'] ) ? sanitize_text_field( $props['name'] ) : '',
+				'status' => isset( $props['status'] ) ? sanitize_text_field( $props['status'] ) : '',
+				'cookies_used' => isset( $props['cookies_used'] ) ? sanitize_text_field( wp_unslash( $props['cookies_used'] ) ) : '',
+				'how_we_use' => isset( $props['how_we_use'] ) ? wp_kses_post( $props['how_we_use'] ) : '',
+				'domains' => array(),
 			);
+			if ( isset( $props['domains'] ) ) {
+				foreach ( $props['domains'] as $domain_key => $domain ) {
+					$domain_key = sanitize_text_field( $domain_key );
 
-			if ( isset( $props['hosts'] ) ) {
-				foreach ( $props['hosts'] as $host_key => $host ) {
-					if ( empty( $host['name'] ) || empty( $host['cookies_used'] ) || empty( $host['cookies_used'] ) ) {
-						unset( $props['hosts'][ $host_key ] );
-						continue;
-					}
-					$output[ $key ]['hosts'][ $host_key ] = array(
-						'name'         => sanitize_text_field( wp_unslash( $host['name'] ) ),
-						'cookies_used' => sanitize_text_field( wp_unslash( $host['cookies_used'] ) ),
-						'optout'       => esc_url_raw( $host['optout'] ),
+					$output[ $key ]['domains'][ $domain_key ] = array(
+						'cookies_used' => isset( $domain['cookies_used'] ) ? sanitize_text_field( $domain['cookies_used'] ) : '',
+						'optout' => isset( $domain['optout'] ) ? esc_url_raw( $domain['optout'] ) : '',
 					);
 				}
 			}
@@ -200,10 +194,10 @@ class GDPR_Admin {
 	 */
 	public function register_settings() {
 		$settings = array(
-			'gdpr_privacy_policy_page'                 => 'intval',
+			'gdpr_privacy_policy_page'                 => 'absint',
 			'gdpr_cookie_banner_content'               => array( $this, 'sanitize_with_links' ),
 			'gdpr_cookie_privacy_excerpt'              => 'sanitize_textarea_field',
-			'gdpr_cookie_popup_content'                => array( $this, 'sanitize_cookie_tabs' ),
+			'gdpr_registered_cookies'                  => array( $this, 'sanitize_cookie_categories' ),
 			'gdpr_email_limit'                         => 'intval',
 			'gdpr_consent_types'                       => array( $this, 'sanitize_consents' ),
 			'gdpr_deletion_needs_review'               => 'boolval',
@@ -245,15 +239,15 @@ class GDPR_Admin {
 		}
 
 		foreach ( $consents as $key => $props ) {
-			if ( '' === $props['name'] || '' === $props['description'] ) {
+			if ( '' === $props['name'] ) {
 				unset( $consents[ $key ] );
 				continue;
 			}
 			$output[ $key ] = array(
 				'name'         => sanitize_text_field( wp_unslash( $props['name'] ) ),
-				'required'     => isset( $props['required'] ) ? boolval( $props['required'] ) : 0,
-				'description'  => wp_kses( wp_unslash( $props['description'] ), $this->allowed_html ),
-				'registration' => wp_kses( wp_unslash( $props['registration'] ), $this->allowed_html ),
+				'policy-page'  => isset( $props['policy-page'] ) ? absint( $props['policy-page'] ) : 0,
+				'description'  => isset( $props['description'] ) ? wp_kses( wp_unslash( $props['description'] ), $this->allowed_html ) : '',
+				'registration' => isset( $props['registration'] ) ? wp_kses( wp_unslash( $props['registration'] ), $this->allowed_html ) : '',
 			);
 		}
 		return $output;
@@ -267,13 +261,10 @@ class GDPR_Admin {
 	 */
 	public function settings_page_template() {
 		$privacy_policy_page = get_option( 'gdpr_privacy_policy_page', 0 );
-		$tabs        = array(
-			'general'  => esc_html__( 'General', 'gdpr' ),
-			'cookies'  => esc_html__( 'Cookies', 'gdpr' ),
-			'consents' => esc_html__( 'Consents', 'gdpr' ),
-		);
+		$registered_cookies = get_option( 'gdpr_registered_cookies', array() );
+		$consent_types = get_option( 'gdpr_consent_types', array() );
 
-		$tabs = apply_filters( 'gdpr_settings_pages', $tabs );
+		$pages = get_pages();
 
 		include_once plugin_dir_path( __FILE__ ) . 'partials/templates/tmpl-cookies.php';
 		include_once plugin_dir_path( __FILE__ ) . 'partials/templates/tmpl-consents.php';

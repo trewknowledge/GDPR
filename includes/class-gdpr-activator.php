@@ -39,6 +39,32 @@ class GDPR_Activator {
 		add_option( 'gdpr_recaptcha_secret_key', '' );
 		add_option( 'gdpr_add_consent_checkboxes_registration', true );
 		add_option( 'gdpr_add_consent_checkboxes_checkout', true );
+		add_option( 'gdpr_registered_cookies', array(
+			'necessary' => array(
+				'name' => 'Necessary',
+				'status' => '',
+				'cookies_used' => '',
+				'how_we_use' => '',
+			),
+			'advertising' => array(
+				'name' => 'Advertising',
+				'status' => '',
+				'cookies_used' => '',
+				'how_we_use' => '',
+			),
+			'analytics' => array(
+				'name' => 'Analytics',
+				'status' => '',
+				'cookies_used' => '',
+				'how_we_use' => '',
+			),
+			'other' => array(
+				'name' => 'Other',
+				'status' => '',
+				'cookies_used' => '',
+				'how_we_use' => '',
+			),
+		) );
 	}
 
 }
