@@ -316,7 +316,7 @@ class GDPR {
 	 * @since  1.2.0
 	 * @author Fernando Claussen <fernandoclaussen@gmail.com>
 	 */
-	public static function get_consent_checkboxes() {
+	public static function get_consent_checkboxes( $consent_key = false ) {
 		$consent_types = get_option( 'gdpr_consent_types', array() );
 		$sent_extras = ( isset( $_POST['user_consents'] ) ) ? $_POST['user_consents'] : array();
 		$allowed_html = array(
@@ -326,6 +326,12 @@ class GDPR {
 				'target' => true,
 			),
 		);
+
+		if ( $consent_key ) {
+			$consent_types = array_filter( $consent_types, function( $key ) use ( $consent_key ) {
+				return $key === $consent_key;
+			}, ARRAY_FILTER_USE_KEY );
+		}
 
 		ob_start();
 		foreach ( $consent_types as $key => $consent ) {
@@ -345,8 +351,8 @@ class GDPR {
 	 * @since  1.1.4
 	 * @author Fernando Claussen <fernandoclaussen@gmail.com>
 	 */
-	public static function consent_checkboxes() {
-		echo self::get_consent_checkboxes();
+	public static function consent_checkboxes( $consent_key = false ) {
+		echo self::get_consent_checkboxes( $consent_key );
 	}
 
 	/**
@@ -572,7 +578,7 @@ class GDPR {
 	 * @return void
 	 */
 	public static function save_consent( $user_id, $consent ) {
-		$registered_consent = get_option( 'gdpr_consent_types', array( 'privacy-policy' ) );
+		$registered_consent = get_option( 'gdpr_consent_types', array() );
 		$consent_ids = array_keys( $registered_consent );
 		$user = get_user_by( 'ID', $user_id );
 		$consent = sanitize_text_field( wp_unslash( $consent ) );
