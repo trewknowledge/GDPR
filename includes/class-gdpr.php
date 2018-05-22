@@ -189,11 +189,10 @@ class GDPR {
 		}
 		add_action( 'show_user_profile', array( $plugin_admin, 'edit_user_profile' ) );
 		add_action( 'personal_options_update', array( $plugin_admin, 'user_profile_update' ) );
-		add_action( 'admin_notices', array( $plugin_admin, 'privacy_policy_page_missing' ) );
-		add_action( 'admin_notices', array( $plugin_admin, 'privacy_policy_updated_notice' ) );
-		add_action( 'wp_ajax_ignore_privacy_policy_update', array( $plugin_admin, 'ignore_privacy_policy_update' ) );
-		add_action( 'admin_post_seek_consent', array( $plugin_admin, 'seek_consent' ) );
-		add_action( 'publish_page', array( $plugin_admin, 'privacy_policy_updated' ), 10, 2 );
+		add_action( 'admin_notices', array( $plugin_admin, 'policy_updated_notice' ) );
+		add_action( 'wp_ajax_ignore_policy_update', array( $plugin_admin, 'ignore_policy_update' ) );
+		add_action( 'wp_ajax_seek_consent', array( $plugin_admin, 'seek_consent' ) );
+		add_action( 'publish_page', array( $plugin_admin, 'policy_updated' ), 10, 2 );
 		add_action( 'admin_enqueue_scripts', array( $plugin_admin, 'enqueue_styles' ) );
 		add_action( 'admin_enqueue_scripts', array( $plugin_admin, 'enqueue_scripts' ) );
 		add_action( 'admin_menu', array( $plugin_admin, 'add_menu' ) );

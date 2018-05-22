@@ -288,18 +288,28 @@
 			);
 		});
 
-		$(document).on( 'submit', '.frm-ignore-privacy-update', function(e) {
+		$(document).on( 'submit', '.frm-policy-updated', function(e) {
 			e.preventDefault();
 			var action = $(this).find('input[name="action"]').val(),
-					nonce = $(this).find('#privacy-policy-ignore-update-nonce').val();
+					policy_id = $(this).find('input[name="policy_id"]').val(),
+					policy_name = $(this).find('input[name="policy_name"]').val(),
+					nonce = $(this).find('[id$="nonce"]').val(),
+					spinner = $(this).parent().find('.spinner'),
+					that = $(this);
 
-			$('.privacy-page-updated-notice .notice-dismiss').click();
 
+			spinner.addClass('is-active');
 			$.post(
 				ajaxurl,
 				{
 					action: action,
-					nonce: nonce
+					nonce: nonce,
+					policy_id: policy_id,
+					policy_name: policy_name,
+				},
+				function(res) {
+					spinner.removeClass('is-active');
+					that.parent().fadeOut();
 				}
 			);
 		});

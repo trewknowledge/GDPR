@@ -15,7 +15,7 @@
 <div class="gdpr gdpr-reconsent-bar" style="/*display:none;*/">
 	<div class="gdpr-contained-wrapper">
 		<p class="h5"><?php esc_html_e( 'Some of our policies have been updated', 'gdpr' ); ?></p>
-		<?php foreach ( $updated_consents as $consent_id => $consent ): ?>
+		<?php foreach ( $consent_needed as $consent_id => $consent ): ?>
 			<div class="gdpr-policy-list">
 				<p><?php echo esc_html( $consent['name'] ); ?></p>
 				<div class="gdpr-buttons">
