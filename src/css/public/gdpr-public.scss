@@ -35,6 +35,11 @@
 		margin: 0;
 		padding: 0;
 	}
+	.h5{
+		font-size: 18px;
+		font-weight: bold;
+		color: #fff;
+	}
 	button, input[type="submit"] {
 		color: #000;
 		font-weight: normal;
@@ -45,6 +50,7 @@
 		display: block;
 		min-width: auto;
 		max-width: auto;
+		cursor: pointer;
 		&:before, &:after {
 			display: inline-block;
 			margin: 0;
@@ -64,7 +70,30 @@
 	img {
 		width: 100% !important;
 	}
-	&.gdpr-privacy-bar{
+	.gdpr-policy-list{
+		display: flex;
+		justify-content: space-between;
+		align-items: center;
+		width: 100%;
+		font-size: 14px;
+		button, p, a{
+			color: #fff;
+		}
+		.gdpr-buttons{
+			display: flex;
+			align-items: center;
+		}
+	}
+	.gdpr-contained-wrapper {
+		max-width: 600px;
+		margin: 0 auto;
+		padding: 20px 40px;
+		box-sizing: border-box;
+		@include breakpoint(medium-small) {
+			padding: 20px;
+		}
+	}
+	&.gdpr-privacy-bar, &.gdpr-reconsent-bar{
 		position: fixed;
 		bottom: 0;
 		left:0;

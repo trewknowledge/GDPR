@@ -258,20 +258,26 @@ class GDPR_Public {
 	 * @return bool     Whether the user consented or not.
 	 */
 	public function is_consent_needed() {
-		$privacy_policy_page = get_option( 'gdpr_privacy_policy_page' );
-		if ( ! $privacy_policy_page || ! is_user_logged_in() ) {
+		$consents = get_option( 'gdpr_consent_types', array() );
+		$required_consents = array_filter( $consents, function( $consent ) {
+			return ! empty( $consent['policy-page'] );
+		} );
+
+		if ( ! $required_consents || ! is_user_logged_in() ) {
 			return;
 		}
 
-		$page_obj      = get_post( $privacy_policy_page );
-		$user          = wp_get_current_user();
+		$user = wp_get_current_user();
 		$user_consents = get_user_meta( $user->ID, 'gdpr_consents' );
+		$updated_consents = array_filter( $required_consents, function( $consent, $consent_id ) {
+			return ! in_array( $consent_id, $user_consents );
+		}, ARRAY_FILTER_USE_BOTH );
 
-		if ( in_array( 'privacy-policy', $user_consents ) ) {
+		if ( empty( $updated_consents ) ) {
 			return;
 		}
 
-		include plugin_dir_path( __FILE__ ) . 'partials/reconsent-modal.php';
+		include plugin_dir_path( __FILE__ ) . 'partials/reconsent-bar.php';
 	}
 
 	/**
