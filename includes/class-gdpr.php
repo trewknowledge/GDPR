@@ -265,8 +265,8 @@ class GDPR {
 		add_action( 'wp_footer',                                         array( $plugin_public, 'confirmation_screens' ) );
 		add_action( 'wp_ajax_disagree_with_terms',                       array( $plugin_public, 'logout' ) );
 		add_action( 'wp_ajax_agree_with_terms',                          array( $plugin_public, 'agree_with_terms' ) );
-		add_action( 'admin_post_gdpr_update_privacy_preferences',        array( $plugin_public, 'update_privacy_preferences' ) );
-		add_action( 'admin_post_nopriv_gdpr_update_privacy_preferences', array( $plugin_public, 'update_privacy_preferences' ) );
+		add_action( 'wp_ajax_gdpr_update_privacy_preferences',           array( $plugin_public, 'ajax_update_privacy_preferences' ) );
+		add_action( 'wp_ajax_nopriv_gdpr_update_privacy_preferences',    array( $plugin_public, 'ajax_update_privacy_preferences' ) );
 
 		add_action( 'wp', array( $requests_public, 'request_confirmed' ) );
 		add_action( 'admin_post_gdpr_send_request_email', array( $requests_public, 'send_request_email' ) );

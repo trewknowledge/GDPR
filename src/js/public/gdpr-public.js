@@ -30,6 +30,25 @@
 		return false;
 	}
 
+	function displayNotification( title, text, deletion ) {
+		deletion = typeof deletion !== 'undefined' ? true : false;
+
+		$('.gdpr-general-confirmation .gdpr-box-title h3').html( title );
+		$('.gdpr-general-confirmation .gdpr-content p').html( text );
+		if ( deletion ) {
+			$('.gdpr-general-confirmation').addClass('gdpr-delete-confirmation');
+			$('.gdpr-general-confirmation footer').html('<button class="gdpr-delete-account">' + GDPR.i18n.continue + '</button> <button class="gdpr-cancel">' + GDPR.i18n.cancel + '</button>');
+		} else {
+			$('.gdpr-general-confirmation footer').html('<button class="gdpr-ok">' + GDPR.i18n.ok + '</button>');
+		}
+
+		$('.gdpr-overlay').fadeIn();
+		$('body').addClass('gdpr-noscroll');
+		$('.gdpr.gdpr-general-confirmation .gdpr-wrapper').css({
+			'display': 'flex',
+		}).hide().fadeIn();
+	}
+
 	$(function() {
 
 		$(document).on('submit', '.gdpr-privacy-preferences-frm', function(e) {
@@ -83,14 +102,6 @@
 		 */
 		$(document).on('click', '.gdpr.gdpr-privacy-bar .gdpr-agreement', function() {
       $('.gdpr-privacy-preferences-frm').submit();
-    });
-
-		/**
-		 * Set the privacy bar cookie after privacy preference submission.
-		 * This hides the privacy bar from showing after saving privacy preferences.
-		 */
-    $(document).on('submit', '.gdpr-privacy-preferences-frm', function() {
-    	Cookies.set('gdpr[privacy_bar]', 1, { expires: 365 });
     });
 
 		/**
@@ -243,7 +254,7 @@
 			$('.gdpr.gdpr-disagree-confirmation .gdpr-wrapper').fadeOut();
 			$('.gdpr-consent-buttons').fadeOut(300, function() {
 				$('.gdpr-updating').html(
-					GDPR.aborting
+					GDPR.i18n.aborting
 				);
 				$('.gdpr-consent-loading').fadeIn(300);
 			});

@@ -11,7 +11,7 @@
  */
 ?>
 
-<div class="gdpr gdpr-general-confirmation gdpr-delete-confirmation">
+<!-- <div class="gdpr gdpr-general-confirmation gdpr-delete-confirmation">
 	<div class="gdpr-wrapper">
 		<header>
 			<div class="gdpr-box-title">
@@ -25,6 +25,22 @@
 		<footer>
 			<button class="gdpr-delete-account">Continue</button>
 			<button class="gdpr-cancel"><?php esc_html_e( 'Cancel', 'gdpr' ); ?></button>
+		</footer>
+	</div>
+</div> -->
+
+<div class="gdpr gdpr-general-confirmation">
+	<div class="gdpr-wrapper">
+		<header>
+			<div class="gdpr-box-title">
+				<h3></h3>
+				<span class="gdpr-close"></span>
+			</div>
+		</header>
+		<div class="gdpr-content">
+			<p></p>
+		</div>
+		<footer>
 		</footer>
 	</div>
 </div>
