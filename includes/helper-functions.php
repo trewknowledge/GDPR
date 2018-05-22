@@ -118,3 +118,7 @@ function has_consent( $consent ) {
 
 	return false;
 }
+
+function is_dnt() {
+	return ( isset( $_SERVER['HTTP_DNT'] ) && $_SERVER['HTTP_DNT'] === '1' );
+}
