@@ -46,9 +46,25 @@ if ( isset( $_GET['notify'] ) && $_GET['notify'] ) : ?>
 		$title = __( 'Request Received', 'gdpr' );
 		$text  = __( 'Your request has been received. We will be in touch soon.', 'gdpr' );
 	}
+	if ( isset( $_GET['malformed-confirmation-link'] ) && $_GET['malformed-confirmation-link'] ) {
+		$title = __( 'Error!', 'gdpr' );
+		$text  = __( 'Malformed request confirmation link!', 'gdpr' );
+	}
+	if ( isset( $_GET['user-not-found'] ) && $_GET['user-not-found'] ) {
+		$title = __( 'Error!', 'gdpr' );
+		$text  = __( 'User not found.', 'gdpr' );
+	}
+	if ( isset( $_GET['request-key-not-found'] ) && $_GET['request-key-not-found'] ) {
+		$title = __( 'Error!', 'gdpr' );
+		$text  = __( 'We could not confirm the request key. It may be expired.', 'gdpr' );
+	}
+	if ( isset( $_GET['request-key-not-match'] ) && $_GET['request-key-not-match'] ) {
+		$title = __( 'Error!', 'gdpr' );
+		$text  = __( 'The key used does not match the request key we have stored.', 'gdpr' );
+	}
 	?>
 <?php endif ?>
-<div class="gdpr gdpr-general-confirmation gdpr-accept-confirmation">
+<div class="gdpr gdpr-general-confirmation">
 	<div class="gdpr-wrapper">
 		<header>
 			<div class="gdpr-box-title">
