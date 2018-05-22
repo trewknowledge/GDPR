@@ -13,7 +13,7 @@
 					<th scope="row">
 						<label for="gdpr_privacy_policy_page"><?php esc_html_e( 'Privacy Policy Page', 'gdpr' ) ?></label>
 					</th>
-				<td>
+					<td>
 						<select name="gdpr_privacy_policy_page" id="gdpr_privacy_policy_page">
 							<option value=""><?php esc_html_e( '-- Select --', 'gdpr' ) ?></option>
 							<?php foreach ( $pages as $page ): ?>
@@ -37,7 +37,16 @@
 					</th>
 					<td>
 						<?php $needs_review = get_option( 'gdpr_deletion_needs_review', true ); ?>
-						<input type="checkbox" name="<?php echo esc_attr( 'gdpr_deletion_needs_review' ); ?>" id="gdpr_deletion_needs_review" value="1"  <?php checked( $needs_review, true ); ?>><span class="description"><label for="gdpr_deletion_needs_review"><?php esc_html_e( 'Send all deletion requests to the review table.', 'gdpr' ); ?></label></label>
+						<input type="checkbox" name="<?php echo esc_attr( 'gdpr_deletion_needs_review' ); ?>" id="gdpr_deletion_needs_review" value="1"  <?php checked( $needs_review, true ); ?>><span class="description"><label for="gdpr_deletion_needs_review"><?php esc_html_e( 'Send all deletion requests to the review table.', 'gdpr' ); ?></label></span>
+					</td>
+				</tr>
+				<tr>
+					<th scope="row">
+						<label for="gdpr_refresh_after_preferences_update"><?php esc_html_e( 'Refresh page after updating preferences', 'gdpr' ) ?></label>
+					</th>
+					<td>
+						<?php $refresh_page = get_option( 'gdpr_refresh_after_preferences_update', false ); ?>
+						<input type="checkbox" name="<?php echo esc_attr( 'gdpr_refresh_after_preferences_update' ); ?>" id="gdpr_refresh_after_preferences_update" value="1"  <?php checked( $refresh_page, true ); ?>>
 					</td>
 				</tr>
 				<tr>

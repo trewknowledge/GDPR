@@ -124,6 +124,7 @@ class GDPR_Public {
 			'aborting' => esc_html__( 'Aborting', 'gdpr' ),
 			'is_user_logged_in' => is_user_logged_in(),
 			'privacy_page_id' => get_option( 'gdpr_privacy_policy_page', 0 ),
+			'refresh' => get_option( 'gdpr_refresh_after_preferences_update', true ),
 		) );
 	}
 

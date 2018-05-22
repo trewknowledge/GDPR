@@ -65,6 +65,7 @@ class GDPR_Activator {
 				'how_we_use' => '',
 			),
 		) );
+		add_option( 'gdpr_refresh_after_preferences_update', true );
 	}
 
 }
