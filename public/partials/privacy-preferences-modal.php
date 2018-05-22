@@ -35,6 +35,9 @@
 							<ul class="gdpr-subtabs">
 								<?php
 								foreach ( $tabs as $key => $tab ) {
+									if ( empty( $tab['cookies_used'] ) ) {
+										continue;
+									}
 									echo '<li><button type="button" data-target="' . esc_attr( $key ) . '" ' . '>' . esc_html( $tab['name'] ) . '</button></li>';
 								}
 								?>
