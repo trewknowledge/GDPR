@@ -107,11 +107,12 @@
 			justify-content: space-between;
 			align-items: center;
 			box-sizing: border-box;
-			@include breakpoint(medium-small) {
-				padding: 20px;
-				flex-direction: column;
-				align-items: center;
-			}
+			flex-direction: column;
+			// @include breakpoint(medium-small) {
+			// 	padding: 20px;
+			// 	flex-direction: column;
+			// 	align-items: center;
+			// }
 			&:after {
 				content: "";
 				display: table;
@@ -123,8 +124,7 @@
 				font-weight: normal;
 			}
 			.gdpr-content {
-				flex: 1;
-				padding-right: 100px;
+				padding-bottom: 20px;
 				p {
 					color: #ffffff;
 				}
@@ -132,16 +132,36 @@
 					color: #fff;
 					text-decoration: underline;
 				}
+
 				@include breakpoint(medium-small) {
-					padding-right: 0;
-					padding-bottom: 20px;
+				}
+			}
+			.gdpr-right {
+				display: flex;
+				align-items: center;
+				@include breakpoint(medium-small) {
+					flex-direction: column;
+					align-items: center;
 				}
 				.gdpr-cookie-categories {
 					list-style: none;
-					padding:0;
-					margin: 5px 0 0;
-					li {
+					@include breakpoint( large ) {
+						padding:0 30px 0 0;
+						margin: 0 25px 0 0;
+						border-right: 1px solid #808080;
+					}
+					@include breakpoint( medium-small ) {
+						padding:0 0 15px 0;
+						margin: 0 0 10px 0;
+						border-bottom: 1px solid #808080;
+					}
+					.gdpr-cookie-categories-item {
 						display: inline-block;
+						&:last-of-type {
+							label {
+								margin-right: 0;
+							}
+						}
 						label{
 							color: #fff;
 							margin: 0 10px 0 3px;
@@ -149,17 +169,10 @@
 						}
 					}
 				}
-			}
-			.gdpr-right {
-				display: flex;
-				align-items: center;
-				@include breakpoint(small-only) {
-					flex-direction: column;
-				}
 				button {
 					&:first-of-type{
 						margin-left: 10px;
-						@include breakpoint(small-only) {
+						@include breakpoint(medium-small) {
 							margin: 0 0 10px 7px;
 							&:before {
 								left: -7px;
@@ -169,7 +182,7 @@
 					&:last-of-type{
 						margin-right: 0;
 						margin-left: 20px;
-						@include breakpoint(small-only) {
+						@include breakpoint(medium-small) {
 							margin: 0;
 						}
 					}
