@@ -5,7 +5,7 @@
 	<?php if ( ! is_user_logged_in() ): ?>
 		<input type="email" name="user_email" placeholder="user@domain.com" required>
 	<?php endif ?>
-	<textarea name="data" rows="5" required></textarea>
+	<textarea name="data" rows="5" required placeholder="<?php echo esc_attr( 'Type your rectification request here', 'gdpr' ); ?>"></textarea>
 	<?php GDPR_Public::add_recaptcha(); ?>
 	<?php $submit_button_text = apply_filters( "gdpr_rectify_request_form_submit_text", esc_attr__( 'Submit', 'gdpr' ) ); ?>
 	<input type="submit" value="<?php echo esc_attr( $submit_button_text ); ?>">
