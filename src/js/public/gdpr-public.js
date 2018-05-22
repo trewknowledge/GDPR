@@ -54,8 +54,6 @@
 		$(document).on('submit', '.gdpr-privacy-preferences-frm', function(e) {
 			e.preventDefault();
 			var that = $(this);
-			var action = $(this).find('input[name="action"]').val();
-			var nonce = $(this).find('input[name$="nonce"]').val();
 			var formData = $(this).serialize();
 
 			$.post(
@@ -78,6 +76,21 @@
 				}
 			);
 
+		});
+
+		$(document).on('submit', '.gdpr-request-form', function(e) {
+			e.preventDefault();
+			var that = $(this);
+			var type = $(this).find('input[name="type"]').val();
+			var formData = $(this).serialize();
+
+			$.post(
+				GDPR.ajaxurl,
+				formData,
+				function(response) {
+					displayNotification( response.data.title, response.data.content );
+				}
+			)
 		});
 
 		$(document).on('change', '.gdpr-cookie-category', function() {
@@ -192,18 +205,18 @@
 			$('.gdpr.gdpr-delete-confirmation .gdpr-wrapper').fadeOut();
 		});
 
-		if ( $('.gdpr-accept-confirmation').length > 0 ) {
-			$('.gdpr-overlay').fadeIn();
-			$('body').addClass('gdpr-noscroll');
-			$('.gdpr.gdpr-accept-confirmation .gdpr-wrapper').css({
-				'display': 'flex',
-			}).hide().fadeIn();
-			$(document).on('click', '.gdpr.gdpr-accept-confirmation button.gdpr-ok', function() {
-				$('.gdpr-overlay').fadeOut();
-				$('body').removeClass('gdpr-noscroll');
-				$('.gdpr.gdpr-accept-confirmation .gdpr-wrapper').fadeOut();
-			});
-		}
+		// if ( $('.gdpr-accept-confirmation').length > 0 ) {
+		// 	$('.gdpr-overlay').fadeIn();
+		// 	$('body').addClass('gdpr-noscroll');
+		// 	$('.gdpr.gdpr-accept-confirmation .gdpr-wrapper').css({
+		// 		'display': 'flex',
+		// 	}).hide().fadeIn();
+		// }
+		$(document).on('click', '.gdpr.gdpr-general-confirmation button.gdpr-ok', function() {
+			$('.gdpr-overlay').fadeOut();
+			$('body').removeClass('gdpr-noscroll');
+			$('.gdpr.gdpr-accept-confirmation .gdpr-wrapper').fadeOut();
+		});
 
 		$(document).on('click', '.gdpr-agree', function(e) {
 			e.preventDefault();
