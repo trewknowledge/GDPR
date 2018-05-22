@@ -47,8 +47,58 @@
 		 * It submits the form that is still hidden with the cookies and consent options.
 		 */
 		$(document).on('click', '.gdpr.gdpr-privacy-bar .gdpr-agreement', function() {
-      $('.gdpr-privacy-preferences-frm').submit();
-    });
+			
+			/** Make it look like we're doing something */
+			$(".gdpr-agreement")
+				.attr("disabled","disabled")
+				.prop("disabled",true)
+				.css("opacity",0.5)
+				.css("cursor","wait");
+
+			/** Grab the basics */
+			var formdata = {};
+			formdata["update-privacy-preferences-nonce"] = $('.gdpr-privacy-preferences-frm [name="update-privacy-preferences-nonce"]').val();
+			formdata["_wp_http_referer"] = $('.gdpr-privacy-preferences-frm [name="_wp_http_referer"]').val();
+			formdata["all_cookies"] = $('.gdpr-privacy-preferences-frm [name="all_cookies"]').val();
+			formdata["action"] = "gdpr_update_privacy_preferences";
+
+			/** Collect all of the consents */
+			formdata["user_consents"] = [];
+			$('.gdpr-privacy-preferences-frm [name="user_consents[]"]').each(function() {
+				formdata["user_consents"].push($(this).val());
+			});
+
+			/** Collect the approved cookies */
+			formdata["approved_cookies"] = [];
+			$('.gdpr-privacy-preferences-frm [name="approved_cookies[]"]').each(function() {
+				formdata["approved_cookies"].push($(this).val());
+			});
+
+			/** Send the AJAX request */
+			$.ajax({
+				url: ajaxurl,
+				type: "post",
+				data: formdata,
+				dataType: "json",
+				success: function (response) {
+					if (response.error.length) {
+						$(".gdpr-agreement")
+							.removeAttr("disabled")
+							.removeProp("disabled",true)
+							.css("opacity","")
+							.css("cursor","");
+						alert(response.error);
+
+					} else if (response.success) {
+						Cookies.set('gdpr[privacy_bar]', 1, { expires: 365 });
+						$('.gdpr.gdpr-privacy-bar').slideUp(600);
+					}					
+				},
+				error: function (response) {
+					$('.gdpr-privacy-preferences-frm').submit();
+				}
+			});
+		});
 
 		/**
 		 * Set the privacy bar cookie after privacy preference submission.

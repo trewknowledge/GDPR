@@ -123,7 +123,6 @@ class GDPR_Public {
 			'ajaxurl' => admin_url( 'admin-ajax.php' ),
 			'aborting' => esc_html__( 'Aborting', 'gdpr' ),
 			'is_user_logged_in' => is_user_logged_in(),
-			'privacy_page_id' => get_option( 'gdpr_privacy_policy_page', 0 ),
 		) );
 	}
 
@@ -193,61 +192,103 @@ class GDPR_Public {
 			wp_die( esc_html__( "You need to at least consent to our Privacy Policy.", 'gdpr' ) );
 		}
 
-		$consents    = array_map( 'sanitize_text_field', (array) $_POST['user_consents'] );
-		$cookies     = isset( $_POST['approved_cookies'] ) ? array_map( 'sanitize_text_field', (array) $_POST['approved_cookies'] ) : array();
-		$all_cookies = isset( $_POST['all_cookies'] ) ? array_map( 'sanitize_text_field', (array) json_decode( wp_unslash( $_POST['all_cookies'] ) ) ) : array();
-
-		$approved_cookies = array();
-		if ( ! empty( $cookies ) ) {
-			foreach ( $cookies as $cookieArr ) {
-				$cookieArr = json_decode( wp_unslash( $cookieArr ) );
-				foreach ( $cookieArr as $cookie ) {
-					$approved_cookies[] = $cookie;
-				}
-			}
-		}
-
-		$cookies_to_remove = array_diff( $all_cookies, $approved_cookies );
-
-		$cookies_as_json = json_encode( $approved_cookies );
-		$consents_as_json = json_encode( $consents );
-
-		setcookie( "gdpr[allowed_cookies]", $cookies_as_json, time() + YEAR_IN_SECONDS, "/" );
-		setcookie( "gdpr[consent_types]", $consents_as_json, time() + YEAR_IN_SECONDS, "/" );
-
-		foreach ( $cookies_to_remove as $cookie ) {
-			if ( GDPR::similar_in_array( $cookie, array_keys( $_COOKIE ) ) ) {
-				$domain = get_site_url();
-				$domain = wp_parse_url( $domain, PHP_URL_HOST );
-				unset( $_COOKIE[ $cookie ] );
-				setcookie( $cookie, NULL, -1, "/", $domain );
-				setcookie( $cookie, NULL, -1, "/", '.' . $domain );
-			}
-		}
-
-		if ( is_user_logged_in() ) {
-			$user = wp_get_current_user();
-			GDPR_Audit_Log::log( $user->ID, esc_html__( 'User updated their privacy preferences. These are the new approved cookies and consent preferences:', 'gdpr' ) );
-			if ( ! empty( $consents ) ) {
-				delete_user_meta( $user->ID, 'gdpr_consents' );
-				foreach ( $consents as $consent ) {
-					$consent = sanitize_text_field( wp_unslash( $consent ) );
-					add_user_meta( $user->ID, 'gdpr_consents', $consent );
-					GDPR_Audit_Log::log( $user->ID, 'Consent: ' . $consent );
-				}
-			}
-
-			if ( ! empty( $approved_cookies ) ) {
-				foreach ( $approved_cookies as $cookie ) {
-					GDPR_Audit_Log::log( $user->ID, 'Cookie: ' . $cookie );
-				}
-			}
-
-		}
+		$this->do_update_privacy_preferences($_POST);
 
 		wp_safe_redirect( esc_url_raw( wp_get_referer() ) );
 		exit;
 	}
+
+    /**
+     * Update the user allowed cookies and types of consent.
+     * If the user is logged in, we also save consent to user meta.
+     * ...but this time, via AJAX
+     * @since  1.1.1
+     * @author Jerram Digital <code@jerram.co.uk>
+     */
+    public function ajax_update_privacy_preferences() {
+
+        $response = array(
+            "error" => "",
+            "success" => ""
+        );
+
+        if ( ! isset( $_POST['update-privacy-preferences-nonce'] ) || ! wp_verify_nonce( sanitize_key( $_POST['update-privacy-preferences-nonce'] ), 'gdpr-update_privacy_preferences' ) ) {
+            $response["error"] = esc_html__( 'We could not verify the the security token. Please try again.', 'gdpr' );
+        }
+
+        if ( ! isset( $_POST['user_consents'] ) ) {
+            $response["error"] .= (strlen($response["error"]) ? PHP_EOL : "") . esc_html__( "You need to at least consent to our Privacy Policy.", 'gdpr' );
+        }
+
+        if ( ! strlen( $response["error"] ) ) {
+            $this->do_update_privacy_preferences($_POST);
+            $response["success"] = esc_html__( "Privacy preferences saved", 'gdpr' );
+        }
+
+        echo json_encode($response);
+        exit();
+    }
+
+    /**
+     * Update the user allowed cookies and types of consent.
+     * If the user is logged in, we also save consent to user meta.
+     * @since  1.1.0
+     * @author Fernando Claussen <fernandoclaussen@gmail.com>
+     * @param $data List of posted values
+     */
+    private function do_update_privacy_preferences( $data = array() ) {
+
+        $consents    = array_map( 'sanitize_text_field', (array) $data['user_consents'] );
+        $cookies     = isset( $data['approved_cookies'] ) ? array_map( 'sanitize_text_field', (array) $data['approved_cookies'] ) : array();
+        $all_cookies = isset( $data['all_cookies'] ) ? array_map( 'sanitize_text_field', (array) json_decode( wp_unslash( $data['all_cookies'] ) ) ) : array();
+
+        $approved_cookies = array();
+        if ( ! empty( $cookies ) ) {
+            foreach ( $cookies as $cookieArr ) {
+                $cookieArr = json_decode( wp_unslash( $cookieArr ) );
+                foreach ( $cookieArr as $cookie ) {
+                    $approved_cookies[] = $cookie;
+                }
+            }
+        }
+
+        $cookies_to_remove = array_diff( $all_cookies, $approved_cookies );
+
+        $cookies_as_json = json_encode( $approved_cookies );
+        $consents_as_json = json_encode( $consents );
+
+        setcookie( "gdpr[allowed_cookies]", $cookies_as_json, time() + YEAR_IN_SECONDS, "/" );
+        setcookie( "gdpr[consent_types]", $consents_as_json, time() + YEAR_IN_SECONDS, "/" );
+
+        foreach ( $cookies_to_remove as $cookie ) {
+            if ( GDPR::similar_in_array( $cookie, array_keys( $_COOKIE ) ) ) {
+                $domain = get_site_url();
+                $domain = wp_parse_url( $domain, PHP_URL_HOST );
+                unset( $_COOKIE[ $cookie ] );
+                setcookie( $cookie, NULL, -1, "/", $domain );
+                setcookie( $cookie, NULL, -1, "/", '.' . $domain );
+            }
+        }
+
+        if ( is_user_logged_in() ) {
+            $user = wp_get_current_user();
+            GDPR_Audit_Log::log( $user->ID, esc_html__( 'User updated their privacy preferences. These are the new approved cookies and consent preferences:', 'gdpr' ) );
+            if ( ! empty( $consents ) ) {
+                delete_user_meta( $user->ID, 'gdpr_consents' );
+                foreach ( $consents as $consent ) {
+                    $consent = sanitize_text_field( wp_unslash( $consent ) );
+                    add_user_meta( $user->ID, 'gdpr_consents', $consent );
+                    GDPR_Audit_Log::log( $user->ID, 'Consent: ' . $consent );
+                }
+            }
+
+            if ( ! empty( $approved_cookies ) ) {
+                foreach ( $approved_cookies as $cookie ) {
+                    GDPR_Audit_Log::log( $user->ID, 'Cookie: ' . $cookie );
+                }
+            }
+        }
+    }
 
 	/**
 	 * Check if the user did not consent to the privacy policy
@@ -257,17 +298,13 @@ class GDPR_Public {
 	 */
 	public function is_consent_needed() {
 		$privacy_policy_page = get_option( 'gdpr_privacy_policy_page' );
-		if ( ! $privacy_policy_page || ! is_user_logged_in() ) {
+		if ( ! $privacy_policy_page ) {
 			return;
 		}
 
 		$page_obj      = get_post( $privacy_policy_page );
 		$user          = wp_get_current_user();
 		$user_consents = get_user_meta( $user->ID, 'gdpr_consents' );
-
-		if ( in_array( 'privacy-policy', $user_consents ) ) {
-			return;
-		}
 
 		include plugin_dir_path( __FILE__ ) . 'partials/reconsent-modal.php';
 	}
