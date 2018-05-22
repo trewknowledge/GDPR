@@ -209,6 +209,7 @@ class GDPR_Admin {
 			'gdpr_add_consent_checkboxes_registration' => 'boolval',
 			'gdpr_add_consent_checkboxes_checkout'     => 'boolval',
 			'gdpr_refresh_after_preferences_update'    => 'boolval',
+			'gdpr_enable_privacy_bar'                  => 'boolval',
 		);
 		foreach ( $settings as $option_name => $sanitize_callback ) {
 			register_setting( 'gdpr', $option_name, array( 'sanitize_callback' => $sanitize_callback ) );

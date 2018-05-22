@@ -66,6 +66,7 @@ class GDPR_Activator {
 			),
 		) );
 		add_option( 'gdpr_refresh_after_preferences_update', true );
+		add_option( 'gdpr_enable_privacy_bar', true );
 	}
 
 }

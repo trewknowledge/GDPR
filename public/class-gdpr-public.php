@@ -139,11 +139,12 @@ class GDPR_Public {
 	 * @author Fernando Claussen <fernandoclaussen@gmail.com>
 	 */
 	public function privacy_bar() {
-		$content            = get_option( 'gdpr_cookie_banner_content', '' );
-		$registered_cookies = get_option( 'gdpr_registered_cookies', array() );
-		$button_text        = apply_filters( 'gdpr_privacy_bar_button_text', esc_html__( 'I Agree', 'gdpr' ) );
+		$privacy_bar_enabled = get_option( 'gdpr_enable_privacy_bar', true );
+		$content             = get_option( 'gdpr_cookie_banner_content', '' );
+		$registered_cookies  = get_option( 'gdpr_registered_cookies', array() );
+		$button_text         = apply_filters( 'gdpr_privacy_bar_button_text', esc_html__( 'I Agree', 'gdpr' ) );
 
-		if ( empty( $content ) ) {
+		if ( empty( $content ) || ! $privacy_bar_enabled ) {
 			return;
 		}
 
