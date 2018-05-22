@@ -468,8 +468,10 @@ class GDPR {
 
 			default: // XML
 				$dom           = new DomDocument( '1.0', 'ISO-8859-1' );
+				$data_wrapper  = $dom->createElement( 'Data' );
+				$dom->appendChild( $data_wrapper );
 				$personal_info = $dom->createElement( 'Personal_Information' );
-				$dom->appendChild( $personal_info );
+				$data_wrapper->appendChild( $personal_info );
 				$personal_info->appendChild( $dom->createElement( 'Username', $user->user_login ) );
 				$personal_info->appendChild( $dom->createElement( 'First_Name', $user->first_name ) );
 				$personal_info->appendChild( $dom->createElement( 'Last_Name', $user->last_name ) );
@@ -481,7 +483,7 @@ class GDPR {
 
 				if ( ! empty( $user_consents ) ) {
 					$consents = $dom->createElement( 'Consents' );
-					$dom->appendChild( $consents );
+					$data_wrapper->appendChild( $consents );
 					foreach ( $user_consents as $consent_item ) {
 						$consents->appendChild( $dom->createElement( 'consent', $consent_item ) );
 					}
@@ -489,7 +491,7 @@ class GDPR {
 
 				if ( ! empty( $comments ) ) {
 					$comments_node = $dom->createElement( 'Comments' );
-					$dom->appendChild( $comments_node );
+					$data_wrapper->appendChild( $comments_node );
 					foreach ( $comments as $k => $v ) {
 						$single_comment = $dom->createElement( 'Comment' );
 						$comments_node->appendChild( $single_comment );
@@ -504,20 +506,23 @@ class GDPR {
 				}
 
 				$meta_data = $dom->createElement( 'Metadata' );
-				$dom->appendChild( $meta_data );
+				$data_wrapper->appendChild( $meta_data );
 
 				foreach ( $usermeta as $k => $v ) {
 					$k = is_numeric( substr( $k, 0, 1 ) ) ? '_' . $k : $k;
 					$key = $dom->createElement( htmlspecialchars( $k ) );
 					$meta_data->appendChild( $key );
 					foreach ( $v as $value ) {
+						if ( is_serialized( $value ) ) {
+							$value = maybe_unserialize( $value );
+						}
 						$key->appendChild( $dom->createElement( 'item', htmlspecialchars( $value ) ) );
 					}
 				}
 
 				if ( $extra_content ) {
 					$extra = $dom->createElement( $extra_content['name'] );
-					$dom->appendChild( $extra );
+					$data_wrapper->appendChild( $extra );
 					foreach ( $extra_content['content'] as $key => $obj ) {
 						$item = $extra->appendChild( $dom->createElement( 'item' ) );
 						foreach ( $obj as $k => $value ) {
