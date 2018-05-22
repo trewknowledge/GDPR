@@ -878,4 +878,28 @@ class GDPR_Admin {
 		}
 	}
 
+
+	/**
+	 * Filters the display output of custom columns in the Users list table.
+	 * @since 2.0.0
+	 * @author Fernando Claussen <fernandoclaussen@gmail.com>
+	 *
+	 * @param  string $val         Custom column output. Default empty.
+	 * @param  string $column_name Column name.
+	 * @param  int $user_id        ID of the currently-listed user.
+	 */
+	public function add_consents_to_consents_column( $val, $column_name, $user_id ) {
+		if ( 'consents' === $column_name ) {
+			$user_consents = get_user_meta( $user_id, 'gdpr_consents' );
+			return implode(', ', $user_consents );
+		}
+
+    return $val;
+	}
+
+	public function add_consents_column_to_user_table( $column_headers ) {
+		$column_headers['consents'] = esc_html__( 'Consents', 'gdpr' );
+		return $column_headers;
+	}
+
 }
