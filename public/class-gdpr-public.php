@@ -121,7 +121,12 @@ class GDPR_Public {
 		wp_enqueue_script( $this->plugin_name, plugin_dir_url( dirname( __FILE__ ) ) . 'assets/js/gdpr-public.js', array( 'jquery' ), $this->version, false );
 		wp_localize_script( $this->plugin_name, 'GDPR', array(
 			'ajaxurl' => admin_url( 'admin-ajax.php' ),
-			'aborting' => esc_html__( 'Aborting', 'gdpr' ),
+			'i18n' => array(
+				'aborting' => esc_html__( 'Aborting', 'gdpr' ),
+				'continue' => esc_html__( 'Continue', 'gdpr' ),
+				'cancel' => esc_html__( 'Cancel', 'gdpr' ),
+				'ok' => esc_html__( 'OK', 'gdpr' ),
+			),
 			'is_user_logged_in' => is_user_logged_in(),
 			'privacy_page_id' => get_option( 'gdpr_privacy_policy_page', 0 ),
 			'refresh' => get_option( 'gdpr_refresh_after_preferences_update', true ),
@@ -182,19 +187,15 @@ class GDPR_Public {
 	/**
 	 * Update the user allowed cookies and types of consent.
 	 * If the user is logged in, we also save consent to user meta.
-	 * @since  1.1.0
+	 * Ajax version of a previous function.
+	 * @since  2.0.0
 	 * @author Fernando Claussen <fernandoclaussen@gmail.com>
 	 */
-	public function update_privacy_preferences() {
-		if ( ! isset( $_POST['update-privacy-preferences-nonce'] ) || ! wp_verify_nonce( sanitize_key( $_POST['update-privacy-preferences-nonce'] ), 'gdpr-update_privacy_preferences' ) ) {
-			wp_die( esc_html__( 'We could not verify the the security token. Please try again.', 'gdpr' ) );
+	public function ajax_update_privacy_preferences() {
+		if ( ! isset( $_POST['update-privacy-preferences-nonce'] ) || ! wp_verify_nonce( sanitize_key( $_POST['update-privacy-preferences-nonce'] ), 'gdpr-update-privacy-preferences' ) ) {
+			wp_send_json_error( array( 'title' => esc_html__( 'Error!', 'gdpr' ), 'content' => esc_html__( 'We could not verify the the security token. Please try again.', 'gdpr' ) ) );
 		}
-
-		if ( ! isset( $_POST['user_consents'] ) ) {
-			wp_die( esc_html__( "You need to at least consent to our Privacy Policy.", 'gdpr' ) );
-		}
-
-		$consents    = array_map( 'sanitize_text_field', (array) $_POST['user_consents'] );
+		$consents    = isset( $_POST['user_consents'] ) ? array_map( 'sanitize_text_field', (array) $_POST['user_consents'] ) : array();
 		$cookies     = isset( $_POST['approved_cookies'] ) ? array_map( 'sanitize_text_field', (array) $_POST['approved_cookies'] ) : array();
 		$all_cookies = isset( $_POST['all_cookies'] ) ? array_map( 'sanitize_text_field', (array) json_decode( wp_unslash( $_POST['all_cookies'] ) ) ) : array();
 
@@ -246,8 +247,7 @@ class GDPR_Public {
 
 		}
 
-		wp_safe_redirect( esc_url_raw( wp_get_referer() ) );
-		exit;
+		wp_send_json_success();
 	}
 
 	/**

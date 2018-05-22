@@ -32,6 +32,35 @@
 
 	$(function() {
 
+		$(document).on('submit', '.gdpr-privacy-preferences-frm', function(e) {
+			e.preventDefault();
+			var that = $(this);
+			var action = $(this).find('input[name="action"]').val();
+			var nonce = $(this).find('input[name$="nonce"]').val();
+			var formData = $(this).serialize();
+
+			$.post(
+				GDPR.ajaxurl,
+				formData,
+				function(response) {
+					if ( response.success ) {
+						Cookies.set('gdpr[privacy_bar]', 1, { expires: 365 });
+						if ( GDPR.refresh ) {
+							window.location.reload();
+						} else {
+							$('.gdpr-overlay').fadeOut();
+							$('body').removeClass('gdpr-noscroll');
+							$('.gdpr.gdpr-privacy-preferences .gdpr-wrapper').fadeOut();
+							$('.gdpr-privacy-bar').fadeOut();
+						}
+					} else {
+						displayNotification( response.data.title, response.data.content );
+					}
+				}
+			);
+
+		});
+
 		$(document).on('change', '.gdpr-cookie-category', function() {
 			var target = $(this).data('category');
 			var checked = $(this).prop('checked');
