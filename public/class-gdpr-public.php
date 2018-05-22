@@ -191,7 +191,7 @@ class GDPR_Public {
 	 * @since  2.0.0
 	 * @author Fernando Claussen <fernandoclaussen@gmail.com>
 	 */
-	public function ajax_update_privacy_preferences() {
+	public function update_privacy_preferences() {
 		if ( ! isset( $_POST['update-privacy-preferences-nonce'] ) || ! wp_verify_nonce( sanitize_key( $_POST['update-privacy-preferences-nonce'] ), 'gdpr-update-privacy-preferences' ) ) {
 			wp_send_json_error( array( 'title' => esc_html__( 'Error!', 'gdpr' ), 'content' => esc_html__( 'We could not verify the the security token. Please try again.', 'gdpr' ) ) );
 		}
