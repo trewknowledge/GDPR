@@ -132,6 +132,8 @@ class GDPR_Requests_Public extends GDPR_Requests {
 			),
 		);
 
+		$email_args['forgot_password_url'] = apply_filters( 'gdpr_forgot_password_url', $email_args['forgot_password_url'] );
+
 		switch ( $type ) {
 			case 'delete':
 				if ( in_array( 'administrator', $user->roles ) ) {
