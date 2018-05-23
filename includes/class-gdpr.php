@@ -187,6 +187,7 @@ class GDPR {
 			add_action( 'woocommerce_checkout_update_user_meta', array( $plugin_admin, 'woocommerce_checkout_save_consent' ), 10, 2 );
 			add_filter( 'woocommerce_checkout_fields', array( $plugin_admin, 'woocommerce_consent_checkboxes' ) );
 		}
+		add_action( 'init', array( $this, 'init_setup' ) );
 		add_filter( 'manage_users_custom_column', array( $plugin_admin, 'add_consents_to_consents_column' ), 10, 3 );
 		add_filter( 'manage_users_columns', array( $plugin_admin, 'add_consents_column_to_user_table' ) );
 		add_action( 'show_user_profile', array( $plugin_admin, 'edit_user_profile' ) );
@@ -227,6 +228,14 @@ class GDPR {
 		add_action( 'clean_gdpr_user_request_key', array( $requests, 'clean_user_request_key' ), 10, 2 );
 
 		add_action( 'send_data_breach_emails', array( $plugin_emails, 'send_data_breach_emails' ), 10, 2 );
+	}
+
+	public function init_setup() {
+		if ( ! empty( $_GET['page'] ) ) {
+			if ( 'gdpr-setup' === $_GET['page'] ) {
+				include_once plugin_dir_path( dirname( __FILE__ ) ) . 'admin/class-gdpr-setup-wizard.php';
+			}
+		}
 	}
 
 	/**
