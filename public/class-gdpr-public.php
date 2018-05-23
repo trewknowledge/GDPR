@@ -123,7 +123,6 @@ class GDPR_Public {
 			'ajaxurl' => admin_url( 'admin-ajax.php' ),
 			'aborting' => esc_html__( 'Aborting', 'gdpr' ),
 			'is_user_logged_in' => is_user_logged_in(),
-			'privacy_page_id' => get_option( 'gdpr_privacy_policy_page', 0 ),
 		) );
 	}
 
@@ -299,7 +298,7 @@ class GDPR_Public {
 	 */
 	public function is_consent_needed() {
 		$privacy_policy_page = get_option( 'gdpr_privacy_policy_page' );
-		if ( ! $privacy_policy_page || ! is_user_logged_in() ) {
+		if ( ! $privacy_policy_page ) {
 			return;
 		}
 
@@ -307,10 +306,6 @@ class GDPR_Public {
 		$user          = wp_get_current_user();
 		$user_consents = get_user_meta( $user->ID, 'gdpr_consents' );
 
-		if ( in_array( 'privacy-policy', $user_consents ) ) {
-			return;
-		}
-		
 		include plugin_dir_path( __FILE__ ) . 'partials/reconsent-modal.php';
 	}
 

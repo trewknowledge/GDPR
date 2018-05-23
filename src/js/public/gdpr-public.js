@@ -46,10 +46,20 @@
 		 * This runs when user clicks on privacy preferences bar agree button.
 		 * It submits the form that is still hidden with the cookies and consent options.
 		 */
-		$(document).on('click', '.gdpr.gdpr-privacy-bar .gdpr-agreement', function() {
+		$(document).on('click', '.gdpr.gdpr-privacy-bar .gdpr-agreement, .gdpr-privacy-preferences-frm input[type="submit"]', function(e) {
 			
+			/** Prevent the default */
+			e.preventDefault();
+
+			var submit_clicked = false;
+			var selector = '.gdpr.gdpr-privacy-bar .gdpr-agreement';
+			if ((e.target.type !== undefined) && (e.target.type == "submit")) {
+				submit_clicked = true;
+				selector = '.gdpr-privacy-preferences-frm input[type="submit"]';
+			}
+
 			/** Make it look like we're doing something */
-			$(".gdpr-agreement")
+			$(selector)
 				.attr("disabled","disabled")
 				.prop("disabled",true)
 				.css("opacity",0.5)
@@ -82,16 +92,22 @@
 				dataType: "json",
 				success: function (response) {
 					if (response.error.length) {
-						$(".gdpr-agreement")
+						$(selector)
 							.removeAttr("disabled")
 							.removeProp("disabled",true)
 							.css("opacity","")
 							.css("cursor","");
 						alert(response.error);
 
-					} else if (response.success) {
-						Cookies.set('gdpr[privacy_bar]', 1, { expires: 365 });
-						$('.gdpr.gdpr-privacy-bar').slideUp(600);
+					} else if (response.success.length) {
+
+						if (submit_clicked) {
+							$(".gdpr-privacy-preferences > .gdpr-wrapper, .gdpr-overlay").fadeOut(600);
+							$("body").removeClass("gdpr-noscroll");
+						} else {
+							Cookies.set('gdpr[privacy_bar]', 1, { expires: 365 });
+							$('.gdpr.gdpr-privacy-bar').slideUp(600);
+						}							
 					}					
 				},
 				error: function (response) {
