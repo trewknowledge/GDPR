@@ -259,25 +259,29 @@ class GDPR_Public {
 	 */
 	public function is_consent_needed() {
 		$consents = get_option( 'gdpr_consent_types', array() );
-		$required_consents = array_filter( $consents, function( $consent ) {
-			return ! empty( $consent['policy-page'] );
-		} );
+		
+		if ( is_array( $consents ) ) {
+		
+				$required_consents = array_filter( $consents, function( $consent ) {
+				return ! empty( $consent['policy-page'] );
+			} );
 
-		if ( ! $required_consents || ! is_user_logged_in() ) {
-			return;
+			if ( ! $required_consents || ! is_user_logged_in() ) {
+				return;
+			}
+
+			$user = wp_get_current_user();
+			$user_consents = get_user_meta( $user->ID, 'gdpr_consents' );
+			$consent_needed = array_filter( $required_consents, function( $consent, $consent_id ) use ( $user_consents ) {
+				return ! in_array( $consent_id, $user_consents );
+			}, ARRAY_FILTER_USE_BOTH );
+
+			if ( empty( $consent_needed ) ) {
+				return;
+			}
+
+			include plugin_dir_path( __FILE__ ) . 'partials/reconsent-bar.php';
 		}
-
-		$user = wp_get_current_user();
-		$user_consents = get_user_meta( $user->ID, 'gdpr_consents' );
-		$consent_needed = array_filter( $required_consents, function( $consent, $consent_id ) use ( $user_consents ) {
-			return ! in_array( $consent_id, $user_consents );
-		}, ARRAY_FILTER_USE_BOTH );
-
-		if ( empty( $consent_needed ) ) {
-			return;
-		}
-
-		include plugin_dir_path( __FILE__ ) . 'partials/reconsent-bar.php';
 	}
 
 	/**
