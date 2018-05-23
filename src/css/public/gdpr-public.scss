@@ -177,10 +177,15 @@
 					}
 					.gdpr-cookie-categories-item, .gdpr-policy-list-item {
 						display: inline-block;
+						input {
+							float: left;
+						}
 						label{
 							color: #fff;
 							margin: 0 10px 0 3px;
-					    font-size: 14px;
+							font-size: 14px;
+							float: right;
+							line-height: 1;
 						}
 					}
 				}
