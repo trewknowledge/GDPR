@@ -91,12 +91,13 @@
 				data: formdata,
 				dataType: "json",
 				success: function (response) {
+					$(selector)
+						.removeAttr("disabled")
+						.removeProp("disabled",true)
+						.css("opacity","")
+						.css("cursor","");
+
 					if (response.error.length) {
-						$(selector)
-							.removeAttr("disabled")
-							.removeProp("disabled",true)
-							.css("opacity","")
-							.css("cursor","");
 						alert(response.error);
 
 					} else if (response.success.length) {
