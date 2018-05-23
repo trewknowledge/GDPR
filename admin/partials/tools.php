@@ -85,14 +85,14 @@ if ( isset( $_GET['type'], $_GET['key'] ) ) {
 					<th><?php esc_html_e( 'Nature of the personal data breach', 'gdpr' ) ?></th>
 					<td>
 						<textarea name="gdpr-data-breach-nature" class="large-text" rows="5" required></textarea>
-						<span class="description"><?php esc_html_e( 'Describe the nature of the personal data breach including where possible, the categories and approximate number of data subjects concerned and the categories and approximate number of personal data records concerned.', 'gdpr' ) ?></span>
+						<span class="description"><?php esc_html_e( 'Describe the nature of the personal data breach including where possible, the categories and the approximate number of data subjects concerned and the categories and the approximate number of personal data records concerned.', 'gdpr' ) ?></span>
 					</td>
 				</tr>
 				<tr>
 					<th><?php esc_html_e( 'Name and contact details of the data protection officer', 'gdpr' ) ?></th>
 					<td>
 						<textarea name="gdpr-name-contact-details-protection-officer" class="large-text" rows="5" required></textarea>
-						<span class="description"><?php esc_html_e( 'Communicate the name and contact details of the data protection officer or other contact point where more information can be obtained.', 'gdpr' ) ?></span>
+						<span class="description"><?php esc_html_e( 'Communicate the name and contact details of the data protection officer or another point of contact where more information can be obtained.', 'gdpr' ) ?></span>
 					</td>
 				</tr>
 				<tr>
