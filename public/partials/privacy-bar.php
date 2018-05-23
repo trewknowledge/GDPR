@@ -34,8 +34,10 @@
 					</li>
 				<?php endforeach ?>
 			</ul>
-			<button class="gdpr-preferences" type="button"><?php esc_html_e( 'Privacy Preferences', 'gdpr' ); ?></button>
-			<button class="gdpr-agreement" type="button"><?php echo esc_html( $button_text ); ?></button>
+			<div class="gdpr-privacy-buttons">
+				<button class="gdpr-preferences" type="button"><?php esc_html_e( 'Privacy Preferences', 'gdpr' ); ?></button>
+				<button class="gdpr-agreement" type="button"><?php echo esc_html( $button_text ); ?></button>
+			</div>
 		</div>
 	</div>
 </div>
