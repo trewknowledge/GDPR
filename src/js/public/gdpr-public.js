@@ -86,7 +86,7 @@
 
 			/** Send the AJAX request */
 			$.ajax({
-				url: ajaxurl,
+				url: GDPR.ajaxurl,
 				type: "post",
 				data: formdata,
 				dataType: "json",
