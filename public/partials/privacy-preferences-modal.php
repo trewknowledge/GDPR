@@ -115,15 +115,15 @@
 										</div>
 									</div>
 								<?php endif ?>
-								<?php if ( isset( $tab['hosts'] ) && ! empty( $tab['hosts'] ) ) : ?>
-									<?php foreach ( $tab['hosts'] as $host_key => $host ) : ?>
+								<?php if ( isset( $tab['domains'] ) && ! empty( $tab['domains'] ) ) : ?>
+									<?php foreach ( $tab['domains'] as $domain_key => $domain ) : ?>
 										<div class="gdpr-cookies-used">
 											<div class="gdpr-cookie-title">
-												<p><?php echo esc_html( $host['name'] ); ?></p>
-												<a href="<?php echo esc_url( $host['optout'] ); ?>" target="_blank" class="gdpr-button"><?php esc_html_e( 'Opt Out', 'gdpr' ); ?></a>
+												<p><?php echo esc_html( $domain_key ); ?></p>
+												<a href="<?php echo esc_url( $domain['optout'] ); ?>" target="_blank" class="gdpr-button"><?php esc_html_e( 'Opt Out', 'gdpr' ); ?></a>
 											</div>
 											<div class="gdpr-cookies">
-												<span><?php echo esc_html( $host['cookies_used'] ); ?></span>
+												<span><?php echo esc_html( $domain['cookies_used'] ); ?></span>
 											</div>
 										</div>
 									<?php endforeach ?>
