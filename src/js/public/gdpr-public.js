@@ -81,7 +81,9 @@
 			/** Collect the approved cookies */
 			formdata["approved_cookies"] = [];
 			$('.gdpr-privacy-preferences-frm [name="approved_cookies[]"]').each(function() {
-				formdata["approved_cookies"].push($(this).val());
+				if ($(this).prop('checked')) {
+                    formdata["approved_cookies"].push($(this).val());
+                }
 			});
 
 			/** Send the AJAX request */
@@ -121,9 +123,9 @@
 		 * Set the privacy bar cookie after privacy preference submission.
 		 * This hides the privacy bar from showing after saving privacy preferences.
 		 */
-    $(document).on('submit', '.gdpr-privacy-preferences-frm', function() {
-    	Cookies.set('gdpr[privacy_bar]', 1, { expires: 365 });
-    });
+        $(document).on('submit', '.gdpr-privacy-preferences-frm', function() {
+        	Cookies.set('gdpr[privacy_bar]', 1, { expires: 365 });
+        });
 
 		/**
 		 * Display the privacy preferences modal.
