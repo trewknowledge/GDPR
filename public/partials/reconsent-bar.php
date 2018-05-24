@@ -12,7 +12,7 @@
  */
 ?>
 
-<div class="gdpr gdpr-reconsent-bar" style="/*display:none;*/">
+<div class="gdpr gdpr-reconsent-bar" style="display:none;">
 	<div class="gdpr-wrapper">
 		<div class="gdpr-content">
 			<p><?php esc_html_e( 'Some of our policies have been updated. Please make sure to select the "View" link next each item in order to view changes before agreeing.', 'gdpr' ); ?></p>
@@ -30,5 +30,6 @@
 			<div class="gdpr-buttons">
 				<button class="gdpr-agreement" type="button" data-nonce="<?php echo esc_attr( wp_create_nonce( 'gdpr-agree-with-new-policies' ) ); ?>"><?php esc_html_e( 'I Agree', 'gdpr' ); ?></button>
 			</div>
+		</div>
 	</div>
 </div>

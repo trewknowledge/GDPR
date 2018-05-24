@@ -11,24 +11,6 @@
  */
 ?>
 
-<!-- <div class="gdpr gdpr-general-confirmation gdpr-delete-confirmation">
-	<div class="gdpr-wrapper">
-		<header>
-			<div class="gdpr-box-title">
-				<h3><?php esc_attr_e( 'Close your account?', 'gdpr' ); ?></h3>
-				<span class="gdpr-close"></span>
-			</div>
-		</header>
-		<div class="gdpr-content">
-			<p><?php esc_html_e( 'Your account will be closed and all data will be permanently deleted and cannot be recovered. Are you sure?', 'gdpr' ); ?></p>
-		</div>
-		<footer>
-			<button class="gdpr-delete-account">Continue</button>
-			<button class="gdpr-cancel"><?php esc_html_e( 'Cancel', 'gdpr' ); ?></button>
-		</footer>
-	</div>
-</div> -->
-
 <?php
 $title = '';
 $text = '';
