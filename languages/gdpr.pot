@@ -162,7 +162,7 @@ msgstr ""
 msgid "We could not verify the user email or the security token. Please try again."
 msgstr ""
 
-#: admin/class-gdpr-requests-admin.php:37, admin/class-gdpr-requests-admin.php:286, admin/class-gdpr-requests-admin.php:331, public/class-gdpr-requests-public.php:121, public/partials/confirmation-screens.php:55
+#: admin/class-gdpr-requests-admin.php:37, admin/class-gdpr-requests-admin.php:286, admin/class-gdpr-requests-admin.php:331, public/class-gdpr-requests-public.php:121, public/partials/confirmation-screens.php:37
 msgid "User not found."
 msgstr ""
 
@@ -528,7 +528,7 @@ msgstr ""
 msgid "User gave explicit consent to %s"
 msgstr ""
 
-#: includes/helper-functions.php:26, public/partials/privacy-bar.php:36
+#: includes/helper-functions.php:26, public/partials/privacy-bar.php:38
 msgid "Privacy Preferences"
 msgstr ""
 
@@ -540,11 +540,11 @@ msgstr ""
 msgid "Continue"
 msgstr ""
 
-#: public/class-gdpr-public.php:127, public/partials/confirmation-screens.php:27
+#: public/class-gdpr-public.php:127
 msgid "Cancel"
 msgstr ""
 
-#: public/class-gdpr-public.php:128, public/partials/confirmation-screens.php:79
+#: public/class-gdpr-public.php:128, public/partials/confirmation-screens.php:61
 msgid "OK"
 msgstr ""
 
@@ -552,7 +552,7 @@ msgstr ""
 msgid "I Agree"
 msgstr ""
 
-#: public/class-gdpr-public.php:196, public/class-gdpr-public.php:352, public/class-gdpr-requests-public.php:78, public/class-gdpr-requests-public.php:82, public/class-gdpr-requests-public.php:92, public/class-gdpr-requests-public.php:105, public/class-gdpr-requests-public.php:121, public/class-gdpr-requests-public.php:144, public/class-gdpr-requests-public.php:152, public/class-gdpr-requests-public.php:198, public/partials/confirmation-screens.php:50, public/partials/confirmation-screens.php:54, public/partials/confirmation-screens.php:58, public/partials/confirmation-screens.php:62
+#: public/class-gdpr-public.php:196, public/class-gdpr-public.php:352, public/class-gdpr-requests-public.php:78, public/class-gdpr-requests-public.php:82, public/class-gdpr-requests-public.php:92, public/class-gdpr-requests-public.php:105, public/class-gdpr-requests-public.php:121, public/class-gdpr-requests-public.php:144, public/class-gdpr-requests-public.php:152, public/class-gdpr-requests-public.php:198, public/partials/confirmation-screens.php:32, public/partials/confirmation-screens.php:36, public/partials/confirmation-screens.php:40, public/partials/confirmation-screens.php:44
 msgid "Error!"
 msgstr ""
 
@@ -1033,43 +1033,35 @@ msgstr ""
 msgid "6 digit token (optional)"
 msgstr ""
 
-#: public/partials/confirmation-screens.php:18
-msgid "Close your account?"
-msgstr ""
-
-#: public/partials/confirmation-screens.php:23
-msgid "Your account will be closed and all data will be permanently deleted and cannot be recovered. Are you sure?"
-msgstr ""
-
-#: public/partials/confirmation-screens.php:38
+#: public/partials/confirmation-screens.php:20
 msgid "Your account"
 msgstr ""
 
-#: public/partials/confirmation-screens.php:40
+#: public/partials/confirmation-screens.php:22
 msgid "Your account has been closed. We are sorry to see you go."
 msgstr ""
 
-#: public/partials/confirmation-screens.php:42
+#: public/partials/confirmation-screens.php:24
 msgid "Your request has been received and is being reviewed. You will receive an email when we are done."
 msgstr ""
 
-#: public/partials/confirmation-screens.php:46
+#: public/partials/confirmation-screens.php:28
 msgid "Request Received"
 msgstr ""
 
-#: public/partials/confirmation-screens.php:47
+#: public/partials/confirmation-screens.php:29
 msgid "Your request has been received. We will be in touch soon."
 msgstr ""
 
-#: public/partials/confirmation-screens.php:51
+#: public/partials/confirmation-screens.php:33
 msgid "Malformed request confirmation link!"
 msgstr ""
 
-#: public/partials/confirmation-screens.php:59
+#: public/partials/confirmation-screens.php:41
 msgid "We could not confirm the request key. It may be expired."
 msgstr ""
 
-#: public/partials/confirmation-screens.php:63
+#: public/partials/confirmation-screens.php:45
 msgid "The key used does not match the request key we have stored."
 msgstr ""
 

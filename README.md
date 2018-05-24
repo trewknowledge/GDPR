@@ -157,6 +157,10 @@ Activating this plugin does not guarantee that an organisation is successfully m
 
 ## Changelog
 
+##### 2.0.1
+* Removing things that should have been deleted prior to updating to 2.0.0.
+* Fix new reconsent bar missing closing div.
+
 ##### 2.0.0
 * Change all requests and privacy preferences window to AJAX to avoid the admin-post hook issue.
 * We do not track privacy policy anymore. We can now track any kind of policy that users want. Those have been moved to each consent.
