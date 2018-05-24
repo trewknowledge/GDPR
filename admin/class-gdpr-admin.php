@@ -194,10 +194,9 @@ class GDPR_Admin {
 	 */
 	public function register_settings() {
 		$settings = array(
-			'gdpr_privacy_policy_page'                 => 'absint',
 			'gdpr_cookie_banner_content'               => array( $this, 'sanitize_with_links' ),
 			'gdpr_cookie_privacy_excerpt'              => 'sanitize_textarea_field',
-			'gdpr_registered_cookies'                  => array( $this, 'sanitize_cookie_categories' ),
+			'gdpr_cookie_popup_content'                  => array( $this, 'sanitize_cookie_categories' ),
 			'gdpr_email_limit'                         => 'intval',
 			'gdpr_consent_types'                       => array( $this, 'sanitize_consents' ),
 			'gdpr_deletion_needs_review'               => 'boolval',
@@ -210,6 +209,7 @@ class GDPR_Admin {
 			'gdpr_add_consent_checkboxes_checkout'     => 'boolval',
 			'gdpr_refresh_after_preferences_update'    => 'boolval',
 			'gdpr_enable_privacy_bar'                  => 'boolval',
+			'gdpr_display_cookie_categories_in_bar'    => 'boolval',
 		);
 		foreach ( $settings as $option_name => $sanitize_callback ) {
 			register_setting( 'gdpr', $option_name, array( 'sanitize_callback' => $sanitize_callback ) );
@@ -263,7 +263,7 @@ class GDPR_Admin {
 	 */
 	public function settings_page_template() {
 		$privacy_policy_page = get_option( 'gdpr_privacy_policy_page', 0 );
-		$registered_cookies = get_option( 'gdpr_registered_cookies', array() );
+		$registered_cookies = get_option( 'gdpr_cookie_popup_content', array() );
 		$consent_types = get_option( 'gdpr_consent_types', array() );
 
 		$pages = get_pages();
@@ -509,6 +509,35 @@ class GDPR_Admin {
 		}
 
 		wp_send_json_success( $log );
+	}
+
+	public function review_settings_after_v2_notice() {
+		// Check the transient to see if we've just updated the plugin
+		if ( get_transient( 'gdpr_updated' ) && '2.0.0' === $this->version ) {
+			?>
+				<div class="notice notice-warning review-after-v2-required is-dismissible">
+					<h2><?php esc_html_e( 'GDPR' ); ?></h2>
+					<p><strong><?php esc_html_e( 'Review your settings', 'gdpr' ); ?></strong></p>
+					<p><?php esc_html_e( 'We have added a few new options which must be reviewed before continuing to use the plugin.', 'gdpr'); ?></p>
+					<p><?php esc_html_e( 'For cookies, we have added a status which allows you to set them as ON, OFF or Required. For consents, we moved the policy selector into each consent. All policies can now be tracked through this.', 'gdpr' ); ?></p>
+					<p><?php esc_html_e( 'Please keep in mind the plugin might not work as intended until these settings are reviewed.', 'gdpr' ); ?></p>
+				</div>
+			<?php
+			 delete_transient( 'gdpr_updated' );
+		}
+	}
+
+	function upgrade_completed( $upgrader_object, $options ) {
+	 // If an update has taken place and the updated type is plugins and the plugins element exists
+	 if( $options['action'] == 'update' && $options['type'] == 'plugin' && isset( $options['plugins'] ) ) {
+	  // Iterate through the plugins being updated and check if ours is there
+	  foreach( $options['plugins'] as $plugin ) {
+	   if( $plugin == 'gdpr/gdpr.php' ) {
+	    // Set a transient to record that our plugin has just been updated
+	    set_transient( 'gdpr_updated', 1 );
+	   }
+	  }
+	 }
 	}
 
 	/**

@@ -192,6 +192,8 @@ class GDPR {
 		add_action( 'show_user_profile', array( $plugin_admin, 'edit_user_profile' ) );
 		add_action( 'personal_options_update', array( $plugin_admin, 'user_profile_update' ) );
 		add_action( 'admin_notices', array( $plugin_admin, 'policy_updated_notice' ) );
+		add_action( 'admin_notices', array( $plugin_admin, 'review_settings_after_v2_notice' ) );
+		add_action( 'upgrader_process_complete', array( $plugin_admin, 'upgrade_completed' ), 10, 2 );
 		add_action( 'wp_ajax_ignore_policy_update', array( $plugin_admin, 'ignore_policy_update' ) );
 		add_action( 'wp_ajax_seek_consent', array( $plugin_admin, 'seek_consent' ) );
 		add_action( 'publish_page', array( $plugin_admin, 'policy_updated' ), 10, 2 );
@@ -268,6 +270,8 @@ class GDPR {
 		add_action( 'wp_ajax_agree_with_terms',                          array( $plugin_public, 'agree_with_terms' ) );
 		add_action( 'wp_ajax_gdpr_update_privacy_preferences',           array( $plugin_public, 'update_privacy_preferences' ) );
 		add_action( 'wp_ajax_nopriv_gdpr_update_privacy_preferences',    array( $plugin_public, 'update_privacy_preferences' ) );
+		add_action( 'wp_ajax_agree_with_new_policies',                   array( $plugin_public, 'agree_with_new_policies' ) );
+		add_action( 'wp_ajax_nopriv_agree_with_new_policies',            array( $plugin_public, 'agree_with_new_policies' ) );
 
 		add_action( 'wp', array( $requests_public, 'request_confirmed' ) );
 		add_action( 'wp_ajax_gdpr_send_request_email', array( $requests_public, 'send_request_email' ) );
@@ -475,8 +479,10 @@ class GDPR {
 
 			default: // XML
 				$dom           = new DomDocument( '1.0', 'ISO-8859-1' );
+				$data_wrapper  = $dom->createElement( 'Data' );
+				$dom->appendChild( $data_wrapper );
 				$personal_info = $dom->createElement( 'Personal_Information' );
-				$dom->appendChild( $personal_info );
+				$data_wrapper->appendChild( $personal_info );
 				$personal_info->appendChild( $dom->createElement( 'Username', $user->user_login ) );
 				$personal_info->appendChild( $dom->createElement( 'First_Name', $user->first_name ) );
 				$personal_info->appendChild( $dom->createElement( 'Last_Name', $user->last_name ) );
@@ -488,7 +494,7 @@ class GDPR {
 
 				if ( ! empty( $user_consents ) ) {
 					$consents = $dom->createElement( 'Consents' );
-					$dom->appendChild( $consents );
+					$data_wrapper->appendChild( $consents );
 					foreach ( $user_consents as $consent_item ) {
 						$consents->appendChild( $dom->createElement( 'consent', $consent_item ) );
 					}
@@ -496,7 +502,7 @@ class GDPR {
 
 				if ( ! empty( $comments ) ) {
 					$comments_node = $dom->createElement( 'Comments' );
-					$dom->appendChild( $comments_node );
+					$data_wrapper->appendChild( $comments_node );
 					foreach ( $comments as $k => $v ) {
 						$single_comment = $dom->createElement( 'Comment' );
 						$comments_node->appendChild( $single_comment );
@@ -511,20 +517,23 @@ class GDPR {
 				}
 
 				$meta_data = $dom->createElement( 'Metadata' );
-				$dom->appendChild( $meta_data );
+				$data_wrapper->appendChild( $meta_data );
 
 				foreach ( $usermeta as $k => $v ) {
 					$k = is_numeric( substr( $k, 0, 1 ) ) ? '_' . $k : $k;
 					$key = $dom->createElement( htmlspecialchars( $k ) );
 					$meta_data->appendChild( $key );
 					foreach ( $v as $value ) {
+						if ( is_serialized( $value ) ) {
+							$value = maybe_unserialize( $value );
+						}
 						$key->appendChild( $dom->createElement( 'item', htmlspecialchars( $value ) ) );
 					}
 				}
 
 				if ( $extra_content ) {
 					$extra = $dom->createElement( $extra_content['name'] );
-					$dom->appendChild( $extra );
+					$data_wrapper->appendChild( $extra );
 					foreach ( $extra_content['content'] as $key => $obj ) {
 						$item = $extra->appendChild( $dom->createElement( 'item' ) );
 						foreach ( $obj as $k => $value ) {

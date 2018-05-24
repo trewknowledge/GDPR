@@ -52,25 +52,27 @@
 						</header>
 						<div class="gdpr-info">
 							<p><?php echo nl2br( esc_html( $cookie_privacy_excerpt ) ); ?></p>
-							<?php foreach ( $consent_types as $consent_key => $type ) : ?>
-								<div class="gdpr-cookies-used">
-									<div class="gdpr-cookie-title">
-										<p><?php echo esc_html( $type['name'] ); ?></p>
-										<?php if ( $type['policy-page'] ) : ?>
-											<span class="gdpr-always-active"><?php esc_html_e( 'Required', 'gdpr' ); ?></span>
-											<input type="hidden" name="user_consents[]" value="<?php echo esc_attr( $consent_key ); ?>" checked style="display:none;">
-										<?php else : ?>
-											<label class="gdpr-switch">
-												<input type="checkbox" name="user_consents[]" value="<?php echo esc_attr( $consent_key ); ?>" <?php echo ! empty( $user_consents ) ? checked( in_array( $consent_key, $user_consents, true ), 1, false ) : 'checked'; ?>>
-												<span class="gdpr-slider round"></span>
-											</label>
-										<?php endif; ?>
+							<?php if ( ! empty( $consent_types ) ): ?>
+								<?php foreach ( $consent_types as $consent_key => $type ) : ?>
+									<div class="gdpr-cookies-used">
+										<div class="gdpr-cookie-title">
+											<p><?php echo esc_html( $type['name'] ); ?></p>
+											<?php if ( $type['policy-page'] ) : ?>
+												<span class="gdpr-always-active"><?php esc_html_e( 'Required', 'gdpr' ); ?></span>
+												<input type="hidden" name="user_consents[]" value="<?php echo esc_attr( $consent_key ); ?>" checked style="display:none;">
+											<?php else : ?>
+												<label class="gdpr-switch">
+													<input type="checkbox" name="user_consents[]" value="<?php echo esc_attr( $consent_key ); ?>" <?php echo ! empty( $user_consents ) ? checked( in_array( $consent_key, $user_consents, true ), 1, false ) : 'checked'; ?>>
+													<span class="gdpr-slider round"></span>
+												</label>
+											<?php endif; ?>
+										</div>
+										<div class="gdpr-cookies">
+											<span><?php echo wp_kses( $type['description'], $this->allowed_html ); ?></span>
+										</div>
 									</div>
-									<div class="gdpr-cookies">
-										<span><?php echo wp_kses( $type['description'], $this->allowed_html ); ?></span>
-									</div>
-								</div>
-							<?php endforeach; ?>
+								<?php endforeach; ?>
+							<?php endif ?>
 						</div>
 					</div>
 					<?php $all_cookies = array(); ?>
