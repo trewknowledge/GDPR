@@ -121,7 +121,8 @@
 		/**
 		 * Display the privacy preferences modal.
 		 */
-		$(document).on('click', '.gdpr-preferences', function() {
+		$(document).on('click', '.gdpr-preferences', function(e) {
+			e.preventDefault();
 			var type = $(this).data('type');
 			$('.gdpr-overlay').fadeIn();
 			$('body').addClass('gdpr-noscroll');
