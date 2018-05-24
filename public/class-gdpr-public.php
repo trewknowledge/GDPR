@@ -128,7 +128,6 @@ class GDPR_Public {
 				'ok' => esc_html__( 'OK', 'gdpr' ),
 			),
 			'is_user_logged_in' => is_user_logged_in(),
-			'privacy_page_id' => get_option( 'gdpr_privacy_policy_page', 0 ),
 			'refresh' => get_option( 'gdpr_refresh_after_preferences_update', true ),
 		) );
 	}
@@ -160,7 +159,6 @@ class GDPR_Public {
 	public function privacy_preferences_modal() {
 		$cookie_privacy_excerpt = get_option( 'gdpr_cookie_privacy_excerpt', '' );
 		$consent_types = get_option( 'gdpr_consent_types', array() );
-		$privacy_policy_page = get_option( 'gdpr_privacy_policy_page', 0 );
 		$approved_cookies = isset( $_COOKIE['gdpr']['allowed_cookies'] ) ? json_decode( wp_unslash( $_COOKIE['gdpr']['allowed_cookies'] ) ) : array();
 		$user_consents = isset( $_COOKIE['gdpr']['consent_types'] ) ? json_decode( wp_unslash( $_COOKIE['gdpr']['consent_types'] ) ) : array();
 		$tabs = get_option( 'gdpr_cookie_popup_content', array() );

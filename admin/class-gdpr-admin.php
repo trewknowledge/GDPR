@@ -262,7 +262,6 @@ class GDPR_Admin {
 	 * @author Fernando Claussen <fernandoclaussen@gmail.com>
 	 */
 	public function settings_page_template() {
-		$privacy_policy_page = get_option( 'gdpr_privacy_policy_page', 0 );
 		$registered_cookies = get_option( 'gdpr_cookie_popup_content', array() );
 		$consent_types = get_option( 'gdpr_consent_types', array() );
 
