@@ -157,6 +157,10 @@ Activating this plugin does not guarantee that an organisation is successfully m
 
 ## Changelog
 
+##### 2.0.2
+* Fix reconsent not logging correctly on reconsent
+* Fix reconsent bar not showing up.
+
 ##### 2.0.1
 * Removing things that should have been deleted prior to updating to 2.0.0.
 * Fix new reconsent bar missing closing div.

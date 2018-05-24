@@ -5,7 +5,7 @@ Tags: gdpr, compliance, privacy, law, general data protection regulation
 Requires at least: 4.7
 Requires PHP: 5.6
 Tested up to: 4.9
-Stable tag: 2.0.1
+Stable tag: 2.0.2
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -205,6 +205,10 @@ Activating this plugin does not guarantee that an organisation is successfully m
 9. Audit Log sample.
 
 == Changelog ==
+
+= 2.0.2 =
+* Fix reconsent not logging correctly on reconsent
+* Fix reconsent bar not showing up.
 
 = 2.0.1 =
 * Removing things that should have been deleted prior to updating to 2.0.0.
