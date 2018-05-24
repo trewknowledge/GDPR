@@ -707,7 +707,7 @@ class GDPR_Admin {
     }
 
     foreach ( $consent_types as $key => $consent ) {
-    	if ( $consent['required'] ) {
+    	if ( $consent['policy-page'] ) {
     		if ( ! isset( $_POST['user_consents'][ $key ] ) ) {
 			    $errors->add( 'missing_required_consents', sprintf(
 			    	'<strong>%s</strong>: %s %s.',
@@ -876,7 +876,7 @@ class GDPR_Admin {
 		$consent_types = get_option( 'gdpr_consent_types', array() );
 
 		foreach ( $consent_types as $key => $consent ) {
-			$required = ( isset( $consent['required'] ) && $consent['required'] ) ? 'required' : '';
+			$required = ( isset( $consent['policy-page'] ) && $consent['policy-page'] ) ? 'required' : '';
 
 			$fields['account']['user_consents_' . esc_attr( $key ) ] = array(
 				'type'         => 'checkbox',
