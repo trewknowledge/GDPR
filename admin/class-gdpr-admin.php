@@ -722,19 +722,24 @@ class GDPR_Admin {
 			wp_die( esc_html__( 'We could not verify the the security token. Please try again.', 'gdpr' ) );
 		}
 
-		delete_option( 'gdpr_privacy_policy_updated' );
+        global $wpdb;
 
-		$users = get_users( array(
-			'fields' => 'all_with_meta'
-		) );
+        /** Collect a list of users we're updating */
+        $sql = "
+            SELECT DISTINCT user_id AS ID
+            FROM {$wpdb->usermeta}
+            WHERE meta_key = 'gdpr_consents'
+            AND meta_value = 'privacy-policy'";
+        $users = $wpdb->get_results($sql);
 
-		foreach ( $users as $user ) {
-			$usermeta = get_user_meta( $user->ID, 'gdpr_consents' );
-			if ( in_array( 'privacy-policy', $usermeta ) ) {
-				GDPR_Audit_Log::log( $user->ID, esc_html__( 'Privacy Policy has been updated. Removing the Privacy Policy consent and requesting new consent.', 'gdpr' ) );
-				delete_user_meta( $user->ID, 'gdpr_consents', 'privacy-policy' );
-			}
-		}
+        /** Remove the consent */
+        $sql = "DELETE FROM {$wpdb->usermeta} WHERE meta_key = 'gdpr_consents' AND meta_value = 'privacy-policy'";
+        $wpdb->get_results($sql);
+
+        /** Log each user that has been affected */
+        foreach ($users AS $user) {
+            GDPR_Audit_Log::log( $user->ID, esc_html__( 'Privacy Policy has been updated. Removing the Privacy Policy consent and requesting new consent.', 'gdpr' ) );
+        }
 
 		add_settings_error( 'gdpr', 'resolved', esc_html__( 'Users will have to consent to the updated privacy policy on login.', 'gdpr' ), 'updated' );
 		set_transient( 'settings_errors', get_settings_errors(), 30 );
@@ -748,6 +753,9 @@ class GDPR_Admin {
 				)
 			)
 		);
+
+        /** Clear the "Ask for Consent?" flag from WP Admin */
+        delete_option( 'gdpr_privacy_policy_updated' );
 		exit;
 	}
 

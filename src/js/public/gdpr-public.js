@@ -46,17 +46,92 @@
 		 * This runs when user clicks on privacy preferences bar agree button.
 		 * It submits the form that is still hidden with the cookies and consent options.
 		 */
-		$(document).on('click', '.gdpr.gdpr-privacy-bar .gdpr-agreement', function() {
-      $('.gdpr-privacy-preferences-frm').submit();
-    });
+		$(document).on('click', '.gdpr.gdpr-privacy-bar .gdpr-agreement, .gdpr-privacy-preferences-frm input[type="submit"]', function(e) {
+			
+			/** Prevent the default */
+			e.preventDefault();
+
+			var submit_clicked = false;
+			var selector = '.gdpr.gdpr-privacy-bar .gdpr-agreement';
+			if ((e.target.type !== undefined) && (e.target.type == "submit")) {
+				submit_clicked = true;
+				selector = '.gdpr-privacy-preferences-frm input[type="submit"]';
+			}
+
+			/** Make it look like we're doing something */
+			$(selector)
+				.attr("disabled","disabled")
+				.prop("disabled",true)
+				.css("opacity",0.5)
+				.css("cursor","wait");
+
+			/** Grab the basics */
+			var formdata = {};
+			formdata["update-privacy-preferences-nonce"] = $('.gdpr-privacy-preferences-frm [name="update-privacy-preferences-nonce"]').val();
+			formdata["_wp_http_referer"] = $('.gdpr-privacy-preferences-frm [name="_wp_http_referer"]').val();
+			formdata["all_cookies"] = $('.gdpr-privacy-preferences-frm [name="all_cookies"]').val();
+			formdata["action"] = "gdpr_update_privacy_preferences";
+
+			/** Collect all of the consents */
+			formdata["user_consents"] = [];
+			$('.gdpr-privacy-preferences-frm [name="user_consents[]"]').each(function() {
+				formdata["user_consents"].push($(this).val());
+			});
+
+			/** Collect the approved cookies */
+			formdata["approved_cookies"] = [];
+			$('.gdpr-privacy-preferences-frm [name="approved_cookies[]"]').each(function() {
+				if ($(this).prop('checked')) {
+                    formdata["approved_cookies"].push($(this).val());
+                }
+			});
+
+			/** Send the AJAX request */
+			$.ajax({
+				url: GDPR.ajaxurl,
+				type: "post",
+				data: formdata,
+				dataType: "json",
+				success: function (response) {
+					$(selector)
+						.removeAttr("disabled")
+						.removeProp("disabled",true)
+						.css("opacity","")
+						.css("cursor","");
+
+					if (response.error.length) {
+						alert(response.error);
+
+					} else if (response.success.length) {
+
+						if (submit_clicked) {
+							$(".gdpr-privacy-preferences > .gdpr-wrapper, .gdpr-overlay").fadeOut(600);
+							$("body").removeClass("gdpr-noscroll");
+						} else {
+							Cookies.set('gdpr[privacy_bar]', 1, { expires: 365 });
+							$('.gdpr.gdpr-privacy-bar').slideUp(600);
+						}							
+					}					
+				},
+				error: function (response) {
+					$(selector)
+						.removeAttr("disabled")
+						.removeProp("disabled",true)
+						.css("opacity","")
+						.css("cursor","");
+						
+					$('.gdpr-privacy-preferences-frm').submit();
+				}
+			});
+		});
 
 		/**
 		 * Set the privacy bar cookie after privacy preference submission.
 		 * This hides the privacy bar from showing after saving privacy preferences.
 		 */
-    $(document).on('submit', '.gdpr-privacy-preferences-frm', function() {
-    	Cookies.set('gdpr[privacy_bar]', 1, { expires: 365 });
-    });
+        $(document).on('submit', '.gdpr-privacy-preferences-frm', function() {
+        	Cookies.set('gdpr[privacy_bar]', 1, { expires: 365 });
+        });
 
 		/**
 		 * Display the privacy preferences modal.
