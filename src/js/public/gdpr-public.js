@@ -101,7 +101,9 @@
 		});
 
 		if ( ! Cookies.get('gdpr[privacy_bar]') ) {
-			$('.gdpr.gdpr-privacy-bar').delay(1000).slideDown(600);
+			if ( $('.gdpr-reconsent-bar').length == 0 ) {
+				$('.gdpr.gdpr-privacy-bar').delay(1000).slideDown(600);
+			}
 		};
 
 		if ( ! has_consent( 'privacy-policy' ) && GDPR.is_user_logged_in && GDPR.privacy_page_id != 0 ) {
@@ -116,6 +118,35 @@
 		 */
 		$(document).on('click', '.gdpr.gdpr-privacy-bar .gdpr-agreement', function() {
       $('.gdpr-privacy-preferences-frm').submit();
+    });
+
+    $(document).on('click', '.gdpr.gdpr-reconsent-bar .gdpr-agreement', function() {
+    	var consents = [];
+    	$('.gdpr-policy-list input[type="hidden"]').each(function(){
+    		consents.push( $(this).val() );
+    	});
+    	$.post(
+				GDPR.ajaxurl,
+				{
+					action: 'agree_with_new_policies',
+					nonce: $(this).data('nonce'),
+					consents: consents,
+				},
+				function(res) {
+					if ( res.success ) {
+						if ( GDPR.refresh ) {
+							window.location.reload();
+						} else {
+							$('.gdpr-reconsent-bar').slideUp(600);
+							if ( ! Cookies.get('gdpr[privacy_bar]') ) {
+								$('.gdpr.gdpr-privacy-bar').delay(1000).slideDown(600);
+							};
+						}
+					} else {
+						displayNotification( response.data.title, response.data.content );
+					}
+				}
+			);
     });
 
 		/**

@@ -269,7 +269,7 @@ class GDPR_Public {
 
 		$user = wp_get_current_user();
 		$user_consents = get_user_meta( $user->ID, 'gdpr_consents' );
-		$updated_consents = array_filter( $required_consents, function( $consent, $consent_id ) {
+		$updated_consents = array_filter( $required_consents, function( $consent, $consent_id ) use ( $user_consents ) {
 			return ! in_array( $consent_id, $user_consents );
 		}, ARRAY_FILTER_USE_BOTH );
 
@@ -362,6 +362,22 @@ class GDPR_Public {
 				setcookie( "gdpr[allowed_cookies]", '[]', time() + YEAR_IN_SECONDS, "/" );
 			}
 		}
+	}
+
+	public function agree_with_new_policies() {
+		if ( ! isset( $_POST['nonce'] ) || ! wp_verify_nonce( sanitize_key( $_POST['nonce'] ), 'gdpr-agree-with-new-policies' ) ) {
+			wp_send_json_error( array( 'title' => esc_html__( 'Error!', 'gdpr' ), 'content' => esc_html__( 'We could not verify the the security token. Please try again.', 'gdpr' ) ) );
+		}
+		$consents = isset( $_POST['consents'] ) ? array_map( 'sanitize_text_field', (array) $_POST['consents'] ) : array();
+		$user_id = get_current_user_id();
+
+		foreach ( $consents as $consent ) {
+			error_log($consent);
+			error_log($user_id);
+			add_user_meta( $user_id, 'gdpr_consents', $consent );
+		}
+
+		wp_send_json_success();
 	}
 
 }

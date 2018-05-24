@@ -70,20 +70,7 @@
 	img {
 		width: 100% !important;
 	}
-	// .gdpr-policy-list{
-	// 	display: flex;
-	// 	justify-content: space-between;
-	// 	align-items: center;
-	// 	width: 100%;
-	// 	font-size: 14px;
-	// 	button, p, a{
-	// 		color: #fff;
-	// 	}
-	// 	.gdpr-buttons{
-	// 		display: flex;
-	// 		align-items: center;
-	// 	}
-	// }
+
 	.gdpr-contained-wrapper {
 		max-width: 600px;
 		margin: 0 auto;
@@ -186,7 +173,7 @@
 						}
 						label{
 							color: #fff;
-							margin: 0 5px 0 0;
+							margin: 0 5px;
 							font-size: 14px;
 						}
 						.gdpr-policy-link {
