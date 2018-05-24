@@ -171,13 +171,13 @@ class GDPR_Admin {
 				'status' => isset( $props['status'] ) ? sanitize_text_field( $props['status'] ) : '',
 				'cookies_used' => isset( $props['cookies_used'] ) ? sanitize_text_field( wp_unslash( $props['cookies_used'] ) ) : '',
 				'how_we_use' => isset( $props['how_we_use'] ) ? wp_kses_post( $props['how_we_use'] ) : '',
-				'domains' => array(),
+				'hosts' => array(),
 			);
-			if ( isset( $props['domains'] ) ) {
-				foreach ( $props['domains'] as $domain_key => $domain ) {
+			if ( isset( $props['hosts'] ) ) {
+				foreach ( $props['hosts'] as $domain_key => $domain ) {
 					$domain_key = sanitize_text_field( $domain_key );
 
-					$output[ $key ]['domains'][ $domain_key ] = array(
+					$output[ $key ]['hosts'][ $domain_key ] = array(
 						'cookies_used' => isset( $domain['cookies_used'] ) ? sanitize_text_field( $domain['cookies_used'] ) : '',
 						'optout' => isset( $domain['optout'] ) ? esc_url_raw( $domain['optout'] ) : '',
 					);

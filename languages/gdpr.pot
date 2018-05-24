@@ -154,7 +154,7 @@ msgstr ""
 msgid "Profile Updated. These are the user consents after the save:"
 msgstr ""
 
-#: admin/class-gdpr-admin.php:929, admin/partials/settings.php:332
+#: admin/class-gdpr-admin.php:929, admin/partials/settings.php:333
 msgid "Consents"
 msgstr ""
 
@@ -885,7 +885,7 @@ msgstr ""
 msgid "OFF"
 msgstr ""
 
-#: admin/partials/settings.php:240, admin/partials/settings.php:293, admin/partials/templates/tmpl-cookies.php:42, admin/partials/templates/tmpl-cookies.php:99
+#: admin/partials/settings.php:240, admin/partials/settings.php:294, admin/partials/templates/tmpl-cookies.php:42, admin/partials/templates/tmpl-cookies.php:99
 msgid "Cookies used"
 msgstr ""
 
@@ -921,59 +921,59 @@ msgstr ""
 msgid "Cookies that are set by a third party, like facebook.com."
 msgstr ""
 
-#: admin/partials/settings.php:287, admin/partials/templates/tmpl-cookies.php:94
+#: admin/partials/settings.php:288, admin/partials/templates/tmpl-cookies.php:94
 msgid "Remove this domain."
 msgstr ""
 
-#: admin/partials/settings.php:294, admin/partials/settings.php:295
+#: admin/partials/settings.php:295, admin/partials/settings.php:296
 msgid "A comma separated list of cookies that your site is using from this third-party provider."
 msgstr ""
 
-#: admin/partials/settings.php:307
+#: admin/partials/settings.php:308
 msgid "Opt Out Link"
 msgstr ""
 
-#: admin/partials/settings.php:308, admin/partials/settings.php:309
+#: admin/partials/settings.php:309, admin/partials/settings.php:310
 msgid "Add a link with the third-party instructions on how to opt out of their cookies."
 msgstr ""
 
-#: admin/partials/settings.php:317, admin/partials/templates/tmpl-cookies.php:111
+#: admin/partials/settings.php:318, admin/partials/templates/tmpl-cookies.php:111
 msgid "Url with instructions on how to opt out."
 msgstr ""
 
-#: admin/partials/settings.php:333
+#: admin/partials/settings.php:334
 msgid "E.g. Privacy Policy or Cookie Policy"
 msgstr ""
 
-#: admin/partials/settings.php:334
+#: admin/partials/settings.php:335
 msgid "Add consent"
 msgstr ""
 
-#: admin/partials/settings.php:339, admin/partials/templates/tmpl-consents.php:3
+#: admin/partials/settings.php:340, admin/partials/templates/tmpl-consents.php:3
 msgid "Unregister this consent."
 msgstr ""
 
-#: admin/partials/settings.php:346, admin/partials/templates/tmpl-consents.php:10
+#: admin/partials/settings.php:347, admin/partials/templates/tmpl-consents.php:10
 msgid "Policy Page"
 msgstr ""
 
-#: admin/partials/settings.php:347, admin/partials/settings.php:348, admin/partials/templates/tmpl-consents.php:11, admin/partials/templates/tmpl-consents.php:12
+#: admin/partials/settings.php:348, admin/partials/settings.php:349, admin/partials/templates/tmpl-consents.php:11, admin/partials/templates/tmpl-consents.php:12
 msgid "This page will be tracked for changes and you will be prompted to ask users to re-consent to the new policy. Selecting a page will make this consent required."
 msgstr ""
 
-#: admin/partials/settings.php:365, admin/partials/templates/tmpl-consents.php:29
+#: admin/partials/settings.php:366, admin/partials/templates/tmpl-consents.php:29
 msgid "Long description"
 msgstr ""
 
-#: admin/partials/settings.php:366, admin/partials/settings.php:367, admin/partials/templates/tmpl-consents.php:30, admin/partials/templates/tmpl-consents.php:31
+#: admin/partials/settings.php:367, admin/partials/settings.php:368, admin/partials/templates/tmpl-consents.php:30, admin/partials/templates/tmpl-consents.php:31
 msgid "This will show up at the privacy preferences center, under the name of the consent."
 msgstr ""
 
-#: admin/partials/settings.php:377, admin/partials/templates/tmpl-consents.php:41
+#: admin/partials/settings.php:378, admin/partials/templates/tmpl-consents.php:41
 msgid "Short description"
 msgstr ""
 
-#: admin/partials/settings.php:378, admin/partials/settings.php:379, admin/partials/templates/tmpl-consents.php:42, admin/partials/templates/tmpl-consents.php:43
+#: admin/partials/settings.php:379, admin/partials/settings.php:380, admin/partials/templates/tmpl-consents.php:42, admin/partials/templates/tmpl-consents.php:43
 msgid "This will show up at registration forms next to checkboxes."
 msgstr ""
 

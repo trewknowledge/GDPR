@@ -133,7 +133,7 @@
 									<?php foreach ( $tab['hosts'] as $host_key => $host ) : ?>
 										<div class="gdpr-cookies-used">
 											<div class="gdpr-cookie-title">
-												<p><?php echo esc_html( $host['name'] ); ?></p>
+												<p><?php echo esc_html( $host_key ); ?></p>
 												<a href="<?php echo esc_url( $host['optout'] ); ?>" target="_blank" class="gdpr-button"><?php esc_html_e( 'Opt Out', 'gdpr' ); ?></a>
 											</div>
 											<div class="gdpr-cookies">

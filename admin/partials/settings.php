@@ -281,8 +281,9 @@
               </tr>
 						</table>
 						<div class="tab-hosts" data-tabid="<?php echo esc_attr( $cat_id ); ?>">
-              <?php if ( isset( $cookie_cat['domains'] ) && $cookie_cat['domains'] ) : ?>
-                <?php foreach ( $cookie_cat['domains'] as $domain_id => $domain ) : ?>
+							<?php var_dump($cookie_cat); ?>
+              <?php if ( isset( $cookie_cat['hosts'] ) && $cookie_cat['hosts'] ) : ?>
+                <?php foreach ( $cookie_cat['hosts'] as $domain_id => $domain ) : ?>
                   <div class="postbox">
                     <h2 class="hndle"><?php echo esc_attr( $domain_id ); ?><button class="notice-dismiss" type="button" aria-label="<?php esc_attr_e( 'Remove this domain.', 'gdpr' ) ?>"></button></h2>
                     <div class="inside">
@@ -298,7 +299,7 @@
                           	</label>
                         	</th>
                           <td>
-                            <textarea cols="53" rows="3" name="gdpr_cookie_popup_content[<?php echo esc_attr( $cat_id ); ?>][domains][<?php echo esc_attr( $domain_id ); ?>][cookies_used]" id="hosts-cookies-used-<?php echo esc_attr( $domain_id ); ?>"><?php echo esc_attr( $domain['cookies_used'] ); ?></textarea>
+                            <textarea cols="53" rows="3" name="gdpr_cookie_popup_content[<?php echo esc_attr( $cat_id ); ?>][hosts][<?php echo esc_attr( $domain_id ); ?>][cookies_used]" id="hosts-cookies-used-<?php echo esc_attr( $domain_id ); ?>"><?php echo esc_attr( $domain['cookies_used'] ); ?></textarea>
                           </td>
                         </tr>
                         <tr>
@@ -312,7 +313,7 @@
                           	</label>
                           </th>
                           <td>
-                            <input type="text" name="gdpr_cookie_popup_content[<?php echo esc_attr( $cat_id ); ?>][domains][<?php echo esc_attr( $domain_id ); ?>][optout]" value="<?php echo esc_attr( $domain['optout'] ); ?>" id="hosts-cookies-optout-<?php echo esc_attr( $domain_id ); ?>" class="regular-text" />
+                            <input type="text" name="gdpr_cookie_popup_content[<?php echo esc_attr( $cat_id ); ?>][hosts][<?php echo esc_attr( $domain_id ); ?>][optout]" value="<?php echo esc_attr( $domain['optout'] ); ?>" id="hosts-cookies-optout-<?php echo esc_attr( $domain_id ); ?>" class="regular-text" />
                             <br>
                             <span class="description"><?php esc_html_e( 'Url with instructions on how to opt out.', 'gdpr' ); ?></span>
                           </td>
