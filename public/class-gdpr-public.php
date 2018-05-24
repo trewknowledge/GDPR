@@ -260,6 +260,9 @@ class GDPR_Public {
 	 */
 	public function is_consent_needed() {
 		$consents = get_option( 'gdpr_consent_types', array() );
+		if ( empty( $consents ) || ! is_array( $consents ) ) {
+			return;
+		}
 		$required_consents = array_filter( $consents, function( $consent ) {
 			return ! empty( $consent['policy-page'] );
 		} );
