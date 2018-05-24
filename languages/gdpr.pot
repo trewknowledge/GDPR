@@ -512,7 +512,7 @@ msgstr ""
 msgid "User gave explicit consent to %s"
 msgstr ""
 
-#: includes/helper-functions.php:26, public/partials/privacy-bar.php:37
+#: includes/helper-functions.php:26, public/partials/privacy-bar.php:38
 msgid "Privacy Preferences"
 msgstr ""
 
