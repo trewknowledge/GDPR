@@ -184,16 +184,8 @@ class GDPR_Public {
 	 * @author Fernando Claussen <fernandoclaussen@gmail.com>
 	 */
 	public function update_privacy_preferences() {
-		if ( ! isset( $_POST['update-privacy-preferences-nonce'] ) || ! wp_verify_nonce( sanitize_key( $_POST['update-privacy-preferences-nonce'] ), 'gdpr-update_privacy_preferences' ) ) {
-			wp_die( esc_html__( 'We could not verify the the security token. Please try again.', 'gdpr' ) );
-		}
-
-		if ( ! isset( $_POST['user_consents'] ) ) {
-			wp_die( esc_html__( "You need to at least consent to our Privacy Policy.", 'gdpr' ) );
-		}
 
 		$this->do_update_privacy_preferences($_POST);
-
 		wp_safe_redirect( esc_url_raw( wp_get_referer() ) );
 		exit;
 	}
@@ -212,18 +204,8 @@ class GDPR_Public {
             "success" => ""
         );
 
-        if ( ! isset( $_POST['update-privacy-preferences-nonce'] ) || ! wp_verify_nonce( sanitize_key( $_POST['update-privacy-preferences-nonce'] ), 'gdpr-update_privacy_preferences' ) ) {
-            $response["error"] = esc_html__( 'We could not verify the the security token. Please try again.', 'gdpr' );
-        }
-
-        if ( ! isset( $_POST['user_consents'] ) ) {
-            $response["error"] .= (strlen($response["error"]) ? PHP_EOL : "") . esc_html__( "You need to at least consent to our Privacy Policy.", 'gdpr' );
-        }
-
-        if ( ! strlen( $response["error"] ) ) {
-            $this->do_update_privacy_preferences($_POST);
-            $response["success"] = esc_html__( "Privacy preferences saved", 'gdpr' );
-        }
+        $this->do_update_privacy_preferences($_POST);
+        $response["success"] = esc_html__( "Privacy preferences saved", 'gdpr' );
 
         echo json_encode($response);
         exit();

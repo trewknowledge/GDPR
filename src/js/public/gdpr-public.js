@@ -114,6 +114,12 @@
 					}					
 				},
 				error: function (response) {
+					$(selector)
+						.removeAttr("disabled")
+						.removeProp("disabled",true)
+						.css("opacity","")
+						.css("cursor","");
+						
 					$('.gdpr-privacy-preferences-frm').submit();
 				}
 			});
