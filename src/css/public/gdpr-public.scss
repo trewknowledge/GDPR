@@ -509,6 +509,15 @@
 					position: relative;
 					height: calc( 100% - 119px );
 				}
+				.gdpr-policies{
+					li{
+						a{
+							font-style: italic;
+							font-size: 12px !important;
+							color: #ababab !important;
+						}
+					}
+				}
 				.gdpr-tabs {
 					border: none !important;
 					min-width: 160px;
@@ -518,6 +527,9 @@
 					overflow-y: auto;
 					background-color: #23282d;
 					position: relative;
+					display: flex;
+					flex-direction: column;
+					justify-content: space-between;
 					@include breakpoint(small-only) {
 						position: absolute;
 						height: 100%;
@@ -535,6 +547,7 @@
 							color: #fff;
 							font-size:14px;
 							text-align: left;
+							text-decoration: none;
 							padding: 8px;
 							border-radius: 0;
 							position: relative;
