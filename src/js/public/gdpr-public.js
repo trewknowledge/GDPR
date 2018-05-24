@@ -4,10 +4,6 @@
 	var query_args  = location.search,
 			base_url = location.protocol + '//' + location.host + location.pathname;
 
-	if ( -1 !== query_args.indexOf( 'notify=1' ) ) {
-		window.history.replaceState( {}, document.title, base_url );
-	}
-
 	window.has_consent = function( consent ) {
 		if ( Cookies.get('gdpr[consent_types]') ) {
 			var consentArray = JSON.parse( Cookies.get('gdpr[consent_types]') );
@@ -30,17 +26,85 @@
 		return false;
 	}
 
+	function displayNotification( title, text, deletion ) {
+		deletion = typeof deletion !== 'undefined' ? true : false;
+
+		$('.gdpr-general-confirmation .gdpr-box-title h3').html( title );
+		$('.gdpr-general-confirmation .gdpr-content p').html( text );
+		if ( deletion ) {
+			$('.gdpr-general-confirmation').addClass('gdpr-delete-confirmation');
+			$('.gdpr-general-confirmation footer').html('<button class="gdpr-delete-account">' + GDPR.i18n.continue + '</button> <button class="gdpr-cancel">' + GDPR.i18n.cancel + '</button>');
+		} else {
+			$('.gdpr-general-confirmation footer').html('<button class="gdpr-ok">' + GDPR.i18n.ok + '</button>');
+		}
+
+		$('.gdpr-overlay').fadeIn();
+		$('body').addClass('gdpr-noscroll');
+		$('.gdpr.gdpr-general-confirmation .gdpr-wrapper').css({
+			'display': 'flex',
+		}).hide().fadeIn();
+	}
+
 	$(function() {
 
-		if ( ! Cookies.get('gdpr[privacy_bar]') ) {
-			$('.gdpr.gdpr-privacy-bar').delay(1000).slideDown(600);
-		};
-
-		if ( ! has_consent( 'privacy-policy' ) && GDPR.is_user_logged_in && GDPR.privacy_page_id != 0 ) {
-			$('.gdpr-reconsent-modal').show();
-			$('body').addClass('gdpr-noscroll');
-			$('.wpadminbar').hide();
+		if ( -1 !== query_args.indexOf( 'notify=1' ) ) {
+			window.history.replaceState( {}, document.title, base_url );
+			$('body').addClass('gdpr-notification');
 		}
+
+		$(document).on('submit', '.gdpr-privacy-preferences-frm', function(e) {
+			e.preventDefault();
+			var that = $(this);
+			var formData = $(this).serialize();
+
+			$.post(
+				GDPR.ajaxurl,
+				formData,
+				function(response) {
+					if ( response.success ) {
+						Cookies.set('gdpr[privacy_bar]', 1, { expires: 365 });
+						if ( GDPR.refresh ) {
+							window.location.reload();
+						} else {
+							$('.gdpr-overlay').fadeOut();
+							$('body').removeClass('gdpr-noscroll');
+							$('.gdpr.gdpr-privacy-preferences .gdpr-wrapper').fadeOut();
+							$('.gdpr-privacy-bar').fadeOut();
+						}
+					} else {
+						displayNotification( response.data.title, response.data.content );
+					}
+				}
+			);
+
+		});
+
+		$(document).on('submit', '.gdpr-request-form', function(e) {
+			e.preventDefault();
+			var that = $(this);
+			var type = $(this).find('input[name="type"]').val();
+			var formData = $(this).serialize();
+
+			$.post(
+				GDPR.ajaxurl,
+				formData,
+				function(response) {
+					displayNotification( response.data.title, response.data.content );
+				}
+			)
+		});
+
+		$(document).on('change', '.gdpr-cookie-category', function() {
+			var target = $(this).data('category');
+			var checked = $(this).prop('checked');
+			$('[data-category="' + target + '"]').prop('checked', checked);
+		});
+
+		if ( ! Cookies.get('gdpr[privacy_bar]') ) {
+			if ( $('.gdpr-reconsent-bar').length == 0 ) {
+				$('.gdpr.gdpr-privacy-bar').delay(1000).slideDown(600);
+			}
+		};
 
 		/**
 		 * This runs when user clicks on privacy preferences bar agree button.
@@ -50,18 +114,40 @@
       $('.gdpr-privacy-preferences-frm').submit();
     });
 
-		/**
-		 * Set the privacy bar cookie after privacy preference submission.
-		 * This hides the privacy bar from showing after saving privacy preferences.
-		 */
-    $(document).on('submit', '.gdpr-privacy-preferences-frm', function() {
-    	Cookies.set('gdpr[privacy_bar]', 1, { expires: 365 });
+    $(document).on('click', '.gdpr.gdpr-reconsent-bar .gdpr-agreement', function() {
+    	var consents = [];
+    	$('.gdpr-policy-list input[type="hidden"]').each(function(){
+    		consents.push( $(this).val() );
+    	});
+    	$.post(
+				GDPR.ajaxurl,
+				{
+					action: 'agree_with_new_policies',
+					nonce: $(this).data('nonce'),
+					consents: consents,
+				},
+				function(res) {
+					if ( res.success ) {
+						if ( GDPR.refresh ) {
+							window.location.reload();
+						} else {
+							$('.gdpr-reconsent-bar').slideUp(600);
+							if ( ! Cookies.get('gdpr[privacy_bar]') ) {
+								$('.gdpr.gdpr-privacy-bar').delay(1000).slideDown(600);
+							};
+						}
+					} else {
+						displayNotification( response.data.title, response.data.content );
+					}
+				}
+			);
     });
 
 		/**
 		 * Display the privacy preferences modal.
 		 */
-		$(document).on('click', '.gdpr-preferences', function() {
+		$(document).on('click', '.gdpr-preferences', function(e) {
+			e.preventDefault();
 			var type = $(this).data('type');
 			$('.gdpr-overlay').fadeIn();
 			$('body').addClass('gdpr-noscroll');
@@ -130,14 +216,6 @@
 			}
 		} );
 
-		$(document).on('click', '.gdpr.gdpr-general-confirmation .gdpr-close, .gdpr-overlay, .gdpr-cancel', function() {
-			$('.gdpr-overlay').fadeOut();
-			if ( ! $('.gdpr-reconsent-modal').is(':visible') ) {
-				$('body').removeClass('gdpr-noscroll');
-			}
-			$('.gdpr.gdpr-general-confirmation .gdpr-wrapper').fadeOut();
-		});
-
 		$(document).on('click', '.gdpr.gdpr-delete-confirmation button.gdpr-delete-account', function() {
 			$('form.gdpr-add-to-deletion-requests').addClass('confirmed');
 			$('form.gdpr-add-to-deletion-requests.confirmed input[type="submit"]').click();
@@ -146,52 +224,18 @@
 			$('.gdpr.gdpr-delete-confirmation .gdpr-wrapper').fadeOut();
 		});
 
-		if ( $('.gdpr-accept-confirmation').length > 0 ) {
+		if ( $('body').hasClass('gdpr-notification') ) {
 			$('.gdpr-overlay').fadeIn();
 			$('body').addClass('gdpr-noscroll');
-			$('.gdpr.gdpr-accept-confirmation .gdpr-wrapper').css({
+			$('.gdpr.gdpr-general-confirmation .gdpr-wrapper').css({
 				'display': 'flex',
 			}).hide().fadeIn();
-			$(document).on('click', '.gdpr.gdpr-accept-confirmation button.gdpr-ok', function() {
-				$('.gdpr-overlay').fadeOut();
-				$('body').removeClass('gdpr-noscroll');
-				$('.gdpr.gdpr-accept-confirmation .gdpr-wrapper').fadeOut();
-			});
 		}
 
-		$(document).on('click', '.gdpr-agree', function(e) {
-			e.preventDefault();
-			var that = $(this);
-			$('.gdpr-consent-buttons').fadeOut(300, function() {
-				$('.gdpr-consent-loading').fadeIn(300);
-			});
-			var dotCount = 0;
-			var dotsAnimation = setInterval(function() {
-				var dots = $('.gdpr-ellipsis').html();
-				if ( dotCount < 3 ) {
-					$('.gdpr-ellipsis').append('.');
-					dotCount++;
-				} else {
-					$('.gdpr-ellipsis').html('');
-					dotCount = 0;
-				}
-			}, 600);
-			$.post(
-				GDPR.ajaxurl,
-				{
-					action: 'agree_with_terms',
-					nonce: $(this).data('nonce'),
-				},
-				function(res) {
-					if ( res.success ) {
-						$('.gdpr-reconsent-modal').fadeOut(300, function(){
-							$(this).remove();
-							$('.wpadminbar').show();
-						});
-						$('body').removeClass('gdpr-noscroll');
-					}
-				}
-			);
+		$(document).on('click', '.gdpr.gdpr-general-confirmation button.gdpr-ok', function() {
+			$('.gdpr-overlay').fadeOut();
+			$('body').removeClass('gdpr-noscroll');
+			$('.gdpr.gdpr-general-confirmation .gdpr-wrapper').fadeOut();
 		});
 
 		$(document).on('click', '.gdpr-disagree', function(e) {
@@ -208,7 +252,7 @@
 			$('.gdpr.gdpr-disagree-confirmation .gdpr-wrapper').fadeOut();
 			$('.gdpr-consent-buttons').fadeOut(300, function() {
 				$('.gdpr-updating').html(
-					GDPR.aborting
+					GDPR.i18n.aborting
 				);
 				$('.gdpr-consent-loading').fadeIn(300);
 			});
