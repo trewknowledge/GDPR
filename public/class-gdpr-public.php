@@ -275,7 +275,7 @@ class GDPR_Public {
 			return ! in_array( $consent_id, $user_consents );
 		}, ARRAY_FILTER_USE_BOTH );
 
-		if ( empty( $consent_needed ) ) {
+		if ( empty( $updated_consents ) ) {
 			return;
 		}
 
