@@ -355,8 +355,6 @@ class GDPR_Public {
 		$user_id = get_current_user_id();
 
 		foreach ( $consents as $consent ) {
-			error_log($consent);
-			error_log($user_id);
 			add_user_meta( $user_id, 'gdpr_consents', $consent );
 		}
 
