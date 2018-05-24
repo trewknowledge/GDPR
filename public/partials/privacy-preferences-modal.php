@@ -14,9 +14,9 @@
 
 <div class="gdpr gdpr-privacy-preferences">
 	<div class="gdpr-wrapper">
-		<form method="post" class="gdpr-privacy-preferences-frm" action="<?php echo esc_url( admin_url('admin-post.php') ); ?>">
+		<form method="post" class="gdpr-privacy-preferences-frm">
 			<input type="hidden" name="action" value="gdpr_update_privacy_preferences">
-			<?php wp_nonce_field( 'gdpr-update_privacy_preferences', 'update-privacy-preferences-nonce' ); ?>
+			<?php wp_nonce_field( 'gdpr-update-privacy-preferences', 'update-privacy-preferences-nonce' ); ?>
 			<header>
 				<div class="gdpr-box-title">
 					<h3><?php esc_html_e( 'Privacy Preference Center', 'gdpr' ); ?></h3>
@@ -35,6 +35,9 @@
 							<ul class="gdpr-subtabs">
 								<?php
 								foreach ( $tabs as $key => $tab ) {
+									if ( empty( $tab['cookies_used'] ) ) {
+										continue;
+									}
 									echo '<li><button type="button" data-target="' . esc_attr( $key ) . '" ' . '>' . esc_html( $tab['name'] ) . '</button></li>';
 								}
 								?>
@@ -53,12 +56,12 @@
 								<div class="gdpr-cookies-used">
 									<div class="gdpr-cookie-title">
 										<p><?php echo esc_html( $type['name'] ); ?></p>
-										<?php if ( $type['required'] ) : ?>
+										<?php if ( $type['policy-page'] ) : ?>
 											<span class="gdpr-always-active"><?php esc_html_e( 'Required', 'gdpr' ); ?></span>
 											<input type="hidden" name="user_consents[]" value="<?php echo esc_attr( $consent_key ); ?>" checked style="display:none;">
 										<?php else : ?>
 											<label class="gdpr-switch">
-												<input type="checkbox" name="user_consents[]" value="<?php echo esc_attr( $consent_key ); ?>" <?php echo ! empty( $user_consents ) ? checked( in_array( $consent_key, $user_consents, true ), 1, false ) : ''; ?>>
+												<input type="checkbox" name="user_consents[]" value="<?php echo esc_attr( $consent_key ); ?>" <?php echo ! empty( $user_consents ) ? checked( in_array( $consent_key, $user_consents, true ), 1, false ) : 'checked'; ?>>
 												<span class="gdpr-slider round"></span>
 											</label>
 										<?php endif; ?>
@@ -84,7 +87,7 @@
 											<p><?php esc_html_e( 'Cookies Used', 'gdpr' ); ?></p>
 											<?php
 											$site_cookies = array();
-											$enabled      = false;
+											$enabled      = ( 'off' === $tab['status'] ) ? false : true;
 											$cookies_used = explode( ',', $tab['cookies_used'] );
 											$approved_cookies = isset( $_COOKIE['gdpr']['allowed_cookies'] ) ? json_decode( wp_unslash( $_COOKIE['gdpr']['allowed_cookies'] ) ) : array();
 											foreach ( $cookies_used as $cookie ) {
@@ -97,12 +100,12 @@
 												}
 											}
 											?>
-											<?php if ( $tab['always_active'] ) : ?>
-												<span class="gdpr-always-active"><?php esc_html_e( 'Always Active', 'gdpr' ); ?></span>
-												<input type="hidden" name="approved_cookies[]" value="<?php echo esc_attr( json_encode( $site_cookies ) ) ?>" checked>
+											<?php if ( 'required' === $tab['status'] ) : ?>
+												<span class="gdpr-always-active"><?php esc_html_e( 'Required', 'gdpr' ); ?></span>
+												<input type="hidden" name="approved_cookies[]" value="<?php echo esc_attr( json_encode( $site_cookies ) ) ?>">
 											<?php else: ?>
 												<label class="gdpr-switch">
-													<input type="checkbox" name="approved_cookies[]" value="<?php echo esc_attr( json_encode( $site_cookies ) ) ?>" <?php checked( $enabled, true ); ?>>
+													<input type="checkbox" class="gdpr-cookie-category" data-category="<?php echo esc_attr( $key ); ?>" name="approved_cookies[]" value="<?php echo esc_attr( json_encode( $site_cookies ) ) ?>" <?php checked( $enabled, true ); ?>>
 													<span class="gdpr-slider round"></span>
 												</label>
 											<?php endif; ?>

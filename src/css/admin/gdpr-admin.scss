@@ -1,7 +1,12 @@
 @import '../../utils';
+@import 'tooltips';
+
+.gdpr-required {
+	color: #f00;
+}
 
 .gdpr-settings-form{
-	#tabs, #consent-tabs{
+	#gdpr-cookie-categories, #consent-tabs{
 		margin-top: 20px;
 		.hndle{
 			font-size: 16px;
@@ -15,7 +20,10 @@
 	}
 }
 
-.privacy-page-updated-notice {
+.policy-page-updated-notice {
+	.spinner{
+		margin: 13px 0;
+	}
 	form{
 		display: inline-block;
 		.button-secondary {
@@ -173,7 +181,7 @@
 	}
 }
 
-#tabs {
+#gdpr-cookie-categories {
 	.postbox {
 		.inside {
 			margin: 0 !important;
@@ -183,7 +191,6 @@
 			}
 			.tab-hosts {
 				.postbox {
-					margin-bottom: 0;
 					.inside {
 						padding-bottom: 0;
 						background-color: #f9f9f9;
