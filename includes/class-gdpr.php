@@ -187,13 +187,14 @@ class GDPR {
 			add_action( 'woocommerce_checkout_update_user_meta', array( $plugin_admin, 'woocommerce_checkout_save_consent' ), 10, 2 );
 			add_filter( 'woocommerce_checkout_fields', array( $plugin_admin, 'woocommerce_consent_checkboxes' ) );
 		}
+		add_filter( 'manage_users_custom_column', array( $plugin_admin, 'add_consents_to_consents_column' ), 10, 3 );
+		add_filter( 'manage_users_columns', array( $plugin_admin, 'add_consents_column_to_user_table' ) );
 		add_action( 'show_user_profile', array( $plugin_admin, 'edit_user_profile' ) );
 		add_action( 'personal_options_update', array( $plugin_admin, 'user_profile_update' ) );
-		add_action( 'admin_notices', array( $plugin_admin, 'privacy_policy_page_missing' ) );
-		add_action( 'admin_notices', array( $plugin_admin, 'privacy_policy_updated_notice' ) );
-		add_action( 'wp_ajax_ignore_privacy_policy_update', array( $plugin_admin, 'ignore_privacy_policy_update' ) );
-		add_action( 'admin_post_seek_consent', array( $plugin_admin, 'seek_consent' ) );
-		add_action( 'publish_page', array( $plugin_admin, 'privacy_policy_updated' ), 10, 2 );
+		add_action( 'admin_notices', array( $plugin_admin, 'policy_updated_notice' ) );
+		add_action( 'wp_ajax_ignore_policy_update', array( $plugin_admin, 'ignore_policy_update' ) );
+		add_action( 'wp_ajax_seek_consent', array( $plugin_admin, 'seek_consent' ) );
+		add_action( 'publish_page', array( $plugin_admin, 'policy_updated' ), 10, 2 );
 		add_action( 'admin_enqueue_scripts', array( $plugin_admin, 'enqueue_styles' ) );
 		add_action( 'admin_enqueue_scripts', array( $plugin_admin, 'enqueue_scripts' ) );
 		add_action( 'admin_menu', array( $plugin_admin, 'add_menu' ) );
@@ -317,7 +318,7 @@ class GDPR {
 	 * @since  1.2.0
 	 * @author Fernando Claussen <fernandoclaussen@gmail.com>
 	 */
-	public static function get_consent_checkboxes() {
+	public static function get_consent_checkboxes( $consent_key = false ) {
 		$consent_types = get_option( 'gdpr_consent_types', array() );
 		$sent_extras = ( isset( $_POST['user_consents'] ) ) ? $_POST['user_consents'] : array();
 		$allowed_html = array(
@@ -328,9 +329,15 @@ class GDPR {
 			),
 		);
 
+		if ( $consent_key ) {
+			$consent_types = array_filter( $consent_types, function( $key ) use ( $consent_key ) {
+				return $key === $consent_key;
+			}, ARRAY_FILTER_USE_KEY );
+		}
+
 		ob_start();
 		foreach ( $consent_types as $key => $consent ) {
-			$required = ( isset( $consent['required'] ) && $consent['required'] ) ? 'required' : '';
+			$required = ( isset( $consent['policy-page'] ) && $consent['policy-page'] ) ? 'required' : '';
 			$checked = ( isset( $sent_extras[ $key ] ) ) ? checked( $sent_extras[ $key ], 1, false ) : '';
 			echo '<p>' .
 				'<input type="checkbox" name="user_consents[' . esc_attr( $key ) . ']" id="' . esc_attr( $key ) . '-consent" value="1" ' . $required . ' ' . $checked . '>' .
@@ -346,8 +353,8 @@ class GDPR {
 	 * @since  1.1.4
 	 * @author Fernando Claussen <fernandoclaussen@gmail.com>
 	 */
-	public static function consent_checkboxes() {
-		echo self::get_consent_checkboxes();
+	public static function consent_checkboxes( $consent_key = false ) {
+		echo self::get_consent_checkboxes( $consent_key );
 	}
 
 	/**
@@ -573,7 +580,7 @@ class GDPR {
 	 * @return void
 	 */
 	public static function save_consent( $user_id, $consent ) {
-		$registered_consent = get_option( 'gdpr_consent_types', array( 'privacy-policy' ) );
+		$registered_consent = get_option( 'gdpr_consent_types', array() );
 		$consent_ids = array_keys( $registered_consent );
 		$user = get_user_by( 'ID', $user_id );
 		$consent = sanitize_text_field( wp_unslash( $consent ) );
