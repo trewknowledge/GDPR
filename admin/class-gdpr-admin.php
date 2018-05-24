@@ -511,6 +511,35 @@ class GDPR_Admin {
 		wp_send_json_success( $log );
 	}
 
+	public function review_settings_after_v2_notice() {
+		// Check the transient to see if we've just updated the plugin
+		if ( get_transient( 'gdpr_updated' ) && '2.0.0' === $this->version ) {
+			?>
+				<div class="notice notice-warning review-after-v2-required is-dismissible">
+					<h2><?php esc_html_e( 'GDPR' ); ?></h2>
+					<p><strong><?php esc_html_e( 'Review your settings', 'gdpr' ); ?></strong></p>
+					<p><?php esc_html_e( 'We have added a few new options which must be reviewed before continuing to use the plugin.', 'gdpr'); ?></p>
+					<p><?php esc_html_e( 'For cookies, we have added a status which allows you to set them as ON, OFF or Required. For consents, we moved the policy selector into each consent. All policies can now be tracked through this.', 'gdpr' ); ?></p>
+					<p><?php esc_html_e( 'Please keep in mind the plugin might not work as intended until these settings are reviewed.', 'gdpr' ); ?></p>
+				</div>
+			<?php
+			 delete_transient( 'gdpr_updated' );
+		}
+	}
+
+	function upgrade_completed( $upgrader_object, $options ) {
+	 // If an update has taken place and the updated type is plugins and the plugins element exists
+	 if( $options['action'] == 'update' && $options['type'] == 'plugin' && isset( $options['plugins'] ) ) {
+	  // Iterate through the plugins being updated and check if ours is there
+	  foreach( $options['plugins'] as $plugin ) {
+	   if( $plugin == 'gdpr/gdpr.php' ) {
+	    // Set a transient to record that our plugin has just been updated
+	    set_transient( 'gdpr_updated', 1 );
+	   }
+	  }
+	 }
+	}
+
 	/**
 	 * Admin notice when one of the policies has been updated.
 	 * @since  1.0.0
