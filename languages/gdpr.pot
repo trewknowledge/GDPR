@@ -29,132 +29,132 @@ msgstr ""
 msgid "Settings"
 msgstr ""
 
-#: admin/class-gdpr-admin.php:297, includes/class-gdpr-help.php:38, includes/class-gdpr-help.php:43, admin/partials/requests.php:32
+#: admin/class-gdpr-admin.php:296, includes/class-gdpr-help.php:38, includes/class-gdpr-help.php:43, admin/partials/requests.php:32
 msgid "Rectify Data"
 msgstr ""
 
-#: admin/class-gdpr-admin.php:301
+#: admin/class-gdpr-admin.php:300
 msgid "Complaint"
 msgstr ""
 
-#: admin/class-gdpr-admin.php:305, includes/class-gdpr-help.php:56
+#: admin/class-gdpr-admin.php:304, includes/class-gdpr-help.php:56
 msgid "Erasure"
 msgstr ""
 
-#: admin/class-gdpr-admin.php:322, includes/class-gdpr-help.php:81, includes/class-gdpr-help.php:85, admin/partials/tools.php:55
+#: admin/class-gdpr-admin.php:321, includes/class-gdpr-help.php:81, includes/class-gdpr-help.php:85, admin/partials/tools.php:55
 msgid "Access Data"
 msgstr ""
 
-#: admin/class-gdpr-admin.php:323, includes/class-gdpr-help.php:95, admin/partials/tools.php:72
+#: admin/class-gdpr-admin.php:322, includes/class-gdpr-help.php:95, admin/partials/tools.php:72
 msgid "Data Breach"
 msgstr ""
 
-#: admin/class-gdpr-admin.php:324, includes/class-gdpr-help.php:99, includes/class-gdpr-help.php:106, admin/partials/tools.php:117
+#: admin/class-gdpr-admin.php:323, includes/class-gdpr-help.php:99, includes/class-gdpr-help.php:106, admin/partials/tools.php:117
 msgid "Audit Log"
 msgstr ""
 
-#: admin/class-gdpr-admin.php:396
+#: admin/class-gdpr-admin.php:395
 msgid "Consent Given"
 msgstr ""
 
-#: admin/class-gdpr-admin.php:400
+#: admin/class-gdpr-admin.php:399
 msgid "Consent ID"
 msgstr ""
 
-#: admin/class-gdpr-admin.php:412, admin/partials/requests.php:275
+#: admin/class-gdpr-admin.php:411, admin/partials/requests.php:275
 msgid "Comments"
 msgstr ""
 
-#: admin/class-gdpr-admin.php:417
+#: admin/class-gdpr-admin.php:416
 msgid "Comment Field"
 msgstr ""
 
-#: admin/class-gdpr-admin.php:418
+#: admin/class-gdpr-admin.php:417
 msgid "Comment Data"
 msgstr ""
 
-#: admin/class-gdpr-admin.php:454
+#: admin/class-gdpr-admin.php:453
 msgid "Metadata"
 msgstr ""
 
-#: admin/class-gdpr-admin.php:458
+#: admin/class-gdpr-admin.php:457
 msgid "Name"
 msgstr ""
 
-#: admin/class-gdpr-admin.php:459
+#: admin/class-gdpr-admin.php:458
 msgid "Value"
 msgstr ""
 
-#: admin/class-gdpr-admin.php:508
+#: admin/class-gdpr-admin.php:507
 msgid "No logs found for this email."
 msgstr ""
 
-#: admin/class-gdpr-admin.php:520
+#: admin/class-gdpr-admin.php:519
 msgid "Review your settings"
 msgstr ""
 
-#: admin/class-gdpr-admin.php:521
+#: admin/class-gdpr-admin.php:520
 msgid "We have added a few new options which must be reviewed before continuing to use the plugin."
 msgstr ""
 
-#: admin/class-gdpr-admin.php:522
+#: admin/class-gdpr-admin.php:521
 msgid "For cookies, we have added a status which allows you to set them as ON, OFF or Required. For consents, we moved the policy selector into each consent. All policies can now be tracked through this."
 msgstr ""
 
-#: admin/class-gdpr-admin.php:523
+#: admin/class-gdpr-admin.php:522
 msgid "Please keep in mind the plugin might not work as intended until these settings are reviewed."
 msgstr ""
 
-#: admin/class-gdpr-admin.php:558
+#: admin/class-gdpr-admin.php:557
 msgid "Your %s page has been updated."
 msgstr ""
 
-#: admin/class-gdpr-admin.php:560
+#: admin/class-gdpr-admin.php:559
 msgid "In case this was not a small typo fix, you must ask users for explicit consent again."
 msgstr ""
 
-#: admin/class-gdpr-admin.php:569
+#: admin/class-gdpr-admin.php:568
 msgid "Ask for consent"
 msgstr ""
 
-#: admin/class-gdpr-admin.php:578
+#: admin/class-gdpr-admin.php:577
 msgid "Ignore"
 msgstr ""
 
-#: admin/class-gdpr-admin.php:593, admin/class-gdpr-admin.php:732, admin/class-gdpr-admin.php:797, public/class-gdpr-public.php:198, public/class-gdpr-public.php:295, public/class-gdpr-public.php:354
+#: admin/class-gdpr-admin.php:592, admin/class-gdpr-admin.php:731, admin/class-gdpr-admin.php:796, public/class-gdpr-public.php:196, public/class-gdpr-public.php:293, public/class-gdpr-public.php:352
 msgid "We could not verify the the security token. Please try again."
 msgstr ""
 
-#: admin/class-gdpr-admin.php:605
+#: admin/class-gdpr-admin.php:604
 msgid "One or more required fields are missing. Please try again."
 msgstr ""
 
-#: admin/class-gdpr-admin.php:652
+#: admin/class-gdpr-admin.php:651
 msgid "Data breach notification has been initialized. An email confirmation has been sent to the website controller."
 msgstr ""
 
-#: admin/class-gdpr-admin.php:715
+#: admin/class-gdpr-admin.php:714
 msgid "ERROR"
 msgstr ""
 
-#: admin/class-gdpr-admin.php:717
+#: admin/class-gdpr-admin.php:716
 msgid "is a required consent"
 msgstr ""
 
 #. translators: 1: The name of the policy that was updated.
-#: admin/class-gdpr-admin.php:750
+#: admin/class-gdpr-admin.php:749
 msgid "%1$s has been updated. Removing the %1$s consent and requesting new consent."
 msgstr ""
 
-#: admin/class-gdpr-admin.php:820, includes/class-gdpr-help.php:161, public/partials/privacy-preferences-modal.php:31, public/partials/privacy-preferences-modal.php:51
+#: admin/class-gdpr-admin.php:819, includes/class-gdpr-help.php:161, public/partials/privacy-preferences-modal.php:32, public/partials/privacy-preferences-modal.php:63
 msgid "Consent Management"
 msgstr ""
 
-#: admin/class-gdpr-admin.php:857
+#: admin/class-gdpr-admin.php:856
 msgid "Profile Updated. These are the user consents after the save:"
 msgstr ""
 
-#: admin/class-gdpr-admin.php:930, admin/partials/settings.php:332
+#: admin/class-gdpr-admin.php:929, admin/partials/settings.php:332
 msgid "Consents"
 msgstr ""
 
@@ -548,15 +548,15 @@ msgstr ""
 msgid "OK"
 msgstr ""
 
-#: public/class-gdpr-public.php:146, public/partials/reconsent-bar.php:31
+#: public/class-gdpr-public.php:145, public/partials/reconsent-bar.php:31
 msgid "I Agree"
 msgstr ""
 
-#: public/class-gdpr-public.php:198, public/class-gdpr-public.php:354, public/class-gdpr-requests-public.php:78, public/class-gdpr-requests-public.php:82, public/class-gdpr-requests-public.php:92, public/class-gdpr-requests-public.php:105, public/class-gdpr-requests-public.php:121, public/class-gdpr-requests-public.php:144, public/class-gdpr-requests-public.php:152, public/class-gdpr-requests-public.php:198, public/partials/confirmation-screens.php:50, public/partials/confirmation-screens.php:54, public/partials/confirmation-screens.php:58, public/partials/confirmation-screens.php:62
+#: public/class-gdpr-public.php:196, public/class-gdpr-public.php:352, public/class-gdpr-requests-public.php:78, public/class-gdpr-requests-public.php:82, public/class-gdpr-requests-public.php:92, public/class-gdpr-requests-public.php:105, public/class-gdpr-requests-public.php:121, public/class-gdpr-requests-public.php:144, public/class-gdpr-requests-public.php:152, public/class-gdpr-requests-public.php:198, public/partials/confirmation-screens.php:50, public/partials/confirmation-screens.php:54, public/partials/confirmation-screens.php:58, public/partials/confirmation-screens.php:62
 msgid "Error!"
 msgstr ""
 
-#: public/class-gdpr-public.php:234
+#: public/class-gdpr-public.php:232
 msgid "User updated their privacy preferences. These are the new approved cookies and consent preferences:"
 msgstr ""
 
@@ -873,7 +873,7 @@ msgstr ""
 msgid "Required cookies are cookies that cannot be opted out of and need to be created for the site to function properly. The ON status means that the cookie preference for this category will be enabled by default. The OFF status means the user needs to manually turn these cookies on to opt into these cookies."
 msgstr ""
 
-#: admin/partials/settings.php:231, public/partials/privacy-preferences-modal.php:61, public/partials/privacy-preferences-modal.php:106, admin/partials/templates/tmpl-cookies.php:33
+#: admin/partials/settings.php:231, public/partials/privacy-preferences-modal.php:73, public/partials/privacy-preferences-modal.php:118, admin/partials/templates/tmpl-cookies.php:33
 msgid "Required"
 msgstr ""
 
@@ -1089,24 +1089,20 @@ msgstr ""
 msgid "Options"
 msgstr ""
 
-#: public/partials/privacy-preferences-modal.php:34
+#: public/partials/privacy-preferences-modal.php:35
 msgid "Cookie Settings"
 msgstr ""
 
-#: public/partials/privacy-preferences-modal.php:89
+#: public/partials/privacy-preferences-modal.php:101
 msgid "Cookies Used"
 msgstr ""
 
-#: public/partials/privacy-preferences-modal.php:125
+#: public/partials/privacy-preferences-modal.php:137
 msgid "Opt Out"
 msgstr ""
 
-#: public/partials/privacy-preferences-modal.php:140
+#: public/partials/privacy-preferences-modal.php:152
 msgid "Save Preferences"
-msgstr ""
-
-#: public/partials/privacy-preferences-modal.php:142
-msgid "More Information"
 msgstr ""
 
 #: public/partials/reconsent-bar.php:18

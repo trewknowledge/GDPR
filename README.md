@@ -157,6 +157,14 @@ Activating this plugin does not guarantee that an organisation is successfully m
 
 ## Changelog
 
+##### 2.0.0
+* Change all requests and privacy preferences window to AJAX to avoid the admin-post hook issue.
+* We do not track privacy policy anymore. We can now track any kind of policy that users want. Those have been moved to each consent.
+* Including more options. Including "enable/disable" the privacy bar.
+* New filters and funtions were included.
+* Making the settings a little more accessible.
+* Removed the reconsent modal. It was too obtrusive. We switched to a more subtle notification bar.
+
 ##### 1.4.7
 * Fix for users who were complaining about their scroll bars missing if they did not select a privacy policy page.
 
