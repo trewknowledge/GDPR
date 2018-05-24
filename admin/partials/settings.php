@@ -219,8 +219,8 @@
 								<th>
 									<label for="status-<?php echo esc_attr( $cat_id ); ?>">
 										<?php esc_html_e( 'Status', 'gdpr' ); ?>:<span class="gdpr-required">*</span>
-										<span class="screen-reader-text"><?php esc_attr_e( 'Required cookies are cookies that cannot be opt out. They need to be created for the site to function properly. Status ON means that the cookie will be set after agreement. Status OFF means the user needs to check the checkbox to activate this category.', 'gdpr' ); ?></span>
-										<span data-tooltip="<?php esc_attr_e( 'Required cookies are cookies that cannot be opt out. They need to be created for the site to function properly. Status ON means that the cookie will be set after agreement. Status OFF means the user needs to check the checkbox to activate this category.', 'gdpr' ); ?>">
+										<span class="screen-reader-text"><?php esc_attr_e( 'Required cookies are cookies that cannot be opted out of and need to be created for the site to function properly. The ON status means that the cookie preference for this category will be enabled by default. The OFF status means the user needs to manually turn these cookies on to opt into these cookies.', 'gdpr' ); ?></span>
+										<span data-tooltip="<?php esc_attr_e( 'Required cookies are cookies that cannot be opted out of and need to be created for the site to function properly. The ON status means that the cookie preference for this category will be enabled by default. The OFF status means the user needs to manually turn these cookies on to opt into these cookies.', 'gdpr' ); ?>">
 											<span class="dashicons dashicons-info"></span>
 										</span>
 									</label>
@@ -238,8 +238,8 @@
 								<th>
 									<label for="cookies-used-<?php echo esc_attr( $cat_id ); ?>">
 										<?php esc_html_e( 'Cookies used', 'gdpr' ); ?>:
-										<span class="screen-reader-text"><?php esc_attr_e( 'A comma separated list of cookies that your site is using that fit this category.', 'gdpr' ); ?></span>
-										<span data-tooltip="<?php esc_attr_e( 'A comma separated list of cookies that your site is using that fit this category.', 'gdpr' ); ?>">
+										<span class="screen-reader-text"><?php esc_attr_e( 'A comma-separated list of cookies that your site is using that fit this category.', 'gdpr' ); ?></span>
+										<span data-tooltip="<?php esc_attr_e( 'A comma-separated list of cookies that your site is using that fit this category.', 'gdpr' ); ?>">
 											<span class="dashicons dashicons-info"></span>
 										</span>
 									</label>
@@ -254,8 +254,8 @@
 								<th>
 									<label for="tab-how-we-use-<?php echo esc_attr( $cat_id ); ?>">
 										<?php esc_html_e( 'How are these used', 'gdpr' ); ?>:
-										<span class="screen-reader-text"><?php esc_attr_e( 'A brief explanation on why you are requesting to use these cookies, what they are for and how you process them.', 'gdpr' ); ?></span>
-										<span data-tooltip="<?php esc_attr_e( 'A brief explanation on why you are requesting to use these cookies, what they are for and how you process them.', 'gdpr' ); ?>">
+										<span class="screen-reader-text"><?php esc_attr_e( 'A brief explanation of why you are requesting to use these cookies, what they are for, and how you process them.', 'gdpr' ); ?></span>
+										<span data-tooltip="<?php esc_attr_e( 'A brief explanation of why you are requesting to use these cookies, what they are for, and how you process them.', 'gdpr' ); ?>">
 											<span class="dashicons dashicons-info"></span>
 										</span>
 									</label>
@@ -266,8 +266,8 @@
                 <th>
                 	<label for="hosts-<?php echo esc_attr( $cat_id ); ?>">
                 		<?php esc_html_e( 'Third party domain', 'gdpr' ); ?>:
-                		<span class="screen-reader-text"><?php esc_attr_e( 'E.g. youtube.com', 'gdpr' ); ?></span>
-                		<span data-tooltip="<?php esc_attr_e( 'E.g. youtube.com', 'gdpr' ); ?>">
+                		<span class="screen-reader-text"><?php esc_attr_e( 'E.g. facebook.com', 'gdpr' ); ?></span>
+                		<span data-tooltip="<?php esc_attr_e( 'E.g. facebook.com', 'gdpr' ); ?>">
                 			<span class="dashicons dashicons-info"></span>
                 		</span>
                 	</label>
