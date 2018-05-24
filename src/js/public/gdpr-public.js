@@ -104,12 +104,6 @@
 			$('.gdpr.gdpr-privacy-bar').delay(1000).slideDown(600);
 		};
 
-		if ( ! has_consent( 'privacy-policy' ) && GDPR.is_user_logged_in && GDPR.privacy_page_id != 0 ) {
-			$('.gdpr-reconsent-modal').show();
-			$('body').addClass('gdpr-noscroll');
-			$('.wpadminbar').hide();
-		}
-
 		/**
 		 * This runs when user clicks on privacy preferences bar agree button.
 		 * It submits the form that is still hidden with the cookies and consent options.
@@ -191,14 +185,6 @@
 			}
 		} );
 
-		$(document).on('click', '.gdpr.gdpr-general-confirmation .gdpr-close, .gdpr-overlay, .gdpr-cancel', function() {
-			$('.gdpr-overlay').fadeOut();
-			if ( ! $('.gdpr-reconsent-modal').is(':visible') ) {
-				$('body').removeClass('gdpr-noscroll');
-			}
-			$('.gdpr.gdpr-general-confirmation .gdpr-wrapper').fadeOut();
-		});
-
 		$(document).on('click', '.gdpr.gdpr-delete-confirmation button.gdpr-delete-account', function() {
 			$('form.gdpr-add-to-deletion-requests').addClass('confirmed');
 			$('form.gdpr-add-to-deletion-requests.confirmed input[type="submit"]').click();
@@ -219,41 +205,6 @@
 			$('.gdpr-overlay').fadeOut();
 			$('body').removeClass('gdpr-noscroll');
 			$('.gdpr.gdpr-general-confirmation .gdpr-wrapper').fadeOut();
-		});
-
-		$(document).on('click', '.gdpr-agree', function(e) {
-			e.preventDefault();
-			var that = $(this);
-			$('.gdpr-consent-buttons').fadeOut(300, function() {
-				$('.gdpr-consent-loading').fadeIn(300);
-			});
-			var dotCount = 0;
-			var dotsAnimation = setInterval(function() {
-				var dots = $('.gdpr-ellipsis').html();
-				if ( dotCount < 3 ) {
-					$('.gdpr-ellipsis').append('.');
-					dotCount++;
-				} else {
-					$('.gdpr-ellipsis').html('');
-					dotCount = 0;
-				}
-			}, 600);
-			$.post(
-				GDPR.ajaxurl,
-				{
-					action: 'agree_with_terms',
-					nonce: $(this).data('nonce'),
-				},
-				function(res) {
-					if ( res.success ) {
-						$('.gdpr-reconsent-modal').fadeOut(300, function(){
-							$(this).remove();
-							$('.wpadminbar').show();
-						});
-						$('body').removeClass('gdpr-noscroll');
-					}
-				}
-			);
 		});
 
 		$(document).on('click', '.gdpr-disagree', function(e) {

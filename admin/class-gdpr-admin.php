@@ -197,7 +197,7 @@ class GDPR_Admin {
 			'gdpr_privacy_policy_page'                 => 'absint',
 			'gdpr_cookie_banner_content'               => array( $this, 'sanitize_with_links' ),
 			'gdpr_cookie_privacy_excerpt'              => 'sanitize_textarea_field',
-			'gdpr_registered_cookies'                  => array( $this, 'sanitize_cookie_categories' ),
+			'gdpr_cookie_popup_content'                  => array( $this, 'sanitize_cookie_categories' ),
 			'gdpr_email_limit'                         => 'intval',
 			'gdpr_consent_types'                       => array( $this, 'sanitize_consents' ),
 			'gdpr_deletion_needs_review'               => 'boolval',
@@ -210,6 +210,7 @@ class GDPR_Admin {
 			'gdpr_add_consent_checkboxes_checkout'     => 'boolval',
 			'gdpr_refresh_after_preferences_update'    => 'boolval',
 			'gdpr_enable_privacy_bar'                  => 'boolval',
+			'gdpr_display_cookie_categories_in_bar'    => 'boolval',
 		);
 		foreach ( $settings as $option_name => $sanitize_callback ) {
 			register_setting( 'gdpr', $option_name, array( 'sanitize_callback' => $sanitize_callback ) );
@@ -263,7 +264,7 @@ class GDPR_Admin {
 	 */
 	public function settings_page_template() {
 		$privacy_policy_page = get_option( 'gdpr_privacy_policy_page', 0 );
-		$registered_cookies = get_option( 'gdpr_registered_cookies', array() );
+		$registered_cookies = get_option( 'gdpr_cookie_popup_content', array() );
 		$consent_types = get_option( 'gdpr_consent_types', array() );
 
 		$pages = get_pages();

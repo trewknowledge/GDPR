@@ -43,6 +43,22 @@
 
 		$('#consent-tabs, #tabs').sortable();
 
+		$('.add-tab').click(function(e) {
+			e.preventDefault();
+			var field = $('#cookie-tabs');
+			if ( field.val() === '' ) {
+				return;
+			}
+			var tabID = string_to_slug( field.val() );
+			var tabName = field.val();
+			var template = wp.template( 'cookie-tabs' );
+			$('#gdpr-cookie-categories').append( template( {
+				key: tabID,
+				name: tabName,
+			} ) );
+			field.val('');
+		});
+
 		$(document).on('click', '.add-host', function(e) {
 			e.preventDefault();
 			var field = $(this).siblings('input');
@@ -55,7 +71,7 @@
 			$('.tab-hosts[data-tabid="'+tabID+'"]').append( template( {
 				host_key: hostID,
 				tab_key: tabID,
-				option_name: 'gdpr_registered_cookies'
+				option_name: 'gdpr_cookie_popup_content'
 			} ) );
 			field.val('');
 		});

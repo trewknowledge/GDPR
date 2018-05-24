@@ -139,10 +139,11 @@ class GDPR_Public {
 	 * @author Fernando Claussen <fernandoclaussen@gmail.com>
 	 */
 	public function privacy_bar() {
-		$privacy_bar_enabled = get_option( 'gdpr_enable_privacy_bar', true );
-		$content             = get_option( 'gdpr_cookie_banner_content', '' );
-		$registered_cookies  = get_option( 'gdpr_registered_cookies', array() );
-		$button_text         = apply_filters( 'gdpr_privacy_bar_button_text', esc_html__( 'I Agree', 'gdpr' ) );
+		$privacy_bar_enabled        = get_option( 'gdpr_enable_privacy_bar', true );
+		$content                    = get_option( 'gdpr_cookie_banner_content', '' );
+		$registered_cookies         = get_option( 'gdpr_cookie_popup_content', array() );
+		$show_cookie_cat_checkboxes = get_option( 'gdpr_display_cookie_categories_in_bar', false );
+		$button_text                = apply_filters( 'gdpr_privacy_bar_button_text', esc_html__( 'I Agree', 'gdpr' ) );
 
 		if ( empty( $content ) || ! $privacy_bar_enabled ) {
 			return;
@@ -162,7 +163,7 @@ class GDPR_Public {
 		$privacy_policy_page = get_option( 'gdpr_privacy_policy_page', 0 );
 		$approved_cookies = isset( $_COOKIE['gdpr']['allowed_cookies'] ) ? json_decode( wp_unslash( $_COOKIE['gdpr']['allowed_cookies'] ) ) : array();
 		$user_consents = isset( $_COOKIE['gdpr']['consent_types'] ) ? json_decode( wp_unslash( $_COOKIE['gdpr']['consent_types'] ) ) : array();
-		$tabs = get_option( 'gdpr_registered_cookies', array() );
+		$tabs = get_option( 'gdpr_cookie_popup_content', array() );
 
 		include plugin_dir_path( __FILE__ ) . 'partials/privacy-preferences-modal.php';
 	}
@@ -294,26 +295,6 @@ class GDPR_Public {
 		wp_send_json_success();
 	}
 
-	/**
-	 * The user agreed with the privacy policy terms when prompted.
-	 * @since  1.0.0
-	 * @author Fernando Claussen <fernandoclaussen@gmail.com>
-	 */
-	public function agree_with_terms() {
-		if ( ! wp_verify_nonce( sanitize_text_field( wp_unslash( $_POST['nonce'] ) ), 'gdpr-user_agree_with_terms' ) ) {
-			wp_send_json_error( esc_html__( 'We could not verify the the security token. Please try again.', 'gdpr' ) );
-		}
-
-		$user = wp_get_current_user();
-		$user_consents = get_user_meta( $user->ID, 'gdpr_consents' );
-		$user_consents[] = 'privacy-policy';
-		$user_consents = array_unique( $user_consents );
-		add_user_meta( $user->ID, 'gdpr_consents', 'privacy-policy' );
-		setcookie( "gdpr[consent_types]", json_encode( $user_consents ), time() + YEAR_IN_SECONDS, "/" );
-		GDPR_Audit_Log::log( $user->ID, esc_html__( 'User consented to the Privacy Policies.', 'gdpr' ) );
-		wp_send_json_success();
-	}
-
 	public function set_plugin_cookies() {
 		$user_id = get_current_user_id();
 
@@ -340,7 +321,7 @@ class GDPR_Public {
 
 
 		if ( ! isset( $_COOKIE['gdpr']['allowed_cookies'] ) ) {
-			$registered_cookies = get_option( 'gdpr_registered_cookies', array() );
+			$registered_cookies = get_option( 'gdpr_cookie_popup_content', array() );
 			$cookies = array();
 			if ( ! empty( $registered_cookies ) ) {
 				$required_cookies = array_filter( $registered_cookies, function( $item ) {
