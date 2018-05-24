@@ -829,7 +829,8 @@
 	height: 24px;
 	margin-bottom: 0;
 	input {
-		display: none;
+		position: absolute;
+		left: -999em;
 	}
 	.gdpr-slider {
 	  position: absolute;
