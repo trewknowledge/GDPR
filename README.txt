@@ -206,6 +206,9 @@ Activating this plugin does not guarantee that an organisation is successfully m
 
 == Changelog ==
 
+= 2.0.3 =
+* Fix third party cookies now showing up in the privacy preferences window or the settings page.
+
 = 2.0.2 =
 * Fix reconsent not logging correctly on reconsent
 * Fix reconsent bar not showing up.
