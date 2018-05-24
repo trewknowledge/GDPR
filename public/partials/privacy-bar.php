@@ -19,18 +19,20 @@
 		</div>
 		<div class="gdpr-right">
 			<ul class="gdpr-cookie-categories">
-				<?php foreach ( $registered_cookies as $cookie_cat_id => $cookie_cat ) : ?>
-					<?php
-					$enabled = ( 'off' === $cookie_cat['status'] ) ? false : true;
-					if ( empty( $cookie_cat['cookies_used'] ) ) {
-						continue;
-					}
-					?>
-					<li class="gdpr-cookie-categories-item">
-						<input type="checkbox" id="gdpr-cookie-category-<?php echo esc_attr( $cookie_cat_id ); ?>" class="gdpr-cookie-category" data-category="<?php echo esc_attr( $cookie_cat_id ); ?>" name="allowed_cookie_categories" value="<?php echo esc_attr( $cookie_cat['name'] ); ?>" <?php checked( $enabled, true ); ?> <?php echo ( 'required' === $cookie_cat['status'] ) ? 'disabled' : ''; ?>>
-						<label for="gdpr-cookie-category-<?php echo esc_attr( $cookie_cat_id ); ?>"><?php echo esc_html( $cookie_cat['name'] ); ?></label>
-					</li>
-				<?php endforeach ?>
+				<?php if ( $show_cookie_cat_checkboxes ): ?>
+					<?php foreach ( $registered_cookies as $cookie_cat_id => $cookie_cat ) : ?>
+						<?php
+						$enabled = ( 'off' === $cookie_cat['status'] ) ? false : true;
+						if ( empty( $cookie_cat['cookies_used'] ) ) {
+							continue;
+						}
+						?>
+						<li class="gdpr-cookie-categories-item">
+							<input type="checkbox" id="gdpr-cookie-category-<?php echo esc_attr( $cookie_cat_id ); ?>" class="gdpr-cookie-category" data-category="<?php echo esc_attr( $cookie_cat_id ); ?>" name="allowed_cookie_categories" value="<?php echo esc_attr( $cookie_cat['name'] ); ?>" <?php checked( $enabled, true ); ?> <?php echo ( 'required' === $cookie_cat['status'] ) ? 'disabled' : ''; ?>>
+							<label for="gdpr-cookie-category-<?php echo esc_attr( $cookie_cat_id ); ?>"><?php echo esc_html( $cookie_cat['name'] ); ?></label>
+						</li>
+					<?php endforeach ?>
+				<?php endif ?>
 			</ul>
 			<div class="gdpr-buttons">
 				<button class="gdpr-preferences" type="button"><?php esc_html_e( 'Privacy Preferences', 'gdpr' ); ?></button>
