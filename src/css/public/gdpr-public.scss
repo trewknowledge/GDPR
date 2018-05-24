@@ -125,16 +125,14 @@
 			.gdpr-content {
 				flex: 1;
 				padding: 0 0 20px 0;
+				text-align: center;
 				@include breakpoint( xxlarge ) {
 					padding: 0 100px 0 0;
+					text-align: left;
 				}
-				p, span {
+				p {
 					color: #ffffff;
 					font-size: 14px;
-				}
-				a{
-					color: #fff;
-					text-decoration: underline;
 				}
 				@include breakpoint(medium-small) {
 					padding-right: 0;
@@ -163,30 +161,44 @@
 				}
 				.gdpr-cookie-categories, .gdpr-policy-list {
 					list-style: none;
-					padding: 0 15px 0 0;
+					padding: 0 20px 0 0;
 					margin: 0 20px 0 0;
 					border-right: 1px solid #808080;
 					@include breakpoint( medium-small ) {
-						padding: 0 0 15px 0;
+						padding: 0 0 10px 0;
 						margin: 0 0 20px 0;
 						border-right: none;
 						border-bottom: 1px solid #808080;
-					}
-					@include breakpoint( small-only ) {
-						margin-bottom: 10px;
+						text-align: center;
 					}
 					.gdpr-cookie-categories-item, .gdpr-policy-list-item {
 						display: inline-block;
-						input {
+						margin: 0 10px;
+						padding-top: 10px;
+						@include breakpoint( medium-small ) {
+							padding-top: 0;
+						}
+						& * {
 							float: left;
+						}
+						input {
+							margin-top: 3px;
 						}
 						label{
 							color: #fff;
-							margin: 0 10px 0 3px;
+							margin: 0 5px 0 0;
 							font-size: 14px;
-							float: right;
-							line-height: 1;
 						}
+						.gdpr-policy-link {
+							color:  #fff;
+							font-size: 14px;
+							text-decoration: underline;
+						}
+					}
+				}
+				.gdpr-cookie-categories {
+					@include breakpoint( small-only ) {
+						margin-bottom: 5px;
 					}
 				}
 				.gdpr-buttons {
@@ -196,14 +208,21 @@
 					}
 					button {
 						white-space: nowrap;
-						&:first-of-type{
+						&.gdpr-preferences{
 							margin-left: 10px;
-							margin-right: 10px;
+							margin-right: 20px;
 							@include breakpoint(small-only) {
 								margin: 0 0 10px 15px;
 								&:before {
 									left: -7px;
 								}
+							}
+						}
+						&.gdpr-agreement{
+							margin: 0 10px;
+							align-self: center;
+							@include breakpoint( xxlarge ) {
+								margin: 0 0 0 10px;
 							}
 						}
 					}
