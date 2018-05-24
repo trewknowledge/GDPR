@@ -746,7 +746,7 @@ class GDPR_Admin {
 			$usermeta = get_user_meta( $user->ID, 'gdpr_consents' );
 			if ( in_array( $policy_id, $usermeta ) ) {
 				/* translators: 1: The name of the policy that was updated. */
-				GDPR_Audit_Log::log( $user->ID, sprintf( esc_html__( '%1$s has been updated. Removing the %1$s consent and requesting new consent.', 'gdpr' ) ) );
+				GDPR_Audit_Log::log( $user->ID, sprintf( esc_html__( '%1$s has been updated. Removing the %1$s consent and requesting new consent.', 'gdpr' ), esc_html( $policy_name ) ) );
 				delete_user_meta( $user->ID, 'gdpr_consents', $policy_id );
 			}
 		}

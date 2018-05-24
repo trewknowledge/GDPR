@@ -106,6 +106,10 @@
 			}
 		};
 
+		if ( $('.gdpr-reconsent-bar').length > 0 ) {
+				$('.gdpr.gdpr-reconsent-bar').delay(1000).slideDown(600);
+			}
+
 		/**
 		 * This runs when user clicks on privacy preferences bar agree button.
 		 * It submits the form that is still hidden with the cookies and consent options.
