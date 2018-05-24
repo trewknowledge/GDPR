@@ -55,7 +55,7 @@ class GDPR_Help {
 
 		$erasure_help = '<h2>' . esc_html__( 'Erasure', 'gdpr' ) . '</h2>' .
 			'<p>' . esc_html__( 'Users may request to be deleted from the site. If they don\'t have any content published on the site (including comments) they will be removed from the site automatically. Otherwise, they will show up at this review table where you can reassign or delete their published content and anonymize his comments.', 'gdpr' ) . '</p>' .
-			'<p>' . esc_html__( 'When a user requests the deletion of his account the data controller has 30 days to comply. This time limit can be extended. After the account has been deleted the user will receive a confirmation.', 'gdpr' ) . '</p>';
+			'<p>' . esc_html__( 'User may request their data to be deleted. The controller has, according to GDPR, 30 days to fulfill the request. On some occasions, you can ask to extend this time limit. When the request has been resolved the user will receive a notification that their account has been closed.', 'gdpr' ) . '</p>';
 		get_current_screen()->add_help_tab( array(
 			'id' => 'erasure',
 			'title' => esc_html__( 'Erasures', 'gdpr' ),
@@ -125,7 +125,7 @@ class GDPR_Help {
 		) );
 
 		$cookies_settings_help = sprintf( '<h2>' . esc_html__( 'Cookie Management', 'gdpr' ) . '</h2>' .
-			'<p>' . esc_html__( 'Fill out every information you can about the cookies your site uses. Set the cookies that you set under Cookies Used and cookies used and set by third parties under the hosts section.', 'gdpr' ) . '</p>' .
+			'<p>' . esc_html__( 'Fill out every information you can about the cookies your site uses. Set the cookies that you set under Cookies Used and cookies used and set by third parties under the Third party domains.', 'gdpr' ) . '</p>' .
 			/* translators: the function */
 			'<p>' . esc_html__( 'You must ask your developer to wrap the code that sets the cookies with our helper function %s.', 'gdpr' ) . '</p>' .
 			'<p>' . esc_html__( 'Some services like Google Analytics provide a way to opt out from their code with an extra parameter to their snippet.', 'gdpr' ) . '</p>' .

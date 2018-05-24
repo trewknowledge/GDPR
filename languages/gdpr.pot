@@ -368,7 +368,7 @@ msgid "Users may request to be deleted from the site. If they don't have any con
 msgstr ""
 
 #: includes/class-gdpr-help.php:58
-msgid "When a user requests the deletion of his account the data controller has 30 days to comply. This time limit can be extended. After the account has been deleted the user will receive a confirmation."
+msgid "User may request their data to be deleted. The controller has, according to GDPR, 30 days to fulfill the request. On some occasions, you can ask to extend this time limit. When the request has been resolved the user will receive a notification that their account has been closed."
 msgstr ""
 
 #: includes/class-gdpr-help.php:61
@@ -432,7 +432,7 @@ msgid "Cookie Management"
 msgstr ""
 
 #: includes/class-gdpr-help.php:128
-msgid "Fill out every information you can about the cookies your site uses. Set the cookies that you set under Cookies Used and cookies used and set by third parties under the hosts section."
+msgid "Fill out every information you can about the cookies your site uses. Set the cookies that you set under Cookies Used and cookies used and set by third parties under the Third party domains."
 msgstr ""
 
 #: includes/class-gdpr-help.php:130
