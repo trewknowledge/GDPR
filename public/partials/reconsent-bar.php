@@ -23,7 +23,7 @@
 					<li class="gdpr-policy-list-item">
 						<input type="hidden" value="<?php echo esc_attr( $consent_id ); ?>" checked>
 						<label><?php echo esc_html( $consent['name'] ); ?></label>
-						<a class="gdpr-policy-link" href="<?php echo esc_url( get_permalink( $consent['policy-page'] ) ); ?>" target="_blank">[<?php esc_html_e( 'View', 'gdpr' ) ?>]</a>
+						<a class="gdpr-policy-link" href="<?php echo esc_url( get_permalink( $consent['policy-page'] ) ); ?>" target="_blank">[<?php esc_html_e( 'View', 'gdpr' ); ?>]</a>
 					</li>
 				<?php endforeach ?>
 			</ul>

@@ -19,7 +19,7 @@
 		</div>
 		<div class="gdpr-right">
 			<ul class="gdpr-cookie-categories">
-				<?php if ( $show_cookie_cat_checkboxes ): ?>
+				<?php if ( $show_cookie_cat_checkboxes ) : ?>
 					<?php foreach ( $registered_cookies as $cookie_cat_id => $cookie_cat ) : ?>
 						<?php
 						$enabled = ( 'off' === $cookie_cat['status'] ) ? false : true;
