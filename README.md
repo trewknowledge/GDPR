@@ -157,6 +157,36 @@ Activating this plugin does not guarantee that an organisation is successfully m
 
 ## Changelog
 
+##### 2.0.3
+* Fix third party cookies now showing up in the privacy preferences window or the settings page.
+
+##### 2.0.2
+* Fix reconsent not logging correctly on reconsent
+* Fix reconsent bar not showing up.
+
+##### 2.0.1
+* Removing things that should have been deleted prior to updating to 2.0.0.
+* Fix new reconsent bar missing closing div.
+
+##### 2.0.0
+* Change all requests and privacy preferences window to AJAX to avoid the admin-post hook issue.
+* We do not track privacy policy anymore. We can now track any kind of policy that users want. Those have been moved to each consent.
+* Including more options. Including "enable/disable" the privacy bar.
+* New filters and funtions were included.
+* Making the settings a little more accessible.
+* Removed the reconsent modal. It was too obtrusive. We switched to a more subtle notification bar.
+
+##### 1.4.7
+* Fix for users who were complaining about their scroll bars missing if they did not select a privacy policy page.
+
+##### 1.4.6
+* Change re-consent logic so it doesn't influence SEO with repeated content.
+
+##### 1.4.5
+* Minor style adjustments
+* Body scroll is disabled when modal is active
+* Adjusting privacy bar to sit behind re-consent modal
+
 ##### 1.4.4
 * Fix all_cookies field being displayed as text field instead of hidden.
 
