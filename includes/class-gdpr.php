@@ -524,9 +524,6 @@ class GDPR {
 					$key = $dom->createElement( htmlspecialchars( $k ) );
 					$meta_data->appendChild( $key );
 					foreach ( $v as $value ) {
-						if ( is_serialized( $value ) ) {
-							$value = maybe_unserialize( $value );
-						}
 						$key->appendChild( $dom->createElement( 'item', htmlspecialchars( $value ) ) );
 					}
 				}
