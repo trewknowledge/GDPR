@@ -110,6 +110,8 @@
 												if ( ! empty( $approved_cookies ) ) {
 													if ( in_array( trim( $cookie ), $approved_cookies ) ) {
 														$enabled = true;
+													} else {
+														$enabled = false;
 													}
 												}
 											}
