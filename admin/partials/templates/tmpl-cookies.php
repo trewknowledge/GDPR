@@ -40,8 +40,8 @@
 					<th>
 						<label for="cookies-used-{{data.key}}">
 							<?php esc_html_e( 'Cookies used', 'gdpr' ); ?>:
-							<span class="screen-reader-text"><?php esc_attr_e( 'A comma separated list of cookies that your site is using that fit this category.', 'gdpr' ); ?></span>
-							<span data-tooltip="<?php esc_attr_e( 'A comma separated list of cookies that your site is using that fit this category.', 'gdpr' ); ?>">
+							<span class="screen-reader-text"><?php esc_attr_e( 'A comma-separated list of cookies that your site is using that fit this category.', 'gdpr' ); ?></span>
+							<span data-tooltip="<?php esc_attr_e( 'A comma-separated list of cookies that your site is using that fit this category.', 'gdpr' ); ?>">
 								<span class="dashicons dashicons-info"></span>
 							</span>
 						</label>
