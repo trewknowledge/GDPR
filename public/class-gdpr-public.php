@@ -144,6 +144,8 @@ class GDPR_Public {
 		$show_cookie_cat_checkboxes = get_option( 'gdpr_display_cookie_categories_in_bar', false );
 		$button_text                = apply_filters( 'gdpr_privacy_bar_button_text', esc_html__( 'I Agree', 'gdpr' ) );
 
+		$privacy_bar_enabled = apply_filters( 'gdpr_privacy_bar_display', $privacy_bar_enabled );
+
 		if ( empty( $content ) || ! $privacy_bar_enabled ) {
 			return;
 		}
