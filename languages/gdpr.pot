@@ -877,7 +877,7 @@ msgstr ""
 msgid "Required cookies are cookies that cannot be opted out of and need to be created for the site to function properly. The ON status means that the cookie preference for this category will be enabled by default. The OFF status means the user needs to manually turn these cookies on to opt into these cookies."
 msgstr ""
 
-#: admin/partials/settings.php:231, public/partials/privacy-preferences-modal.php:73, public/partials/privacy-preferences-modal.php:118, admin/partials/templates/tmpl-cookies.php:33
+#: admin/partials/settings.php:231, public/partials/privacy-preferences-modal.php:73, public/partials/privacy-preferences-modal.php:120, admin/partials/templates/tmpl-cookies.php:33
 msgid "Required"
 msgstr ""
 
@@ -1097,11 +1097,11 @@ msgstr ""
 msgid "Cookies Used"
 msgstr ""
 
-#: public/partials/privacy-preferences-modal.php:137
+#: public/partials/privacy-preferences-modal.php:139
 msgid "Opt Out"
 msgstr ""
 
-#: public/partials/privacy-preferences-modal.php:152
+#: public/partials/privacy-preferences-modal.php:154
 msgid "Save Preferences"
 msgstr ""
 
