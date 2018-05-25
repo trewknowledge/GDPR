@@ -32,7 +32,7 @@ class GDPR_Deactivator {
 	 * @author Fernando Claussen <fernandoclaussen@gmail.com>
 	 */
 	public static function deactivate() {
-		wp_clear_scheduled_hook('telemetry_cleanup');
+		wp_clear_scheduled_hook( 'telemetry_cleanup' );
 	}
 
 }
