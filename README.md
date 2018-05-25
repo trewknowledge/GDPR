@@ -157,6 +157,11 @@ Activating this plugin does not guarantee that an organisation is successfully m
 
 ## Changelog
 
+##### 2.0.4
+* Adding two missing translation strings
+* Removing debug code that I forgot to remove from 2.0.3
+* Adding to audit log when user reconsents.
+
 ##### 2.0.3
 * Fix third party cookies now showing up in the privacy preferences window or the settings page.
 
