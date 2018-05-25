@@ -281,7 +281,6 @@
               </tr>
 						</table>
 						<div class="tab-hosts" data-tabid="<?php echo esc_attr( $cat_id ); ?>">
-							<?php var_dump($cookie_cat); ?>
               <?php if ( isset( $cookie_cat['hosts'] ) && $cookie_cat['hosts'] ) : ?>
                 <?php foreach ( $cookie_cat['hosts'] as $domain_id => $domain ) : ?>
                   <div class="postbox">
