@@ -157,6 +157,9 @@ Activating this plugin does not guarantee that an organisation is successfully m
 
 ## Changelog
 
+##### 2.0.6
+* Fix XML export error.
+
 ##### 2.0.5
 * Fix cookie toggle indicator set to on even if the user had previously untoggled it.
 * Other minor fixes to the audit log reconsent.
