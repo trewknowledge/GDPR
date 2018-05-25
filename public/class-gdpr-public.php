@@ -358,6 +358,7 @@ class GDPR_Public {
 
 		foreach ( $consents as $consent ) {
 			add_user_meta( $user_id, 'gdpr_consents', $consent );
+			GDPR_Audit_Log::log( $user->ID, esc_html__( 'User provided new consent for %1$s.', 'gdpr' ), esc_html( $consent ) );
 		}
 
 		wp_send_json_success();
