@@ -75,36 +75,57 @@ class GDPR_Requests_Public extends GDPR_Requests {
 	 */
 	public function send_request_email() {
 		if ( ! isset( $_POST['type'] ) || ! in_array( $_POST['type'], parent::$allowed_types ) ) {
-			wp_send_json_error( array( 'title' => esc_html__( 'Error!', 'gdpr' ), 'content' => esc_html__( 'Invalid type of request. Please try again.', 'gdpr' ) ) );
+			wp_send_json_error(
+				array(
+					'title'   => esc_html__( 'Error!', 'gdpr' ),
+					'content' => esc_html__( 'Invalid type of request. Please try again.', 'gdpr' ),
+				)
+			);
 		}
 
 		if ( ! isset( $_POST['gdpr_request_nonce'] ) || ! wp_verify_nonce( sanitize_key( $_POST['gdpr_request_nonce'] ), 'gdpr-add-to-requests' ) ) {
-			wp_send_json_error( array( 'title' => esc_html__( 'Error!', 'gdpr' ), 'content' => esc_html__( 'We could not verify the security token. Please try again.', 'gdpr' ) ) );
+			wp_send_json_error(
+				array(
+					'title'   => esc_html__( 'Error!', 'gdpr' ),
+					'content' => esc_html__( 'We could not verify the security token. Please try again.', 'gdpr' ),
+				)
+			);
 		}
 
 		$use_recaptcha = get_option( 'gdpr_use_recaptcha', false );
 		if ( $use_recaptcha ) {
-			$site_key = get_option( 'gdpr_recaptcha_site_key', '' );
+			$site_key   = get_option( 'gdpr_recaptcha_site_key', '' );
 			$secret_key = get_option( 'gdpr_recaptcha_secret_key', '' );
 
 			if ( $site_key && $secret_key ) {
 				if ( ! isset( $_POST['g-recaptcha-response'] ) || ! $_POST['g-recaptcha-response'] ) {
-					wp_send_json_error( array( 'title' => esc_html__( 'Error!', 'gdpr' ), 'content' => esc_html__( 'Please verify that you are not a robot.', 'gdpr' ) ) );
+					wp_send_json_error(
+						array(
+							'title'   => esc_html__( 'Error!', 'gdpr' ),
+							'content' => esc_html__( 'Please verify that you are not a robot.', 'gdpr' ),
+						)
+					);
 				}
 
-				$response = wp_remote_post( 'https://www.google.com/recaptcha/api/siteverify', array(
-					'body' => array(
-						'secret' => $secret_key,
-						'response' => $_POST['g-recaptcha-response'],
-					),
-				) );
+				$response = wp_remote_post(
+					'https://www.google.com/recaptcha/api/siteverify', array(
+						'body' => array(
+							'secret'   => $secret_key,
+							'response' => $_POST['g-recaptcha-response'],
+						),
+					)
+				);
 
 				$recaptcha_result = wp_remote_retrieve_body( $response );
 				$recaptcha_result = json_decode( $recaptcha_result );
 				if ( ! $recaptcha_result || ! $recaptcha_result->success ) {
-					wp_send_json_error( array( 'title' => esc_html__( 'Error!', 'gdpr' ), 'content' => esc_html__( 'Please verify that you are not a robot.', 'gdpr' ) ) );
+					wp_send_json_error(
+						array(
+							'title'   => esc_html__( 'Error!', 'gdpr' ),
+							'content' => esc_html__( 'Please verify that you are not a robot.', 'gdpr' ),
+						)
+					);
 				}
-
 			}
 		}
 
@@ -118,17 +139,22 @@ class GDPR_Requests_Public extends GDPR_Requests {
 		}
 
 		if ( ! $user instanceof WP_User ) {
-			wp_send_json_error( array( 'title' => esc_html__( 'Error!', 'gdpr' ), 'content' => esc_html__( 'User not found.', 'gdpr' ) ) );
+			wp_send_json_error(
+				array(
+					'title'   => esc_html__( 'Error!', 'gdpr' ),
+					'content' => esc_html__( 'User not found.', 'gdpr' ),
+				)
+			);
 		}
 
 		$email_args = array(
 			'forgot_password_url' => add_query_arg(
-			  array(
-			    'action' => 'rp',
-			    'key' => get_password_reset_key( $user ),
-			    'login' => $user->user_login,
-			  ),
-			  wp_login_url()
+				array(
+					'action' => 'rp',
+					'key'    => get_password_reset_key( $user ),
+					'login'  => $user->user_login,
+				),
+				wp_login_url()
 			),
 		);
 
@@ -137,11 +163,18 @@ class GDPR_Requests_Public extends GDPR_Requests {
 		switch ( $type ) {
 			case 'delete':
 				if ( in_array( 'administrator', $user->roles ) ) {
-					$admins_query = new WP_User_Query( array(
-						'role' => 'Administrator',
-					) );
+					$admins_query = new WP_User_Query(
+						array(
+							'role' => 'Administrator',
+						)
+					);
 					if ( 1 === $admins_query->get_total() ) {
-						wp_send_json_error( array( 'title' => esc_html__( 'Error!', 'gdpr' ), 'content' => esc_html__( 'We can\'t delete this user.', 'gdpr' ) ) );
+						wp_send_json_error(
+							array(
+								'title'   => esc_html__( 'Error!', 'gdpr' ),
+								'content' => esc_html__( 'We can\'t delete this user.', 'gdpr' ),
+							)
+						);
 					}
 				}
 				break;
@@ -149,7 +182,12 @@ class GDPR_Requests_Public extends GDPR_Requests {
 			case 'rectify':
 			case 'complaint':
 				if ( ! $data ) {
-					wp_send_json_error( array( 'title' => esc_html__( 'Error!', 'gdpr' ), 'content' => esc_html__( 'Required information is missing from the form.', 'gdpr' ) ) );
+					wp_send_json_error(
+						array(
+							'title'   => esc_html__( 'Error!', 'gdpr' ),
+							'content' => esc_html__( 'Required information is missing from the form.', 'gdpr' ),
+						)
+					);
 				}
 				$email_args['data'] = $data;
 				break;
@@ -158,44 +196,53 @@ class GDPR_Requests_Public extends GDPR_Requests {
 		$key = parent::add_to_requests( $user->user_email, $type, $data );
 
 		if ( 'export-data' !== $type ) {
-		  $email_args['confirm_url'] = add_query_arg(
-		    array(
-		      'type' => $type,
-		      'key' => $key,
-		      'email' => $user->user_email,
-		    ),
-		    home_url()
-		  );
+			$email_args['confirm_url'] = add_query_arg(
+				array(
+					'type'  => $type,
+					'key'   => $key,
+					'email' => $user->user_email,
+				),
+				home_url()
+			);
 		} else {
-			$email_args['confirm_url_xml'] = add_query_arg(
-		    array(
-		      'type'   => $type,
-		      'key'    => $key,
-		      'email'  => $user->user_email,
-		      'format' => 'xml',
-		    ),
-		    home_url()
-		  );
+			$email_args['confirm_url_xml']  = add_query_arg(
+				array(
+					'type'   => $type,
+					'key'    => $key,
+					'email'  => $user->user_email,
+					'format' => 'xml',
+				),
+				home_url()
+			);
 			$email_args['confirm_url_json'] = add_query_arg(
-		    array(
-		      'type'   => $type,
-		      'key'    => $key,
-		      'email'  => $user->user_email,
-		      'format' => 'json',
-		    ),
-		    home_url()
-		  );
+				array(
+					'type'   => $type,
+					'key'    => $key,
+					'email'  => $user->user_email,
+					'format' => 'json',
+				),
+				home_url()
+			);
 		}
-
 
 		if ( GDPR_Email::send(
 			$user->user_email,
 			"{$type}-request",
 			$email_args
 		) ) {
-			wp_send_json_success( array( 'title' => esc_html__( 'Email confirmation', 'gdpr' ), 'content' => esc_html__( 'We\'ve sent you a confirmation email.', 'gdpr' ) ) );
+			wp_send_json_success(
+				array(
+					'title'   => esc_html__( 'Email confirmation', 'gdpr' ),
+					'content' => esc_html__( 'We\'ve sent you a confirmation email.', 'gdpr' ),
+				)
+			);
 		} else {
-			wp_send_json_error( array( 'title' => esc_html__( 'Error!', 'gdpr' ), 'content' => esc_html__( 'There was a problem with your request. Please try again later.', 'gdpr' ) ) );
+			wp_send_json_error(
+				array(
+					'title'   => esc_html__( 'Error!', 'gdpr' ),
+					'content' => esc_html__( 'There was a problem with your request. Please try again later.', 'gdpr' ),
+				)
+			);
 		}
 	}
 
@@ -210,9 +257,9 @@ class GDPR_Requests_Public extends GDPR_Requests {
 			return;
 		}
 
-		$type  = sanitize_text_field( wp_unslash( $_GET['type'] ) );
-		$key   = sanitize_text_field( wp_unslash( $_GET['key'] ) );
-		$email = sanitize_email( $_GET['email'] );
+		$type               = sanitize_text_field( wp_unslash( $_GET['type'] ) );
+		$key                = sanitize_text_field( wp_unslash( $_GET['key'] ) );
+		$email              = sanitize_email( $_GET['email'] );
 		$notification_email = sanitize_email( apply_filters( 'gdpr_admin_notification_email', get_option( 'admin_email' ) ) );
 
 		$user = get_user_by( 'email', $email );
@@ -222,7 +269,7 @@ class GDPR_Requests_Public extends GDPR_Requests {
 					add_query_arg(
 						array(
 							'user-not-found' => 1,
-							'notify' => 1,
+							'notify'         => 1,
 						),
 						home_url()
 					)
@@ -238,7 +285,7 @@ class GDPR_Requests_Public extends GDPR_Requests {
 					add_query_arg(
 						array(
 							'request-key-not-found' => 1,
-							'notify' => 1,
+							'notify'                => 1,
 						),
 						home_url()
 					)
@@ -253,7 +300,7 @@ class GDPR_Requests_Public extends GDPR_Requests {
 					add_query_arg(
 						array(
 							'request-key-not-match' => 1,
-							'notify' => 1,
+							'notify'                => 1,
 						),
 						home_url()
 					)
@@ -262,12 +309,12 @@ class GDPR_Requests_Public extends GDPR_Requests {
 			exit;
 		} else {
 			$notification_email_args = array(
-				'type' => $type,
+				'type'       => $type,
 				'review_url' => add_query_arg( array( 'page' => 'gdpr-requests#' . $type ), admin_url() ),
 			);
 			switch ( $type ) {
 				case 'delete':
-					$found_posts = parent::user_has_content( $user );
+					$found_posts  = parent::user_has_content( $user );
 					$needs_review = get_option( 'gdpr_deletion_needs_review', true );
 					if ( $found_posts || $needs_review ) {
 						parent::confirm_request( $key );
@@ -282,7 +329,7 @@ class GDPR_Requests_Public extends GDPR_Requests {
 								add_query_arg(
 									array(
 										'user-deleted' => 0,
-										'notify' => 1,
+										'notify'       => 1,
 									),
 									home_url()
 								)
@@ -296,7 +343,7 @@ class GDPR_Requests_Public extends GDPR_Requests {
 									add_query_arg(
 										array(
 											'user-deleted' => 1,
-											'notify' => 1,
+											'notify'       => 1,
 										),
 										home_url()
 									)
@@ -316,7 +363,7 @@ class GDPR_Requests_Public extends GDPR_Requests {
 							add_query_arg(
 								array(
 									'request-confirmed' => 1,
-									'notify' => 1,
+									'notify'            => 1,
 								),
 								home_url()
 							)
@@ -349,9 +396,9 @@ class GDPR_Requests_Public extends GDPR_Requests {
 		$export = GDPR::generate_export( $email, $format );
 		if ( $export ) {
 			parent::remove_from_requests( $key );
-			header('Content-Type: application/octet-stream');
-			header('Content-Description: File Transfer');
-			header('Content-Disposition: attachment; filename=' .  $email . '.' . $format);
+			header( 'Content-Type: application/octet-stream' );
+			header( 'Content-Description: File Transfer' );
+			header( 'Content-Disposition: attachment; filename=' . $email . '.' . $format );
 			echo $export;
 		}
 		die();
