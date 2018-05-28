@@ -154,7 +154,7 @@ msgstr ""
 msgid "Profile Updated. These are the user consents after the save:"
 msgstr ""
 
-#: admin/class-gdpr-admin.php:949, admin/partials/settings.php:335
+#: admin/class-gdpr-admin.php:953, admin/partials/settings.php:335
 msgid "Consents"
 msgstr ""
 
@@ -162,7 +162,7 @@ msgstr ""
 msgid "We could not verify the user email or the security token. Please try again."
 msgstr ""
 
-#: admin/class-gdpr-requests-admin.php:37, admin/class-gdpr-requests-admin.php:289, admin/class-gdpr-requests-admin.php:336, public/class-gdpr-requests-public.php:145, public/partials/confirmation-screens.php:34
+#: admin/class-gdpr-requests-admin.php:37, admin/class-gdpr-requests-admin.php:289, admin/class-gdpr-requests-admin.php:336, public/class-gdpr-requests-public.php:146, public/partials/confirmation-screens.php:34
 msgid "User not found."
 msgstr ""
 
@@ -217,7 +217,7 @@ msgstr ""
 msgid "User %s was deleted from the site."
 msgstr ""
 
-#: admin/class-gdpr-requests-admin.php:281, admin/class-gdpr-requests-admin.php:322, public/class-gdpr-requests-public.php:81
+#: admin/class-gdpr-requests-admin.php:281, admin/class-gdpr-requests-admin.php:322, public/class-gdpr-requests-public.php:82
 msgid "We could not verify the security token. Please try again."
 msgstr ""
 
@@ -552,7 +552,7 @@ msgstr ""
 msgid "I Agree"
 msgstr ""
 
-#: public/class-gdpr-public.php:202, public/class-gdpr-public.php:367, public/class-gdpr-requests-public.php:80, public/class-gdpr-requests-public.php:89, public/class-gdpr-requests-public.php:104, public/class-gdpr-requests-public.php:124, public/class-gdpr-requests-public.php:144, public/class-gdpr-requests-public.php:174, public/class-gdpr-requests-public.php:187, public/class-gdpr-requests-public.php:242, public/partials/confirmation-screens.php:33, public/partials/confirmation-screens.php:37, public/partials/confirmation-screens.php:41
+#: public/class-gdpr-public.php:202, public/class-gdpr-public.php:367, public/class-gdpr-requests-public.php:81, public/class-gdpr-requests-public.php:90, public/class-gdpr-requests-public.php:105, public/class-gdpr-requests-public.php:125, public/class-gdpr-requests-public.php:145, public/class-gdpr-requests-public.php:175, public/class-gdpr-requests-public.php:188, public/class-gdpr-requests-public.php:243, public/partials/confirmation-screens.php:33, public/partials/confirmation-screens.php:37, public/partials/confirmation-screens.php:41
 msgid "Error!"
 msgstr ""
 
@@ -564,52 +564,52 @@ msgstr ""
 msgid "User provided new consent for %1$s."
 msgstr ""
 
-#: public/class-gdpr-requests-public.php:90
+#: public/class-gdpr-requests-public.php:91
 msgid "Invalid type of request. Please try again."
 msgstr ""
 
-#: public/class-gdpr-requests-public.php:105, public/class-gdpr-requests-public.php:125
+#: public/class-gdpr-requests-public.php:106, public/class-gdpr-requests-public.php:126
 msgid "Please verify that you are not a robot."
 msgstr ""
 
-#: public/class-gdpr-requests-public.php:175
+#: public/class-gdpr-requests-public.php:176
 msgid "We can't delete this user."
 msgstr ""
 
-#: public/class-gdpr-requests-public.php:188
+#: public/class-gdpr-requests-public.php:189
 msgid "Required information is missing from the form."
 msgstr ""
 
-#: public/class-gdpr-requests-public.php:235
+#: public/class-gdpr-requests-public.php:236
 msgid "Email confirmation"
 msgstr ""
 
-#: public/class-gdpr-requests-public.php:236
+#: public/class-gdpr-requests-public.php:237
 msgid "We've sent you a confirmation email."
 msgstr ""
 
-#: public/class-gdpr-requests-public.php:243
+#: public/class-gdpr-requests-public.php:244
 msgid "There was a problem with your request. Please try again later."
 msgstr ""
 
-#: public/class-gdpr-requests-public.php:322
+#: public/class-gdpr-requests-public.php:323
 msgid "User confirmed a request to be deleted."
 msgstr ""
 
-#: public/class-gdpr-requests-public.php:324
+#: public/class-gdpr-requests-public.php:325
 msgid "Content was found for that user."
 msgstr ""
 
-#: public/class-gdpr-requests-public.php:326
+#: public/class-gdpr-requests-public.php:327
 msgid "User added to the erasure review table."
 msgstr ""
 
-#: public/class-gdpr-requests-public.php:360
+#: public/class-gdpr-requests-public.php:361
 msgid "User placed a request for rectification or a complaint."
 msgstr ""
 
 #. translators: File format. Can be XML or JSON
-#: public/class-gdpr-requests-public.php:377
+#: public/class-gdpr-requests-public.php:378
 msgid "User downloaded all their data in %s format."
 msgstr ""
 
@@ -653,7 +653,7 @@ msgstr ""
 msgid "Manually add a user"
 msgstr ""
 
-#: admin/partials/requests.php:164, admin/partials/tools.php:61, admin/partials/tools.php:123
+#: admin/partials/requests.php:164, admin/partials/tools.php:61, admin/partials/tools.php:123, public/partials/complaint-form.php:6, public/partials/delete-form.php:19, public/partials/export-data-form.php:6, public/partials/rectify-form.php:6
 msgid "email@domain.com"
 msgstr ""
 
@@ -854,7 +854,7 @@ msgid "Category name"
 msgstr ""
 
 #: admin/partials/settings.php:200
-msgid "Add tab"
+msgid "Add cookie category"
 msgstr ""
 
 #: admin/partials/settings.php:204
@@ -915,6 +915,10 @@ msgstr ""
 
 #: admin/partials/settings.php:272, admin/partials/settings.php:273
 msgid "E.g. facebook.com"
+msgstr ""
+
+#: admin/partials/settings.php:279, admin/partials/templates/tmpl-cookies.php:78
+msgid "domain.com"
 msgstr ""
 
 #: admin/partials/settings.php:280, admin/partials/templates/tmpl-cookies.php:79
@@ -1293,10 +1297,6 @@ msgstr ""
 
 #: admin/partials/templates/tmpl-cookies.php:71, admin/partials/templates/tmpl-cookies.php:72
 msgid "E.g. youtube.com"
-msgstr ""
-
-#: admin/partials/templates/tmpl-cookies.php:78
-msgid "domain.com"
 msgstr ""
 
 #: admin/partials/templates/tmpl-cookies.php:107

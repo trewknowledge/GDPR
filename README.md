@@ -157,6 +157,18 @@ Activating this plugin does not guarantee that an organisation is successfully m
 
 ## Changelog
 
+##### 2.0.7
+* Changing some texts to be consistent.
+* Cleaned up code with VIP Code Standard.
+* Improved security.
+* Fix internet explorer bug.
+* Fix JS function with wrong variable name when an AJAX error happened.
+* Fix Warning on woocommerce consent checkboxes.
+* Renaming buttons and translating placeholders.
+* Added another parameter to the request forms function and shortcode to allow users to customize the button text.
+* Fix a bug in the privacy preferences center when you moved to a different page without accepting cookies it would uncheck fields that should continue being checked.
+* Fix settings tooltips z-index to sit on top of other elements.
+
 ##### 2.0.6
 * Fix XML export error.
 
