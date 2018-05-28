@@ -26,7 +26,7 @@ class GDPR_Requests_Admin extends GDPR_Requests {
 	 * @author Fernando Claussen <fernandoclaussen@gmail.com>
 	 */
 	public function add_to_deletion_requests() {
-		if ( ! isset( $_POST['gdpr_deletion_requests_nonce'] ) || ! wp_verify_nonce( sanitize_key( $_POST['gdpr_deletion_requests_nonce'] ), 'add-to-deletion-requests' ) ) {
+		if ( ! isset( $_POST['gdpr_deletion_requests_nonce'] ) || ! wp_verify_nonce( sanitize_key( $_POST['gdpr_deletion_requests_nonce'] ), 'gdpr-add-to-deletion-requests' ) ) {
 			wp_die( esc_html__( 'We could not verify the user email or the security token. Please try again.', 'gdpr' ) );
 		}
 

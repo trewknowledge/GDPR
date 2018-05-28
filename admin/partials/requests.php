@@ -28,7 +28,7 @@
 		<?php endforeach; ?>
 	</div>
 
-	<div class="tab hidden" data-id="rectify">
+	<div class="gdpr-tab hidden" data-id="rectify">
 		<h2><?php esc_html_e( 'Rectify Data', 'gdpr' ) ?></h2>
 		<table class="widefat gdpr-request-table">
 			<thead>
@@ -85,7 +85,7 @@
 		</table>
 	</div>
 
-	<div class="tab hidden" data-id="complaint">
+	<div class="gdpr-tab hidden" data-id="complaint">
 		<h2><?php esc_html_e( 'Complaints', 'gdpr' ) ?></h2>
 		<table class="widefat gdpr-request-table">
 			<thead>
@@ -142,13 +142,13 @@
 		</table>
 	</div>
 
-	<div class="tab hidden" data-id="delete">
+	<div class="gdpr-tab hidden" data-id="delete">
 		<h2><?php esc_html_e( 'Right to erasure', 'gdpr' ) ?></h2>
 		<div class="postbox not-full">
 			<form class="gdpr-manual-email-lookup" method="post" action="<?php echo esc_url( admin_url('admin-post.php') ); ?>">
 				<div class="inside">
 					<input type="hidden" name="action" value="gdpr_add_to_deletion_requests">
-					<?php wp_nonce_field( 'add-to-deletion-requests', 'gdpr_deletion_requests_nonce' ); ?>
+					<?php wp_nonce_field( 'gdpr-add-to-deletion-requests', 'gdpr_deletion_requests_nonce' ); ?>
 					<h4>
 						<label for="gdpr-request-email-lookup"><?php esc_html_e( 'Manually add a user', 'gdpr' ); ?></label>
 					</h4>

@@ -69,7 +69,6 @@ class GDPR {
 		$this->plugin_name = 'gdpr';
 
 		$this->load_dependencies();
-		$this->set_locale();
 		$this->define_common_hooks();
 		$this->define_admin_hooks();
 		$this->define_public_hooks();
@@ -139,9 +138,8 @@ class GDPR {
 	 * Define the locale for this plugin for internationalization.
 	 * @since  1.0.0
 	 * @author Fernando Claussen <fernandoclaussen@gmail.com>
-	 * @access private
 	 */
-	private function set_locale() {
+	public function set_locale() {
 
 		load_plugin_textdomain(
 			'gdpr',
@@ -176,14 +174,29 @@ class GDPR {
 		$telemetry      = new GDPR_Telemetry( $this->get_plugin_name(), $this->get_version() );
 		$requests       = new GDPR_Requests( $this->get_plugin_name(), $this->get_version() );
 		$plugin_emails  = new GDPR_Email();
+		$woo_add_to_registration = get_option( 'gdpr_add_consent_checkboxes_registration', false );
+		$woo_add_to_checkout = get_option( 'gdpr_add_consent_checkboxes_checkout', false );
 
+		add_filter( 'nonce_user_logged_out', array( $this, 'woo_nonce_fix' ), 100, 2 );
+		add_action( 'plugins_loaded', array( $this, 'set_locale' ) );
+		add_action( 'bp_account_details_fields', array( __CLASS__, 'consent_checkboxes' ) );
+		if ( $woo_add_to_registration ) {
+			add_action( 'woocommerce_register_form', array( __CLASS__, 'consent_checkboxes' ) );
+		}
+		if ( $woo_add_to_checkout ) {
+			add_action( 'woocommerce_checkout_update_user_meta', array( $plugin_admin, 'woocommerce_checkout_save_consent' ), 10, 2 );
+			add_filter( 'woocommerce_checkout_fields', array( $plugin_admin, 'woocommerce_consent_checkboxes' ) );
+		}
+		add_filter( 'manage_users_custom_column', array( $plugin_admin, 'add_consents_to_consents_column' ), 10, 3 );
+		add_filter( 'manage_users_columns', array( $plugin_admin, 'add_consents_column_to_user_table' ) );
 		add_action( 'show_user_profile', array( $plugin_admin, 'edit_user_profile' ) );
 		add_action( 'personal_options_update', array( $plugin_admin, 'user_profile_update' ) );
-		add_action( 'admin_notices', array( $plugin_admin, 'privacy_policy_page_missing' ) );
-		add_action( 'admin_notices', array( $plugin_admin, 'privacy_policy_updated_notice' ) );
-		add_action( 'wp_ajax_ignore_privacy_policy_update', array( $plugin_admin, 'ignore_privacy_policy_update' ) );
-		add_action( 'admin_post_seek_consent', array( $plugin_admin, 'seek_consent' ) );
-		add_action( 'publish_page', array( $plugin_admin, 'privacy_policy_updated' ), 10, 2 );
+		add_action( 'admin_notices', array( $plugin_admin, 'policy_updated_notice' ) );
+		add_action( 'admin_notices', array( $plugin_admin, 'review_settings_after_v2_notice' ) );
+		add_action( 'upgrader_process_complete', array( $plugin_admin, 'upgrade_completed' ), 10, 2 );
+		add_action( 'wp_ajax_ignore_policy_update', array( $plugin_admin, 'ignore_policy_update' ) );
+		add_action( 'wp_ajax_seek_consent', array( $plugin_admin, 'seek_consent' ) );
+		add_action( 'publish_page', array( $plugin_admin, 'policy_updated' ), 10, 2 );
 		add_action( 'admin_enqueue_scripts', array( $plugin_admin, 'enqueue_styles' ) );
 		add_action( 'admin_enqueue_scripts', array( $plugin_admin, 'enqueue_scripts' ) );
 		add_action( 'admin_menu', array( $plugin_admin, 'add_menu' ) );
@@ -219,6 +232,20 @@ class GDPR {
 	}
 
 	/**
+	 * Fixes nonce manipulation made by Woocommerce.
+	 * @param  int $user_id The user id.
+	 * @param  string $action  The nonce Action.
+	 * @return int          The user id.
+	 */
+	function woo_nonce_fix( $user_id, $action ) {
+		if ( ( 0 !== $user_id ) && $action && ( false !== strpos( $action, 'gdpr-' ) ) ) {
+			$user_id = 0;
+		}
+
+		return $user_id;
+	}
+
+	/**
 	 * Register all of the hooks related to the public-facing functionality
 	 * of the plugin.
 	 *
@@ -236,18 +263,35 @@ class GDPR {
 		add_action( 'init',                                              array( $plugin_public, 'set_plugin_cookies' ) );
 		add_action( 'wp_footer',                                         array( $plugin_public, 'overlay' ) );
 		add_action( 'wp_footer',                                         array( $plugin_public, 'privacy_bar' ) );
+		add_action( 'wp_footer',                                         array( $plugin_public, 'is_consent_needed' ) );
 		add_action( 'wp_footer',                                         array( $plugin_public, 'privacy_preferences_modal' ) );
 		add_action( 'wp_footer',                                         array( $plugin_public, 'confirmation_screens' ) );
-		add_action( 'wp_footer',                                         array( $plugin_public, 'is_consent_needed' ) );
 		add_action( 'wp_ajax_disagree_with_terms',                       array( $plugin_public, 'logout' ) );
 		add_action( 'wp_ajax_agree_with_terms',                          array( $plugin_public, 'agree_with_terms' ) );
-		add_action( 'admin_post_gdpr_update_privacy_preferences',        array( $plugin_public, 'update_privacy_preferences' ) );
-		add_action( 'admin_post_nopriv_gdpr_update_privacy_preferences', array( $plugin_public, 'update_privacy_preferences' ) );
+		add_action( 'wp_ajax_gdpr_update_privacy_preferences',           array( $plugin_public, 'update_privacy_preferences' ) );
+		add_action( 'wp_ajax_nopriv_gdpr_update_privacy_preferences',    array( $plugin_public, 'update_privacy_preferences' ) );
+		add_action( 'wp_ajax_agree_with_new_policies',                   array( $plugin_public, 'agree_with_new_policies' ) );
+		add_action( 'wp_ajax_nopriv_agree_with_new_policies',            array( $plugin_public, 'agree_with_new_policies' ) );
 
 		add_action( 'wp', array( $requests_public, 'request_confirmed' ) );
-		add_action( 'admin_post_gdpr_send_request_email', array( $requests_public, 'send_request_email' ) );
-		add_action( 'admin_post_nopriv_gdpr_send_request_email', array( $requests_public, 'send_request_email' ) );
-		add_action( 'mail_export_data', array( $requests_public, 'mail_export_data' ), 10, 3 ); // CRON JOB
+		add_action( 'wp_ajax_gdpr_send_request_email', array( $requests_public, 'send_request_email' ) );
+		add_action( 'wp_ajax_nopriv_gdpr_send_request_email', array( $requests_public, 'send_request_email' ) );
+	}
+
+	/**
+	 * Checks in an array if a value is found using LIKE instead of =.
+	 * @since  1.4.3
+	 * @author Fernando Claussen <fernandoclaussen@gmail.com>
+	 * @return Bool
+	 */
+	public static function similar_in_array( $needle, $haystack ) {
+		foreach ( $haystack as $value ) {
+			if( stripos( strtolower($value) , strtolower($needle) ) !== false ) {
+				return true;
+			}
+		}
+
+		return false;
 	}
 
 	/**
@@ -273,10 +317,10 @@ class GDPR {
 
 	/**
 	 * Returns the consent checkboxes to be used across the site.
-	 * @since  1.1.7
+	 * @since  1.2.0
 	 * @author Fernando Claussen <fernandoclaussen@gmail.com>
 	 */
-	public static function get_consent_checkboxes() {
+	public static function get_consent_checkboxes( $consent_key = false ) {
 		$consent_types = get_option( 'gdpr_consent_types', array() );
 		$sent_extras = ( isset( $_POST['user_consents'] ) ) ? $_POST['user_consents'] : array();
 		$allowed_html = array(
@@ -287,10 +331,16 @@ class GDPR {
 			),
 		);
 
+		if ( $consent_key ) {
+			$consent_types = array_filter( $consent_types, function( $key ) use ( $consent_key ) {
+				return $key === $consent_key;
+			}, ARRAY_FILTER_USE_KEY );
+		}
+
 		ob_start();
 		foreach ( $consent_types as $key => $consent ) {
-			$required = ( isset( $consent['required'] ) && $consent['required'] ) ? 'required' : '';
-			$checked = ( isset( $sent_extras[ $key ] ) ) ? checked( $sent_extras[ $key ], 1 ) : '';
+			$required = ( isset( $consent['policy-page'] ) && $consent['policy-page'] ) ? 'required' : '';
+			$checked = ( isset( $sent_extras[ $key ] ) ) ? checked( $sent_extras[ $key ], 1, false ) : '';
 			echo '<p>' .
 				'<input type="checkbox" name="user_consents[' . esc_attr( $key ) . ']" id="' . esc_attr( $key ) . '-consent" value="1" ' . $required . ' ' . $checked . '>' .
 				'<label for="' . esc_attr( $key ) . '-consent">' . wp_kses( $consent['registration'], $allowed_html ) . '</label>' .
@@ -305,8 +355,8 @@ class GDPR {
 	 * @since  1.1.4
 	 * @author Fernando Claussen <fernandoclaussen@gmail.com>
 	 */
-	public static function consent_checkboxes() {
-		echo self::get_consent_checkboxes();
+	public static function consent_checkboxes( $consent_key = false ) {
+		echo self::get_consent_checkboxes( $consent_key );
 	}
 
 	/**
@@ -339,6 +389,7 @@ class GDPR {
 			'gdpr_rectify_key',
 			'gdpr_complaint_key',
 			'gdpr_export-data_key',
+
 		);
 
 		return array_diff_key( $usermeta, array_flip( $remove_metadata ) );
@@ -363,6 +414,10 @@ class GDPR {
 		}
 
 		$usermeta      = self::get_user_meta( $user->ID );
+		$comments      = get_comments( array(
+			'author_email'       => $user->user_email,
+			'include_unapproved' => true,
+		) );
 		$user_consents = get_user_meta( $user->ID, 'gdpr_consents' );
 		$extra_content = apply_filters( 'gdpr_export_data_extra_tables', '', $email );
 
@@ -381,6 +436,21 @@ class GDPR {
 					}
 				}
 
+				$comments_array = array();
+				if ( ! empty( $comments ) ) {
+					foreach ( $comments as $k => $v ) {
+						$comments_array[ $k ] = array(
+							'comment_author' => $v->comment_author,
+							'comment_author_email' => $v->comment_author_email,
+							'comment_author_url' => $v->comment_author_url,
+							'comment_author_IP' => $v->comment_author_IP,
+							'comment_date' => $v->comment_date,
+							'comment_agent' => $v->comment_agent,
+							'comment_content' => $v->comment_content,
+						);
+					}
+				}
+
 				$json = array(
 					'Personal Information' => array(
 						'Username'     => $user->user_login,
@@ -394,6 +464,7 @@ class GDPR {
 					),
 					'Consents'             => $user_consents,
 					'Metadata'             => $metadata,
+					'Comments'             => $comments_array,
 				);
 
 				if ( $extra_content ) {
@@ -408,8 +479,10 @@ class GDPR {
 
 			default: // XML
 				$dom           = new DomDocument( '1.0', 'ISO-8859-1' );
+				$data_wrapper  = $dom->createElement( 'Data' );
+				$dom->appendChild( $data_wrapper );
 				$personal_info = $dom->createElement( 'Personal_Information' );
-				$dom->appendChild( $personal_info );
+				$data_wrapper->appendChild( $personal_info );
 				$personal_info->appendChild( $dom->createElement( 'Username', $user->user_login ) );
 				$personal_info->appendChild( $dom->createElement( 'First_Name', $user->first_name ) );
 				$personal_info->appendChild( $dom->createElement( 'Last_Name', $user->last_name ) );
@@ -421,26 +494,43 @@ class GDPR {
 
 				if ( ! empty( $user_consents ) ) {
 					$consents = $dom->createElement( 'Consents' );
-					$dom->appendChild( $consents );
+					$data_wrapper->appendChild( $consents );
 					foreach ( $user_consents as $consent_item ) {
 						$consents->appendChild( $dom->createElement( 'consent', $consent_item ) );
 					}
 				}
 
+				if ( ! empty( $comments ) ) {
+					$comments_node = $dom->createElement( 'Comments' );
+					$data_wrapper->appendChild( $comments_node );
+					foreach ( $comments as $k => $v ) {
+						$single_comment = $dom->createElement( 'Comment' );
+						$comments_node->appendChild( $single_comment );
+						$single_comment->appendChild( $dom->createElement( 'comment_author', htmlspecialchars( $v->comment_author ) ) );
+						$single_comment->appendChild( $dom->createElement( 'comment_author_email', htmlspecialchars( $v->comment_author_email ) ) );
+						$single_comment->appendChild( $dom->createElement( 'comment_author_url', htmlspecialchars( $v->comment_author_url ) ) );
+						$single_comment->appendChild( $dom->createElement( 'comment_author_IP', htmlspecialchars( $v->comment_author_IP ) ) );
+						$single_comment->appendChild( $dom->createElement( 'comment_date', htmlspecialchars( $v->comment_date ) ) );
+						$single_comment->appendChild( $dom->createElement( 'comment_agent', htmlspecialchars( $v->comment_agent ) ) );
+						$single_comment->appendChild( $dom->createElement( 'comment_content', htmlspecialchars( $v->comment_content ) ) );
+					}
+				}
+
 				$meta_data = $dom->createElement( 'Metadata' );
-				$dom->appendChild( $meta_data );
+				$data_wrapper->appendChild( $meta_data );
 
 				foreach ( $usermeta as $k => $v ) {
-					$key = $dom->createElement( $k );
+					$k = is_numeric( substr( $k, 0, 1 ) ) ? '_' . $k : $k;
+					$key = $dom->createElement( htmlspecialchars( $k ) );
 					$meta_data->appendChild( $key );
 					foreach ( $v as $value ) {
-						$key->appendChild( $dom->createElement( 'item', $value ) );
+						$key->appendChild( $dom->createElement( 'item', htmlspecialchars( $value ) ) );
 					}
 				}
 
 				if ( $extra_content ) {
 					$extra = $dom->createElement( $extra_content['name'] );
-					$dom->appendChild( $extra );
+					$data_wrapper->appendChild( $extra );
 					foreach ( $extra_content['content'] as $key => $obj ) {
 						$item = $extra->appendChild( $dom->createElement( 'item' ) );
 						foreach ( $obj as $k => $value ) {
@@ -465,7 +555,7 @@ class GDPR {
 	 * @author Fernando Claussen <fernandoclaussen@gmail.com>
 	 */
 	function export_data() {
-		if ( ! isset( $_POST['nonce'], $_POST['email'], $_POST['type'] ) || ! wp_verify_nonce( sanitize_key( wp_unslash( $_POST['nonce'] ) ), 'export-data' ) ) {
+		if ( ! isset( $_POST['nonce'], $_POST['email'], $_POST['type'] ) || ! wp_verify_nonce( sanitize_key( wp_unslash( $_POST['nonce'] ) ), 'gdpr-export-data' ) ) {
 			wp_send_json_error();
 		}
 
@@ -494,7 +584,7 @@ class GDPR {
 	 * @return void
 	 */
 	public static function save_consent( $user_id, $consent ) {
-		$registered_consent = get_option( 'gdpr_consent_types', array( 'privacy-policy' ) );
+		$registered_consent = get_option( 'gdpr_consent_types', array() );
 		$consent_ids = array_keys( $registered_consent );
 		$user = get_user_by( 'ID', $user_id );
 		$consent = sanitize_text_field( wp_unslash( $consent ) );

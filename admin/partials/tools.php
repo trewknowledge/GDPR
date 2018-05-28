@@ -51,12 +51,12 @@ if ( isset( $_GET['type'], $_GET['key'] ) ) {
 		<?php endforeach; ?>
 	</div>
 
-	<div class="tab hidden" data-id="access">
+	<div class="gdpr-tab hidden" data-id="access">
 		<h2><?php esc_html_e( 'Access Data', 'gdpr' ) ?></h2>
 		<div class="postbox not-full">
 			<form class="gdpr-access-data-lookup" method="post">
 				<div class="inside">
-					<?php wp_nonce_field( 'access-data', 'gdpr_access_data_nonce' ); ?>
+					<?php wp_nonce_field( 'gdpr-access-data', 'gdpr_access_data_nonce' ); ?>
 					<h4>
 						<label for="gdpr-request-email-lookup"><?php esc_html_e( 'Search by email', 'gdpr' ); ?></label>
 					</h4>
@@ -68,10 +68,10 @@ if ( isset( $_GET['type'], $_GET['key'] ) ) {
 		</div>
 	</div>
 
-	<div class="tab hidden" data-id="data-breach">
+	<div class="gdpr-tab hidden" data-id="data-breach">
 		<h2><?php esc_html_e( 'Data Breach', 'gdpr' ) ?></h2>
 		<form class="gdpr-data-breach-form" method="post" action="<?php echo esc_url( admin_url('admin-post.php') ); ?>">
-			<?php wp_nonce_field( 'data-breach', 'gdpr_data_breach_nonce' ); ?>
+			<?php wp_nonce_field( 'gdpr-data-breach', 'gdpr_data_breach_nonce' ); ?>
 			<input type="hidden" name="action" value="gdpr_data_breach">
 			<table class="form-table">
 				<tr>
@@ -85,14 +85,14 @@ if ( isset( $_GET['type'], $_GET['key'] ) ) {
 					<th><?php esc_html_e( 'Nature of the personal data breach', 'gdpr' ) ?></th>
 					<td>
 						<textarea name="gdpr-data-breach-nature" class="large-text" rows="5" required></textarea>
-						<span class="description"><?php esc_html_e( 'Describe the nature of the personal data breach including where possible, the categories and approximate number of data subjects concerned and the categories and approximate number of personal data records concerned.', 'gdpr' ) ?></span>
+						<span class="description"><?php esc_html_e( 'Describe the nature of the personal data breach including where possible, the categories and the approximate number of data subjects concerned and the categories and the approximate number of personal data records concerned.', 'gdpr' ) ?></span>
 					</td>
 				</tr>
 				<tr>
 					<th><?php esc_html_e( 'Name and contact details of the data protection officer', 'gdpr' ) ?></th>
 					<td>
 						<textarea name="gdpr-name-contact-details-protection-officer" class="large-text" rows="5" required></textarea>
-						<span class="description"><?php esc_html_e( 'Communicate the name and contact details of the data protection officer or other contact point where more information can be obtained.', 'gdpr' ) ?></span>
+						<span class="description"><?php esc_html_e( 'Communicate the name and contact details of the data protection officer or another point of contact where more information can be obtained.', 'gdpr' ) ?></span>
 					</td>
 				</tr>
 				<tr>
@@ -113,12 +113,12 @@ if ( isset( $_GET['type'], $_GET['key'] ) ) {
 		</form>
 	</div>
 
-	<div class="tab hidden" data-id="audit-log">
+	<div class="gdpr-tab hidden" data-id="audit-log">
 		<h2><?php esc_html_e( 'Audit Log', 'gdpr' ) ?></h2>
 		<div class="postbox not-full">
 			<form class="gdpr-audit-log-lookup" method="post">
 				<div class="inside">
-					<?php wp_nonce_field( 'audit-log', 'gdpr_audit_log_nonce' ); ?>
+					<?php wp_nonce_field( 'gdpr-audit-log', 'gdpr_audit_log_nonce' ); ?>
 					<h4>
 						<label for="gdpr-request-email-lookup"><?php esc_html_e( 'Search by email', 'gdpr' ); ?></label>
 					</h4>

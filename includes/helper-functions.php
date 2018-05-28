@@ -59,6 +59,14 @@ function gdpr_request_form_shortcode( $atts ) {
 
 add_shortcode( 'gdpr_request_form', 'gdpr_request_form_shortcode' );
 
+function gdpr_get_consent_checkboxes( $atts ) {
+	$atts = shortcode_atts( array(
+		'id' => false,
+	), $atts, 'gdpr_consent_checkboxes' );
+
+	return GDPR::get_consent_checkboxes( $atts['id'] );
+}
+
 /**
  * Checks if a cookie is allowed
  * @since  1.0.0
@@ -117,4 +125,8 @@ function has_consent( $consent ) {
 	}
 
 	return false;
+}
+
+function is_dnt() {
+	return ( isset( $_SERVER['HTTP_DNT'] ) && $_SERVER['HTTP_DNT'] === '1' );
 }
