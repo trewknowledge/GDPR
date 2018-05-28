@@ -893,6 +893,10 @@ class GDPR_Admin {
 	public function woocommerce_consent_checkboxes( $fields ) {
 		$consent_types = get_option( 'gdpr_consent_types', array() );
 
+		if ( empty( $consent_types ) ) {
+			return $fields;
+		}
+
 		foreach ( $consent_types as $key => $consent ) {
 			$required = ( isset( $consent['policy-page'] ) && $consent['policy-page'] ) ? 'required' : '';
 
