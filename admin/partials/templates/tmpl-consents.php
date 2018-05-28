@@ -17,8 +17,8 @@
 					<td>
 						<select name="gdpr_consent_types[{{data.key}}][policy-page]" id="consent-policy-page-{{data.key}}">
 							<option value=""></option>
-							<?php foreach ( $pages as $page ): ?>
-								<option value="<?php echo esc_attr( $page->ID ) ?>"><?php echo esc_html( $page->post_title ); ?></option>
+							<?php foreach ( $pages as $page ) : ?>
+								<option value="<?php echo esc_attr( $page->ID ); ?>"><?php echo esc_html( $page->post_title ); ?></option>
 							<?php endforeach ?>
 						</select>
 					</td>
