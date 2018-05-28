@@ -141,7 +141,7 @@
 							};
 						}
 					} else {
-						displayNotification( response.data.title, response.data.content );
+						displayNotification( res.data.title, res.data.content );
 					}
 				}
 			);
