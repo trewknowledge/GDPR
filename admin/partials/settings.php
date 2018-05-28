@@ -197,7 +197,7 @@
 		<hr>
 		<h2><?php esc_html_e( 'Cookies', 'gdpr' ); ?></h2>
 		<input type="text" id="cookie-tabs" class="regular-text" placeholder="<?php esc_attr_e( 'Category name', 'gdpr' ); ?>">
-		<button class="button button-primary add-tab"><?php esc_html_e( 'Add tab', 'gdpr' ); ?></button>
+		<button class="button button-primary add-tab"><?php esc_html_e( 'Add cookie category', 'gdpr' ); ?></button>
 		<div id="gdpr-cookie-categories">
 			<?php foreach ( $registered_cookies as $cat_id => $cookie_cat ) : ?>
 				<div class="postbox" id="cookie-tab-content-<?php echo esc_attr( $cat_id ); ?>">
@@ -276,7 +276,7 @@
 					</label>
 				</th>
 				<td>
-					<input type="text" id="hosts-<?php echo esc_attr( $cat_id ); ?>" class="regular-text" placeholder="domain.com" />
+					<input type="text" id="hosts-<?php echo esc_attr( $cat_id ); ?>" class="regular-text" placeholder="<?php esc_attr_e( 'domain.com', 'gdpr' ); ?>" />
 					<button class="button button-primary add-host" data-tabid="<?php echo esc_attr( $cat_id ); ?>"><?php esc_html_e( 'Add', 'gdpr' ); ?></button>
 					<br>
 					<span class="description"><?php esc_html_e( 'Cookies that are set by a third party, like facebook.com.', 'gdpr' ); ?></span>
