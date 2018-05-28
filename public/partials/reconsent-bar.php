@@ -15,7 +15,7 @@
 <div class="gdpr gdpr-reconsent-bar" style="display:none;">
 	<div class="gdpr-wrapper">
 		<div class="gdpr-content">
-			<p><?php esc_html_e( 'Some of our policies have been updated. Please make sure to select the "View" link next each item in order to view changes before agreeing.', 'gdpr' ); ?></p>
+			<p><?php esc_html_e( 'Some of our policies have been updated. Please make sure to select the "View" link next to each item in order to view changes before agreeing.', 'gdpr' ); ?></p>
 		</div>
 		<div class="gdpr-right">
 			<ul class="gdpr-policy-list">
