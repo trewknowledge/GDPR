@@ -296,8 +296,7 @@ class GDPR_Public {
 	}
 
 	protected function is_crawler() {
-	  return ( isset( $_SERVER['HTTP_USER_AGENT'] ) && preg_match('/bot|crawl|slurp|spider|mediapartners/i', $_SERVER['HTTP_USER_AGENT'] );
-	  );
+	  return ( isset( $_SERVER['HTTP_USER_AGENT'] ) && preg_match('/bot|crawl|slurp|spider|mediapartners/i', $_SERVER['HTTP_USER_AGENT'] ) );
 	}
 
 	/**
