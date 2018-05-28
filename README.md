@@ -6,6 +6,7 @@
 ![Minimum PHP version](https://img.shields.io/badge/PHP-%5E5.6-blue.svg)
 [![WordPress plugin](https://img.shields.io/wordpress/plugin/dt/gdpr.svg)](https://wordpress.org/plugins/gdpr/)
 [![WordPress plugin rating](https://img.shields.io/wordpress/plugin/r/gdpr.svg)](https://wordpress.org/support/plugin/gdpr/reviews/#new-post)
+![Translations](https://img.shields.io/badge/dynamic/json.svg?label=Translations&url=https%3A%2F%2Fapi.wordpress.org%2Ftranslations%2Fplugins%2F1.0%2F%3Fslug%3Dgdpr&query=%24.translations.length&colorB=%23ff69b4)
 
 
 
