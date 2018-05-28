@@ -1,5 +1,14 @@
 # GDPR
 
+[![Build Status](https://travis-ci.com/trewknowledge/GDPR.svg?branch=master)](https://travis-ci.com/trewknowledge/GDPR)
+[![license](https://img.shields.io/github/license/trewknowledge/gdpr.svg?style=flat)](https://www.gnu.org/licenses/old-licenses/gpl-2.0.html)
+![Tested up to](https://img.shields.io/wordpress/v/gdpr.svg)
+![Minimum PHP version](https://img.shields.io/badge/PHP-%5E5.6-blue.svg)
+[![WordPress plugin](https://img.shields.io/wordpress/plugin/dt/gdpr.svg)](https://wordpress.org/plugins/gdpr/)
+[![WordPress plugin rating](https://img.shields.io/wordpress/plugin/r/gdpr.svg)](https://wordpress.org/support/plugin/gdpr/reviews/#new-post)
+
+
+
 This plugin is meant to assist a Controller, Data Processor, and Data Protection Officer (DPO) with efforts to meet the obligations and rights enacted under the GDPR.
 
 ## Documentation
