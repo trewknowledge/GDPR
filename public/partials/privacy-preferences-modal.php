@@ -109,7 +109,7 @@
 											foreach ( $cookies_used as $cookie ) {
 												$site_cookies[] = trim( $cookie );
 												$all_cookies[]  = trim( $cookie );
-												if ( ! empty( $approved_cookies ) ) {
+												if ( ! empty( $approved_cookies ) && isset( $_COOKIE['gdpr']['privacy_bar'] ) ) {
 													if ( in_array( trim( $cookie ), $approved_cookies, true ) ) {
 														$enabled = true;
 													} else {
