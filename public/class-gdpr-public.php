@@ -148,7 +148,7 @@ class GDPR_Public {
 
 		$privacy_bar_enabled = apply_filters( 'gdpr_privacy_bar_display', $privacy_bar_enabled );
 
-		if ( empty( $content ) || ! $privacy_bar_enabled ) {
+		if ( empty( $content ) || ! $privacy_bar_enabled || $this->is_crawler() ) {
 			return;
 		}
 
@@ -293,6 +293,11 @@ class GDPR_Public {
 		}
 
 		include plugin_dir_path( __FILE__ ) . 'partials/reconsent-bar.php';
+	}
+
+	protected function is_crawler() {
+	  return ( isset( $_SERVER['HTTP_USER_AGENT'] ) && preg_match('/bot|crawl|slurp|spider|mediapartners/i', $_SERVER['HTTP_USER_AGENT'] );
+	  );
 	}
 
 	/**
