@@ -39,10 +39,11 @@ add_shortcode( 'gdpr_preferences', 'gdpr_preferences_shortcode' );
  * Load the request forms.
  * @since  1.0.0
  * @author Fernando Claussen <fernandoclaussen@gmail.com>
- * @param  string $type The type of request.
+ * @param  string $type        The type of request.
+ * @param  string $button_text The submit button text.
  */
-function gdpr_request_form( $type ) {
-	echo GDPR_Requests_Public::request_form( $type ); // WPCS: XSS ok.
+function gdpr_request_form( $type, $button_text = '' ) {
+	echo GDPR_Requests_Public::request_form( $type, $button_text ); // WPCS: XSS ok.
 }
 
 /**
@@ -55,10 +56,11 @@ function gdpr_request_form_shortcode( $atts ) {
 	$atts = shortcode_atts(
 		array(
 			'type' => '',
+			'text' => '',
 		), $atts, 'gdpr_request_form'
 	);
 
-	return GDPR_Requests_Public::request_form( $atts['type'] );
+	return GDPR_Requests_Public::request_form( $atts['type'], $atts['text'] );
 }
 
 add_shortcode( 'gdpr_request_form', 'gdpr_request_form_shortcode' );

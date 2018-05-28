@@ -54,10 +54,11 @@ class GDPR_Requests_Public extends GDPR_Requests {
 	 * @since  1.0.0
 	 * @author Fernando Claussen <fernandoclaussen@gmail.com>
 	 * @static
-	 * @param  string $type The type of request to display the correct form.
+	 * @param  string $type        The type of request to display the correct form.
+	 * @param  string $button_text The submit button text.
 	 * @return mixed        Print the form html.
 	 */
-	public static function request_form( $type ) {
+	public static function request_form( $type, $submit_button_text = '' ) {
 		if ( ! in_array( $type, parent::$allowed_types, true ) ) {
 			return;
 		}
