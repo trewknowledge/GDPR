@@ -68,6 +68,19 @@
 						<input type="checkbox" name="gdpr_enable_telemetry_tracker" id="gdpr_enable_telemetry_tracker" value="1"  <?php checked( $enable_telemetry, true ); ?>><label for="gdpr_enable_telemetry_tracker"><span class="description"><?php esc_html_e( 'Toggles the Telemetry Tracker On/Off. (experimental)', 'gdpr' ); ?></span></label>
 					</td>
 				</tr>
+				<tr>
+					<th scope="row">
+						<label for="gdpr_hide_from_bots"><?php esc_html_e( 'Hide plugin content from bots', 'gdpr' ); ?>:</label>
+						<span class="screen-reader-text"><?php esc_attr_e( 'We detect if the user agent is a bot like GoogleBot and hide our added content from it. Displaying this can be harmful for SEO but for some reason you might want to do that.', 'gdpr' ); ?></span>
+						<span data-tooltip="<?php esc_attr_e( 'We detect if the user agent is a bot like GoogleBot and hide our added content from it. Displaying this can be harmful for SEO but for some reason you might want to do that.', 'gdpr' ); ?>">
+							<span class="dashicons dashicons-info"></span>
+						</span>
+					</th>
+					<td>
+						<?php $hide_from_bots = get_option( 'gdpr_hide_from_bots', true ); ?>
+						<input type="checkbox" name="gdpr_hide_from_bots" id="gdpr_hide_from_bots" value="1"  <?php checked( $hide_from_bots, true ); ?>>
+					</td>
+				</tr>
 			</tbody>
 		</table>
 		<hr>
@@ -98,8 +111,8 @@
 				<tr>
 					<th scope="row">
 						<label for="gdpr_cookie_banner_content"><?php esc_html_e( 'Privacy Bar Content', 'gdpr' ); ?>:</label>
-						<span class="screen-reader-text"><?php esc_attr_e( 'This is required if you want the privacy bar to show up.', 'gdpr' ); ?></span>
-						<span data-tooltip="<?php esc_attr_e( 'This is required if you want the privacy bar to show up.', 'gdpr' ); ?>">
+						<span class="screen-reader-text"><?php esc_attr_e( 'Try to add an brief explanation of how you use your user data in a few lines. This will show up in the privacy bar.', 'gdpr' ); ?></span>
+						<span data-tooltip="<?php esc_attr_e( 'Try to add an brief explanation of how you use your user data in a few lines. This will show up in the privacy bar.', 'gdpr' ); ?>">
 							<span class="dashicons dashicons-info"></span>
 						</span>
 					</th>

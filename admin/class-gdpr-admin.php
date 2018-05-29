@@ -210,6 +210,7 @@ class GDPR_Admin {
 			'gdpr_refresh_after_preferences_update'    => 'boolval',
 			'gdpr_enable_privacy_bar'                  => 'boolval',
 			'gdpr_display_cookie_categories_in_bar'    => 'boolval',
+			'gdpr_hide_from_bots'                      => 'boolval',
 		);
 		foreach ( $settings as $option_name => $sanitize_callback ) {
 			register_setting( 'gdpr', $option_name, array( 'sanitize_callback' => $sanitize_callback ) );

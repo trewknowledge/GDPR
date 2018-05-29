@@ -70,6 +70,7 @@ class GDPR_Activator {
 		add_option( 'gdpr_refresh_after_preferences_update', true );
 		add_option( 'gdpr_enable_privacy_bar', true );
 		add_option( 'gdpr_display_cookie_categories_in_bar', false );
+		add_option( 'gdpr_hide_from_bots', true );
 	}
 
 }
