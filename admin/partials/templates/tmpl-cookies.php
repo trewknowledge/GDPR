@@ -1,6 +1,6 @@
 <script type="text/html" id="tmpl-cookie-tabs">
 	<div class="postbox" id="cookie-tab-content-{{data.key}}">
-		<h2 class="hndle">{{data.name}}</h2>
+		<h2 class="hndle">{{data.name}}<button class="notice-dismiss" type="button"><span class="screen-reader-text"><?php esc_html_e( 'Remove this tab.', 'gdpr' ); ?></span></button></h2>
 		<div class="inside">
 			<table class="form-table">
 				<tr>
