@@ -18,8 +18,8 @@
 			<p><?php echo nl2br( wp_kses_post( $content ) ); ?></p>
 		</div>
 		<div class="gdpr-right">
-			<ul class="gdpr-cookie-categories">
-				<?php if ( $show_cookie_cat_checkboxes ) : ?>
+			<?php if ( $show_cookie_cat_checkboxes ) : ?>
+				<ul class="gdpr-cookie-categories">
 					<?php foreach ( $registered_cookies as $cookie_cat_id => $cookie_cat ) : ?>
 						<?php
 						$enabled = ( 'off' === $cookie_cat['status'] ) ? false : true;
@@ -32,8 +32,8 @@
 							<label for="gdpr-cookie-category-<?php echo esc_attr( $cookie_cat_id ); ?>"><?php echo esc_html( $cookie_cat['name'] ); ?></label>
 						</li>
 					<?php endforeach ?>
-				<?php endif ?>
-			</ul>
+				</ul>
+			<?php endif ?>
 			<div class="gdpr-buttons">
 				<button class="gdpr-preferences" type="button"><?php esc_html_e( 'Privacy Preferences', 'gdpr' ); ?></button>
 				<button class="gdpr-agreement" type="button"><?php echo esc_html( $button_text ); ?></button>
