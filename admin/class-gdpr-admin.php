@@ -792,6 +792,11 @@ class GDPR_Admin {
 	public function policy_updated( $id, $post ) {
 		$policies_updated  = get_option( 'gdpr_policies_updated', array() );
 		$consents          = get_option( 'gdpr_consent_types', array() );
+
+		if ( empty( $consents ) ) {
+			return;
+		}
+
 		$required_consents = array_filter(
 			$consents, function( $consent ) {
 				return ! empty( $consent['policy-page'] );
