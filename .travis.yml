@@ -3,10 +3,6 @@ dist: trusty
 
 language: php
 
-branches:
-  only:
-    - master
-
 cache:
   directories:
     - vendor
