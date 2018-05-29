@@ -167,6 +167,14 @@ Activating this plugin does not guarantee that an organisation is successfully m
 
 ## Changelog
 
+##### 2.0.8
+* Adding a setting to hide plugin generated markup from bots such as Googlebot.
+* Fix cookie category dismiss button not showing up after adding a new category. A save was required before the button would appear.
+* Display cookie categories that do not have anything in the cookies used option.
+* Fix warnings when no consent is registered.
+* Small style and markup enhancement.
+* A little cleanup to reduce WP server stress.
+
 ##### 2.0.7
 * Changing some texts to be consistent.
 * Cleaned up code with VIP Code Standard.

@@ -210,6 +210,7 @@ class GDPR_Admin {
 			'gdpr_refresh_after_preferences_update'    => 'boolval',
 			'gdpr_enable_privacy_bar'                  => 'boolval',
 			'gdpr_display_cookie_categories_in_bar'    => 'boolval',
+			'gdpr_hide_from_bots'                      => 'boolval',
 		);
 		foreach ( $settings as $option_name => $sanitize_callback ) {
 			register_setting( 'gdpr', $option_name, array( 'sanitize_callback' => $sanitize_callback ) );
@@ -541,6 +542,19 @@ class GDPR_Admin {
 				if ( 'gdpr/gdpr.php' === $plugin ) {
 					// Set a transient to record that our plugin has just been updated
 					set_transient( 'gdpr_updated', 1 );
+
+					// Add new options
+					add_option( 'gdpr_disable_css', false );
+					add_option( 'gdpr_enable_telemetry_tracker', false );
+					add_option( 'gdpr_use_recaptcha', false );
+					add_option( 'gdpr_recaptcha_site_key', '' );
+					add_option( 'gdpr_recaptcha_secret_key', '' );
+					add_option( 'gdpr_add_consent_checkboxes_registration', true );
+					add_option( 'gdpr_add_consent_checkboxes_checkout', true );
+					add_option( 'gdpr_refresh_after_preferences_update', true );
+					add_option( 'gdpr_enable_privacy_bar', true );
+					add_option( 'gdpr_display_cookie_categories_in_bar', false );
+					add_option( 'gdpr_hide_from_bots', true );
 				}
 			}
 		}
@@ -778,6 +792,11 @@ class GDPR_Admin {
 	public function policy_updated( $id, $post ) {
 		$policies_updated  = get_option( 'gdpr_policies_updated', array() );
 		$consents          = get_option( 'gdpr_consent_types', array() );
+
+		if ( empty( $consents ) ) {
+			return;
+		}
+
 		$required_consents = array_filter(
 			$consents, function( $consent ) {
 				return ! empty( $consent['policy-page'] );

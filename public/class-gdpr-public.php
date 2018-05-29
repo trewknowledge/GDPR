@@ -145,10 +145,10 @@ class GDPR_Public {
 		$registered_cookies         = get_option( 'gdpr_cookie_popup_content', array() );
 		$show_cookie_cat_checkboxes = get_option( 'gdpr_display_cookie_categories_in_bar', false );
 		$button_text                = apply_filters( 'gdpr_privacy_bar_button_text', esc_html__( 'I Agree', 'gdpr' ) );
+		$privacy_bar_enabled        = apply_filters( 'gdpr_privacy_bar_display', $privacy_bar_enabled );
+		$hide_from_bots             = get_option( 'gdpr_hide_from_bots', true );
 
-		$privacy_bar_enabled = apply_filters( 'gdpr_privacy_bar_display', $privacy_bar_enabled );
-
-		if ( empty( $content ) || ! $privacy_bar_enabled || $this->is_crawler() ) {
+		if ( ! $privacy_bar_enabled || ( $hide_from_bots && $this->is_crawler() ) ) {
 			return;
 		}
 
@@ -166,6 +166,11 @@ class GDPR_Public {
 		$approved_cookies       = isset( $_COOKIE['gdpr']['allowed_cookies'] ) ? json_decode( wp_unslash( $_COOKIE['gdpr']['allowed_cookies'] ) ) : array(); // WPCS: Input var ok, sanitization ok..
 		$user_consents          = isset( $_COOKIE['gdpr']['consent_types'] ) ? json_decode( wp_unslash( $_COOKIE['gdpr']['consent_types'] ) ) : array(); // WPCS: Input var ok, sanitization ok.
 		$tabs                   = get_option( 'gdpr_cookie_popup_content', array() );
+		$hide_from_bots         = get_option( 'gdpr_hide_from_bots', true );
+
+		if ( $hide_from_bots && $this->is_crawler() ) {
+			return;
+		}
 
 		include plugin_dir_path( __FILE__ ) . 'partials/privacy-preferences-modal.php';
 	}
@@ -281,6 +286,10 @@ class GDPR_Public {
 
 		$user          = wp_get_current_user();
 		$user_consents = get_user_meta( $user->ID, 'gdpr_consents' );
+
+		if ( empty( $user_consents ) || ! is_array( $user_consents ) ) {
+			return;
+		}
 
 		$updated_consents = array_filter(
 			$required_consents, function( $consent, $consent_id ) use ( $user_consents ) {
