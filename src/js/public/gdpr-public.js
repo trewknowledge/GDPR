@@ -159,28 +159,28 @@
 		});
 
 		/**
-		 * Close the privacy preferences modal.
+		 * Close the privacy/reconsent preferences modal.
 		 */
-		$(document).on('click', '.gdpr.gdpr-privacy-preferences .gdpr-close, .gdpr-overlay', function() {
+		$(document).on('click', '.gdpr.gdpr-privacy-preferences .gdpr-close, .gdpr-overlay, .gdpr.gdpr-reconsent-preferences .gdpr-close, .gdpr-overlay', function() {
 			$('.gdpr-overlay').fadeOut();
 			$('body').removeClass('gdpr-noscroll');
-			$('.gdpr.gdpr-privacy-preferences .gdpr-wrapper').fadeOut();
+			$('.gdpr.gdpr-privacy-preferences .gdpr-wrapper, .gdpr.gdpr-reconsent-preferences .gdpr-wrapper').fadeOut();
 		});
 
 		/**
 		 * Tab navigation for the privacy preferences modal.
 		 */
-		$(document).on('click', '.gdpr.gdpr-privacy-preferences .gdpr-tabs button', function() {
+		$(document).on('click', '.gdpr.gdpr-privacy-preferences .gdpr-tabs button, .gdpr.gdpr-reconsent-preferences .gdpr-tabs button', function() {
 			var target = '.' + $(this).data('target');
-			$('.gdpr.gdpr-privacy-preferences .gdpr-tab-content > div').removeClass('gdpr-active');
-			$('.gdpr.gdpr-privacy-preferences .gdpr-tab-content ' + target).addClass('gdpr-active');
+			$('.gdpr.gdpr-privacy-preferences .gdpr-tab-content > div, .gdpr.gdpr-reconsent-preferences .gdpr-tab-content > div').removeClass('gdpr-active');
+			$('.gdpr.gdpr-privacy-preferences .gdpr-tab-content ' + target + ', .gdpr.gdpr-reconsent-preferences .gdpr-tab-content ' + target).addClass('gdpr-active');
 
-			if ( $('.gdpr.gdpr-privacy-preferences .gdpr-tabs').hasClass('gdpr-mobile-expanded') ) {
-				$('.gdpr.gdpr-privacy-preferences .gdpr-mobile-menu button').removeClass('gdpr-active');
-				$('.gdpr.gdpr-privacy-preferences .gdpr-tabs').toggle();
+			if ( $('.gdpr.gdpr-privacy-preferences .gdpr-tabs, .gdpr.gdpr-reconsent-preferences .gdpr-tabs').hasClass('gdpr-mobile-expanded') ) {
+				$('.gdpr.gdpr-privacy-preferences .gdpr-mobile-menu button, .gdpr.gdpr-reconsent-preferences .gdpr-mobile-menu button').removeClass('gdpr-active');
+				$('.gdpr.gdpr-privacy-preferences .gdpr-tabs, .gdpr.gdpr-reconsent-preferences .gdpr-tabs').toggle();
 			}
 
-			$('.gdpr.gdpr-privacy-preferences .gdpr-tabs button').removeClass('gdpr-active');
+			$('.gdpr.gdpr-privacy-preferences .gdpr-tabs button, .gdpr.gdpr-reconsent-preferences .gdpr-tabs button').removeClass('gdpr-active');
 			$('.gdpr-subtabs li button').removeClass('gdpr-active');
 
 			if ( $(this).hasClass('gdpr-tab-button') ) {
@@ -197,15 +197,15 @@
 		/**
 		 * Mobile menu for privacy preferences modal.
 		 */
-		$(document).on('click', '.gdpr.gdpr-privacy-preferences .gdpr-mobile-menu button', function(e) {
+		$(document).on('click', '.gdpr.gdpr-privacy-preferences .gdpr-mobile-menu button, .gdpr.gdpr-reconsent-preferences .gdpr-mobile-menu button', function(e) {
 			$(this).toggleClass('gdpr-active');
-			$('.gdpr.gdpr-privacy-preferences .gdpr-tabs').toggle().addClass('gdpr-mobile-expanded');
+			$('.gdpr.gdpr-privacy-preferences .gdpr-tabs, .gdpr.gdpr-reconsent-preferences .gdpr-tabs').toggle().addClass('gdpr-mobile-expanded');
 		});
 
 		$(window).resize( function() {
-			if ( $(window).width() > 640 && $('.gdpr.gdpr-privacy-preferences .gdpr-tabs').hasClass('gdpr-mobile-expanded') ) {
-				$('.gdpr.gdpr-privacy-preferences .gdpr-mobile-menu button').removeClass('gdpr-active');
-				$('.gdpr.gdpr-privacy-preferences .gdpr-tabs').removeClass('gdpr-mobile-expanded').removeAttr('style');
+			if ( $(window).width() > 640 && $('.gdpr.gdpr-privacy-preferences .gdpr-tabs, .gdpr.gdpr-reconsent-preferences .gdpr-tabs').hasClass('gdpr-mobile-expanded') ) {
+				$('.gdpr.gdpr-privacy-preferences .gdpr-mobile-menu button, .gdpr.gdpr-reconsent-preferences .gdpr-mobile-menu button').removeClass('gdpr-active');
+				$('.gdpr.gdpr-privacy-preferences .gdpr-tabs, .gdpr.gdpr-reconsent-preferences .gdpr-tabs').removeClass('gdpr-mobile-expanded').removeAttr('style');
 			}
 		});
 

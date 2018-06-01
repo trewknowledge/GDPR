@@ -287,7 +287,7 @@ class GDPR_Public {
 		$user          = wp_get_current_user();
 		$user_consents = get_user_meta( $user->ID, 'gdpr_consents' );
 
-		if ( empty( $user_consents ) || ! is_array( $user_consents ) ) {
+		if ( ! is_array( $user_consents ) ) {
 			return;
 		}
 
@@ -302,6 +302,7 @@ class GDPR_Public {
 		}
 
 		include plugin_dir_path( __FILE__ ) . 'partials/reconsent-bar.php';
+		include plugin_dir_path( __FILE__ ) . 'partials/reconsent-modal.php';
 	}
 
 	protected function is_crawler() {

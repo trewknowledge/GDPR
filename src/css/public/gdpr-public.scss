@@ -4,6 +4,9 @@
 	overflow: hidden;
 	position: fixed;
 	width: 100%;
+	> *:not( .gdpr ), > *:not( .gdpr-overlay ) {
+		filter: blur( 10px );
+	}
 }
 
 .gdpr-hidden {
@@ -16,7 +19,7 @@
 	left: 0;
 	width: 100%;
 	height: 100%;
-	background: rgba(0,0,0,0.7);
+	background: linear-gradient(to left, rgba(0,0,0, 1), rgba(0,0,0, 0) 50%), linear-gradient(to right, rgba(0,0,0, 1), rgba(0,0,0, 0) 50%);
 	z-index: 99999999;
 	display: none;
 }
@@ -34,6 +37,7 @@
 		border: none;
 		margin: 0;
 		padding: 0;
+		transition: all 0.25s ease-in-out;
 	}
 	.h5{
 		font-size: 18px;
@@ -324,7 +328,7 @@
 			}
 		}
 	}
-	&.gdpr-privacy-preferences, &.gdpr-general-confirmation {
+	&.gdpr-privacy-preferences, &.gdpr-reconsent-preferences, &.gdpr-general-confirmation {
 		.gdpr-wrapper {
 			position: fixed;
 			top: 50%;
