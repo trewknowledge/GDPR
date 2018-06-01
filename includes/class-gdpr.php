@@ -322,6 +322,9 @@ class GDPR {
 	 */
 	public static function get_consent_checkboxes( $consent_key = false ) {
 		$consent_types = get_option( 'gdpr_consent_types', array() );
+		if ( empty( $consent_types ) ) {
+			return;
+		}
 		$sent_extras   = ( isset( $_POST['user_consents'] ) ) ? sanitize_text_field( wp_unslash( $_POST['user_consents'] ) ) : array(); // WPCS: Input var ok, CSRF ok.
 		$allowed_html  = array(
 			'a' => array(
