@@ -38,6 +38,11 @@ if ( ! defined( 'WPINC' ) ) {
 define( 'GDPR_VERSION', '2.0.9' );
 
 /**
+ * The minimum PHP version required to run the plugin.
+ */
+define( 'GDPR_REQUIRED_PHP_VERSION', '5.6' );
+
+/**
  * The code that runs during plugin activation.
  * This action is documented in includes/class-gdpr-activator.php
  */
