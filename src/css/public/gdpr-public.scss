@@ -162,7 +162,7 @@
 					.gdpr-cookie-categories-item, .gdpr-policy-list-item {
 						display: inline-block;
 						margin: 0 10px;
-						padding-top: 10px;
+						padding-top: 5px;
 						@include breakpoint( medium-small ) {
 							padding-top: 0;
 						}
@@ -233,7 +233,7 @@
 				color: #fff;
 				position: absolute;
 				left: -7px;
-				top: 10px;
+				top: 5px;
 			}
 			&:hover,
 			&:active,
@@ -245,7 +245,7 @@
 		}
 		button {
 			margin: 0 5px;
-			padding: 9px 10px;
+			padding: 5px 10px;
 			@include breakpoint(small-only) {
 				margin: 0;
 			}
@@ -254,9 +254,9 @@
 			position: relative;
 			font-size: 13px;
 			font-weight: normal;
-			padding: 12px 36px;
+			padding: 0 10px 1px;
 			height: auto;
-			line-height: 1.4285714;
+			line-height: 26px;
 			white-space: normal;
 			margin: 0;
 			border-width: 1px;
@@ -270,7 +270,7 @@
 			text-decoration: none;
 			text-shadow: 0 -1px 1px #006799, 1px 0 1px #006799, 0 1px 1px #006799, -1px 0 1px #006799;
 			@include breakpoint(small-only) {
-				padding: 7px 16px;
+				// padding: 7px 16px;
 			}
 			&:hover {
 				background: #008ec2;
