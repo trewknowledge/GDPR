@@ -287,7 +287,7 @@ class GDPR_Public {
 		$user          = wp_get_current_user();
 		$user_consents = get_user_meta( $user->ID, 'gdpr_consents' );
 
-		if ( empty( $user_consents ) || ! is_array( $user_consents ) ) {
+		if ( ! is_array( $user_consents ) ) {
 			return;
 		}
 
