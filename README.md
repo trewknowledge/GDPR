@@ -167,6 +167,10 @@ Activating this plugin does not guarantee that an organisation is successfully m
 
 ## Changelog
 
+##### 2.0.9
+* Fix a syntax error introduced after cleaning code with PHPCS.
+* Fix functions that were not checking if registered consents were empty before running.
+
 ##### 2.0.8
 * Adding a setting to hide plugin generated markup from bots such as Googlebot.
 * Fix cookie category dismiss button not showing up after adding a new category. A save was required before the button would appear.
