@@ -592,6 +592,9 @@ class GDPR {
 	 */
 	public static function save_consent( $user_id, $consent ) {
 		$registered_consent = get_option( 'gdpr_consent_types', array() );
+		if ( empty( $registered_consent ) ) {
+			return false;
+		}
 		$consent_ids        = array_keys( $registered_consent );
 		$user               = get_user_by( 'ID', $user_id );
 		$consent            = sanitize_text_field( wp_unslash( $consent ) );
