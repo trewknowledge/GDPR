@@ -12,9 +12,9 @@
  */
 ?>
 
-<div class="gdpr gdpr-reconsent-preferences">
-	<div class="gdpr-wrapper" style="display: block;">
-		<form method="post" class="gdpr-reconsent-preferences-frm">
+<div class="gdpr gdpr-reconsent">
+	<div class="gdpr-wrapper">
+		<form method="post" class="gdpr-reconsent-frm">
 			<input type="hidden" name="action" value="gdpr_update_reconsent_preferences">
 			<?php wp_nonce_field( 'gdpr-update-reconsent-preferences', 'update-reconsent-preferences-nonce' ); ?>
 			<header>
@@ -72,7 +72,10 @@
 				<input type="hidden" name="all_cookies" value="<?php echo esc_attr( json_encode( $all_cookies ) ); ?>">
 			</div>
 			<footer>
-				<input type="submit" value="<?php esc_attr_e( 'Accept', 'gdpr' ); ?>">
+				<div class="gdpr-buttons">
+					<input type="submit" value="<?php esc_attr_e( 'Agree', 'gdpr' ); ?>">
+					<span class="gdpr-disagree"><a href="#"><?php esc_attr_e( 'Disagree', 'gdpr' ); ?></a></span>
+				</div>
 			</footer>
 		</form>
 	</div>

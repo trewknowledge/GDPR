@@ -181,7 +181,7 @@ class GDPR_Public {
 	 * @author Fernando Claussen <fernandoclaussen@gmail.com>
 	 */
 	public function overlay() {
-		echo '<div class="gdpr-overlay"></div>';
+		echo '<div class="gdpr gdpr-overlay"></div>';
 	}
 
 	/**

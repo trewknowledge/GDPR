@@ -4,9 +4,6 @@
 	overflow: hidden;
 	position: fixed;
 	width: 100%;
-	> *:not( .gdpr ), > *:not( .gdpr-overlay ) {
-		filter: blur( 10px );
-	}
 }
 
 .gdpr-hidden {
@@ -19,7 +16,7 @@
 	left: 0;
 	width: 100%;
 	height: 100%;
-	background: linear-gradient(to left, rgba(0,0,0, 1), rgba(0,0,0, 0) 50%), linear-gradient(to right, rgba(0,0,0, 1), rgba(0,0,0, 0) 50%);
+	background: rgba(0,0,0, 0.8);
 	z-index: 99999999;
 	display: none;
 }
@@ -37,7 +34,6 @@
 		border: none;
 		margin: 0;
 		padding: 0;
-		transition: all 0.25s ease-in-out;
 	}
 	.h5{
 		font-size: 18px;
@@ -328,7 +324,7 @@
 			}
 		}
 	}
-	&.gdpr-privacy-preferences, &.gdpr-reconsent-preferences, &.gdpr-general-confirmation {
+	&.gdpr-privacy-preferences, &.gdpr-reconsent, &.gdpr-general-confirmation {
 		.gdpr-wrapper {
 			position: fixed;
 			top: 50%;
@@ -417,6 +413,10 @@
 						left: 0;
 						bottom: 5px;
 					}
+					.gdpr-buttons {
+						display: flex;
+						align-items: flex-end;
+					}
 					input[type="submit"] {
 						font-size: 13px;
 						font-weight: normal;
@@ -435,6 +435,7 @@
 						color: #fff;
 						text-decoration: none;
 						text-shadow: 0 -1px 1px #006799, 1px 0 1px #006799, 0 1px 1px #006799, -1px 0 1px #006799;
+						margin-right: 15px;
 						&:hover {
 							background: #008ec2;
 							border-color: #006799;
