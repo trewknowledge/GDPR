@@ -413,16 +413,18 @@ class GDPR_Telemetry {
 
 		/* Search for plugin */
 		if ( self::_localize_plugin( $path ) ) {
+			$data = self::_localize_plugin( $path );
 			return array(
 				'type' => 'Plugin',
-				'name' => self::_localize_plugin( $path )['Name'],
+				'name' => $data['Name'],
 			);
 
 			/* Search for theme */
 		} elseif ( self::_localize_theme( $path ) ) {
+			$data = self::_localize_theme( $path );
 			return array(
 				'type' => 'Theme',
-				'name' => self::_localize_theme( $path )->get( 'Name' ),
+				'name' => $data->get( 'Name' ),
 			);
 		}
 
