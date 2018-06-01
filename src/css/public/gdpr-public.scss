@@ -89,7 +89,7 @@
 		color: #fff;
 		z-index: 9999999;
 		.gdpr-wrapper{
-			padding: 20px 40px;
+			padding: 20px 60px;
 			display: flex;
 			justify-content: space-between;
 			align-items: center;
@@ -214,6 +214,30 @@
 							}
 						}
 					}
+				}
+			}
+			.gdpr-close {
+				color: #fff;
+				position: absolute;
+				top: 0;
+				right: 0;
+				cursor: pointer;
+				transition: all 0.2s ease-in-out;
+				padding: 15px 15px;
+				line-height: 0;
+				&:hover {
+					&:before {
+						transform: scale(1.5);
+					}
+				}
+				&:before {
+					content: '\00D7';
+					line-height: 12.5px;
+					font-size: 25px;
+					display: inline-block;
+					transition: all 0.2s ease-in-out;
+					transform: translateZ(0);
+					backface-visibility: hidden;
 				}
 			}
 		}
