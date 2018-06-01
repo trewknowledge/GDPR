@@ -413,7 +413,7 @@ class GDPR_Telemetry {
 
 		/* Search for plugin */
 		if ( self::_localize_plugin( $path ) ) {
-			$data = self::_localize_plugin( $path )
+			$data = self::_localize_plugin( $path );
 			return array(
 				'type' => 'Plugin',
 				'name' => $data['Name'],
