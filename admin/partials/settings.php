@@ -87,7 +87,6 @@
 		<h2 class="title"><?php esc_html_e( 'Privacy Center', 'gdpr' ); ?></h2>
 		<p>
 			<?php esc_html_e( 'This section handles the privacy bar and some of the privacy preferences window.', 'gdpr' ); ?><br>
-			<strong><?php esc_html_e( 'Important:', 'gdpr' ); ?></strong> <?php esc_html_e( 'If the privacy banner text is not filled out, the privacy banner will not show up. Even if you registered your cookies.', 'gdpr' ); ?></p>
 		<table class="form-table">
 			<tbody>
 				<tr>

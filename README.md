@@ -167,6 +167,10 @@ Activating this plugin does not guarantee that an organisation is successfully m
 
 ## Changelog
 
+##### 2.0.10
+* Fix new re-consent bar not showing if users had no prior consent.
+* Added a PHP version check on activation.
+
 ##### 2.0.9
 * Fix a syntax error introduced after cleaning code with PHPCS.
 * Fix functions that were not checking if registered consents were empty before running.
