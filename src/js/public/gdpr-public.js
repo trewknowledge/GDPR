@@ -28,7 +28,7 @@
 
 	function displayNotification( title, text, deletion ) {
 		deletion = typeof deletion !== 'undefined' ? true : false;
-
+		var scrollDistance = $(window).scrollTop();
 		$('.gdpr-general-confirmation .gdpr-box-title h3').html( title );
 		$('.gdpr-general-confirmation .gdpr-content p').html( text );
 		if ( deletion ) {
@@ -39,7 +39,7 @@
 		}
 
 		$('.gdpr-overlay').fadeIn();
-		$('body').addClass('gdpr-noscroll');
+		$('body').addClass('gdpr-noscroll').css('top', -scrollDistance);
 		$('.gdpr.gdpr-general-confirmation .gdpr-wrapper').css({
 			'display': 'flex',
 		}).hide().fadeIn();
@@ -56,6 +56,7 @@
 			e.preventDefault();
 			var that = $(this);
 			var formData = $(this).serialize();
+			var scrollDistance = $('body').css('top');
 
 			$.post(
 				GDPR.ajaxurl,
@@ -68,6 +69,7 @@
 						} else {
 							$('.gdpr-overlay').fadeOut();
 							$('body').removeClass('gdpr-noscroll');
+							$(window).scrollTop(Math.abs( parseInt( scrollDistance, 10 ) ) );
 							$('.gdpr.gdpr-privacy-preferences .gdpr-wrapper').fadeOut();
 							$('.gdpr-privacy-bar').fadeOut();
 						}
@@ -152,18 +154,21 @@
 		 */
 		$(document).on('click', '.gdpr-preferences', function(e) {
 			e.preventDefault();
-			var type = $(this).data('type');
+			var scrollDistance = $(window).scrollTop();
 			$('.gdpr-overlay').fadeIn();
-			$('body').addClass('gdpr-noscroll');
+			$('body').addClass('gdpr-noscroll').css('top', -scrollDistance);
 			$('.gdpr.gdpr-privacy-preferences .gdpr-wrapper').fadeIn();
 		});
 
 		/**
 		 * Close the privacy preferences modal.
 		 */
-		$(document).on('click', '.gdpr.gdpr-privacy-preferences .gdpr-close, .gdpr-overlay', function() {
+		$(document).on('click', '.gdpr.gdpr-privacy-preferences .gdpr-close, .gdpr-overlay', function(e) {
+			e.preventDefault();
+			var scrollDistance = $('body').css('top');
 			$('.gdpr-overlay').fadeOut();
 			$('body').removeClass('gdpr-noscroll');
+			$(window).scrollTop(Math.abs( parseInt( scrollDistance, 10 ) ) );
 			$('.gdpr.gdpr-privacy-preferences .gdpr-wrapper').fadeOut();
 		});
 
@@ -212,8 +217,9 @@
 		$('form.gdpr-add-to-deletion-requests').on('submit', function(e) {
 			if ( ! $(this).hasClass( 'confirmed' ) ) {
 				e.preventDefault();
+				var scrollDistance = $(window).scrollTop();
 				$('.gdpr-overlay').fadeIn();
-				$('body').addClass('gdpr-noscroll');
+				$('body').addClass('gdpr-noscroll').css('top', -scrollDistance);
 				$('.gdpr.gdpr-delete-confirmation .gdpr-wrapper').css({
 					'display': 'flex',
 				}).hide().fadeIn();
@@ -221,16 +227,19 @@
 		} );
 
 		$(document).on('click', '.gdpr.gdpr-delete-confirmation button.gdpr-delete-account', function() {
+			var scrollDistance = $('body').css('top');
 			$('form.gdpr-add-to-deletion-requests').addClass('confirmed');
 			$('form.gdpr-add-to-deletion-requests.confirmed input[type="submit"]').click();
 			$('.gdpr-overlay').fadeOut();
 			$('body').removeClass('gdpr-noscroll');
+			$(window).scrollTop(Math.abs( parseInt( scrollDistance, 10 ) ) );
 			$('.gdpr.gdpr-delete-confirmation .gdpr-wrapper').fadeOut();
 		});
 
 		if ( $('body').hasClass('gdpr-notification') ) {
+			var scrollDistance = $(window).scrollTop();
 			$('.gdpr-overlay').fadeIn();
-			$('body').addClass('gdpr-noscroll');
+			$('body').addClass('gdpr-noscroll').css('top', -scrollDistance);
 			$('.gdpr.gdpr-general-confirmation .gdpr-wrapper').css({
 				'display': 'flex',
 			}).hide().fadeIn();
@@ -238,8 +247,10 @@
 
 		$(document).on('click', '.gdpr.gdpr-general-confirmation button.gdpr-ok, .gdpr.gdpr-general-confirmation .gdpr-close', function(e) {
 			e.preventDefault();
+			var scrollDistance = $('body').css('top');
 			$('.gdpr-overlay').fadeOut();
 			$('body').removeClass('gdpr-noscroll');
+			$(window).scrollTop(Math.abs( parseInt( scrollDistance, 10 ) ) );
 			$('.gdpr.gdpr-general-confirmation .gdpr-wrapper').fadeOut();
 		});
 
