@@ -340,7 +340,7 @@
 			border-radius: 2.5px;
 			padding: 15px;
 			box-sizing: border-box;
-			form {
+			> form, .reconsent-form {
 				height: 100%;
 				position: relative;
 				> header {
@@ -416,6 +416,10 @@
 					.gdpr-buttons {
 						display: flex;
 						align-items: flex-end;
+						> form {
+							display: flex;
+							align-items: flex-end;
+						}
 					}
 					input[type="submit"] {
 						font-size: 13px;
