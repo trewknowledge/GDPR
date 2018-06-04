@@ -211,10 +211,12 @@
 		/**
 		 * Close the privacy/reconsent preferences modal.
 		 */
-		$(document).on('click', '.gdpr.gdpr-privacy-preferences .gdpr-close, .gdpr-overlay, .gdpr.gdpr-reconsent .gdpr-close, .gdpr-overlay', function() {
-			$('.gdpr-overlay').fadeOut();
-			$('body').removeClass('gdpr-noscroll');
-			$('.gdpr.gdpr-privacy-preferences .gdpr-wrapper, .gdpr.gdpr-reconsent .gdpr-wrapper').fadeOut();
+		$(document).on('click', '.gdpr.gdpr-privacy-preferences .gdpr-close', function() {
+			if ( ! $('.gdpr-reconsent .gdpr-wrapper').is(':visible') ) {
+				$('.gdpr-overlay').fadeOut();
+				$('body').removeClass('gdpr-noscroll');
+			}
+			$('.gdpr.gdpr-privacy-preferences .gdpr-wrapper').fadeOut();
 		});
 
 		/**
