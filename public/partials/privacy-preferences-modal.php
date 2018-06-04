@@ -13,7 +13,7 @@
 ?>
 
 <div class="gdpr gdpr-privacy-preferences">
-	<div class="gdpr-wrapper" style="display: block;">
+	<div class="gdpr-wrapper">
 		<form method="post" class="gdpr-privacy-preferences-frm">
 			<input type="hidden" name="action" value="gdpr_update_privacy_preferences">
 			<?php wp_nonce_field( 'gdpr-update-privacy-preferences', 'update-privacy-preferences-nonce' ); ?>
