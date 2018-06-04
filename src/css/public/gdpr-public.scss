@@ -23,17 +23,19 @@
 
 .gdpr {
 	* {
-		font-family: Helvetica, Arial, sans-serif !important;
-		text-transform: none !important;
-		letter-spacing: 0 !important;
-		color: #455561;
-		background: none;
-		box-shadow: none;
-		text-shadow: none;
-		outline: none;
-		border: none;
-		margin: 0;
-		padding: 0;
+		&:not(textarea):not(input):not(select) {
+			font-family: Helvetica, Arial, sans-serif !important;
+			text-transform: none !important;
+			letter-spacing: 0 !important;
+			color: #455561;
+			background: none;
+			box-shadow: none;
+			text-shadow: none;
+			outline: none;
+			border: none;
+			margin: 0;
+			padding: 0;
+		}
 	}
 	.h5{
 		font-size: 18px;
@@ -649,6 +651,15 @@
 							flex: 1;
 							margin-top: 20px;
 							position: relative;
+							.gdpr-policy-content {
+								padding: 10px;
+						    border: 1px solid #e5e5e5;
+						    box-shadow: 0 1px 1px rgba(0,0,0,0.04);
+						    background-color: #fff;
+						    > p {
+						    	margin-bottom: 16px;
+						    }
+							}
 							> p {
 								margin-bottom: 16px;
 							}
