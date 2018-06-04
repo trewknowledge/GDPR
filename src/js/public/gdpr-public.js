@@ -236,7 +236,8 @@
 			}).hide().fadeIn();
 		}
 
-		$(document).on('click', '.gdpr.gdpr-general-confirmation button.gdpr-ok', function() {
+		$(document).on('click', '.gdpr.gdpr-general-confirmation button.gdpr-ok, .gdpr.gdpr-general-confirmation .gdpr-close', function(e) {
+			e.preventDefault();
 			$('.gdpr-overlay').fadeOut();
 			$('body').removeClass('gdpr-noscroll');
 			$('.gdpr.gdpr-general-confirmation .gdpr-wrapper').fadeOut();
