@@ -55,22 +55,26 @@
 					</ul>
 				</div>
 				<div class="gdpr-tab-content">
+					<?php $counter = 0; ?>
 					<?php foreach ( $updated_consents as $consent_id => $consent ) : ?>
-						<div class="<?php echo esc_attr( $consent_id ); ?> gdpr-active">
+						<div class="<?php echo esc_attr( $consent_id ); ?> <?php echo ( 0 === $counter ? 'gdpr-active' : '' ) ?>">
 							<header>
 								<h4><?php echo esc_html( $consent['name'] ); ?></h4>
 							</header><!-- /header -->
 							<div class="gdpr-info">
-								<?php
-								$page_obj = get_post( $consent['policy-page'] );
-								if ( class_exists( 'SiteOrigin_Panels' ) && get_post_meta( $page_obj->ID, 'panels_data', true ) ) {
-									echo SiteOrigin_Panels::renderer()->render( $page_obj->ID );
-								} else {
-									echo apply_filters( 'the_content', $page_obj->post_content );
-								}
-								?>
+								<div class="gdpr-policy-content">
+									<?php
+									$page_obj = get_post( $consent['policy-page'] );
+									if ( class_exists( 'SiteOrigin_Panels' ) && get_post_meta( $page_obj->ID, 'panels_data', true ) ) {
+										echo SiteOrigin_Panels::renderer()->render( $page_obj->ID );
+									} else {
+										echo apply_filters( 'the_content', $page_obj->post_content );
+									}
+									?>
+								</div>
 							</div>
 						</div>
+						<?php $counter = 1; ?>
 					<?php endforeach; ?>
 				</div>
 			</div>
