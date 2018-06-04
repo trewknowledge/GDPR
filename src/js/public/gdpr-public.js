@@ -61,10 +61,38 @@
 
 	$(function() {
 
+		var gdprFunctions = {
+			closeNotification: function() {
+				$('.gdpr-overlay').fadeOut();
+				$('body').removeClass('gdpr-noscroll');
+				$('.gdpr.gdpr-general-confirmation .gdpr-wrapper').fadeOut();
+			},
+			addToDeletionConfirmed: function() {
+				$('form.gdpr-add-to-deletion-requests').addClass('confirmed');
+				$('form.gdpr-add-to-deletion-requests.confirmed input[type="submit"]').click();
+				gdprFunctions.closeNotification();
+			},
+			policyDisagreeOk: function() {
+				$('.gdpr.gdpr-general-confirmation .gdpr-wrapper header .gdpr-box-title h3').html( GDPR.i18n.aborting );
+				$('.gdpr.gdpr-general-confirmation .gdpr-wrapper .gdpr-content p').html( GDPR.i18n.logging_out );
+				$('.gdpr.gdpr-general-confirmation .gdpr-wrapper footer button').hide();
+				window.location.href = GDPR.logouturl;
+			},
+			policyDisagreeCancel: function() {
+				$('.gdpr.gdpr-general-confirmation .gdpr-wrapper').fadeOut();
+				$('.gdpr.gdpr-reconsent .gdpr-wrapper').fadeIn();
+			}
+		}
+
 		if ( -1 !== query_args.indexOf( 'notify=1' ) ) {
 			window.history.replaceState( {}, document.title, base_url );
 			$('body').addClass('gdpr-notification');
 		}
+
+		$(document).on('click', '.gdpr.gdpr-general-confirmation button', function(e) {
+			var callback = $(this).data('callback');
+			gdprFunctions[callback]();
+		});
 
 		$(document).on('submit', '.gdpr-privacy-preferences-frm', function(e) {
 			e.preventDefault();
