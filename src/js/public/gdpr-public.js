@@ -123,17 +123,17 @@
 
 		$(document).on('submit', '.gdpr-request-form', function(e) {
 			e.preventDefault();
-			var that = $(this);
-			var type = $(this).find('input[name="type"]').val();
-			var formData = $(this).serialize();
+			if ( $(this).hasClass('confirmed') ) {
+				var formData = $(this).serialize();
 
-			$.post(
-				GDPR.ajaxurl,
-				formData,
-				function(response) {
-					displayNotification( response.data.title, response.data.content );
-				}
-			)
+				$.post(
+					GDPR.ajaxurl,
+					formData,
+					function(response) {
+						displayNotification( response.data.title, response.data.content );
+					}
+				)
+			}
 		});
 
 		$(document).on('change', '.gdpr-cookie-category', function() {
