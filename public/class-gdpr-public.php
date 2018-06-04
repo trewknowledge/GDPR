@@ -122,11 +122,17 @@ class GDPR_Public {
 		wp_localize_script(
 			$this->plugin_name, 'GDPR', array(
 				'ajaxurl'           => admin_url( 'admin-ajax.php' ),
+				'logouturl'         => is_user_logged_in() ? esc_url( wp_logout_url( home_url() ) ) : '',
 				'i18n'              => array(
-					'aborting' => esc_html__( 'Aborting', 'gdpr' ),
-					'continue' => esc_html__( 'Continue', 'gdpr' ),
-					'cancel'   => esc_html__( 'Cancel', 'gdpr' ),
-					'ok'       => esc_html__( 'OK', 'gdpr' ),
+					'aborting'              => esc_html__( 'Aborting', 'gdpr' ),
+					'logging_out'           => esc_html__( 'You are being logged out.', 'gdpr' ),
+					'continue'              => esc_html__( 'Continue', 'gdpr' ),
+					'cancel'                => esc_html__( 'Cancel', 'gdpr' ),
+					'ok'                    => esc_html__( 'OK', 'gdpr' ),
+					'close_account'         => esc_html__( 'Close your account?', 'gdpr' ),
+					'close_account_warning' => esc_html__( 'Your account will be closed and all data will be permanently deleted and cannot be recovered. Are you sure?', 'gdpr' ),
+					'are_you_sure'          => esc_html__( 'Are you sure?', 'gdpr' ),
+					'policy_disagree'       => esc_html__( 'By disagreeing you will no longer have access to our site and will be logged out.', 'gdpr' ),
 				),
 				'is_user_logged_in' => is_user_logged_in(),
 				'refresh'           => get_option( 'gdpr_refresh_after_preferences_update', true ),
