@@ -47,7 +47,7 @@ if ( isset( $_GET['notify'] ) && absint( $_GET['notify'] ) ) : // WPCS: Input va
 	<div class="gdpr-wrapper">
 		<header>
 			<div class="gdpr-box-title">
-				<h3><?php echo esc_attr( $title ); ?></h3>
+				<p><?php echo esc_attr( $title ); ?></p>
 				<span class="gdpr-close"></span>
 			</div>
 		</header>
