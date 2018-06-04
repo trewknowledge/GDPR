@@ -264,22 +264,21 @@
 		$('form.gdpr-add-to-deletion-requests').on('submit', function(e) {
 			if ( ! $(this).hasClass( 'confirmed' ) ) {
 				e.preventDefault();
-				$('.gdpr-overlay').fadeIn(400, function() {
-					$('.gdpr.gdpr-delete-confirmation .gdpr-wrapper').css({
-						'display': 'flex',
-					}).hide().fadeIn();
-					$('body').addClass('gdpr-noscroll');
-				});
+				var actions = [
+					{
+						title: GDPR.i18n.ok,
+						buttonClass: 'gdpr-ok',
+						callback: 'addToDeletionConfirmed',
+					},
+					{
+						title: GDPR.i18n.cancel,
+						buttonClass: 'gdpr-cancel',
+						callback: 'closeNotification',
+					}
+				]
+				displayNotification( GDPR.i18n.close_account, GDPR.i18n.close_account_warning, actions );
 			}
 		} );
-
-		$(document).on('click', '.gdpr.gdpr-delete-confirmation button.gdpr-delete-account', function() {
-			$('form.gdpr-add-to-deletion-requests').addClass('confirmed');
-			$('form.gdpr-add-to-deletion-requests.confirmed input[type="submit"]').click();
-			$('.gdpr-overlay').fadeOut();
-			$('body').removeClass('gdpr-noscroll');
-			$('.gdpr.gdpr-delete-confirmation .gdpr-wrapper').fadeOut();
-		});
 
 		if ( $('body').hasClass('gdpr-notification') ) {
 			$('.gdpr-overlay').fadeIn(400, function() {
