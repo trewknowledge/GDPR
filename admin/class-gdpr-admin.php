@@ -211,6 +211,7 @@ class GDPR_Admin {
 			'gdpr_enable_privacy_bar'                  => 'boolval',
 			'gdpr_display_cookie_categories_in_bar'    => 'boolval',
 			'gdpr_hide_from_bots'                      => 'boolval',
+			'gdpr_reconsent_template'                  => 'sanitize_text_field',
 		);
 		foreach ( $settings as $option_name => $sanitize_callback ) {
 			register_setting( 'gdpr', $option_name, array( 'sanitize_callback' => $sanitize_callback ) );
@@ -555,6 +556,7 @@ class GDPR_Admin {
 					add_option( 'gdpr_enable_privacy_bar', true );
 					add_option( 'gdpr_display_cookie_categories_in_bar', false );
 					add_option( 'gdpr_hide_from_bots', true );
+					add_option( 'gdpr_reconsent_template', 'modal' );
 				}
 			}
 		}

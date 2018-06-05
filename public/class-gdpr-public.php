@@ -307,26 +307,18 @@ class GDPR_Public {
 			return;
 		}
 
-		include plugin_dir_path( __FILE__ ) . 'partials/reconsent-bar.php';
-		include plugin_dir_path( __FILE__ ) . 'partials/reconsent-modal.php';
+		$reconsent_template = get_option( 'gdpr_reconsent_template', 'modal' );
+
+		if ( 'bar' === $reconsent_template ) {
+			include plugin_dir_path( __FILE__ ) . 'partials/reconsent-bar.php';
+		} else {
+			include plugin_dir_path( __FILE__ ) . 'partials/reconsent-modal.php';
+		}
+
 	}
 
 	protected function is_crawler() {
 	  return ( isset( $_SERVER['HTTP_USER_AGENT'] ) && preg_match('/bot|crawl|slurp|spider|mediapartners/i', $_SERVER['HTTP_USER_AGENT'] ) );
-	}
-
-	/**
-	 * Log the user out if they does not agree with the privacy policy terms when prompted.
-	 * @since  1.0.0
-	 * @author Fernando Claussen <fernandoclaussen@gmail.com>
-	 */
-	public function logout() {
-		if ( ! isset( $_POST['nonce'] ) || ! wp_verify_nonce( sanitize_text_field( wp_unslash( $_POST['nonce'] ) ), 'gdpr-user_disagree_with_terms' ) ) { // WPCS: Input var ok.
-			wp_send_json_error( esc_html__( 'We could not verify the the security token. Please try again.', 'gdpr' ) );
-		}
-
-		wp_logout();
-		wp_send_json_success();
 	}
 
 	public function set_plugin_cookies() {

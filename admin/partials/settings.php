@@ -81,6 +81,22 @@
 						<input type="checkbox" name="gdpr_hide_from_bots" id="gdpr_hide_from_bots" value="1"  <?php checked( $hide_from_bots, true ); ?>>
 					</td>
 				</tr>
+				<tr>
+					<th scope="row">
+						<label for="gdpr_reconsent_template"><?php esc_html_e( 'Template to use when asking for re-consent', 'gdpr' ); ?>:</label>
+						<span class="screen-reader-text"><?php esc_attr_e( 'Users can choose between a bar similar to the privacy bar that does not prevent navigation and a modal that displays the new policy content and prevents navigation until accepted.', 'gdpr' ); ?></span>
+						<span data-tooltip="<?php esc_attr_e( 'Users can choose between a bar similar to the privacy bar that does not prevent navigation and a modal that displays the new policy content and prevents navigation until accepted.', 'gdpr' ); ?>">
+							<span class="dashicons dashicons-info"></span>
+						</span>
+					</th>
+					<td>
+						<?php $reconsent_template = get_option( 'gdpr_reconsent_template', 'modal' ); ?>
+						<select name="gdpr_reconsent_template" id="gdpr_reconsent_template">
+							<option value="bar" <?php selected( 'bar', $reconsent_template ) ?>><?php esc_html_e( 'Bar', 'gdpr' ); ?></option>
+							<option value="modal" <?php selected( 'modal', $reconsent_template ) ?>><?php esc_html_e( 'Modal', 'gdpr' ); ?></option>
+						</select>
+					</td>
+				</tr>
 			</tbody>
 		</table>
 		<hr>
