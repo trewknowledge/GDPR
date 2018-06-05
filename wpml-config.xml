@@ -1,0 +1,12 @@
+<wpml-config>
+	<admin-texts>
+		<key name="gdpr_cookie_banner_content" />
+		<key name="gdpr_cookie_privacy_excerpt" />
+		<key name="gdpr_cookie_popup_content">
+			<key name="*" />
+		</key>
+		<key name="gdpr_consent_types">
+			<key name="*" />
+		</key>
+	</admin-texts>
+</wpml-config>

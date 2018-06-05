@@ -167,6 +167,20 @@ Activating this plugin does not guarantee that an organisation is successfully m
 
 ## Changelog
 
+##### 2.1.0
+* Wrapping checkboxes in labels so they stay in the same line.
+* Adding initial WPML and Polylang translation config file.
+* A few text changes.
+* Change email sender. This hopefully fixes the SMTP issue.
+* Added an ON/OFF indicator next to toggles.
+* Added close buttons to bars so they don't stop users from accessing footer links.
+* Removed checkmark icon from the bar buttons. This checkmark was confusing some users.
+* Added an extra parameter to the [gdpr_preferences] shortcode. You can use tab="target" to open the privacy preference window in a specific tab. Check plugin settings for available targets.
+* Updating request error messages to not disclose if the user is a member of the site or not based on his email. This change is to protect users privacy.
+* Added soft-optin option for cookies. This will allow these cookies on first landing just like required but it will allow for users to opt-out.
+* Added an option to use a reconsent-modal screen instead of the bar. This modal has been reworked since v1 to look nicer. ( Highly requested after v2 update )
+* Minor bug fixes.
+
 ##### 2.0.10
 * Fix new re-consent bar not showing if users had no prior consent.
 * Added a PHP version check on activation.

@@ -21,7 +21,7 @@
 			<ul class="gdpr-policy-list">
 				<?php foreach ( $updated_consents as $consent_id => $consent ) : ?>
 					<li class="gdpr-policy-list-item">
-						<input type="hidden" value="<?php echo esc_attr( $consent_id ); ?>" checked>
+						<input type="hidden" value="<?php echo esc_attr( $consent_id ); ?>">
 						<label><?php echo esc_html( $consent['name'] ); ?></label>
 						<a class="gdpr-policy-link" href="<?php echo esc_url( get_permalink( $consent['policy-page'] ) ); ?>" target="_blank">[<?php esc_html_e( 'View', 'gdpr' ); ?>]</a>
 					</li>
@@ -30,6 +30,7 @@
 			<div class="gdpr-buttons">
 				<button class="gdpr-agreement" type="button" data-nonce="<?php echo esc_attr( wp_create_nonce( 'gdpr-agree-with-new-policies' ) ); ?>"><?php esc_html_e( 'I Agree', 'gdpr' ); ?></button>
 			</div>
+			<span class="gdpr-close"></span>
 		</div>
 	</div>
 </div>

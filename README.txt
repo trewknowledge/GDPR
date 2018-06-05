@@ -5,7 +5,7 @@ Tags: gdpr, compliance, privacy, law, general data protection regulation
 Requires at least: 4.7
 Requires PHP: 5.6
 Tested up to: 4.9
-Stable tag: 2.0.10
+Stable tag: 2.1.0
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -206,6 +206,20 @@ Activating this plugin does not guarantee that an organisation is successfully m
 
 == Changelog ==
 
+= 2.1.0 =
+* Wrapping checkboxes in labels so they stay in the same line.
+* Adding initial WPML and Polylang translation config file.
+* A few text changes.
+* Change email sender. This hopefully fixes the SMTP issue.
+* Added an ON/OFF indicator next to toggles.
+* Added close buttons to bars so they don't stop users from accessing footer links.
+* Removed checkmark icon from the bar buttons. This checkmark was confusing some users.
+* Added an extra parameter to the [gdpr_preferences] shortcode. You can use tab="target" to open the privacy preference window in a specific tab. Check plugin settings for available targets.
+* Updating request error messages to not disclose if the user is a member of the site or not based on his email. This change is to protect users privacy.
+* Added soft-optin option for cookies. This will allow these cookies on first landing just like required but it will allow for users to opt-out.
+* Added an option to use a reconsent-modal screen instead of the bar. This modal has been reworked since v1 to look nicer. ( Highly requested after v2 update )
+* Minor bug fixes.
+
 = 2.0.10 =
 * Fix new re-consent bar not showing if users had no prior consent.
 * Added a PHP version check on activation.
@@ -234,40 +248,6 @@ Activating this plugin does not guarantee that an organisation is successfully m
 * Added another parameter to the request forms function and shortcode to allow users to customize the button text.
 * Fix a bug in the privacy preferences center when you moved to a different page without accepting cookies it would uncheck fields that should continue being checked.
 * Fix settings tooltips z-index to sit on top of other elements.
-
-= 2.0.6 =
-* Fix XML export error.
-
-= 2.0.5 =
-* Fix cookie toggle indicator set to on even if the user had previously untoggled it.
-* Other minor fixes to the audit log reconsent.
-
-= 2.0.4 =
-* Adding two missing translation strings
-* Removing debug code that I forgot to remove from 2.0.3
-* Adding to audit log when user reconsents.
-
-= 2.0.3 =
-* Fix third party cookies now showing up in the privacy preferences window or the settings page.
-
-= 2.0.2 =
-* Fix reconsent not logging correctly on reconsent
-* Fix reconsent bar not showing up.
-
-= 2.0.1 =
-* Removing things that should have been deleted prior to updating to 2.0.0.
-* Fix new reconsent bar missing closing div.
-
-= 2.0.0 =
-* Change all requests and privacy preferences window to AJAX to avoid the admin-post hook issue.
-* We do not track privacy policy anymore. We can now track any kind of policy that users want. Those have been moved to each consent.
-* Including more options. Including "enable/disable" the privacy bar.
-* New filters and funtions were included.
-* Making the settings a little more accessible.
-* Removed the reconsent modal. It was too obtrusive. We switched to a more subtle notification bar.
-
-= 1.4.7 =
-* Fix for users who were complaining about their scroll bars missing if they did not select a privacy policy page.
 
 == Upgrade Notice ==
 
