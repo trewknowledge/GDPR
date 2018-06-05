@@ -287,6 +287,10 @@ class GDPR_Public {
 		$user          = wp_get_current_user();
 		$user_consents = get_user_meta( $user->ID, 'gdpr_consents' );
 
+		if ( ! is_array( $user_consents ) ) {
+			return;
+		}
+
 		$updated_consents = array_filter(
 			$required_consents, function( $consent, $consent_id ) use ( $user_consents ) {
 				return ! in_array( $consent_id, $user_consents, true );

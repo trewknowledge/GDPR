@@ -192,6 +192,7 @@ class GDPR {
 		add_action( 'show_user_profile', array( $plugin_admin, 'edit_user_profile' ) );
 		add_action( 'personal_options_update', array( $plugin_admin, 'user_profile_update' ) );
 		add_action( 'admin_notices', array( $plugin_admin, 'policy_updated_notice' ) );
+		add_action( 'admin_notices', array( $plugin_admin, 'version_check_notice' ) );
 		add_action( 'admin_notices', array( $plugin_admin, 'review_settings_after_v2_notice' ) );
 		add_action( 'upgrader_process_complete', array( $plugin_admin, 'upgrade_completed' ), 10, 2 );
 		add_action( 'wp_ajax_ignore_policy_update', array( $plugin_admin, 'ignore_policy_update' ) );
@@ -322,6 +323,9 @@ class GDPR {
 	 */
 	public static function get_consent_checkboxes( $consent_key = false ) {
 		$consent_types = get_option( 'gdpr_consent_types', array() );
+		if ( empty( $consent_types ) ) {
+			return;
+		}
 		$sent_extras   = ( isset( $_POST['user_consents'] ) ) ? sanitize_text_field( wp_unslash( $_POST['user_consents'] ) ) : array(); // WPCS: Input var ok, CSRF ok.
 		$allowed_html  = array(
 			'a' => array(
@@ -344,8 +348,9 @@ class GDPR {
 			$required = ( isset( $consent['policy-page'] ) && $consent['policy-page'] ) ? 'required' : '';
 			$checked  = ( isset( $sent_extras[ $key ] ) ) ? checked( $sent_extras[ $key ], 1, false ) : '';
 			echo '<p>' .
+			  '<label class="gdpr-label">' .
 				'<input type="checkbox" name="user_consents[' . esc_attr( $key ) . ']" id="' . esc_attr( $key ) . '-consent" value="1" ' . esc_html( $required ) . ' ' . esc_html( $checked ) . '>' .
-				'<label for="' . esc_attr( $key ) . '-consent">' . wp_kses( $consent['registration'], $allowed_html ) . '</label>' .
+				  wp_kses( $consent['registration'], $allowed_html ) .'</label>' .
 			'</p>';
 		}
 
@@ -589,6 +594,9 @@ class GDPR {
 	 */
 	public static function save_consent( $user_id, $consent ) {
 		$registered_consent = get_option( 'gdpr_consent_types', array() );
+		if ( empty( $registered_consent ) ) {
+			return false;
+		}
 		$consent_ids        = array_keys( $registered_consent );
 		$user               = get_user_by( 'ID', $user_id );
 		$consent            = sanitize_text_field( wp_unslash( $consent ) );
