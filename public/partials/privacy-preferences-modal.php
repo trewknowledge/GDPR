@@ -123,11 +123,8 @@
 											<?php if ( 'required' === $tab['status'] ) : ?>
 												<span class="gdpr-always-active"><?php esc_html_e( 'Required', 'gdpr' ); ?></span>
 												<input type="hidden" name="approved_cookies[]" value="<?php echo esc_attr( json_encode( $site_cookies ) ); ?>">
-											<?php else : ?>
-
-												<!-- <span class="gdpr-switch-indicator<?php echo true === $enabled ? '-on' : '-off'; ?>"><?php echo true === $enabled ? 'ON' : 'OFF'; ?></span> -->
+											<?php else : ?>												
 												<label class="gdpr-switch">
-
 													<input type="checkbox" class="gdpr-cookie-category" data-category="<?php echo esc_attr( $key ); ?>" name="approved_cookies[]" value="<?php echo esc_attr( json_encode( $site_cookies ) ); ?>" <?php checked( $enabled, true ); ?>>
 													<span class="gdpr-slider round"></span>
 													<span class="gdpr-switch-indicator-on"><?php echo esc_html__( 'ON', 'gdpr' ); ?></span>
