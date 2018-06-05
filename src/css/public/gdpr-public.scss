@@ -110,10 +110,11 @@
 				font-weight: normal;
 			}
 			.gdpr-content {
-				flex: 1;
+				width: 100%;
 				padding: 0 0 20px 0;
 				text-align: center;
 				@include breakpoint( xxlarge ) {
+					flex: 1;
 					padding: 0 100px 0 0;
 					text-align: left;
 				}
@@ -515,6 +516,7 @@
 							font-style: italic;
 							font-size: 12px !important;
 							color: #ababab !important;
+							box-sizing:border-box;
 						}
 					}
 				}

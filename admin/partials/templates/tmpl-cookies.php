@@ -1,6 +1,6 @@
 <script type="text/html" id="tmpl-cookie-tabs">
 	<div class="postbox" id="cookie-tab-content-{{data.key}}">
-		<h2 class="hndle">{{data.name}}</h2>
+		<h2 class="hndle">{{data.name}}<button class="notice-dismiss" type="button"><span class="screen-reader-text"><?php esc_html_e( 'Remove this tab.', 'gdpr' ); ?></span></button></h2>
 		<div class="inside">
 			<table class="form-table">
 				<tr>
@@ -65,22 +65,22 @@
 					<td><textarea name="gdpr_cookie_popup_content[{{data.key}}][how_we_use]" id="tab-how-we-use-{{data.key}}" cols="53" rows="3"></textarea></td>
 				</tr>
 				<tr>
-          <th>
-          	<label for="hosts-{{data.key}}">
-          		<?php esc_html_e( 'Third party domain', 'gdpr' ); ?>:
-          		<span class="screen-reader-text"><?php esc_attr_e( 'E.g. youtube.com', 'gdpr' ); ?></span>
-          		<span data-tooltip="<?php esc_attr_e( 'E.g. youtube.com', 'gdpr' ); ?>">
-          			<span class="dashicons dashicons-info"></span>
-          		</span>
-          	</label>
-          </th>
-          <td>
-            <input type="text" id="hosts-{{data.key}}" class="regular-text" placeholder="<?php esc_attr_e( 'domain.com', 'gdpr' ); ?>" />
-            <button class="button button-primary add-host" data-tabid="{{data.key}}"><?php esc_html_e( 'Add', 'gdpr' ); ?></button>
-            <br>
-            <span class="description"><?php esc_html_e( 'Cookies that are set by a third party, like facebook.com.', 'gdpr' ); ?></span>
-          </td>
-        </tr>
+			<th>
+				<label for="hosts-{{data.key}}">
+					<?php esc_html_e( 'Third party domain', 'gdpr' ); ?>:
+					<span class="screen-reader-text"><?php esc_attr_e( 'E.g. youtube.com', 'gdpr' ); ?></span>
+					<span data-tooltip="<?php esc_attr_e( 'E.g. youtube.com', 'gdpr' ); ?>">
+						<span class="dashicons dashicons-info"></span>
+					</span>
+				</label>
+			</th>
+			<td>
+			<input type="text" id="hosts-{{data.key}}" class="regular-text" placeholder="<?php esc_attr_e( 'domain.com', 'gdpr' ); ?>" />
+			<button class="button button-primary add-host" data-tabid="{{data.key}}"><?php esc_html_e( 'Add', 'gdpr' ); ?></button>
+			<br>
+			<span class="description"><?php esc_html_e( 'Cookies that are set by a third party, like facebook.com.', 'gdpr' ); ?></span>
+			</td>
+		</tr>
 			</table>
 			<div class="tab-hosts" data-tabid="{{data.key}}">
 

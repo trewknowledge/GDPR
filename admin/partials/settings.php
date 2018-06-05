@@ -11,7 +11,7 @@
 			<tbody>
 				<tr>
 					<th scope="row">
-						<label for="gdpr_email_limit"><?php esc_html_e( 'Outgoing email limit', 'gdpr' ) ?>:</label>
+						<label for="gdpr_email_limit"><?php esc_html_e( 'Outgoing email limit', 'gdpr' ); ?>:</label>
 						<span class="screen-reader-text"><?php esc_attr_e( 'This is the hourly outgoing email limit set by your server.', 'gdpr' ); ?></span>
 						<span data-tooltip="<?php esc_attr_e( 'This is the hourly outgoing email limit set by your server.', 'gdpr' ); ?>">
 							<span class="dashicons dashicons-info"></span>
@@ -25,7 +25,7 @@
 				</tr>
 				<tr>
 					<th scope="row">
-						<label for="gdpr_deletion_needs_review"><?php esc_html_e( 'User deletion', 'gdpr' ) ?>:</label>
+						<label for="gdpr_deletion_needs_review"><?php esc_html_e( 'User deletion', 'gdpr' ); ?>:</label>
 						<span class="screen-reader-text"><?php esc_attr_e( 'Useful if you need to remove the user from third-party services.', 'gdpr' ); ?></span>
 						<span data-tooltip="<?php esc_attr_e( 'Useful if you need to remove the user from third-party services.', 'gdpr' ); ?>">
 							<span class="dashicons dashicons-info"></span>
@@ -38,7 +38,7 @@
 				</tr>
 				<tr>
 					<th scope="row">
-						<label for="gdpr_refresh_after_preferences_update"><?php esc_html_e( 'Refresh page after updating preferences', 'gdpr' ) ?>:</label>
+						<label for="gdpr_refresh_after_preferences_update"><?php esc_html_e( 'Refresh page after updating preferences', 'gdpr' ); ?>:</label>
 					</th>
 					<td>
 						<?php $refresh_page = get_option( 'gdpr_refresh_after_preferences_update', false ); ?>
@@ -48,7 +48,7 @@
 				</tr>
 				<tr>
 					<th scope="row">
-						<label for="gdpr_disable_css"><?php esc_html_e( 'Disable CSS', 'gdpr' ) ?>:</label>
+						<label for="gdpr_disable_css"><?php esc_html_e( 'Disable CSS', 'gdpr' ); ?>:</label>
 					</th>
 					<td>
 						<?php $disable_css = get_option( 'gdpr_disable_css', false ); ?>
@@ -57,7 +57,7 @@
 				</tr>
 				<tr>
 					<th scope="row">
-						<label for="gdpr_enable_telemetry_tracker"><?php esc_html_e( 'Enable the Telemetry Tracker', 'gdpr' ) ?>:</label>
+						<label for="gdpr_enable_telemetry_tracker"><?php esc_html_e( 'Enable the Telemetry Tracker', 'gdpr' ); ?>:</label>
 						<span class="screen-reader-text"><?php esc_attr_e( 'This tracks data that is being sent to outside servers.', 'gdpr' ); ?></span>
 						<span data-tooltip="<?php esc_attr_e( 'This tracks data that is being sent to outside servers.', 'gdpr' ); ?>">
 							<span class="dashicons dashicons-info"></span>
@@ -68,18 +68,30 @@
 						<input type="checkbox" name="gdpr_enable_telemetry_tracker" id="gdpr_enable_telemetry_tracker" value="1"  <?php checked( $enable_telemetry, true ); ?>><label for="gdpr_enable_telemetry_tracker"><span class="description"><?php esc_html_e( 'Toggles the Telemetry Tracker On/Off. (experimental)', 'gdpr' ); ?></span></label>
 					</td>
 				</tr>
+				<tr>
+					<th scope="row">
+						<label for="gdpr_hide_from_bots"><?php esc_html_e( 'Hide plugin content from bots', 'gdpr' ); ?>:</label>
+						<span class="screen-reader-text"><?php esc_attr_e( 'We detect if the user agent is a bot like GoogleBot and hide our added content from it. Displaying this can be harmful for SEO but for some reason you might want to do that.', 'gdpr' ); ?></span>
+						<span data-tooltip="<?php esc_attr_e( 'We detect if the user agent is a bot like GoogleBot and hide our added content from it. Displaying this can be harmful for SEO but for some reason you might want to do that.', 'gdpr' ); ?>">
+							<span class="dashicons dashicons-info"></span>
+						</span>
+					</th>
+					<td>
+						<?php $hide_from_bots = get_option( 'gdpr_hide_from_bots', true ); ?>
+						<input type="checkbox" name="gdpr_hide_from_bots" id="gdpr_hide_from_bots" value="1"  <?php checked( $hide_from_bots, true ); ?>>
+					</td>
+				</tr>
 			</tbody>
 		</table>
 		<hr>
 		<h2 class="title"><?php esc_html_e( 'Privacy Center', 'gdpr' ); ?></h2>
 		<p>
-			<?php esc_html_e( 'This section handles the privacy bar and some of the privacy preferences window.', 'gdpr' ) ?><br>
-			<strong><?php esc_html_e( 'Important:', 'gdpr' ); ?></strong> <?php esc_html_e( 'If the privacy banner text is not filled out, the privacy banner will not show up. Even if you registered your cookies.', 'gdpr' ) ?></p>
+			<?php esc_html_e( 'This section handles the privacy bar and some of the privacy preferences window.', 'gdpr' ); ?><br>
 		<table class="form-table">
 			<tbody>
 				<tr>
 					<th scope="row">
-						<label for="gdpr_enable_privacy_bar"><?php esc_html_e( 'Enable the Privacy Bar', 'gdpr' ) ?>:</label>
+						<label for="gdpr_enable_privacy_bar"><?php esc_html_e( 'Enable the Privacy Bar', 'gdpr' ); ?>:</label>
 					</th>
 					<td>
 						<?php $enable_privacy_bar = get_option( 'gdpr_enable_privacy_bar', true ); ?>
@@ -88,7 +100,7 @@
 				</tr>
 				<tr>
 					<th scope="row">
-						<label for="gdpr_display_cookie_categories_in_bar"><?php esc_html_e( 'Display the cookie categories in the privacy bar', 'gdpr' ) ?>:</label>
+						<label for="gdpr_display_cookie_categories_in_bar"><?php esc_html_e( 'Display the cookie categories in the privacy bar', 'gdpr' ); ?>:</label>
 					</th>
 					<td>
 						<?php $display_cookie_cat_checkboxes = get_option( 'gdpr_display_cookie_categories_in_bar', false ); ?>
@@ -97,9 +109,9 @@
 				</tr>
 				<tr>
 					<th scope="row">
-						<label for="gdpr_cookie_banner_content"><?php esc_html_e( 'Privacy Bar Content', 'gdpr' ) ?>:</label>
-						<span class="screen-reader-text"><?php esc_attr_e( 'This is required if you want the privacy bar to show up.', 'gdpr' ); ?></span>
-						<span data-tooltip="<?php esc_attr_e( 'This is required if you want the privacy bar to show up.', 'gdpr' ); ?>">
+						<label for="gdpr_cookie_banner_content"><?php esc_html_e( 'Privacy Bar Content', 'gdpr' ); ?>:</label>
+						<span class="screen-reader-text"><?php esc_attr_e( 'Try to add an brief explanation of how you use your user data in a few lines. This will show up in the privacy bar.', 'gdpr' ); ?></span>
+						<span data-tooltip="<?php esc_attr_e( 'Try to add an brief explanation of how you use your user data in a few lines. This will show up in the privacy bar.', 'gdpr' ); ?>">
 							<span class="dashicons dashicons-info"></span>
 						</span>
 					</th>
@@ -110,7 +122,7 @@
 				</tr>
 				<tr>
 					<th scope="row">
-						<label for="gdpr_cookie_privacy_excerpt"><?php esc_html_e( 'Privacy Excerpt', 'gdpr' ) ?>:</label>
+						<label for="gdpr_cookie_privacy_excerpt"><?php esc_html_e( 'Privacy Excerpt', 'gdpr' ); ?>:</label>
 						<span class="screen-reader-text"><?php esc_attr_e( 'This show up in the privacy preferences window.', 'gdpr' ); ?></span>
 						<span data-tooltip="<?php esc_attr_e( 'This show up in the privacy preferences window.', 'gdpr' ); ?>">
 							<span class="dashicons dashicons-info"></span>
@@ -128,16 +140,19 @@
 		<h2 class="title"><?php esc_html_e( 'Request Forms reCAPTCHA', 'gdpr' ); ?></h2>
 		<p><?php esc_html_e( 'To prevent spam attacks, you have the option to enable reCAPTCHA. Configure below your keys to make it work with our request forms.', 'gdpr' ); ?></p>
 		<p>
-			<?php echo sprintf(
+			<?php
+			echo sprintf(
 				/* translators: External link with instructions on how to proceed. */
 				esc_html__( 'You can find the necessary information %s.', 'gdpr' ),
 				'<a href="https://www.google.com/recaptcha/admin" target="_blank">' . esc_html__( 'here', 'gdpr' ) . '</a>'
-			) ?></p>
+			)
+			?>
+			</p>
 		<table class="form-table">
 			<tbody>
 				<tr>
 					<th scope="row">
-						<label for="gdpr_use_recaptcha"><?php esc_html_e( 'Enable reCAPTCHA', 'gdpr' ) ?>:</label>
+						<label for="gdpr_use_recaptcha"><?php esc_html_e( 'Enable reCAPTCHA', 'gdpr' ); ?>:</label>
 					</th>
 					<td>
 						<?php $use_recaptcha = get_option( 'gdpr_use_recaptcha', false ); ?>
@@ -146,7 +161,7 @@
 				</tr>
 				<tr>
 					<th scope="row">
-						<label for="gdpr_recaptcha_site_key"><?php esc_html_e( 'Site Key', 'gdpr' ) ?>:</label>
+						<label for="gdpr_recaptcha_site_key"><?php esc_html_e( 'Site Key', 'gdpr' ); ?>:</label>
 					</th>
 					<td>
 						<?php $site_key = get_option( 'gdpr_recaptcha_site_key', '' ); ?>
@@ -155,7 +170,7 @@
 				</tr>
 				<tr>
 					<th scope="row">
-						<label for="gdpr_recaptcha_secret_key"><?php esc_html_e( 'Secret Key', 'gdpr' ) ?>:</label>
+						<label for="gdpr_recaptcha_secret_key"><?php esc_html_e( 'Secret Key', 'gdpr' ); ?>:</label>
 					</th>
 					<td>
 						<?php $secret_key = get_option( 'gdpr_recaptcha_secret_key', '' ); ?>
@@ -164,14 +179,14 @@
 				</tr>
 			</tbody>
 		</table>
-		<?php if ( class_exists( 'WooCommerce' ) ): ?>
+		<?php if ( class_exists( 'WooCommerce' ) ) : ?>
 			<hr>
 			<h2 class="title"><?php esc_html_e( 'WooCommerce', 'gdpr' ); ?></h2>
 			<table class="form-table">
 				<tbody>
 					<tr>
 						<th scope="row">
-							<label for="gdpr_add_consent_checkboxes_registration"><?php esc_html_e( 'Add consent checkboxes to the registration page', 'gdpr' ) ?>:</label>
+							<label for="gdpr_add_consent_checkboxes_registration"><?php esc_html_e( 'Add consent checkboxes to the registration page', 'gdpr' ); ?>:</label>
 						</th>
 						<td>
 							<?php $add_checkboxes_to_registration = get_option( 'gdpr_add_consent_checkboxes_registration', false ); ?>
@@ -180,7 +195,7 @@
 					</tr>
 					<tr>
 						<th scope="row">
-							<label for="gdpr_add_consent_checkboxes_checkout"><?php esc_html_e( 'Add consent checkboxes to the checkout registration form', 'gdpr' ) ?>:</label>
+							<label for="gdpr_add_consent_checkboxes_checkout"><?php esc_html_e( 'Add consent checkboxes to the checkout registration form', 'gdpr' ); ?>:</label>
 						</th>
 						<td>
 							<?php $add_checkboxes_to_checkout = get_option( 'gdpr_add_consent_checkboxes_checkout', false ); ?>
@@ -192,13 +207,13 @@
 		<?php endif ?>
 
 		<hr>
-		<h2><?php esc_html_e( 'Cookies', 'gdpr' ) ?></h2>
+		<h2><?php esc_html_e( 'Cookies', 'gdpr' ); ?></h2>
 		<input type="text" id="cookie-tabs" class="regular-text" placeholder="<?php esc_attr_e( 'Category name', 'gdpr' ); ?>">
-		<button class="button button-primary add-tab"><?php esc_html_e( 'Add tab', 'gdpr' ); ?></button>
+		<button class="button button-primary add-tab"><?php esc_html_e( 'Add cookie category', 'gdpr' ); ?></button>
 		<div id="gdpr-cookie-categories">
-			<?php foreach ( $registered_cookies as $cat_id => $cookie_cat ): ?>
+			<?php foreach ( $registered_cookies as $cat_id => $cookie_cat ) : ?>
 				<div class="postbox" id="cookie-tab-content-<?php echo esc_attr( $cat_id ); ?>">
-					<h2 class="hndle"><?php echo esc_html( $cookie_cat['name'] ) ?><button class="notice-dismiss" type="button"><span class="screen-reader-text"><?php esc_html_e( 'Remove this tab.', 'gdpr' ); ?></span></button></h2>
+					<h2 class="hndle"><?php echo esc_html( $cookie_cat['name'] ); ?><button class="notice-dismiss" type="button"><span class="screen-reader-text"><?php esc_html_e( 'Remove this tab.', 'gdpr' ); ?></span></button></h2>
 					<div class="inside">
 						<table class="form-table">
 							<tr>
@@ -263,80 +278,80 @@
 								<td><textarea name="gdpr_cookie_popup_content[<?php echo esc_attr( $cat_id ); ?>][how_we_use]" id="tab-how-we-use-<?php echo esc_attr( $cat_id ); ?>" cols="53" rows="3"><?php echo esc_html( $registered_cookies[ $cat_id ]['how_we_use'] ); ?></textarea></td>
 							</tr>
 							<tr>
-                <th>
-                	<label for="hosts-<?php echo esc_attr( $cat_id ); ?>">
-                		<?php esc_html_e( 'Third party domain', 'gdpr' ); ?>:
-                		<span class="screen-reader-text"><?php esc_attr_e( 'E.g. facebook.com', 'gdpr' ); ?></span>
-                		<span data-tooltip="<?php esc_attr_e( 'E.g. facebook.com', 'gdpr' ); ?>">
-                			<span class="dashicons dashicons-info"></span>
-                		</span>
-                	</label>
-                </th>
-                <td>
-                  <input type="text" id="hosts-<?php echo esc_attr( $cat_id ); ?>" class="regular-text" placeholder="domain.com" />
-                  <button class="button button-primary add-host" data-tabid="<?php echo esc_attr( $cat_id ); ?>"><?php esc_html_e( 'Add', 'gdpr' ); ?></button>
-                  <br>
-                  <span class="description"><?php esc_html_e( 'Cookies that are set by a third party, like facebook.com.', 'gdpr' ); ?></span>
-                </td>
-              </tr>
+				<th>
+					<label for="hosts-<?php echo esc_attr( $cat_id ); ?>">
+						<?php esc_html_e( 'Third party domain', 'gdpr' ); ?>:
+						<span class="screen-reader-text"><?php esc_attr_e( 'E.g. facebook.com', 'gdpr' ); ?></span>
+						<span data-tooltip="<?php esc_attr_e( 'E.g. facebook.com', 'gdpr' ); ?>">
+							<span class="dashicons dashicons-info"></span>
+						</span>
+					</label>
+				</th>
+				<td>
+					<input type="text" id="hosts-<?php echo esc_attr( $cat_id ); ?>" class="regular-text" placeholder="<?php esc_attr_e( 'domain.com', 'gdpr' ); ?>" />
+					<button class="button button-primary add-host" data-tabid="<?php echo esc_attr( $cat_id ); ?>"><?php esc_html_e( 'Add', 'gdpr' ); ?></button>
+					<br>
+					<span class="description"><?php esc_html_e( 'Cookies that are set by a third party, like facebook.com.', 'gdpr' ); ?></span>
+				</td>
+				</tr>
 						</table>
 						<div class="tab-hosts" data-tabid="<?php echo esc_attr( $cat_id ); ?>">
-              <?php if ( isset( $cookie_cat['hosts'] ) && $cookie_cat['hosts'] ) : ?>
-                <?php foreach ( $cookie_cat['hosts'] as $domain_id => $domain ) : ?>
-                  <div class="postbox">
-                    <h2 class="hndle"><?php echo esc_attr( $domain_id ); ?><button class="notice-dismiss" type="button" aria-label="<?php esc_attr_e( 'Remove this domain.', 'gdpr' ) ?>"></button></h2>
-                    <div class="inside">
-                      <table class="form-table">
-                        <tr>
-                          <th>
-                          	<label for="hosts-cookies-used-<?php echo esc_attr( $domain_id ); ?>">
-                          		<?php esc_html_e( 'Cookies used', 'gdpr' ); ?>:
-                          		<span class="screen-reader-text"><?php esc_attr_e( 'A comma separated list of cookies that your site is using from this third-party provider.', 'gdpr' ); ?></span>
-                          		<span data-tooltip="<?php esc_attr_e( 'A comma separated list of cookies that your site is using from this third-party provider.', 'gdpr' ); ?>">
-                          			<span class="dashicons dashicons-info"></span>
-                          		</span>
-                          	</label>
-                        	</th>
-                          <td>
-                            <textarea cols="53" rows="3" name="gdpr_cookie_popup_content[<?php echo esc_attr( $cat_id ); ?>][hosts][<?php echo esc_attr( $domain_id ); ?>][cookies_used]" id="hosts-cookies-used-<?php echo esc_attr( $domain_id ); ?>"><?php echo esc_attr( $domain['cookies_used'] ); ?></textarea>
-                          </td>
-                        </tr>
-                        <tr>
-                          <th>
-                          	<label for="hosts-cookies-optout-<?php echo esc_attr( $domain_id ); ?>">
-                          		<?php esc_html_e( 'Opt Out Link', 'gdpr' ); ?>:
-                          		<span class="screen-reader-text"><?php esc_attr_e( 'Add a link with the third-party instructions on how to opt out of their cookies.', 'gdpr' ); ?></span>
-                          		<span data-tooltip="<?php esc_attr_e( 'Add a link with the third-party instructions on how to opt out of their cookies.', 'gdpr' ); ?>">
-                          			<span class="dashicons dashicons-info"></span>
-                          		</span>
-                          	</label>
-                          </th>
-                          <td>
-                            <input type="text" name="gdpr_cookie_popup_content[<?php echo esc_attr( $cat_id ); ?>][hosts][<?php echo esc_attr( $domain_id ); ?>][optout]" value="<?php echo esc_attr( $domain['optout'] ); ?>" id="hosts-cookies-optout-<?php echo esc_attr( $domain_id ); ?>" class="regular-text" />
-                            <br>
-                            <span class="description"><?php esc_html_e( 'Url with instructions on how to opt out.', 'gdpr' ); ?></span>
-                          </td>
-                        </tr>
-                      </table>
-                    </div>
-                  </div>
-                <?php endforeach; ?>
-              <?php endif; ?>
-            </div>
+				<?php if ( isset( $cookie_cat['hosts'] ) && $cookie_cat['hosts'] ) : ?>
+				<?php foreach ( $cookie_cat['hosts'] as $domain_id => $domain ) : ?>
+					<div class="postbox">
+					<h2 class="hndle"><?php echo esc_attr( $domain_id ); ?><button class="notice-dismiss" type="button" aria-label="<?php esc_attr_e( 'Remove this domain.', 'gdpr' ); ?>"></button></h2>
+					<div class="inside">
+						<table class="form-table">
+						<tr>
+							<th>
+								<label for="hosts-cookies-used-<?php echo esc_attr( $domain_id ); ?>">
+									<?php esc_html_e( 'Cookies used', 'gdpr' ); ?>:
+									<span class="screen-reader-text"><?php esc_attr_e( 'A comma separated list of cookies that your site is using from this third-party provider.', 'gdpr' ); ?></span>
+									<span data-tooltip="<?php esc_attr_e( 'A comma separated list of cookies that your site is using from this third-party provider.', 'gdpr' ); ?>">
+										<span class="dashicons dashicons-info"></span>
+									</span>
+								</label>
+							</th>
+							<td>
+							<textarea cols="53" rows="3" name="gdpr_cookie_popup_content[<?php echo esc_attr( $cat_id ); ?>][hosts][<?php echo esc_attr( $domain_id ); ?>][cookies_used]" id="hosts-cookies-used-<?php echo esc_attr( $domain_id ); ?>"><?php echo esc_attr( $domain['cookies_used'] ); ?></textarea>
+							</td>
+						</tr>
+						<tr>
+							<th>
+								<label for="hosts-cookies-optout-<?php echo esc_attr( $domain_id ); ?>">
+									<?php esc_html_e( 'Opt Out Link', 'gdpr' ); ?>:
+									<span class="screen-reader-text"><?php esc_attr_e( 'Add a link with the third-party instructions on how to opt out of their cookies.', 'gdpr' ); ?></span>
+									<span data-tooltip="<?php esc_attr_e( 'Add a link with the third-party instructions on how to opt out of their cookies.', 'gdpr' ); ?>">
+										<span class="dashicons dashicons-info"></span>
+									</span>
+								</label>
+							</th>
+							<td>
+							<input type="text" name="gdpr_cookie_popup_content[<?php echo esc_attr( $cat_id ); ?>][hosts][<?php echo esc_attr( $domain_id ); ?>][optout]" value="<?php echo esc_attr( $domain['optout'] ); ?>" id="hosts-cookies-optout-<?php echo esc_attr( $domain_id ); ?>" class="regular-text" />
+							<br>
+							<span class="description"><?php esc_html_e( 'Url with instructions on how to opt out.', 'gdpr' ); ?></span>
+							</td>
+						</tr>
+						</table>
+					</div>
+					</div>
+				<?php endforeach; ?>
+				<?php endif; ?>
+			</div>
 					</div><!-- .inside -->
 				</div><!-- .postbox -->
 			<?php endforeach; ?>
 		</div>
 
 		<hr>
-		<h2><?php esc_html_e( 'Consents', 'gdpr' ) ?></h2>
+		<h2><?php esc_html_e( 'Consents', 'gdpr' ); ?></h2>
 		<input type="text" id="type-of-consent" class="regular-text" placeholder="<?php esc_attr_e( 'E.g. Privacy Policy or Cookie Policy', 'gdpr' ); ?>">
 		<button class="button button-primary add-consent"><?php esc_html_e( 'Add consent', 'gdpr' ); ?></button>
 		<div id="consent-tabs">
 			<?php if ( ! empty( $consent_types ) ) : ?>
 				<?php foreach ( $consent_types as $consent_id => $consent ) : ?>
 					<div class="postbox" id="consent-type-content-<?php echo esc_attr( $consent_id ); ?>">
-						<h2 class="hndle"><?php echo esc_html( $consent['name'] ); ?> <span>(id: <?php echo esc_html( $consent_id ); ?>)</span><button class="notice-dismiss" type="button" aria-label="<?php esc_attr_e( 'Unregister this consent.', 'gdpr' ) ?>"></button></h2>
+						<h2 class="hndle"><?php echo esc_html( $consent['name'] ); ?> <span>(id: <?php echo esc_html( $consent_id ); ?>)</span><button class="notice-dismiss" type="button" aria-label="<?php esc_attr_e( 'Unregister this consent.', 'gdpr' ); ?>"></button></h2>
 						<input type="hidden" name="gdpr_consent_types[<?php echo esc_attr( $consent_id ); ?>][name]" value="<?php echo esc_attr( $consent['name'] ); ?>">
 						<div class="inside">
 							<table class="form-table">
@@ -353,8 +368,8 @@
 									<td>
 										<select name="gdpr_consent_types[<?php echo esc_attr( $consent_id ); ?>][policy-page]" id="consent-policy-page-<?php echo esc_attr( $consent_id ); ?>">
 											<option value=""></option>
-											<?php foreach ( $pages as $page ): ?>
-												<option value="<?php echo esc_attr( $page->ID ) ?>" <?php selected( $consent['policy-page'], $page->ID ); ?>><?php echo esc_html( $page->post_title ); ?></option>
+											<?php foreach ( $pages as $page ) : ?>
+												<option value="<?php echo esc_attr( $page->ID ); ?>" <?php selected( $consent['policy-page'], $page->ID ); ?>><?php echo esc_html( $page->post_title ); ?></option>
 											<?php endforeach ?>
 										</select>
 									</td>

@@ -1,5 +1,15 @@
 # GDPR
 
+[![Build Status](https://travis-ci.com/trewknowledge/GDPR.svg?branch=master)](https://travis-ci.com/trewknowledge/GDPR)
+[![license](https://img.shields.io/github/license/trewknowledge/gdpr.svg?style=flat)](https://www.gnu.org/licenses/old-licenses/gpl-2.0.html)
+![Tested up to](https://img.shields.io/wordpress/v/gdpr.svg)
+![Minimum PHP version](https://img.shields.io/badge/PHP-%5E5.6-blue.svg)
+[![WordPress plugin](https://img.shields.io/wordpress/plugin/dt/gdpr.svg)](https://wordpress.org/plugins/gdpr/)
+[![WordPress plugin rating](https://img.shields.io/wordpress/plugin/r/gdpr.svg)](https://wordpress.org/support/plugin/gdpr/reviews/#new-post)
+![Translations](https://img.shields.io/badge/dynamic/json.svg?label=Translations&url=https%3A%2F%2Fapi.wordpress.org%2Ftranslations%2Fplugins%2F1.0%2F%3Fslug%3Dgdpr&query=%24.translations.length&colorB=%23ff69b4)
+
+
+
 This plugin is meant to assist a Controller, Data Processor, and Data Protection Officer (DPO) with efforts to meet the obligations and rights enacted under the GDPR.
 
 ## Documentation
@@ -156,6 +166,34 @@ Activating this plugin does not guarantee that an organisation is successfully m
 
 
 ## Changelog
+
+##### 2.0.10
+* Fix new re-consent bar not showing if users had no prior consent.
+* Added a PHP version check on activation.
+
+##### 2.0.9
+* Fix a syntax error introduced after cleaning code with PHPCS.
+* Fix functions that were not checking if registered consents were empty before running.
+
+##### 2.0.8
+* Adding a setting to hide plugin generated markup from bots such as Googlebot.
+* Fix cookie category dismiss button not showing up after adding a new category. A save was required before the button would appear.
+* Display cookie categories that do not have anything in the cookies used option.
+* Fix warnings when no consent is registered.
+* Small style and markup enhancement.
+* A little cleanup to reduce WP server stress.
+
+##### 2.0.7
+* Changing some texts to be consistent.
+* Cleaned up code with VIP Code Standard.
+* Improved security.
+* Fix internet explorer bug.
+* Fix JS function with wrong variable name when an AJAX error happened.
+* Fix Warning on woocommerce consent checkboxes.
+* Renaming buttons and translating placeholders.
+* Added another parameter to the request forms function and shortcode to allow users to customize the button text.
+* Fix a bug in the privacy preferences center when you moved to a different page without accepting cookies it would uncheck fields that should continue being checked.
+* Fix settings tooltips z-index to sit on top of other elements.
 
 ##### 2.0.6
 * Fix XML export error.

@@ -38,7 +38,7 @@ class GDPR_Audit_Log {
 	 * @return string       The encrypted string.
 	 */
 	private static function crypt( $key, $data ) {
-		$iv = openssl_random_pseudo_bytes( openssl_cipher_iv_length( 'aes-256-cbc' ) );
+		$iv        = openssl_random_pseudo_bytes( openssl_cipher_iv_length( 'aes-256-cbc' ) );
 		$encrypted = openssl_encrypt( $data, 'aes-256-cbc', $key, 0, $iv );
 		return base64_encode( $encrypted . '::' . $iv );
 	}
@@ -67,9 +67,9 @@ class GDPR_Audit_Log {
 	 * @param  string $input   The string to be logged.
 	 */
 	public static function log( $user_id, $input ) {
-		$user = get_user_by( 'ID', $user_id );
-		$date = '[' . date('Y/m/d H:i:s') . '] ';
-		$encrypted = self::crypt( $user->user_email, $date . $input);
+		$user      = get_user_by( 'ID', $user_id );
+		$date      = '[' . date( 'Y/m/d H:i:s' ) . '] ';
+		$encrypted = self::crypt( $user->user_email, $date . $input );
 		add_user_meta( $user_id, 'gdpr_audit_log', $encrypted );
 	}
 
@@ -89,16 +89,16 @@ class GDPR_Audit_Log {
 			$user_log = get_user_meta( $user->ID, 'gdpr_audit_log', false );
 			ob_start();
 			foreach ( $user_log as $log ) {
-				echo self::decrypt( $email, $log ) . "\n";
+				echo esc_html( self::decrypt( $email, $log ) ) . "\n";
 			}
 			$log = ob_get_clean();
 		} else {
-			$uploads_dir = wp_upload_dir();
-			$basedir = $uploads_dir['basedir'];
-			$path = $basedir . '/gdpr_logs/';
+			$uploads_dir  = wp_upload_dir();
+			$basedir      = $uploads_dir['basedir'];
+			$path         = $basedir . '/gdpr_logs/';
 			$email_masked = self::email_mask( $email . $token );
-			$filename = base64_encode( $email_masked );
-			$file_found = file_exists( $path . $filename );
+			$filename     = base64_encode( $email_masked );
+			$file_found   = file_exists( $path . $filename );
 			if ( ! $file_found ) {
 				return false;
 			} else {
@@ -120,18 +120,18 @@ class GDPR_Audit_Log {
 	 * @param  string $character The character that will replace letters.
 	 * @return string            The masked email.
 	 */
-	private static function email_mask( $email, $character = '-' ){
+	private static function email_mask( $email, $character = '-' ) {
 		$email_arr = explode( '@', $email, 2 );
 
-		$length = strlen( $email_arr[0] );
-		$suplement = ( 0 !== $length % 2) ? 1 : 0;
-		$length = floor( $length / 2 );
-		$username = substr( $email_arr[0], 0, $length ) . str_repeat( $character, $length + $suplement );
+		$length    = strlen( $email_arr[0] );
+		$suplement = ( 0 !== $length % 2 ) ? 1 : 0;
+		$length    = floor( $length / 2 );
+		$username  = substr( $email_arr[0], 0, $length ) . str_repeat( $character, $length + $suplement );
 
-		$length = strlen( $email_arr[1] );
-		$suplement = ( 0 !== $length % 2) ? 1 : 0;
-		$length = floor( $length / 2 );
-		$domain = str_repeat( $character, $length + $suplement ) . substr( $email_arr[1], -$length, $length );
+		$length    = strlen( $email_arr[1] );
+		$suplement = ( 0 !== $length % 2 ) ? 1 : 0;
+		$length    = floor( $length / 2 );
+		$domain    = str_repeat( $character, $length + $suplement ) . substr( $email_arr[1], -$length, $length );
 
 		return $username . '@' . $domain;
 	}
@@ -151,14 +151,14 @@ class GDPR_Audit_Log {
 		}
 
 		$uploads_dir = wp_upload_dir();
-		$basedir = $uploads_dir['basedir'];
-		$path = $basedir . '/gdpr_logs/';
+		$basedir     = $uploads_dir['basedir'];
+		$path        = $basedir . '/gdpr_logs/';
 
 		if ( wp_mkdir_p( $path ) ) {
 			if ( ! file_exists( $path . 'index.php' ) ) {
 				file_put_contents( $path . 'index.php', '' );
 			}
-			$log = self::get_log( $user->user_email );
+			$log      = self::get_log( $user->user_email );
 			$filename = self::email_mask( $user->user_email . $token );
 			$filename = base64_encode( $filename );
 

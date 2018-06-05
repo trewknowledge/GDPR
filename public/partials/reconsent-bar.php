@@ -15,7 +15,7 @@
 <div class="gdpr gdpr-reconsent-bar" style="display:none;">
 	<div class="gdpr-wrapper">
 		<div class="gdpr-content">
-			<p><?php esc_html_e( 'Some of our policies have been updated. Please make sure to select the "View" link next each item in order to view changes before agreeing.', 'gdpr' ); ?></p>
+			<p><?php esc_html_e( 'Some of our policies have been updated. Please make sure to select the "View" link next to each item in order to view changes before agreeing.', 'gdpr' ); ?></p>
 		</div>
 		<div class="gdpr-right">
 			<ul class="gdpr-policy-list">
@@ -23,7 +23,7 @@
 					<li class="gdpr-policy-list-item">
 						<input type="hidden" value="<?php echo esc_attr( $consent_id ); ?>" checked>
 						<label><?php echo esc_html( $consent['name'] ); ?></label>
-						<a class="gdpr-policy-link" href="<?php echo esc_url( get_permalink( $consent['policy-page'] ) ); ?>" target="_blank">[<?php esc_html_e( 'View', 'gdpr' ) ?>]</a>
+						<a class="gdpr-policy-link" href="<?php echo esc_url( get_permalink( $consent['policy-page'] ) ); ?>" target="_blank">[<?php esc_html_e( 'View', 'gdpr' ); ?>]</a>
 					</li>
 				<?php endforeach ?>
 			</ul>
