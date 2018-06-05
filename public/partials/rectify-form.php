@@ -1,4 +1,4 @@
-<form class="gdpr-request-form gdpr-add-to-rectify-requests" method="post">
+<form class="gdpr-request-form gdpr-add-to-rectify-requests confirmed" method="post">
 	<?php wp_nonce_field( 'gdpr-add-to-requests', 'gdpr_request_nonce' ); ?>
 	<input type="hidden" name="action" value="gdpr_send_request_email">
 	<input type="hidden" name="type" value="rectify">

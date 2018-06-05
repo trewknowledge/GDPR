@@ -125,7 +125,7 @@ msgstr ""
 msgid "Ignore"
 msgstr ""
 
-#: admin/class-gdpr-admin.php:625, admin/class-gdpr-admin.php:769, admin/class-gdpr-admin.php:845, public/class-gdpr-public.php:208, public/class-gdpr-public.php:318, public/class-gdpr-public.php:381
+#: admin/class-gdpr-admin.php:613, admin/class-gdpr-admin.php:757, admin/class-gdpr-admin.php:833, public/class-gdpr-public.php:208, public/class-gdpr-public.php:319, public/class-gdpr-public.php:382
 msgid "We could not verify the the security token. Please try again."
 msgstr ""
 
@@ -150,7 +150,7 @@ msgstr ""
 msgid "%1$s has been updated. Removing the %1$s consent and requesting new consent."
 msgstr ""
 
-#: admin/class-gdpr-admin.php:868, includes/class-gdpr-help.php:184, public/partials/privacy-preferences-modal.php:32, public/partials/privacy-preferences-modal.php:65
+#: admin/class-gdpr-admin.php:856, includes/class-gdpr-help.php:184, public/partials/privacy-preferences-modal.php:32, public/partials/privacy-preferences-modal.php:65, public/partials/reconsent-modal.php:32
 msgid "Consent Management"
 msgstr ""
 
@@ -556,7 +556,7 @@ msgstr ""
 msgid "I Agree"
 msgstr ""
 
-#: public/class-gdpr-public.php:207, public/class-gdpr-public.php:380, public/class-gdpr-requests-public.php:81, public/class-gdpr-requests-public.php:90, public/class-gdpr-requests-public.php:105, public/class-gdpr-requests-public.php:125, public/class-gdpr-requests-public.php:145, public/class-gdpr-requests-public.php:175, public/class-gdpr-requests-public.php:188, public/class-gdpr-requests-public.php:243, public/partials/confirmation-screens.php:33, public/partials/confirmation-screens.php:37, public/partials/confirmation-screens.php:41
+#: public/class-gdpr-public.php:207, public/class-gdpr-public.php:381, public/class-gdpr-requests-public.php:81, public/class-gdpr-requests-public.php:90, public/class-gdpr-requests-public.php:105, public/class-gdpr-requests-public.php:125, public/class-gdpr-requests-public.php:145, public/class-gdpr-requests-public.php:175, public/class-gdpr-requests-public.php:188, public/class-gdpr-requests-public.php:243, public/partials/confirmation-screens.php:33, public/partials/confirmation-screens.php:37, public/partials/confirmation-screens.php:41
 msgid "Error!"
 msgstr ""
 
@@ -564,7 +564,7 @@ msgstr ""
 msgid "User updated their privacy preferences. These are the new approved cookies and consent preferences:"
 msgstr ""
 
-#: public/class-gdpr-public.php:390
+#: public/class-gdpr-public.php:391
 msgid "User provided new consent for %1$s."
 msgstr ""
 
@@ -1089,7 +1089,7 @@ msgstr ""
 msgid "Privacy Preference Center"
 msgstr ""
 
-#: public/partials/privacy-preferences-modal.php:27
+#: public/partials/privacy-preferences-modal.php:27, public/partials/reconsent-modal.php:25
 msgid "Options"
 msgstr ""
 
@@ -1115,6 +1115,18 @@ msgstr ""
 
 #: public/partials/reconsent-bar.php:26
 msgid "View"
+msgstr ""
+
+#: public/partials/reconsent-modal.php:21
+msgid "Some of our policies have been updated."
+msgstr ""
+
+#: public/partials/reconsent-modal.php:81
+msgid "Agree"
+msgstr ""
+
+#: public/partials/reconsent-modal.php:82
+msgid "Disagree"
 msgstr ""
 
 #: public/partials/rectify-form.php:8

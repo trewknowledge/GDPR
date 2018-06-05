@@ -16,24 +16,26 @@
 	left: 0;
 	width: 100%;
 	height: 100%;
-	background: rgba(0,0,0,0.7);
+	background: rgba(0,0,0, 0.8);
 	z-index: 99999999;
 	display: none;
 }
 
 .gdpr {
 	* {
-		font-family: Helvetica, Arial, sans-serif !important;
-		text-transform: none !important;
-		letter-spacing: 0 !important;
-		color: #455561;
-		background: none;
-		box-shadow: none;
-		text-shadow: none;
-		outline: none;
-		border: none;
-		margin: 0;
-		padding: 0;
+		&:not(textarea):not(input):not(select) {
+			font-family: Helvetica, Arial, sans-serif !important;
+			text-transform: none !important;
+			letter-spacing: 0 !important;
+			color: #455561;
+			background: none;
+			box-shadow: none;
+			text-shadow: none;
+			outline: none;
+			border: none;
+			margin: 0;
+			padding: 0;
+		}
 	}
 	.h5{
 		font-size: 18px;
@@ -308,7 +310,7 @@
 			}
 		}
 	}
-	&.gdpr-privacy-preferences, &.gdpr-general-confirmation {
+	&.gdpr-privacy-preferences, &.gdpr-reconsent, &.gdpr-general-confirmation {
 		.gdpr-wrapper {
 			position: fixed;
 			top: 50%;
@@ -324,7 +326,7 @@
 			border-radius: 2.5px;
 			padding: 15px;
 			box-sizing: border-box;
-			form {
+			> form, .reconsent-form {
 				height: 100%;
 				position: relative;
 				> header {
@@ -397,6 +399,14 @@
 						left: 0;
 						bottom: 5px;
 					}
+					.gdpr-buttons {
+						display: flex;
+						align-items: flex-end;
+						> form {
+							display: flex;
+							align-items: flex-end;
+						}
+					}
 					input[type="submit"] {
 						font-size: 13px;
 						font-weight: normal;
@@ -415,6 +425,7 @@
 						color: #fff;
 						text-decoration: none;
 						text-shadow: 0 -1px 1px #006799, 1px 0 1px #006799, 0 1px 1px #006799, -1px 0 1px #006799;
+						margin-right: 15px;
 						&:hover {
 							background: #008ec2;
 							border-color: #006799;
@@ -624,6 +635,15 @@
 							flex: 1;
 							margin-top: 20px;
 							position: relative;
+							.gdpr-policy-content {
+								padding: 10px;
+						    border: 1px solid #e5e5e5;
+						    box-shadow: 0 1px 1px rgba(0,0,0,0.04);
+						    background-color: #fff;
+						    > p {
+						    	margin-bottom: 16px;
+						    }
+							}
 							> p {
 								margin-bottom: 16px;
 							}
