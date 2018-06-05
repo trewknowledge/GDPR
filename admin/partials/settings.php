@@ -213,7 +213,7 @@
 		<div id="gdpr-cookie-categories">
 			<?php foreach ( $registered_cookies as $cat_id => $cookie_cat ) : ?>
 				<div class="postbox" id="cookie-tab-content-<?php echo esc_attr( $cat_id ); ?>">
-					<h2 class="hndle"><?php echo esc_html( $cookie_cat['name'] ); ?><button class="notice-dismiss" type="button"><span class="screen-reader-text"><?php esc_html_e( 'Remove this tab.', 'gdpr' ); ?></span></button></h2>
+					<h2 class="hndle"><?php echo esc_html( $cookie_cat['name'] ); ?> <span>(id: <?php echo esc_html( $cat_id ); ?>)</span><button class="notice-dismiss" type="button"><span class="screen-reader-text"><?php esc_html_e( 'Remove this tab.', 'gdpr' ); ?></span></button></h2>
 					<div class="inside">
 						<table class="form-table">
 							<tr>
