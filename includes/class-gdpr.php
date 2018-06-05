@@ -351,8 +351,9 @@ class GDPR {
 			$required = ( isset( $consent['policy-page'] ) && $consent['policy-page'] ) ? 'required' : '';
 			$checked  = ( isset( $sent_extras[ $key ] ) ) ? checked( $sent_extras[ $key ], 1, false ) : '';
 			echo '<p>' .
+			  '<label class="gdpr-label">' .
 				'<input type="checkbox" name="user_consents[' . esc_attr( $key ) . ']" id="' . esc_attr( $key ) . '-consent" value="1" ' . esc_html( $required ) . ' ' . esc_html( $checked ) . '>' .
-				'<label for="' . esc_attr( $key ) . '-consent">' . wp_kses( $consent['registration'], $allowed_html ) . '</label>' .
+				  wp_kses( $consent['registration'], $allowed_html ) .'</label>' .
 			'</p>';
 		}
 
