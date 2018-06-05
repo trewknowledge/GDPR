@@ -161,10 +161,13 @@
 		 */
 		$(document).on('click', '.gdpr-preferences', function(e) {
 			e.preventDefault();
-			var type = $(this).data('type');
+			var tab = $(this).data('tab');
 			$('.gdpr-overlay').fadeIn();
 			$('body').addClass('gdpr-noscroll');
 			$('.gdpr.gdpr-privacy-preferences .gdpr-wrapper').fadeIn();
+			if ( tab ) {
+				$('.gdpr.gdpr-privacy-preferences .gdpr-wrapper .gdpr-tabs [data-target="' + tab + '"]').click();
+			}
 		});
 
 		/**
