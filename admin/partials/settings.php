@@ -234,8 +234,8 @@
 								<th>
 									<label for="status-<?php echo esc_attr( $cat_id ); ?>">
 										<?php esc_html_e( 'Status', 'gdpr' ); ?>:<span class="gdpr-required">*</span>
-										<span class="screen-reader-text"><?php esc_attr_e( 'Required cookies are cookies that cannot be opt out. They need to be created for the site to function properly. Soft opt-in will be allow cookies on first landing but can be opted-out. Checked means that the cookie category will be checked and will be set after agreement. Unchecked means the user needs to manually toggle the category on to allow these cookies.', 'gdpr' ); ?></span>
-										<span data-tooltip="<?php esc_attr_e( 'Required cookies are cookies that cannot be opt out. They need to be created for the site to function properly. Soft opt-in will be allow cookies on first landing but can be opted-out. Checked means that the cookie category will be checked and will be set after agreement. Unchecked means the user needs to manually toggle the category on to allow these cookies.', 'gdpr' ); ?>">
+										<span class="screen-reader-text"><?php esc_attr_e( 'Required cookies are cookies that cannot be opted out of and are needed for the site to function properly. Soft opt-in will allow cookies on first landing but can be opted-out of. Checked means that the cookie category will be checked by default and will be set after the user agrees to them. Unchecked means the user needs to manually toggle the category on to allow these cookies.', 'gdpr' ); ?></span>
+										<span data-tooltip="<?php esc_attr_e( 'Required cookies are cookies that cannot be opted out of and are needed for the site to function properly. Soft opt-in will allow cookies on first landing but can be opted-out of. Checked means that the cookie category will be checked by default and will be set after the user agrees to them. Unchecked means the user needs to manually toggle the category on to allow these cookies.', 'gdpr' ); ?>">
 											<span class="dashicons dashicons-info"></span>
 										</span>
 									</label>
