@@ -19,7 +19,7 @@
 			<?php wp_nonce_field( 'gdpr-update-privacy-preferences', 'update-privacy-preferences-nonce' ); ?>
 			<header>
 				<div class="gdpr-box-title">
-					<h3><?php esc_html_e( 'Privacy Preference Center', 'gdpr' ); ?></h3>
+					<p><?php esc_html_e( 'Privacy Preference Center', 'gdpr' ); ?></p>
 					<span class="gdpr-close"></span>
 				</div>
 			</header>
@@ -62,7 +62,7 @@
 				<div class="gdpr-tab-content">
 					<div class="gdpr-consent-management gdpr-active">
 						<header>
-							<h4><?php esc_html_e( 'Consent Management', 'gdpr' ); ?></h4>
+							<p><?php esc_html_e( 'Consent Management', 'gdpr' ); ?></p>
 						</header>
 						<div class="gdpr-info">
 							<p><?php echo nl2br( esc_html( $cookie_privacy_excerpt ) ); ?></p>
@@ -93,7 +93,7 @@
 					<?php foreach ( $tabs as $key => $tab ) : ?>
 						<div class="<?php echo esc_attr( $key ); ?>">
 							<header>
-								<h4><?php echo esc_html( $tab['name'] ); ?></h4>
+								<p><?php echo esc_html( $tab['name'] ); ?></p>
 							</header><!-- /header -->
 							<div class="gdpr-info">
 								<p><?php echo nl2br( wp_kses_post( $tab['how_we_use'] ) ); ?></p>

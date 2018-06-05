@@ -363,7 +363,7 @@
 						align-items: center;
 						justify-content: center;
 						position: relative;
-						h3 {
+						p {
 							margin: 0 !important;
 							padding: 0 !important;
 							text-align: center !important;
@@ -626,12 +626,13 @@
 						header {
 							display: flex;
 							justify-content: space-between;
-							h4, label {
+							p, label {
 								margin: 0;
 							}
-							h4 {
+							p {
 								font-weight: 600 !important;
 								padding-right: 10px;
+								font-size: 18px;
 							}
 						}
 						.gdpr-info{
@@ -734,7 +735,7 @@
 					align-items: center;
 					justify-content: center;
 					position: relative;
-					h3 {
+					p {
 						margin: 0 !important;
 						padding: 0 !important;
 						text-align: center !important;
