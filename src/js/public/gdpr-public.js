@@ -148,6 +148,15 @@
     });
 
 		/**
+		 * Close the privacy/reconsent bar.
+		 */
+		$(document).on('click', '.gdpr.gdpr-privacy-bar .gdpr-close, .gdpr.gdpr-reconsent-bar .gdpr-close', function() {
+			$('.gdpr-overlay').fadeOut();
+			$('body').removeClass('gdpr-noscroll');
+			$('.gdpr.gdpr-privacy-bar, .gdpr.gdpr-reconsent-bar').slideUp(600);
+		});
+
+		/**
 		 * Display the privacy preferences modal.
 		 */
 		$(document).on('click', '.gdpr-preferences', function(e) {

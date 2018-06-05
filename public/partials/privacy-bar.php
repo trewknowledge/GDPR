@@ -38,6 +38,7 @@
 				<button class="gdpr-preferences" type="button"><?php esc_html_e( 'Privacy Preferences', 'gdpr' ); ?></button>
 				<button class="gdpr-agreement" type="button"><?php echo esc_html( $button_text ); ?></button>
 			</div>
+			<span class="gdpr-close"></span>
 		</div>
 	</div>
 </div>
