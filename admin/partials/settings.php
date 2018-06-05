@@ -234,8 +234,8 @@
 								<th>
 									<label for="status-<?php echo esc_attr( $cat_id ); ?>">
 										<?php esc_html_e( 'Status', 'gdpr' ); ?>:<span class="gdpr-required">*</span>
-										<span class="screen-reader-text"><?php esc_attr_e( 'Required cookies are cookies that cannot be opted out of and need to be created for the site to function properly. The ON status means that the cookie preference for this category will be enabled by default. The OFF status means the user needs to manually turn these cookies on to opt into these cookies.', 'gdpr' ); ?></span>
-										<span data-tooltip="<?php esc_attr_e( 'Required cookies are cookies that cannot be opted out of and need to be created for the site to function properly. The ON status means that the cookie preference for this category will be enabled by default. The OFF status means the user needs to manually turn these cookies on to opt into these cookies.', 'gdpr' ); ?>">
+										<span class="screen-reader-text"><?php esc_attr_e( 'Required cookies are cookies that cannot be opted out of and are needed for the site to function properly. Soft opt-in will allow cookies on first landing but can be opted-out of. Checked means that the cookie category will be checked by default and will be set after the user agrees to them. Unchecked means the user needs to manually toggle the category on to allow these cookies.', 'gdpr' ); ?></span>
+										<span data-tooltip="<?php esc_attr_e( 'Required cookies are cookies that cannot be opted out of and are needed for the site to function properly. Soft opt-in will allow cookies on first landing but can be opted-out of. Checked means that the cookie category will be checked by default and will be set after the user agrees to them. Unchecked means the user needs to manually toggle the category on to allow these cookies.', 'gdpr' ); ?>">
 											<span class="dashicons dashicons-info"></span>
 										</span>
 									</label>
@@ -244,8 +244,9 @@
 									<select name="gdpr_cookie_popup_content[<?php echo esc_attr( $cat_id ); ?>][status]" id="status-<?php echo esc_attr( $cat_id ); ?>" required>
 										<option value=""></option>
 										<option value="required" <?php selected( isset( $registered_cookies[ $cat_id ]['status'] ) ? $registered_cookies[ $cat_id ]['status'] : '', 'required' ); ?>><?php esc_html_e( 'Required', 'gdpr' ); ?></option>
-										<option value="on" <?php selected( isset( $registered_cookies[ $cat_id ]['status'] ) ? $registered_cookies[ $cat_id ]['status'] : '', 'on' ); ?>><?php esc_html_e( 'ON', 'gdpr' ); ?></option>
-										<option value="off" <?php selected( isset( $registered_cookies[ $cat_id ]['status'] ) ? $registered_cookies[ $cat_id ]['status'] : '', 'off' ); ?>><?php esc_html_e( 'OFF', 'gdpr' ); ?></option>
+										<option value="soft" <?php selected( isset( $registered_cookies[ $cat_id ]['status'] ) ? $registered_cookies[ $cat_id ]['status'] : '', 'soft' ); ?>><?php esc_html_e( 'Soft Opt-in', 'gdpr' ); ?></option>
+										<option value="on" <?php selected( isset( $registered_cookies[ $cat_id ]['status'] ) ? $registered_cookies[ $cat_id ]['status'] : '', 'on' ); ?>><?php esc_html_e( 'Checked', 'gdpr' ); ?></option>
+										<option value="off" <?php selected( isset( $registered_cookies[ $cat_id ]['status'] ) ? $registered_cookies[ $cat_id ]['status'] : '', 'off' ); ?>><?php esc_html_e( 'Unchecked', 'gdpr' ); ?></option>
 									</select>
 								</td>
 							</tr>

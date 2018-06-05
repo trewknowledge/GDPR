@@ -352,7 +352,7 @@ class GDPR_Public {
 			if ( ! empty( $registered_cookies ) ) {
 				$required_cookies = array_filter(
 					$registered_cookies, function( $item ) {
-						return 'required' === $item['status'];
+						return 'required' === $item['status'] || 'soft' === $item['status'];
 					}
 				);
 				if ( ! empty( $required_cookies ) ) {
