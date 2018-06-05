@@ -71,8 +71,8 @@
 				<tr>
 					<th scope="row">
 						<label for="gdpr_hide_from_bots"><?php esc_html_e( 'Hide plugin content from bots', 'gdpr' ); ?>:</label>
-						<span class="screen-reader-text"><?php esc_attr_e( 'We detect if the user agent is a bot like GoogleBot and hide our added content from it. Displaying this can be harmful for SEO but for some reason you might want to do that.', 'gdpr' ); ?></span>
-						<span data-tooltip="<?php esc_attr_e( 'We detect if the user agent is a bot like GoogleBot and hide our added content from it. Displaying this can be harmful for SEO but for some reason you might want to do that.', 'gdpr' ); ?>">
+						<span class="screen-reader-text"><?php esc_attr_e( 'We detect if the user agent is a bot like Googlebot and hide our added content from it. Displaying this content might be harmful for SEO.', 'gdpr' ); ?></span>
+						<span data-tooltip="<?php esc_attr_e( 'We detect if the user agent is a bot like Googlebot and hide our added content from it. Displaying this content might be harmful for SEO.', 'gdpr' ); ?>">
 							<span class="dashicons dashicons-info"></span>
 						</span>
 					</th>
@@ -110,8 +110,8 @@
 				<tr>
 					<th scope="row">
 						<label for="gdpr_cookie_banner_content"><?php esc_html_e( 'Privacy Bar Content', 'gdpr' ); ?>:</label>
-						<span class="screen-reader-text"><?php esc_attr_e( 'Try to add an brief explanation of how you use your user data in a few lines. This will show up in the privacy bar.', 'gdpr' ); ?></span>
-						<span data-tooltip="<?php esc_attr_e( 'Try to add an brief explanation of how you use your user data in a few lines. This will show up in the privacy bar.', 'gdpr' ); ?>">
+						<span class="screen-reader-text"><?php esc_attr_e( 'Add a brief explanation of how your site collects user data. This will show up in the privacy bar.', 'gdpr' ); ?></span>
+						<span data-tooltip="<?php esc_attr_e( 'Add a brief explanation of how your site collects user data. This will show up in the privacy bar.', 'gdpr' ); ?>">
 							<span class="dashicons dashicons-info"></span>
 						</span>
 					</th>
@@ -123,8 +123,8 @@
 				<tr>
 					<th scope="row">
 						<label for="gdpr_cookie_privacy_excerpt"><?php esc_html_e( 'Privacy Excerpt', 'gdpr' ); ?>:</label>
-						<span class="screen-reader-text"><?php esc_attr_e( 'This show up in the privacy preferences window.', 'gdpr' ); ?></span>
-						<span data-tooltip="<?php esc_attr_e( 'This show up in the privacy preferences window.', 'gdpr' ); ?>">
+						<span class="screen-reader-text"><?php esc_attr_e( 'This will show up in the privacy preferences window.', 'gdpr' ); ?></span>
+						<span data-tooltip="<?php esc_attr_e( 'This will show up in the privacy preferences window.', 'gdpr' ); ?>">
 							<span class="dashicons dashicons-info"></span>
 						</span>
 					</th>
@@ -138,7 +138,7 @@
 		</table>
 		<hr>
 		<h2 class="title"><?php esc_html_e( 'Request Forms reCAPTCHA', 'gdpr' ); ?></h2>
-		<p><?php esc_html_e( 'To prevent spam attacks, you have the option to enable reCAPTCHA. Configure below your keys to make it work with our request forms.', 'gdpr' ); ?></p>
+		<p><?php esc_html_e( 'To prevent spam attacks, you have the option to enable reCAPTCHA. Configure your keys below to make it work with our request forms.', 'gdpr' ); ?></p>
 		<p>
 			<?php
 			echo sprintf(
