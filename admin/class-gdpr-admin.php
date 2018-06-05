@@ -562,6 +562,18 @@ class GDPR_Admin {
 		}
 	}
 
+	public function version_check_notice() {
+		if( -1 === version_compare( phpversion(), GDPR_REQUIRED_PHP_VERSION ) ) {
+			?>
+			<div class="notice notice-error">
+				<p><strong><?php esc_html_e( 'GDPR', 'gdpr' ); ?></strong></p>
+				<p><?php echo sprintf( esc_html__( 'Your current PHP version (%1$s) is below the plugin required version of %2$s.', 'gdpr' ), phpversion(), GDPR_REQUIRED_PHP_VERSION ) ?></p>
+			</div>
+			<?php
+			deactivate_plugins( 'gdpr/gdpr.php' );
+		}
+	}
+
 	/**
 	 * Admin notice when one of the policies has been updated.
 	 * @since  1.0.0

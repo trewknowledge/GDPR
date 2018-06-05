@@ -78,6 +78,8 @@
 												<label class="gdpr-switch">
 													<input type="checkbox" name="user_consents[]" value="<?php echo esc_attr( $consent_key ); ?>" <?php echo ! empty( $user_consents ) ? checked( in_array( $consent_key, $user_consents, true ), 1, false ) : 'checked'; ?>>
 													<span class="gdpr-slider round"></span>
+													<span class="gdpr-switch-indicator-on"><?php echo esc_html__( 'ON', 'gdpr' ); ?></span>
+													<span class="gdpr-switch-indicator-off"><?php echo esc_html__( 'OFF', 'gdpr' ); ?></span>
 												</label>
 											<?php endif; ?>
 										</div>
@@ -121,10 +123,12 @@
 											<?php if ( 'required' === $tab['status'] ) : ?>
 												<span class="gdpr-always-active"><?php esc_html_e( 'Required', 'gdpr' ); ?></span>
 												<input type="hidden" name="approved_cookies[]" value="<?php echo esc_attr( json_encode( $site_cookies ) ); ?>">
-											<?php else : ?>
+											<?php else : ?>												
 												<label class="gdpr-switch">
 													<input type="checkbox" class="gdpr-cookie-category" data-category="<?php echo esc_attr( $key ); ?>" name="approved_cookies[]" value="<?php echo esc_attr( json_encode( $site_cookies ) ); ?>" <?php checked( $enabled, true ); ?>>
 													<span class="gdpr-slider round"></span>
+													<span class="gdpr-switch-indicator-on"><?php echo esc_html__( 'ON', 'gdpr' ); ?></span>
+													<span class="gdpr-switch-indicator-off"><?php echo esc_html__( 'OFF', 'gdpr' ); ?></span>
 												</label>
 											<?php endif; ?>
 										</div>

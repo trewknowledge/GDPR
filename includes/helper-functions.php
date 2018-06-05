@@ -17,19 +17,20 @@
  * @param  string $text The button text.
  * @param  string $type The type of preferences. Possible options are `cookies` or `consents`
  */
-function gdpr_preferences( $text ) {
-	echo '<button type="button" class="gdpr-preferences">' . esc_html( $text ) . '</button>';
+function gdpr_preferences( $text, $tab = 'gdpr-consent-management' ) {
+	echo '<button type="button" class="gdpr-preferences" data-tab="' . esc_attr( $tab ) . '">' . esc_html( $text ) . '</button>';
 }
 
 function gdpr_preferences_shortcode( $atts ) {
 	$atts = shortcode_atts(
 		array(
 			'text' => esc_html__( 'Privacy Preferences', 'gdpr' ),
+			'tab'  => 'gdpr-consent-management',
 		), $atts, 'gdpr_preferences'
 	);
 
 	ob_start();
-	gdpr_preferences( $atts['text'] );
+	gdpr_preferences( $atts['text'], $atts['tab'] );
 	return ob_get_clean();
 }
 
