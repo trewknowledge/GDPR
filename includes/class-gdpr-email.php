@@ -42,9 +42,11 @@ class GDPR_Email {
 		$plugin_path = plugin_dir_path( dirname( __FILE__ ) ) . 'templates/email/'; // Path to the template folder
 
 		// Search template file in theme folder.
-		$template = locate_template( array(
-			$theme_path . $template_name
-		) );
+		$template = locate_template(
+			array(
+				$theme_path . $template_name,
+			)
+		);
 
 		// Get plugins template file.
 		if ( ! $template ) {
@@ -98,12 +100,12 @@ class GDPR_Email {
 	 * @return string The noreply email address
 	 */
 	private static function get_do_not_reply_address() {
-	  $sitename = strtolower( $_SERVER['SERVER_NAME'] );
-    if ( substr( $sitename, 0, 4 ) === 'www.' ) {
+		$sitename = isset( $_SERVER['SERVER_NAME'] ) ? strtolower( sanitize_text_field( wp_unslash( $_SERVER['SERVER_NAME'] ) ) ) : ''; // WPCS: input var ok.
+		if ( substr( $sitename, 0, 4 ) === 'www.' ) {
 			$sitename = substr( $sitename, 4 );
-    }
+		}
 
-	  return apply_filters( 'gdpr_do_not_reply_address', 'noreply@' . $sitename );
+		return apply_filters( 'gdpr_do_not_reply_address', 'noreply@' . $sitename );
 	}
 
 	/**
@@ -122,14 +124,16 @@ class GDPR_Email {
 
 		$limit = get_option( 'gdpr_email_limit', 100 );
 
-		$users = get_users( array(
-			'fields' => 'all_with_meta'
-		) );
+		$users = get_users(
+			array(
+				'fields' => 'all_with_meta',
+			)
+		);
 
 		$steps = ceil( count( $users ) / $limit );
 
 		foreach ( range( 0, $steps - 1 ) as $loop ) {
-			$offset = $limit * $loop;
+			$offset      = $limit * $loop;
 			$loop_emails = wp_list_pluck( $users, 'user_email' );
 			$loop_emails = array_slice( $loop_emails, $offset, $limit );
 			wp_schedule_single_event( time() + $loop * HOUR_IN_SECONDS, 'send_data_breach_emails', array( $loop_emails, $data_breach ) );
@@ -147,36 +151,37 @@ class GDPR_Email {
 	public function send_data_breach_emails( $emails, $data ) {
 		$content = isset( $data['content'] ) ? sanitize_textarea_field( $data['content'] ) : '';
 
-		$nature = sanitize_textarea_field( wp_unslash( $data['nature'] ) );
+		$nature         = sanitize_textarea_field( wp_unslash( $data['nature'] ) );
 		$office_contact = sanitize_textarea_field( wp_unslash( $data['office_contact'] ) );
-		$consequences = sanitize_textarea_field( wp_unslash( $data['consequences'] ) );
-		$measures = sanitize_textarea_field( wp_unslash( $data['measures'] ) );
+		$consequences   = sanitize_textarea_field( wp_unslash( $data['consequences'] ) );
+		$measures       = sanitize_textarea_field( wp_unslash( $data['measures'] ) );
 
 		foreach ( (array) $emails as $email ) {
 			$user = get_user_by( 'email', $email );
 			if ( $user instanceof WP_User ) {
 				GDPR_Audit_Log::log( $user->ID, esc_html__( 'Data breach notification sent to user.', 'gdpr' ) );
 				/* translators: email content */
-				GDPR_Audit_Log::log( $user->ID, sprintf( esc_html__( 'Email content: %s', 'gdpr'), $content ) );
+				GDPR_Audit_Log::log( $user->ID, sprintf( esc_html__( 'Email content: %s', 'gdpr' ), $content ) );
 				/* translators: nature of the data breach */
-				GDPR_Audit_Log::log( $user->ID, sprintf( esc_html__( 'Nature of data breach: %s', 'gdpr'), $nature ) );
+				GDPR_Audit_Log::log( $user->ID, sprintf( esc_html__( 'Nature of data breach: %s', 'gdpr' ), $nature ) );
 				/* translators: data protection officer contact information */
-				GDPR_Audit_Log::log( $user->ID, sprintf( esc_html__( 'Data protection officer contact: %s', 'gdpr'), $office_contact ) );
+				GDPR_Audit_Log::log( $user->ID, sprintf( esc_html__( 'Data protection officer contact: %s', 'gdpr' ), $office_contact ) );
 				/* translators: likely consequences */
-				GDPR_Audit_Log::log( $user->ID, sprintf( esc_html__( 'Likely consequences of breach: %s', 'gdpr'), $consequences ) );
+				GDPR_Audit_Log::log( $user->ID, sprintf( esc_html__( 'Likely consequences of breach: %s', 'gdpr' ), $consequences ) );
 				/* translators: measures taken */
-				GDPR_Audit_Log::log( $user->ID, sprintf( esc_html__( 'Measures taken or proposed to be taken: %s', 'gdpr'), $measures ) );
+				GDPR_Audit_Log::log( $user->ID, sprintf( esc_html__( 'Measures taken or proposed to be taken: %s', 'gdpr' ), $measures ) );
 			}
 		}
 
-
-		self::send( $emails, 'data-breach-notification', array(
-			'content' => $content,
-			'nature' => $nature,
-			'office_contact' => $office_contact,
-			'consequences' => $consequences,
-			'measures' => $measures,
-		) );
+		self::send(
+			$emails, 'data-breach-notification', array(
+				'content'        => $content,
+				'nature'         => $nature,
+				'office_contact' => $office_contact,
+				'consequences'   => $consequences,
+				'measures'       => $measures,
+			)
+		);
 	}
 
 	/**
@@ -193,33 +198,36 @@ class GDPR_Email {
 	 * @return bool                 Whether the email contents were sent successfully.
 	 */
 	public static function send( $emails, $type, $args = array(), $attachments = array() ) {
-		$possible_types = apply_filters( 'gdpr_email_types', array(
-			'new-request'                        => apply_filters( 'gdpr_new_request_email_subject', esc_html__( 'GDPR Notification: There is a new request waiting to be reviewed.', 'gdpr' ) ),
-			'delete-request'                     => apply_filters( 'gdpr_delete_request_email_subject', esc_html__( 'Someone requested to close your account.', 'gdpr' ) ),
-			'delete-resolved'                    => apply_filters( 'gdpr_delete_resolved_email_subject', esc_html__( 'Your account has been closed.', 'gdpr' ) ),
-			'rectify-request'                    => apply_filters( 'gdpr_rectify_request_email_subject', esc_html__( 'Someone requested that we rectify data of your account.', 'gdpr' ) ),
-			'rectify-resolved'                   => apply_filters( 'gdpr_rectify_resolved_email_subject', esc_html__( 'Your request has been completed.', 'gdpr' ) ),
-			'complaint-request'                  => apply_filters( 'gdpr_complaint_request_email_subject', esc_html__( 'Someone made complaint on behalf of your account.', 'gdpr' ) ),
-			'complaint-resolved'                 => apply_filters( 'gdpr_complaint_resolved_email_subject', esc_html__( 'Your request has been completed.', 'gdpr' ) ),
-			'export-data-request'                => apply_filters( 'gdpr_export_data_request_email_subject', esc_html__( 'Someone requested to download your data.', 'gdpr' ) ),
-			'export-data-resolved'               => apply_filters( 'gdpr_export_data_resolved_email_subject', esc_html__( 'Your request has been completed.', 'gdpr' ) ),
-			'data-breach-request'                => apply_filters( 'gdpr_data_breach_request_email_subject', esc_html__( 'Someone requested to send a data breach notification.', 'gdpr' ) ),
-			'data-breach-notification'           => apply_filters( 'gdpr_data_breach_resolved_email_subject', esc_html__( 'Data Breach Notification.', 'gdpr' ) ),
-		) );
+		$possible_types = apply_filters(
+			'gdpr_email_types', array(
+				'new-request'              => apply_filters( 'gdpr_new_request_email_subject', esc_html__( 'GDPR Notification: There is a new request waiting to be reviewed.', 'gdpr' ) ),
+				'delete-request'           => apply_filters( 'gdpr_delete_request_email_subject', esc_html__( 'Someone requested to close your account.', 'gdpr' ) ),
+				'delete-resolved'          => apply_filters( 'gdpr_delete_resolved_email_subject', esc_html__( 'Your account has been closed.', 'gdpr' ) ),
+				'rectify-request'          => apply_filters( 'gdpr_rectify_request_email_subject', esc_html__( 'Someone requested that we rectify data of your account.', 'gdpr' ) ),
+				'rectify-resolved'         => apply_filters( 'gdpr_rectify_resolved_email_subject', esc_html__( 'Your request has been completed.', 'gdpr' ) ),
+				'complaint-request'        => apply_filters( 'gdpr_complaint_request_email_subject', esc_html__( 'Someone made complaint on behalf of your account.', 'gdpr' ) ),
+				'complaint-resolved'       => apply_filters( 'gdpr_complaint_resolved_email_subject', esc_html__( 'Your request has been completed.', 'gdpr' ) ),
+				'export-data-request'      => apply_filters( 'gdpr_export_data_request_email_subject', esc_html__( 'Someone requested to download your data.', 'gdpr' ) ),
+				'export-data-resolved'     => apply_filters( 'gdpr_export_data_resolved_email_subject', esc_html__( 'Your request has been completed.', 'gdpr' ) ),
+				'data-breach-request'      => apply_filters( 'gdpr_data_breach_request_email_subject', esc_html__( 'Someone requested to send a data breach notification.', 'gdpr' ) ),
+				'data-breach-notification' => apply_filters( 'gdpr_data_breach_resolved_email_subject', esc_html__( 'Data Breach Notification.', 'gdpr' ) ),
+			)
+		);
 
 		if ( ! in_array( $type, array_keys( $possible_types ), true ) ) {
 			return;
 		}
 
 		$no_reply = self::get_do_not_reply_address();
-    $headers = array( 'From: ' . get_bloginfo( 'name' ) . ' <' . $no_reply . '>' );
+		$headers  = array( 'From: ' . get_bloginfo( 'name' ) . ' <' . $no_reply . '>' );
 		foreach ( (array) $emails as $email ) {
 			$headers[] = 'Bcc: ' . sanitize_email( $email );
 		}
 
 		$content = self::get_email_content( $type . '.php', $args );
 
-		return wp_mail( $no_reply,
+		return wp_mail(
+			$no_reply,
 			$possible_types[ $type ],
 			html_entity_decode( $content, ENT_QUOTES, 'UTF-8' ),
 			$headers,

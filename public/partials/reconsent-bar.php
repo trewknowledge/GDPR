@@ -12,18 +12,24 @@
  */
 ?>
 
-<div class="gdpr gdpr-reconsent-bar" style="/*display:none;*/">
-	<div class="gdpr-contained-wrapper">
-		<p class="h5"><?php esc_html_e( 'Some of our policies have been updated', 'gdpr' ); ?></p>
-		<?php foreach ( $consent_needed as $consent_id => $consent ): ?>
-			<div class="gdpr-policy-list">
-				<p><?php echo esc_html( $consent['name'] ); ?></p>
-				<div class="gdpr-buttons">
-					<a href="<?php echo esc_url( get_permalink( $consent['policy-page'] ) ); ?>" target="_blank"><?php esc_html_e( 'View', 'gdpr' ) ?></a>
-					<button class="gdpr-agree" type="button"><?php esc_html_e( 'Agree', 'gdpr' ); ?></button>
-				</div>
+<div class="gdpr gdpr-reconsent-bar" style="display:none;">
+	<div class="gdpr-wrapper">
+		<div class="gdpr-content">
+			<p><?php esc_html_e( 'Some of our policies have been updated. Please make sure to select the "View" link next to each item in order to view changes before agreeing.', 'gdpr' ); ?></p>
+		</div>
+		<div class="gdpr-right">
+			<ul class="gdpr-policy-list">
+				<?php foreach ( $updated_consents as $consent_id => $consent ) : ?>
+					<li class="gdpr-policy-list-item">
+						<input type="hidden" value="<?php echo esc_attr( $consent_id ); ?>" checked>
+						<label><?php echo esc_html( $consent['name'] ); ?></label>
+						<a class="gdpr-policy-link" href="<?php echo esc_url( get_permalink( $consent['policy-page'] ) ); ?>" target="_blank">[<?php esc_html_e( 'View', 'gdpr' ); ?>]</a>
+					</li>
+				<?php endforeach ?>
+			</ul>
+			<div class="gdpr-buttons">
+				<button class="gdpr-agreement" type="button" data-nonce="<?php echo esc_attr( wp_create_nonce( 'gdpr-agree-with-new-policies' ) ); ?>"><?php esc_html_e( 'I Agree', 'gdpr' ); ?></button>
 			</div>
-		<?php endforeach ?>
-
+		</div>
 	</div>
 </div>

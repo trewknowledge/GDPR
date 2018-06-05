@@ -5,7 +5,7 @@ Tags: gdpr, compliance, privacy, law, general data protection regulation
 Requires at least: 4.7
 Requires PHP: 5.6
 Tested up to: 4.9
-Stable tag: 1.4.7
+Stable tag: 2.0.10
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -206,166 +206,75 @@ Activating this plugin does not guarantee that an organisation is successfully m
 
 == Changelog ==
 
+= 2.0.10 =
+* Fix new re-consent bar not showing if users had no prior consent.
+* Added a PHP version check on activation.
+
+= 2.0.9 =
+* Fix a syntax error introduced after cleaning code with PHPCS.
+* Fix functions that were not checking if registered consents were empty before running.
+
+= 2.0.8 =
+* Adding a setting to hide plugin generated markup from bots such as Googlebot.
+* Fix cookie category dismiss button not showing up after adding a new category. A save was required before the button would appear.
+* Display cookie categories that do not have anything in the cookies used option.
+* Fix warnings when no consent is registered.
+* Small style and markup enhancement.
+* A little cleanup to reduce WP server stress.
+
+
+= 2.0.7 =
+* Changing some texts to be consistent.
+* Cleaned up code with VIP Code Standard.
+* Improved security.
+* Fix internet explorer bug.
+* Fix JS function with wrong variable name when an AJAX error happened.
+* Fix Warning on woocommerce consent checkboxes.
+* Renaming buttons and translating placeholders.
+* Added another parameter to the request forms function and shortcode to allow users to customize the button text.
+* Fix a bug in the privacy preferences center when you moved to a different page without accepting cookies it would uncheck fields that should continue being checked.
+* Fix settings tooltips z-index to sit on top of other elements.
+
+= 2.0.6 =
+* Fix XML export error.
+
+= 2.0.5 =
+* Fix cookie toggle indicator set to on even if the user had previously untoggled it.
+* Other minor fixes to the audit log reconsent.
+
+= 2.0.4 =
+* Adding two missing translation strings
+* Removing debug code that I forgot to remove from 2.0.3
+* Adding to audit log when user reconsents.
+
+= 2.0.3 =
+* Fix third party cookies now showing up in the privacy preferences window or the settings page.
+
+= 2.0.2 =
+* Fix reconsent not logging correctly on reconsent
+* Fix reconsent bar not showing up.
+
+= 2.0.1 =
+* Removing things that should have been deleted prior to updating to 2.0.0.
+* Fix new reconsent bar missing closing div.
+
+= 2.0.0 =
+* Change all requests and privacy preferences window to AJAX to avoid the admin-post hook issue.
+* We do not track privacy policy anymore. We can now track any kind of policy that users want. Those have been moved to each consent.
+* Including more options. Including "enable/disable" the privacy bar.
+* New filters and funtions were included.
+* Making the settings a little more accessible.
+* Removed the reconsent modal. It was too obtrusive. We switched to a more subtle notification bar.
+
 = 1.4.7 =
 * Fix for users who were complaining about their scroll bars missing if they did not select a privacy policy page.
 
-= 1.4.6 =
-* Change re-consent logic so it doesn't influence SEO with repeated content.
-
-= 1.4.5 =
-* Minor style adjustments
-* Body scroll is disabled when modal is active
-* Adjusting privacy bar to sit behind re-consent modal
-
-= 1.4.4 =
-* Fix all_cookies field being displayed as text field instead of hidden.
-
-= 1.4.3 =
-* Found one more instance of Telemetry Scanner, changed to Telemetry Tracker.
-* Delete cookies when users change their preferences and disable some cookies.
-* Changed cookies used field to textarea for easier reading when lots of cookies are set.
-* Added a text to the settings page explaining that even if cookies are registered, if the user does not input some text for the privacy banner, it won't show up.
-* Adding filters for the admin notification email. [https://gdpr-wp.com/knowledge-base/actions-filters/](https://gdpr-wp.com/knowledge-base/actions-filters/)
-* Adding filters for the request forms button label. [https://gdpr-wp.com/knowledge-base/actions-filters/](https://gdpr-wp.com/knowledge-base/actions-filters/)
-
-= 1.4.2 =
-* Fix privacy bar reapearing. Cookie was not set to expire in a year.
-
-= 1.4.1 =
-* Allow links in the consent description in the wp profile page.
-* Force tabs to be an array when empty to fix the notices and fatal error in the front end.
-* Hide cookies sidebar in the privacy centre window if no cookies were registered.
-* Adding a filter so the privacy bar button text can be changed.
-* Changing Telemetry Scanner to Telemetry Tracker for consistency across the plugin.
-* Translating missing strings.
-* Adding options to add or remove consent checkboxes to woocommerce registration form and checkout registration form.
-
-= 1.4.0 =
-* Adding the option to disable the plugin CSS. Be careful when using this option. Make sure you know what you are doing.
-* Adding the option to enable or disable the telemetry feature.
-* Adding the option to add reCaptcha to the request forms.
-* Adding comments to the personal data export.
-* Moved privacy bar content field and privacy excerpt field to the general settings tab.
-* Removed automatic privacy policy link from the privacy bar.
-* We now accept links in the privacy bar content to get around the last change.
-* Changed Telemetry cleanup schedule to hourly.
-* Forcing the privacy bar to stay on the left to avoid CSS incompatibilities.
-* Renaming the tab classes in the admin panel to again avoid incompatibilities.
-* Fix privacy preference centre only showing up when cookies were registered.
-
-= 1.3.5 =
-* Fix undefined variable warning.
-* Fix WooCommerce and possibly other plugins nonce manipulation for logged out users. For real this time.
-* Fix XML export fatal error when meta key starts with a number.
-
-= 1.3.4 =
-* Prefixed all nonce actions.
-* Fixed cookies being checked by default when they should have been unchecked.
-* Possible fix for strange characters causing XML export to throw an error.
-* Fix for WooCommerce nonce manipulation for logged out users that was preventing visitors from updating their privacy preferences.
-
-= 1.3.3 =
-* Fix translation error everybody has been complaining about.
-
-= 1.3.2 =
-* Fix issue with the is_allowed_cookie JS function.
-
-= 1.3.1 =
-* Fix consent syncing when difference comes from database and not the cookie.
-* Might allow people to use external services like iubenda.
-
-= 1.3.0 =
-* Added BuddyPress registration form integration.
-* Added WooCommerce registration and checkout registration form integration.
-* Added admin notifications when a user makes a request that requires interaction.
-
-= 1.2.2 =
-* Adding a couple missing translation strings.
-* Wrapping the telemetry post type page in an `if` so people can unregister it if they want to.
-
-= 1.2.1 =
-* After one user reported that their scroll bar disappeared I decided to remove the code that do that when the reconsent modal shows up. This has no impact on anything, but it might fix this user problem.
-
-= 1.2.0 =
-* Fix has_consent and is_allowed_cookie JavaScript functions not being available globally.
-* Add a function to get the consent checkbox without echoing them.
-* Change how the user deletion request works. We removed the email attachment to avoid being considered spam. The user can now download it immediatelly by clicking on their email link.
-* Adding an option for user deletions always be added to the request review table. That will allow you to remove your users from third-party services before removing them from your site.
-
-= 1.1.6 =
-* Fix weird javascript issue that was preventing users from using the "Close my account" feature.
-
-= 1.1.5 =
-* The gdpr_request_form PHP function was returning instead of echoing. That is now fixed.
-* Fix issue when syncing consent cookie and database values.
-* Fix issue that prevented the privacy bar from disappearing after saving privacy preferences.
-
-= 1.1.4 =
-* Possible fix for cached sites.
-* Added has_consent and is_allowed_cookie functions to javascript.
-* Changed how the privacy bar and re-consent modal show up based on javascript.
-* Better sync of consent and cookies with a cookie.
-
-= 1.1.3 =
-* Changed Complaint and Rectification form submit button wording.
-* Added a loading indicator on the reconsent window. Slow servers will not give the impression that this featured is not working anymore.
-* Fixed user notification not showing after confirming deletion email.
-* Fixed consent "required" toggle not displaying the correct state.
-* Added a second confirmation after disagreeing to reconsent.
-
-
-= 1.1.2 =
-* Fixed reconsent modal not closing after agreeing to the new policy.
-
-= 1.1.1 =
-* Forgot to unload jQuery-UI.
-
-= 1.1.0 =
-* Merge the two preferences windows into one.
-* [gdpr_preferences] shortcode doesn't need the 'type' attribute to work anymore.
-* Removed jQuery UI from the front end and replaced with our own notification window to keep a consistent color scheme, avoid unnecessary requests and avoid style issues from theme to theme.
-* Allow logged out users to keep track of consents too. ( Those are not logged to the audit log for obvious reasons. )
-* Added a refresh after preferences change so users can display forms or count the user visit and so on depending on the new user consent.
-
-= 1.0.6 =
-* Allowing users to add target on their privacy policy links on the consent description.
-
-= 1.0.5 =
-* Allow users to use links on their consent descriptions so they can link to their privacy policy or other pages.
-
-= 1.0.4 =
-* Added a link to the privacy policy page on the cookie bar and on the cookie preferences window.
-* Added a new option for a text just before the privacy policy link on the cookie bar.
-* Checking if the user actually registered cookies before showing the cookie bar.
-
-= 1.0.3 =
-* Added a shortcode for re-opening the cookie or consent management windows.
-
-= 1.0.2 =
-* Added new filters for access data so extensions can add more information.
-* Rebuilt the translation pot file and added translation comments.
-
-= 1.0.1 =
-* Fix issue on cookie preferences not saving and displaying php errors.
-
-= 1.0.0 =
-* Added cookie management screen
-* Added consent management screen
-* Added Telemetry tracker
-* Complete code rewrite
-* Added more types of request
-* Added Help documentation
-* Added new shortcodes
-* Changed to Settings API
-
-= 0.1.1 =
-* Set the admin email as the default processor information on activation
-* Settings updated notice is now dismissible
-
-= 0.1.0 =
-* Beta version released to the public
-
 == Upgrade Notice ==
+
+= 2.0.0 =
+We have added a few new options which must be reviewed before continuing to use the plugin.
+For cookies, we have added a status which allows you to set them as ON, OFF or Required. For consents, we moved the policy selector into each consent. All policies can now be tracked through this.
+Please keep in mind the plugin might not work as intended until these settings are reviewed.
 
 = 1.0.0 =
 This is a major rewrite of the plugin. Things will look different and work differently.
