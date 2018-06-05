@@ -142,8 +142,8 @@ class GDPR_Requests_Public extends GDPR_Requests {
 		if ( ! $user instanceof WP_User ) {
 			wp_send_json_error(
 				array(
-					'title'   => esc_html__( 'Error!', 'gdpr' ),
-					'content' => esc_html__( 'User not found.', 'gdpr' ),
+					'title'   => esc_html__( 'Email confirmation', 'gdpr' ),
+					'content' => esc_html__( 'If this email is connected to an existing user, you should receive an email confirmation soon.', 'gdpr' ),
 				)
 			);
 		}
@@ -172,8 +172,8 @@ class GDPR_Requests_Public extends GDPR_Requests {
 					if ( 1 === $admins_query->get_total() ) {
 						wp_send_json_error(
 							array(
-								'title'   => esc_html__( 'Error!', 'gdpr' ),
-								'content' => esc_html__( 'We can\'t delete this user.', 'gdpr' ),
+								'title'   => esc_html__( 'Email confirmation', 'gdpr' ),
+								'content' => esc_html__( 'If this email is connected to an existing user, you should receive an email confirmation soon.', 'gdpr' ),
 							)
 						);
 					}
@@ -234,7 +234,7 @@ class GDPR_Requests_Public extends GDPR_Requests {
 			wp_send_json_success(
 				array(
 					'title'   => esc_html__( 'Email confirmation', 'gdpr' ),
-					'content' => esc_html__( 'We\'ve sent you a confirmation email.', 'gdpr' ),
+					'content' => esc_html__( 'If this email is connected to an existing user, you should receive an email confirmation soon.', 'gdpr' ),
 				)
 			);
 		} else {
