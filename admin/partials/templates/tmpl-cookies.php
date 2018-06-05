@@ -21,8 +21,8 @@
 					<th>
 						<label for="status-{{data.key}}">
 							<?php esc_html_e( 'Status', 'gdpr' ); ?>:<span class="gdpr-required">*</span>
-							<span class="screen-reader-text"><?php esc_attr_e( 'Required cookies are cookies that cannot be opt out. They need to be created for the site to function properly. Status ON means that the cookie will be set after agreement. Status OFF means the user needs to check the checkbox to activate this category.', 'gdpr' ); ?></span>
-							<span data-tooltip="<?php esc_attr_e( 'Required cookies are cookies that cannot be opt out. They need to be created for the site to function properly. Status ON means that the cookie will be set after agreement. Status OFF means the user needs to check the checkbox to activate this category.', 'gdpr' ); ?>">
+							<span class="screen-reader-text"><?php esc_attr_e( 'Required cookies are cookies that cannot be opt out. They need to be created for the site to function properly. Soft opt-in will be allow cookies on first landing but can be opted-out. Checked means that the cookie category will be checked and will be set after agreement. Unchecked means the user needs to manually toggle the category on to allow these cookies.', 'gdpr' ); ?></span>
+							<span data-tooltip="<?php esc_attr_e( 'Required cookies are cookies that cannot be opt out. They need to be created for the site to function properly. Soft opt-in will be allow cookies on first landing but can be opted-out. Checked means that the cookie category will be checked and will be set after agreement. Unchecked means the user needs to manually toggle the category on to allow these cookies.', 'gdpr' ); ?>">
 								<span class="dashicons dashicons-info"></span>
 							</span>
 						</label>
@@ -31,8 +31,9 @@
 						<select name="gdpr_cookie_popup_content[{{data.key}}][status]" id="status-{{data.key}}" required>
 							<option value=""></option>
 							<option value="required"><?php esc_html_e( 'Required', 'gdpr' ); ?></option>
-							<option value="on"><?php esc_html_e( 'ON', 'gdpr' ); ?></option>
-							<option value="off"><?php esc_html_e( 'OFF', 'gdpr' ); ?></option>
+							<option value="soft"><?php esc_html_e( 'Soft Opt-in', 'gdpr' ); ?></option>
+							<option value="on"><?php esc_html_e( 'Checked', 'gdpr' ); ?></option>
+							<option value="off"><?php esc_html_e( 'Unchecked', 'gdpr' ); ?></option>
 						</select>
 					</td>
 				</tr>
