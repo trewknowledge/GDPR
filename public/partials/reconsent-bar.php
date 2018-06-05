@@ -30,6 +30,7 @@
 			<div class="gdpr-buttons">
 				<button class="gdpr-agreement" type="button" data-nonce="<?php echo esc_attr( wp_create_nonce( 'gdpr-agree-with-new-policies' ) ); ?>"><?php esc_html_e( 'I Agree', 'gdpr' ); ?></button>
 			</div>
+			<span class="gdpr-close"></span>
 		</div>
 	</div>
 </div>

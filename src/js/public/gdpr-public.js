@@ -148,14 +148,26 @@
     });
 
 		/**
+		 * Close the privacy/reconsent bar.
+		 */
+		$(document).on('click', '.gdpr.gdpr-privacy-bar .gdpr-close, .gdpr.gdpr-reconsent-bar .gdpr-close', function() {
+			$('.gdpr-overlay').fadeOut();
+			$('body').removeClass('gdpr-noscroll');
+			$('.gdpr.gdpr-privacy-bar, .gdpr.gdpr-reconsent-bar').slideUp(600);
+		});
+
+		/**
 		 * Display the privacy preferences modal.
 		 */
 		$(document).on('click', '.gdpr-preferences', function(e) {
 			e.preventDefault();
-			var type = $(this).data('type');
+			var tab = $(this).data('tab');
 			$('.gdpr-overlay').fadeIn();
 			$('body').addClass('gdpr-noscroll');
 			$('.gdpr.gdpr-privacy-preferences .gdpr-wrapper').fadeIn();
+			if ( tab ) {
+				$('.gdpr.gdpr-privacy-preferences .gdpr-wrapper .gdpr-tabs [data-target="' + tab + '"]').click();
+			}
 		});
 
 		/**
