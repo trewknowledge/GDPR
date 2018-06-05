@@ -164,15 +164,15 @@
 		 * It submits the form that is still hidden with the cookies and consent options.
 		 */
 		$(document).on('click', '.gdpr.gdpr-privacy-bar .gdpr-agreement', function() {
-      $('.gdpr-privacy-preferences-frm').submit();
-    });
+			$('.gdpr-privacy-preferences-frm').submit();
+		});
 
-    $(document).on('click', '.gdpr.gdpr-reconsent-bar .gdpr-agreement', function() {
-    	var consents = [];
-    	$('.gdpr-policy-list input[type="hidden"]').each(function(){
-    		consents.push( $(this).val() );
-    	});
-    	$.post(
+		$(document).on('click', '.gdpr.gdpr-reconsent-bar .gdpr-agreement', function() {
+			var consents = [];
+			$('.gdpr-policy-list input[type="hidden"]').each(function(){
+				consents.push( $(this).val() );
+			});
+			$.post(
 				GDPR.ajaxurl,
 				{
 					action: 'agree_with_new_policies',
@@ -194,7 +194,41 @@
 					}
 				}
 			);
-    });
+		});
+
+		$(document).on('submit', '.gdpr-reconsent-frm', function(e) {
+			e.preventDefault();
+			var consents = [];
+			var nonce = $(this).find('#agree-with-new-policies-nonce').val();
+			$(this).find('[name="gdpr-updated-policy"]').each(function(){
+				consents.push( $(this).val() );
+			});
+
+			$.post(
+				GDPR.ajaxurl,
+				{
+					action: 'agree_with_new_policies',
+					nonce: nonce,
+					consents: consents,
+				},
+				function(res) {
+					if ( res.success ) {
+						if ( GDPR.refresh ) {
+							window.location.reload();
+						} else {
+							$('.gdpr-overlay').fadeOut();
+							$('body').removeClass('gdpr-noscroll');
+							$('.gdpr.gdpr-reconsent .gdpr-wrapper').fadeOut();
+							if ( ! Cookies.get('gdpr[privacy_bar]') ) {
+								$('.gdpr.gdpr-privacy-bar').delay(1000).slideDown(600);
+							};
+						}
+					} else {
+						displayNotification( res.data.title, res.data.content );
+					}
+				}
+			);
+		});
 
 		/**
 		 * Display the privacy preferences modal.

@@ -81,9 +81,11 @@
 			<footer>
 				<div class="gdpr-buttons">
 					<form method="post" class="gdpr-reconsent-frm">
-						<input type="hidden" name="action" value="gdpr_update_reconsent_preferences">
-						<?php wp_nonce_field( 'gdpr-update-reconsent-preferences', 'update-reconsent-preferences-nonce' ); ?>
-						<input type="submit" value="<?php esc_attr_e( 'Agree', 'gdpr' ); ?>">
+						<?php foreach ( $updated_consents as $consent_id => $consent ) : ?>
+							<input type="hidden" name="gdpr-updated-policy" value="<?php echo esc_attr( $consent_id ); ?>">
+						<?php endforeach; ?>
+						<?php wp_nonce_field( 'gdpr-agree-with-new-policies', 'agree-with-new-policies-nonce' ); ?>
+						<input type="submit" class="gdpr-agreement" value="<?php esc_attr_e( 'I Agree', 'gdpr' ); ?>">
 						<span class="gdpr-disagree"><a href="#"><?php esc_attr_e( 'Disagree', 'gdpr' ); ?></a></span>
 					</form>
 				</div>
