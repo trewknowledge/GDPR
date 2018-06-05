@@ -860,7 +860,6 @@
 	}
 }
 
-
 .gdpr-switch {
   position: relative;
   display: inline-block;
@@ -897,12 +896,35 @@
 			}
 		}
 	}
+	.gdpr-switch-indicator {
+		position: absolute;
+		bottom: 2px;
+		right: 50px;
+		color: #ccc;
+		&-on {
+			@extend .gdpr-switch-indicator;
+			display: none;
+		}
+		&-off {
+			@extend .gdpr-switch-indicator;
+			display: block;
+		}
+	}
 	input {
 		&:checked {
 			+.gdpr-slider {
 				background-color: #00b9eb;
 				&:before {
 					transform: translateX(21px);
+				}
+				+.gdpr-switch-indicator-on {
+					@extend .gdpr-switch-indicator;
+					color: #00b9eb;
+					display: block;
+					+.gdpr-switch-indicator-off {
+						@extend .gdpr-switch-indicator;
+						display: none;
+					}
 				}
 			}
 		}
