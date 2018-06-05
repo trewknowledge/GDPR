@@ -63,7 +63,7 @@
 
 		var gdprFunctions = {
 			closeNotification: function() {
-        var scrollDistance = $(body).css('top');
+        var scrollDistance = $('body').css('top');
 				$('.gdpr-overlay').fadeOut();
 				$('body').removeClass('gdpr-noscroll');
         $(window).scrollTop(Math.abs( parseInt( scrollDistance, 10 ) ) );
@@ -220,7 +220,7 @@
 						if ( GDPR.refresh ) {
 							window.location.reload();
 						} else {
-              var scrollDistance = $(body).css('top');
+              var scrollDistance = $('body').css('top');
 							$('.gdpr-overlay').fadeOut();
 							$('body').removeClass('gdpr-noscroll');
               $(window).scrollTop(Math.abs( parseInt( scrollDistance, 10 ) ) );
@@ -240,11 +240,19 @@
 		 * Close the privacy/reconsent bar.
 		 */
 		$(document).on('click', '.gdpr.gdpr-privacy-bar .gdpr-close, .gdpr.gdpr-reconsent-bar .gdpr-close', function() {
-      var scrollDistance = $(body).css('top');
+      var scrollDistance = $('body').css('top');
 			$('.gdpr-overlay').fadeOut();
 			$('body').removeClass('gdpr-noscroll');
       $(window).scrollTop(Math.abs( parseInt( scrollDistance, 10 ) ) );
 			$('.gdpr.gdpr-privacy-bar, .gdpr.gdpr-reconsent-bar').slideUp(600);
+		});
+
+		$(document).on('click', '.gdpr.gdpr-general-confirmation .gdpr-close', function() {
+      var scrollDistance = $('body').css('top');
+			$('.gdpr-overlay').fadeOut();
+			$('body').removeClass('gdpr-noscroll');
+      $(window).scrollTop(Math.abs( parseInt( scrollDistance, 10 ) ) );
+			$('.gdpr.gdpr-general-confirmation .gdpr-wrapper').fadeOut();
 		});
 
 		/**
