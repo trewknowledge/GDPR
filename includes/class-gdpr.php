@@ -304,9 +304,9 @@ class GDPR {
 	public static function save_user_consent_on_registration( $user_id ) {
 		GDPR_Audit_Log::log( $user_id, esc_html__( 'User registered to the site.', 'gdpr' ) );
 
-		if ( isset( $_POST['user_consents'] ) ) {
+		if ( isset( $_POST['user_consents'] ) && is_array( $_POST['user_consents'] ) ) {
 
-			$consents = array_map( 'sanitize_text_field', array_keys( sanitize_text_field( wp_unslash( $_POST['user_consents'] ) ) ) );  // WPCS: Input var ok, CSRF ok.
+			$consents = array_map( 'sanitize_text_field', array_keys( wp_unslash( $_POST['user_consents'] ) ) );  // WPCS: Input var ok, CSRF ok, XSS ok.
 			foreach ( $consents as $consent ) {
 				/* translators: Name of consent */
 				GDPR_Audit_Log::log( $user_id, sprintf( esc_html__( 'User gave explicit consent to %s', 'gdpr' ), $consent ) );
@@ -326,7 +326,10 @@ class GDPR {
 		if ( empty( $consent_types ) ) {
 			return;
 		}
-		$sent_extras   = ( isset( $_POST['user_consents'] ) ) ? sanitize_text_field( wp_unslash( $_POST['user_consents'] ) ) : array(); // WPCS: Input var ok, CSRF ok.
+		$sent_extras   = ( isset( $_POST['user_consents'] ) ) ? wp_unslash( $_POST['user_consents'] ) : array(); // WPCS: Input var ok, CSRF ok.
+		if ( ! empty( $sent_extras ) ) {
+			$sent_extras = array_map( 'sanitize_text_field', $_POST['user_consents'] );
+		}
 		$allowed_html  = array(
 			'a' => array(
 				'href'   => true,

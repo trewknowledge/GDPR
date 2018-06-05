@@ -35,6 +35,7 @@
 				callback: 'closeNotification',
 			}
 		];
+    var scrollDistance = $(window).scrollTop();
 
 		$('.gdpr-general-confirmation .gdpr-box-title h3').html( title );
 		$('.gdpr-general-confirmation .gdpr-content p').html( text );
@@ -42,7 +43,6 @@
 		if ( hideCloseButton ) {
 			$('.gdpr-general-confirmation .gdpr-close').hide();
 		}
-
 
 		var html = '';
 		actions.forEach( function( index ) {
@@ -55,7 +55,7 @@
 			$('.gdpr.gdpr-general-confirmation .gdpr-wrapper').css({
 				'display': 'flex',
 			}).hide().fadeIn();
-			$('body').addClass('gdpr-noscroll');
+      $('body').addClass('gdpr-noscroll').css('top', -scrollDistance);
 		});
 	}
 
@@ -63,8 +63,10 @@
 
 		var gdprFunctions = {
 			closeNotification: function() {
+        var scrollDistance = $('body').css('top');
 				$('.gdpr-overlay').fadeOut();
 				$('body').removeClass('gdpr-noscroll');
+        $(window).scrollTop(Math.abs( parseInt( scrollDistance, 10 ) ) );
 				$('.gdpr.gdpr-general-confirmation .gdpr-wrapper').fadeOut();
 			},
 			addToDeletionConfirmed: function() {
@@ -108,8 +110,10 @@
 						if ( GDPR.refresh ) {
 							window.location.reload();
 						} else {
+              var scrollDistance = $('body').css('top');
 							$('.gdpr-overlay').fadeOut();
 							$('body').removeClass('gdpr-noscroll');
+							$(window).scrollTop(Math.abs( parseInt( scrollDistance, 10 ) ) );
 							$('.gdpr.gdpr-privacy-preferences .gdpr-wrapper').fadeOut();
 							$('.gdpr-privacy-bar').fadeOut();
 						}
@@ -216,8 +220,10 @@
 						if ( GDPR.refresh ) {
 							window.location.reload();
 						} else {
+              var scrollDistance = $('body').css('top');
 							$('.gdpr-overlay').fadeOut();
 							$('body').removeClass('gdpr-noscroll');
+              $(window).scrollTop(Math.abs( parseInt( scrollDistance, 10 ) ) );
 							$('.gdpr.gdpr-reconsent .gdpr-wrapper').fadeOut();
 							if ( ! Cookies.get('gdpr[privacy_bar]') ) {
 								$('.gdpr.gdpr-privacy-bar').delay(1000).slideDown(600);
@@ -234,9 +240,19 @@
 		 * Close the privacy/reconsent bar.
 		 */
 		$(document).on('click', '.gdpr.gdpr-privacy-bar .gdpr-close, .gdpr.gdpr-reconsent-bar .gdpr-close', function() {
+      var scrollDistance = $('body').css('top');
 			$('.gdpr-overlay').fadeOut();
 			$('body').removeClass('gdpr-noscroll');
+      $(window).scrollTop(Math.abs( parseInt( scrollDistance, 10 ) ) );
 			$('.gdpr.gdpr-privacy-bar, .gdpr.gdpr-reconsent-bar').slideUp(600);
+		});
+
+		$(document).on('click', '.gdpr.gdpr-general-confirmation .gdpr-close', function() {
+      var scrollDistance = $('body').css('top');
+			$('.gdpr-overlay').fadeOut();
+			$('body').removeClass('gdpr-noscroll');
+      $(window).scrollTop(Math.abs( parseInt( scrollDistance, 10 ) ) );
+			$('.gdpr.gdpr-general-confirmation .gdpr-wrapper').fadeOut();
 		});
 
 		/**
@@ -244,9 +260,10 @@
 		 */
 		$(document).on('click', '.gdpr-preferences', function(e) {
 			e.preventDefault();
+			var scrollDistance = $(window).scrollTop();
 			var tab = $(this).data('tab');
 			$('.gdpr-overlay').fadeIn();
-			$('body').addClass('gdpr-noscroll');
+			$('body').addClass('gdpr-noscroll').css('top', -scrollDistance);
 			$('.gdpr.gdpr-privacy-preferences .gdpr-wrapper').fadeIn();
 			if ( tab ) {
 				$('.gdpr.gdpr-privacy-preferences .gdpr-wrapper .gdpr-tabs [data-target="' + tab + '"]').click();
@@ -256,10 +273,13 @@
 		/**
 		 * Close the privacy/reconsent preferences modal.
 		 */
-		$(document).on('click', '.gdpr.gdpr-privacy-preferences .gdpr-close', function() {
+		$(document).on('click', '.gdpr.gdpr-privacy-preferences .gdpr-close', function(e) {
+      e.preventDefault();
+      var scrollDistance = $('body').css('top');
 			if ( ! $('.gdpr-reconsent .gdpr-wrapper').is(':visible') ) {
 				$('.gdpr-overlay').fadeOut();
 				$('body').removeClass('gdpr-noscroll');
+        $(window).scrollTop(Math.abs( parseInt( scrollDistance, 10 ) ) );
 			}
 			$('.gdpr.gdpr-privacy-preferences .gdpr-wrapper').fadeOut();
 		});
@@ -326,11 +346,12 @@
 		} );
 
 		if ( $('body').hasClass('gdpr-notification') ) {
+      var scrollDistance = $(window).scrollTop();
 			$('.gdpr-overlay').fadeIn(400, function() {
 				$('.gdpr.gdpr-general-confirmation .gdpr-wrapper').css({
 					'display': 'flex',
 				}).hide().fadeIn();
-				$('body').addClass('gdpr-noscroll');
+        $('body').addClass('gdpr-noscroll').css('top', -scrollDistance);
 			});
 		}
 
