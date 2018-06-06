@@ -297,7 +297,7 @@ class GDPR_Public {
 			return;
 		}
 
-		$updated_consents = array_filter(
+		$updated_consents = array_filter_compat(
 			$required_consents, function( $consent, $consent_id ) use ( $user_consents ) {
 				return ! in_array( $consent_id, $user_consents, true );
 			}, ARRAY_FILTER_USE_BOTH
