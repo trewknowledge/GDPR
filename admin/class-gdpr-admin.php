@@ -987,4 +987,22 @@ class GDPR_Admin {
 		return $column_headers;
 	}
 
+	public function sort_consents_column_from_user_table( $columns ) {
+		$columns['consents'] = 'consent';
+		return $columns;
+	}
+
+	public function sort_logic_for_consents_from_user_table( $query ) {
+		if ( ! is_admin() ) {
+			return;
+		}
+
+		$orderby = $query->get( 'orderby' );
+
+		if ( 'consent' === $orderby ) {
+			$query->set( 'meta_key', 'gdpr_consents' );
+			$query->set( 'orderby', 'meta_value' );
+		}
+	}
+
 }

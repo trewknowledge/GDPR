@@ -189,6 +189,8 @@ class GDPR {
 		}
 		add_filter( 'manage_users_custom_column', array( $plugin_admin, 'add_consents_to_consents_column' ), 10, 3 );
 		add_filter( 'manage_users_columns', array( $plugin_admin, 'add_consents_column_to_user_table' ) );
+		add_filter( 'manage_users_sortable_columns', array( $plugin_admin, 'sort_consents_column_from_user_table' ) );
+		add_action( 'pre_get_users', array( $plugin_admin, 'sort_logic_for_consents_from_user_table' ) );
 		add_action( 'show_user_profile', array( $plugin_admin, 'edit_user_profile' ) );
 		add_action( 'personal_options_update', array( $plugin_admin, 'user_profile_update' ) );
 		add_action( 'admin_notices', array( $plugin_admin, 'policy_updated_notice' ) );
