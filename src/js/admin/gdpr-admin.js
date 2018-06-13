@@ -41,7 +41,7 @@
 			field.val('');
 		});
 
-		$('#consent-tabs, #tabs').sortable();
+		$('#consent-tabs, #gdpr-cookie-categories').sortable();
 
 		$('.add-tab').click(function(e) {
 			e.preventDefault();
