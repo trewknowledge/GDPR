@@ -126,7 +126,7 @@ msgid "Ignore"
 msgstr ""
 
 #: admin/class-gdpr-admin.php:627, admin/class-gdpr-admin.php:771, admin/class-gdpr-admin.php:847, public/class-gdpr-public.php:214, public/class-gdpr-public.php:380
-msgid "We could not verify the the security token. Please try again."
+msgid "We could not verify the security token. Please try again."
 msgstr ""
 
 #: admin/class-gdpr-admin.php:639

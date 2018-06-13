@@ -211,7 +211,7 @@ class GDPR_Public {
 			wp_send_json_error(
 				array(
 					'title'   => esc_html__( 'Error!', 'gdpr' ),
-					'content' => esc_html__( 'We could not verify the the security token. Please try again.', 'gdpr' ),
+					'content' => esc_html__( 'We could not verify the security token. Please try again.', 'gdpr' ),
 				)
 			);
 		}
@@ -377,7 +377,7 @@ class GDPR_Public {
 			wp_send_json_error(
 				array(
 					'title'   => esc_html__( 'Error!', 'gdpr' ),
-					'content' => esc_html__( 'We could not verify the the security token. Please try again.', 'gdpr' ),
+					'content' => esc_html__( 'We could not verify the security token. Please try again.', 'gdpr' ),
 				)
 			);
 		}
