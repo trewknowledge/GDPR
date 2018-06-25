@@ -127,6 +127,11 @@ class GDPR {
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'admin/class-gdpr-admin.php';
 
 		/**
+		 * The class responsible exporting and importing setting file.
+		 */
+		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'admin/class-gdpr-export.php';
+
+		/**
 		 * The class responsible for defining all actions that occur in the public-facing
 		 * side of the site.
 		 */
