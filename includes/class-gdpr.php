@@ -273,11 +273,21 @@ class GDPR {
 
 	/**
 	 * Checks in an array if a value is found using LIKE instead of =.
+	 *
+	 * Variable string placeholders can begin with '{' (eg. 'wordfence_{hash}')
+	 *
 	 * @since  1.4.3
 	 * @author Fernando Claussen <fernandoclaussen@gmail.com>
 	 * @return Bool
 	 */
 	public static function similar_in_array( $needle, $haystack ) {
+		if ( strpos ( $needle, '{' ) !== false ) {
+			$needle = substr( $needle, 0, strpos ( $needle, '{' ) );
+			if ( strlen( $needle ) == 0 ) {
+				return false;
+			}
+		}
+
 		foreach ( $haystack as $value ) {
 			if ( stripos( strtolower( $value ), strtolower( $needle ) ) !== false ) {
 				return true;
