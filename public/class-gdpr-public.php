@@ -117,7 +117,7 @@ class GDPR_Public {
 			$secret_key = get_option( 'gdpr_recaptcha_secret_key', '' );
 
 			if ( $site_key && $secret_key ) {
-				wp_enqueue_script( $this->plugin_name . '-recaptcha', 'https://www.google.com/recaptcha/api.js' );
+				wp_enqueue_script( $this->plugin_name . '-recaptcha', 'https://www.google.com/recaptcha/api.js?hl=' . $lang );
 			}
 		}
 		wp_enqueue_script( $this->plugin_name, plugin_dir_url( dirname( __FILE__ ) ) . 'assets/js/gdpr-public.js', array( 'jquery' ), $this->version, false );
