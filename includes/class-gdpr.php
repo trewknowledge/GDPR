@@ -97,11 +97,6 @@ class GDPR {
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/class-gdpr-audit-log.php';
 
 		/**
-		 * The class responsible for defining the telemetry post type.
-		 */
-		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'admin/class-gdpr-telemetry.php';
-
-		/**
 		 * The class responsible for defining the requests section of the plugin.
 		 */
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/class-gdpr-requests.php';
@@ -131,6 +126,10 @@ class GDPR {
 		 * side of the site.
 		 */
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'public/class-gdpr-public.php';
+		/**
+		 * The class responsible for defining compatibility to olp php versions.
+		 */
+		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/compatibility-functions.php';
 
 	}
 
@@ -171,7 +170,6 @@ class GDPR {
 
 		$plugin_admin            = new GDPR_Admin( $this->get_plugin_name(), $this->get_version() );
 		$requests_admin          = new GDPR_Requests_Admin( $this->get_plugin_name(), $this->get_version() );
-		$telemetry               = new GDPR_Telemetry( $this->get_plugin_name(), $this->get_version() );
 		$requests                = new GDPR_Requests( $this->get_plugin_name(), $this->get_version() );
 		$plugin_emails           = new GDPR_Email();
 		$woo_add_to_registration = get_option( 'gdpr_add_consent_checkboxes_registration', false );
@@ -209,7 +207,6 @@ class GDPR {
 		add_action( 'wp_ajax_gdpr_audit_log', array( $plugin_admin, 'audit_log' ) );
 		add_action( 'admin_post_gdpr_data_breach', array( $plugin_admin, 'send_data_breach_confirmation_email' ) );
 		add_action( 'clean_gdpr_data_breach_request', array( $plugin_admin, 'clean_data_breach_request' ), 10, 2 ); // CRON JOB
-		add_action( 'telemetry_cleanup', array( $plugin_admin, 'telemetry_cleanup' ) ); // CRON JOB
 
 		add_action( 'admin_post_gdpr_delete_user', array( $requests_admin, 'delete_user' ) );
 		add_action( 'admin_post_gdpr_cancel_request', array( $requests_admin, 'cancel_request' ) );
@@ -217,13 +214,6 @@ class GDPR {
 		add_action( 'admin_post_gdpr_mark_resolved', array( $requests_admin, 'mark_resolved' ) );
 		add_action( 'wp_ajax_gdpr_anonymize_comments', array( $requests_admin, 'anonymize_comments' ) );
 		add_action( 'wp_ajax_gdpr_reassign_content', array( $requests_admin, 'reassign_content' ) );
-
-		add_action( 'init', array( $telemetry, 'register_post_type' ) );
-		add_filter( 'http_api_debug', array( $telemetry, 'log_request' ), 10, 5 );
-		add_filter( 'manage_telemetry_posts_columns', array( $telemetry, 'manage_columns' ) );
-		add_filter( 'manage_telemetry_posts_custom_column', array( $telemetry, 'custom_column' ), 10, 2 );
-		add_filter( 'restrict_manage_posts', array( $telemetry, 'actions_above_table' ) );
-		add_filter( 'views_edit-telemetry', '__return_null' );
 
 		// CRON JOBS
 		add_action( 'clean_gdpr_requests', array( $requests, 'clean_requests' ) );

@@ -64,8 +64,7 @@
 						</span>
 					</th>
 					<td>
-						<?php $enable_telemetry = get_option( 'gdpr_enable_telemetry_tracker', false ); ?>
-						<input type="checkbox" name="gdpr_enable_telemetry_tracker" id="gdpr_enable_telemetry_tracker" value="1"  <?php checked( $enable_telemetry, true ); ?>><label for="gdpr_enable_telemetry_tracker"><span class="description"><?php esc_html_e( 'Toggles the Telemetry Tracker On/Off. (experimental)', 'gdpr' ); ?></span></label>
+						<input type="checkbox" name="gdpr_enable_telemetry_tracker" id="gdpr_enable_telemetry_tracker" value="1" disabled><label for="gdpr_enable_telemetry_tracker"><span class="description"><?php echo sprintf( esc_html( 'The telemetry component has been discontinued. If you liked that feature and wants to use it, I recommend that you install this plugin: %s', 'gdpr' ), '<a href="https://wordpress.org/plugins/snitch/" target="_blank">Snitch</a>' ); ?></span></label>
 					</td>
 				</tr>
 				<tr>
