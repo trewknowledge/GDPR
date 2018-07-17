@@ -24,3 +24,8 @@ function array_filter_compat( array $array, $callback, $flag = 0 ) {
 	}
 }
 
+if( ! function_exists( 'boolval' ) ) {
+  function boolval( $var ){
+    return (bool) $var;
+  }
+}
