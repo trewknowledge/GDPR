@@ -314,6 +314,8 @@ class GDPR_Admin {
 			'audit-log'   => esc_html__( 'Audit Log', 'gdpr' ),
 		);
 
+		$tabs = apply_filters( 'gdpr_tools_tabs', $tabs );
+
 		include plugin_dir_path( __FILE__ ) . 'partials/tools.php';
 	}
 
