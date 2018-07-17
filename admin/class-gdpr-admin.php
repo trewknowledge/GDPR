@@ -554,11 +554,12 @@ class GDPR_Admin {
 	}
 
 	public function version_check_notice() {
-		if( -1 === version_compare( phpversion(), GDPR_REQUIRED_PHP_VERSION ) ) {
+		if ( -1 === version_compare( phpversion(), GDPR_REQUIRED_PHP_VERSION ) ) {
 			?>
 			<div class="notice notice-error">
 				<p><strong><?php esc_html_e( 'GDPR', 'gdpr' ); ?></strong></p>
-				<p><?php echo sprintf( esc_html__( 'Your current PHP version (%1$s) is below the plugin required version of %2$s.', 'gdpr' ), phpversion(), GDPR_REQUIRED_PHP_VERSION ) ?></p>
+				<?php /* translators: 1) Current PHP version 2) Required PHP version. */ ?>
+				<p><?php echo sprintf( esc_html__( 'Your current PHP version (%1$s) is below the plugin required version of %2$s.', 'gdpr' ), esc_html( phpversion() ), esc_html( GDPR_REQUIRED_PHP_VERSION ) ); ?></p>
 			</div>
 			<?php
 			deactivate_plugins( 'gdpr/gdpr.php' );
@@ -758,7 +759,7 @@ class GDPR_Admin {
 
 		foreach ( $users as $user ) {
 			$usermeta = get_user_meta( $user->ID, 'gdpr_consents' );
-			if ( in_array( $policy_id, $usermeta ) ) {
+			if ( in_array( $policy_id, $usermeta, true ) ) {
 				/* translators: 1: The name of the policy that was updated. */
 				GDPR_Audit_Log::log( $user->ID, sprintf( esc_html__( '%1$s has been updated. Removing the %1$s consent and requesting new consent.', 'gdpr' ), esc_html( $policy_name ) ) );
 				delete_user_meta( $user->ID, 'gdpr_consents', $policy_id );
@@ -776,8 +777,8 @@ class GDPR_Admin {
 	 * @param  WP_Post $post The post object.
 	 */
 	public function policy_updated( $id, $post ) {
-		$policies_updated  = get_option( 'gdpr_policies_updated', array() );
-		$consents          = get_option( 'gdpr_consent_types', array() );
+		$policies_updated = get_option( 'gdpr_policies_updated', array() );
+		$consents         = get_option( 'gdpr_consent_types', array() );
 
 		if ( empty( $consents ) ) {
 			return;
@@ -886,7 +887,7 @@ class GDPR_Admin {
 			GDPR_Audit_Log::log( $user_id, $consent );
 		}
 
-		setcookie( 'gdpr[consent_types]', json_encode( $consents ), time() + YEAR_IN_SECONDS, '/' );
+		setcookie( 'gdpr[consent_types]', wp_json_encode( $consents ), time() + YEAR_IN_SECONDS, '/' );
 	}
 
 	/**
