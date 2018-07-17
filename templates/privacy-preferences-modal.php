@@ -104,9 +104,9 @@
 										<div class="gdpr-cookie-title">
 											<p><?php esc_html_e( 'Cookies Used', 'gdpr' ); ?></p>
 											<?php
-											$site_cookies     = array();
-											$enabled          = ( 'off' === $tab['status'] ) ? false : true;
-											$cookies_used     = explode( ',', $tab['cookies_used'] );
+											$site_cookies             = array();
+											$enabled                  = ( 'off' === $tab['status'] ) ? false : true;
+											$cookies_used             = explode( ',', $tab['cookies_used'] );
 											$args['approved_cookies'] = isset( $_COOKIE['gdpr']['allowed_cookies'] ) ? json_decode( sanitize_text_field( wp_unslash( $_COOKIE['gdpr']['allowed_cookies'] ) ) ) : array(); // WPCS: input var ok.
 											foreach ( $cookies_used as $cookie ) {
 												$site_cookies[] = trim( $cookie );
@@ -122,10 +122,10 @@
 											?>
 											<?php if ( 'required' === $tab['status'] ) : ?>
 												<span class="gdpr-always-active"><?php esc_html_e( 'Required', 'gdpr' ); ?></span>
-												<input type="hidden" name="approved_cookies[]" value="<?php echo esc_attr( json_encode( $site_cookies ) ); ?>">
+												<input type="hidden" name="approved_cookies[]" value="<?php echo esc_attr( wp_json_encode( $site_cookies ) ); ?>">
 											<?php else : ?>
 												<label class="gdpr-switch">
-													<input type="checkbox" class="gdpr-cookie-category" data-category="<?php echo esc_attr( $key ); ?>" name="approved_cookies[]" value="<?php echo esc_attr( json_encode( $site_cookies ) ); ?>" <?php checked( $enabled, true ); ?>>
+													<input type="checkbox" class="gdpr-cookie-category" data-category="<?php echo esc_attr( $key ); ?>" name="approved_cookies[]" value="<?php echo esc_attr( wp_json_encode( $site_cookies ) ); ?>" <?php checked( $enabled, true ); ?>>
 													<span class="gdpr-slider round"></span>
 													<span class="gdpr-switch-indicator-on"><?php echo esc_html__( 'ON', 'gdpr' ); ?></span>
 													<span class="gdpr-switch-indicator-off"><?php echo esc_html__( 'OFF', 'gdpr' ); ?></span>
@@ -154,7 +154,7 @@
 						</div>
 					<?php endforeach; ?>
 				</div>
-				<input type="hidden" name="all_cookies" value="<?php echo esc_attr( json_encode( $all_cookies ) ); ?>">
+				<input type="hidden" name="all_cookies" value="<?php echo esc_attr( wp_json_encode( $all_cookies ) ); ?>">
 			</div>
 			<footer>
 				<input type="submit" value="<?php esc_attr_e( 'Save Preferences', 'gdpr' ); ?>">
