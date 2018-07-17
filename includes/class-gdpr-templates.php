@@ -50,7 +50,7 @@ class GDPR_Templates {
 	 * @param  string  $template_name    Template to load.
 	 * @param  array   $args             Arguments passed to the template file.
 	 */
-	private static function get_template( $template_name, $args = array() ) {
+	public static function get_template( $template_name, $args = array() ) {
 		$template_file = self::locate_template( $template_name );
 
 		if ( ! file_exists( $template_file ) ) {

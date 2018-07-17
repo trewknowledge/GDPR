@@ -10,7 +10,7 @@
  * @author     Fernando Claussen <fernandoclaussen@gmail.com>
  */
 
-require_once( 'class-gdpr-templates.php' );
+require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/class-gdpr-templates.php';
 
 /**
  * Handles emailing users.
