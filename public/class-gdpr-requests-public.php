@@ -11,6 +11,8 @@
  * @author     Fernando Claussen <fernandoclaussen@gmail.com>
  */
 
+require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/class-gdpr-templates.php';
+
 /**
  * The public facing requests functionality of the plugin.
  *
@@ -64,7 +66,7 @@ class GDPR_Requests_Public extends GDPR_Requests {
 		}
 
 		ob_start();
-		include plugin_dir_path( dirname( __FILE__ ) ) . 'public/partials/' . $type . '-form.php';
+		GDPR_Templates::get_template( 'forms/' . $type . '-form.php', array( 'submit_button_text' => $submit_button_text ) );
 		return ob_get_clean();
 	}
 

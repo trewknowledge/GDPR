@@ -329,7 +329,7 @@ class GDPR {
 		);
 
 		if ( $consent_key ) {
-			$consent_types = array_filter_compat(
+			$consent_types = array_filter(
 				$consent_types, function( $key ) use ( $consent_key ) {
 					return $key === $consent_key;
 				}, ARRAY_FILTER_USE_KEY
