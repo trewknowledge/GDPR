@@ -7,6 +7,6 @@
 	<?php endif ?>
 	<textarea name="data" rows="5" required placeholder="<?php esc_attr_e( 'Type your rectification request here', 'gdpr' ); ?>"></textarea>
 	<?php GDPR_Public::add_recaptcha(); ?>
-	<?php $submit_button_text = ( $submit_button_text ?: esc_attr__( 'Submit', 'gdpr' ) ); ?>
+	<?php $submit_button_text = ( $args['submit_button_text'] ?: esc_attr__( 'Submit', 'gdpr' ) ); ?>
 	<input type="submit" value="<?php echo esc_attr( $submit_button_text ); ?>">
 </form>

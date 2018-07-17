@@ -19,7 +19,7 @@
 		</div>
 		<div class="gdpr-right">
 			<ul class="gdpr-policy-list">
-				<?php foreach ( $updated_consents as $consent_id => $consent ) : ?>
+				<?php foreach ( $args['updated_consents'] as $consent_id => $consent ) : ?>
 					<li class="gdpr-policy-list-item">
 						<input type="hidden" value="<?php echo esc_attr( $consent_id ); ?>">
 						<label><?php echo esc_html( $consent['name'] ); ?></label>
