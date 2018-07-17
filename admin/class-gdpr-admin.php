@@ -135,19 +135,9 @@ class GDPR_Admin {
 
 		$settings_hook = add_submenu_page( $parent_slug, $menu_title, $menu_title, $capability, $menu_slug, $function );
 
-		$menu_slug = 'edit.php?post_type=telemetry';
-
-		$cpt     = 'telemetry';
-		$cpt_obj = get_post_type_object( $cpt );
-
-		if ( $cpt_obj ) {
-			add_submenu_page( $parent_slug, $cpt_obj->labels->name, $cpt_obj->labels->menu_name, $capability, $menu_slug );
-		}
-
 		add_action( "load-{$requests_hook}", array( 'GDPR_Help', 'add_requests_help' ) );
 		add_action( "load-{$tools_hook}", array( 'GDPR_Help', 'add_tools_help' ) );
 		add_action( "load-{$settings_hook}", array( 'GDPR_Help', 'add_settings_help' ) );
-		add_action( 'load-edit.php', array( 'GDPR_Help', 'add_telemetry_help' ) );
 	}
 
 	/**
@@ -201,7 +191,6 @@ class GDPR_Admin {
 			'gdpr_consent_types'                       => array( $this, 'sanitize_consents' ),
 			'gdpr_deletion_needs_review'               => 'boolval',
 			'gdpr_disable_css'                         => 'boolval',
-			'gdpr_enable_telemetry_tracker'            => 'boolval',
 			'gdpr_use_recaptcha'                       => 'boolval',
 			'gdpr_recaptcha_site_key'                  => 'sanitize_text_field',
 			'gdpr_recaptcha_secret_key'                => 'sanitize_text_field',
@@ -624,7 +613,7 @@ class GDPR_Admin {
 	 */
 	public function send_data_breach_confirmation_email() {
 		if ( ! isset( $_POST['gdpr_data_breach_nonce'] ) || ! wp_verify_nonce( sanitize_key( $_POST['gdpr_data_breach_nonce'] ), 'gdpr-data-breach' ) ) { // WPCS: Input var ok.
-			wp_die( esc_html__( 'We could not verify the the security token. Please try again.', 'gdpr' ) );
+			wp_die( esc_html__( 'We could not verify the security token. Please try again.', 'gdpr' ) );
 		}
 
 		if (
@@ -711,25 +700,6 @@ class GDPR_Admin {
 	}
 
 	/**
-	 * CRON job runs this to clean up the telemetry post type every 12 hours.
-	 * @since  1.0.0
-	 * @author Fernando Claussen <fernandoclaussen@gmail.com>
-	 */
-	public function telemetry_cleanup() {
-		$args = array(
-			'post_type'      => 'telemetry',
-			'posts_per_page' => -1,
-			'fields'         => 'ids',
-		);
-
-		$telemetry_posts = get_posts( $args );
-
-		foreach ( $telemetry_posts as $post ) {
-			wp_delete_post( $post, true );
-		}
-	}
-
-	/**
 	 * Sanitizes the consents during WordPress registration.
 	 * @since  1.0.0
 	 * @author Fernando Claussen <fernandoclaussen@gmail.com>
@@ -768,7 +738,7 @@ class GDPR_Admin {
 	 */
 	public function seek_consent() {
 		if ( ! isset( $_POST['nonce'] ) || ! wp_verify_nonce( sanitize_key( $_POST['nonce'] ), 'gdpr-seek-consent' ) ) { // WPCS: Input var ok.
-			wp_send_json_error( esc_html__( 'We could not verify the the security token. Please try again.', 'gdpr' ) );
+			wp_send_json_error( esc_html__( 'We could not verify the security token. Please try again.', 'gdpr' ) );
 		}
 
 		$policy_id        = isset( $_POST['policy_id'] ) ? sanitize_text_field( wp_unslash( $_POST['policy_id'] ) ) : ''; // WPCS: Input var ok.
@@ -844,7 +814,7 @@ class GDPR_Admin {
 	 */
 	public function ignore_policy_update() {
 		if ( ! isset( $_POST['nonce'] ) || ! wp_verify_nonce( sanitize_key( $_POST['nonce'] ), 'gdpr-ignore-update' ) ) { // WPCS: Input var ok.
-			wp_send_json_error( esc_html__( 'We could not verify the the security token. Please try again.', 'gdpr' ) );
+			wp_send_json_error( esc_html__( 'We could not verify the security token. Please try again.', 'gdpr' ) );
 		}
 
 		$policy           = isset( $_POST['policy_id'] ) ? sanitize_text_field( wp_unslash( $_POST['policy_id'] ) ) : ''; // WPCS: Input var ok.
@@ -985,6 +955,24 @@ class GDPR_Admin {
 	public function add_consents_column_to_user_table( $column_headers ) {
 		$column_headers['consents'] = esc_html__( 'Consents', 'gdpr' );
 		return $column_headers;
+	}
+
+	public function sort_consents_column_from_user_table( $columns ) {
+		$columns['consents'] = 'consent';
+		return $columns;
+	}
+
+	public function sort_logic_for_consents_from_user_table( $query ) {
+		if ( ! is_admin() ) {
+			return;
+		}
+
+		$orderby = $query->get( 'orderby' );
+
+		if ( 'consent' === $orderby ) {
+			$query->set( 'meta_key', 'gdpr_consents' );
+			$query->set( 'orderby', 'meta_value' );
+		}
 	}
 
 }
