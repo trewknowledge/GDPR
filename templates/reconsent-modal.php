@@ -26,37 +26,25 @@
 			<div class="gdpr-content">
 				<div class="gdpr-tabs">
 					<ul class="">
-						<?php reset( $updated_consents ); ?>
-						<?php if ( ! empty( $updated_consents ) ) : ?>
-							<li><button type="button" class="gdpr-tab-button gdpr-cookie-settings gdpr-active" data-target="<?php echo esc_attr( key( $updated_consents ) ); ?>"><?php esc_html_e( 'Consent Management', 'gdpr' ); ?></button>
+						<?php reset( $args['updated_consents'] ); ?>
+						<?php if ( ! empty( $args['updated_consents'] ) ) : ?>
+							<li><button type="button" class="gdpr-tab-button gdpr-cookie-settings gdpr-active" data-target="<?php echo esc_attr( key( $args['updated_consents'] ) ); ?>"><?php esc_html_e( 'Consent Management', 'gdpr' ); ?></button>
 								<ul class="gdpr-subtabs">
 									<?php
 									$policy_counter = 1;
-									foreach ( $updated_consents as $consent_id => $consent ) :
+									foreach ( $args['updated_consents'] as $consent_id => $consent ) :
 										echo '<li><button' . ( 1 === $policy_counter ? ' class="gdpr-active"' : '' ) . ' type="button" data-target="' . esc_attr( $consent_id ) . '" ' . '>' . esc_html( $consent['name'] ) . '</button></li>';
 										$policy_counter++;
-									endforeach
+									endforeach;
 									?>
 								</ul>
 							</li>
 						<?php endif; ?>
 					</ul>
-					<ul class="gdpr-policies">
-						<?php if ( ! empty( $consent_types ) ) : ?>
-							<?php foreach ( $consent_types as $consent_key => $type ) : ?>
-								<?php
-								if ( ! $type['policy-page'] ) {
-									continue;
-								}
-								?>
-								<li><a href="<?php echo esc_url( get_permalink( $type['policy-page'] ) ); ?>" target="_blank"><?php echo esc_html( $type['name'] ); ?></a></li>
-							<?php endforeach; ?>
-						<?php endif; ?>
-					</ul>
 				</div>
 				<div class="gdpr-tab-content">
 					<?php $counter = 0; ?>
-					<?php foreach ( $updated_consents as $consent_id => $consent ) : ?>
+					<?php foreach ( $args['updated_consents'] as $consent_id => $consent ) : ?>
 						<div class="<?php echo esc_attr( $consent_id ); ?> <?php echo ( 0 === $counter ? 'gdpr-active' : '' ) ?>">
 							<header>
 								<h4><?php echo esc_html( $consent['name'] ); ?></h4>
@@ -81,7 +69,7 @@
 			<footer>
 				<div class="gdpr-buttons">
 					<form method="post" class="gdpr-reconsent-frm">
-						<?php foreach ( $updated_consents as $consent_id => $consent ) : ?>
+						<?php foreach ( $args['updated_consents'] as $consent_id => $consent ) : ?>
 							<input type="hidden" name="gdpr-updated-policy" value="<?php echo esc_attr( $consent_id ); ?>">
 						<?php endforeach; ?>
 						<?php wp_nonce_field( 'gdpr-agree-with-new-policies', 'agree-with-new-policies-nonce' ); ?>

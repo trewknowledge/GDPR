@@ -25,7 +25,6 @@ class GDPR_Activator {
 
 	/**
 	 * Runs when the user first activates the plugin.
-	 * Sets a CRON jo to clean up the telemetry post type every 12 hours.
 	 *
 	 * @since  1.0.0
 	 * @static
@@ -37,7 +36,6 @@ class GDPR_Activator {
 		}
 
 		add_option( 'gdpr_disable_css', false );
-		add_option( 'gdpr_enable_telemetry_tracker', false );
 		add_option( 'gdpr_use_recaptcha', false );
 		add_option( 'gdpr_recaptcha_site_key', '' );
 		add_option( 'gdpr_recaptcha_secret_key', '' );
