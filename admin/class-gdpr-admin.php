@@ -135,19 +135,9 @@ class GDPR_Admin {
 
 		$settings_hook = add_submenu_page( $parent_slug, $menu_title, $menu_title, $capability, $menu_slug, $function );
 
-		$menu_slug = 'edit.php?post_type=telemetry';
-
-		$cpt     = 'telemetry';
-		$cpt_obj = get_post_type_object( $cpt );
-
-		if ( $cpt_obj ) {
-			add_submenu_page( $parent_slug, $cpt_obj->labels->name, $cpt_obj->labels->menu_name, $capability, $menu_slug );
-		}
-
 		add_action( "load-{$requests_hook}", array( 'GDPR_Help', 'add_requests_help' ) );
 		add_action( "load-{$tools_hook}", array( 'GDPR_Help', 'add_tools_help' ) );
 		add_action( "load-{$settings_hook}", array( 'GDPR_Help', 'add_settings_help' ) );
-		add_action( 'load-edit.php', array( 'GDPR_Help', 'add_telemetry_help' ) );
 	}
 
 	/**
@@ -201,7 +191,6 @@ class GDPR_Admin {
 			'gdpr_consent_types'                       => array( $this, 'sanitize_consents' ),
 			'gdpr_deletion_needs_review'               => 'boolval',
 			'gdpr_disable_css'                         => 'boolval',
-			'gdpr_enable_telemetry_tracker'            => 'boolval',
 			'gdpr_use_recaptcha'                       => 'boolval',
 			'gdpr_recaptcha_site_key'                  => 'sanitize_text_field',
 			'gdpr_recaptcha_secret_key'                => 'sanitize_text_field',
@@ -708,25 +697,6 @@ class GDPR_Admin {
 	 */
 	public function clean_data_breach_request() {
 		delete_option( 'gdpr_data_breach_initiated' );
-	}
-
-	/**
-	 * CRON job runs this to clean up the telemetry post type every 12 hours.
-	 * @since  1.0.0
-	 * @author Fernando Claussen <fernandoclaussen@gmail.com>
-	 */
-	public function telemetry_cleanup() {
-		$args = array(
-			'post_type'      => 'telemetry',
-			'posts_per_page' => -1,
-			'fields'         => 'ids',
-		);
-
-		$telemetry_posts = get_posts( $args );
-
-		foreach ( $telemetry_posts as $post ) {
-			wp_delete_post( $post, true );
-		}
 	}
 
 	/**
