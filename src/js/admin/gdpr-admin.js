@@ -11,8 +11,8 @@
 	    str = str.toLowerCase();
 
 	    // remove accents, swap ñ for n, etc
-	    var from = "àáäâèéëêìíïîòóöôùúüûñç·/_,:;";
-	    var to   = "aaaaeeeeiiiioooouuuunc------";
+	    var from = "àáäâèéëêìíïîòóöôùúüûñňçčľĺšťžýď·/_,:;";
+	    var to   = "aaaaeeeeiiiioooouuuunnccllstzyd------";
 	    for (var i=0, l=from.length ; i<l ; i++) {
         str = str.replace(new RegExp(from.charAt(i), 'g'), to.charAt(i));
 	    }
@@ -41,7 +41,7 @@
 			field.val('');
 		});
 
-		$('#consent-tabs, #tabs').sortable();
+		$('#consent-tabs, #gdpr-cookie-categories').sortable();
 
 		$('.add-tab').click(function(e) {
 			e.preventDefault();
