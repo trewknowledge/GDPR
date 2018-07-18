@@ -186,29 +186,4 @@ class GDPR_Help {
 			)
 		);
 	}
-
-	/**
-	 * Add the telemetry page help tabs.
-	 * @since  1.0.0
-	 * @author Fernando Claussen <fernandoclaussen@gmail.com>
-	 * @static
-	 */
-	public static function add_telemetry_help() {
-		if ( 'edit-telemetry' !== get_current_screen()->id ) {
-			return;
-		}
-
-		$telemetry_help = '<h2>' . esc_html__( 'Overview', 'gdpr' ) . '</h2>' .
-			'<p>' . esc_html__( 'This is all data that are being sent outside of your site. WordPress send some data to it\'s servers to be able to do automatic updates. You can reduce the amount of data being sent using filters.', 'gdpr' ) . '</p>' .
-			'<p>' . esc_html__( 'Some plugins also capture data and send it to their servers. Such practice is not allowed for plugins hosted on wordpress.org plugin repository. In case this is a Premium plugin, you should have been given the option to choose which type of data you want to send.', 'gdpr' ) . '</p>' .
-			'<p>' . esc_html__( 'Use this tool to identify plugins or themes sending potential personal data outside of your server and take action if necessary.', 'gdpr' ) . '</p>' .
-			'<p>' . esc_html__( 'All information on this page is automatically deleted every 12 hours so this doesn\'t grow too large and slow your site.' ) . '</p>';
-		get_current_screen()->add_help_tab(
-			array(
-				'id'      => 'overview',
-				'title'   => esc_html__( 'Overview', 'gdpr' ),
-				'content' => $telemetry_help,
-			)
-		);
-	}
 }
