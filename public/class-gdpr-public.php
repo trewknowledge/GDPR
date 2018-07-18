@@ -161,12 +161,14 @@ class GDPR_Public {
 			return;
 		}
 
-		GDPR_Templates::get_template( 'privacy-bar.php', array(
-			'content' => $content,
-			'registered_cookies' => $registered_cookies,
-			'show_cookie_cat_checkboxes' => $show_cookie_cat_checkboxes,
-			'button_text' => $button_text,
-		) );
+		GDPR_Templates::get_template(
+			'privacy-bar.php', array(
+				'content'                    => $content,
+				'registered_cookies'         => $registered_cookies,
+				'show_cookie_cat_checkboxes' => $show_cookie_cat_checkboxes,
+				'button_text'                => $button_text,
+			)
+		);
 	}
 
 	/**
@@ -186,14 +188,16 @@ class GDPR_Public {
 			return;
 		}
 
-		GDPR_Templates::get_template( 'privacy-preferences-modal.php', array(
-			'cookie_privacy_excerpt' => $cookie_privacy_excerpt,
-			'consent_types' => $consent_types,
-			'approved_cookies' => $approved_cookies,
-			'user_consents' => $user_consents,
-			'tabs' => $tabs,
-			'allowed_html' => $this->allowed_html,
-		) );
+		GDPR_Templates::get_template(
+			'privacy-preferences-modal.php', array(
+				'cookie_privacy_excerpt' => $cookie_privacy_excerpt,
+				'consent_types'          => $consent_types,
+				'approved_cookies'       => $approved_cookies,
+				'user_consents'          => $user_consents,
+				'tabs'                   => $tabs,
+				'allowed_html'           => $this->allowed_html,
+			)
+		);
 	}
 
 	/**
@@ -325,19 +329,23 @@ class GDPR_Public {
 		$reconsent_template = get_option( 'gdpr_reconsent_template', 'modal' );
 
 		if ( 'bar' === $reconsent_template ) {
-			GDPR_Templates::get_template( 'reconsent-bar.php', array(
-				'updated_consents' => $updated_consents,
-			) );
+			GDPR_Templates::get_template(
+				'reconsent-bar.php', array(
+					'updated_consents' => $updated_consents,
+				)
+			);
 		} else {
-			GDPR_Templates::get_template( 'reconsent-modal.php', array(
-				'updated_consents' => $updated_consents,
-			) );
+			GDPR_Templates::get_template(
+				'reconsent-modal.php', array(
+					'updated_consents' => $updated_consents,
+				)
+			);
 		}
 
 	}
 
 	protected function is_crawler() {
-	  return ( isset( $_SERVER['HTTP_USER_AGENT'] ) && preg_match('/bot|crawl|slurp|spider|mediapartners/i', $_SERVER['HTTP_USER_AGENT'] ) );
+		return ( isset( $_SERVER['HTTP_USER_AGENT'] ) && preg_match( '/bot|crawl|slurp|spider|mediapartners/i', $_SERVER['HTTP_USER_AGENT'] ) );
 	}
 
 	public function set_plugin_cookies() {

@@ -91,8 +91,8 @@
 					<td>
 						<?php $reconsent_template = get_option( 'gdpr_reconsent_template', 'modal' ); ?>
 						<select name="gdpr_reconsent_template" id="gdpr_reconsent_template">
-							<option value="bar" <?php selected( 'bar', $reconsent_template ) ?>><?php esc_html_e( 'Bar', 'gdpr' ); ?></option>
-							<option value="modal" <?php selected( 'modal', $reconsent_template ) ?>><?php esc_html_e( 'Modal', 'gdpr' ); ?></option>
+							<option value="bar" <?php selected( 'bar', $reconsent_template ); ?>><?php esc_html_e( 'Bar', 'gdpr' ); ?></option>
+							<option value="modal" <?php selected( 'modal', $reconsent_template ); ?>><?php esc_html_e( 'Modal', 'gdpr' ); ?></option>
 						</select>
 					</td>
 				</tr>
