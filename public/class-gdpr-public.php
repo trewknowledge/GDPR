@@ -250,8 +250,8 @@ class GDPR_Public {
 
 		$cookies_to_remove = array_diff( $all_cookies, $approved_cookies );
 
-		$cookies_as_json  = json_encode( $approved_cookies );
-		$consents_as_json = json_encode( $consents );
+		$cookies_as_json  = wp_json_encode( $approved_cookies );
+		$consents_as_json = wp_json_encode( $consents );
 
 		setcookie( 'gdpr[allowed_cookies]', $cookies_as_json, time() + YEAR_IN_SECONDS, '/' );
 		setcookie( 'gdpr[consent_types]', $consents_as_json, time() + YEAR_IN_SECONDS, '/' );
@@ -345,7 +345,7 @@ class GDPR_Public {
 	}
 
 	protected function is_crawler() {
-		return ( isset( $_SERVER['HTTP_USER_AGENT'] ) && preg_match( '/bot|crawl|slurp|spider|mediapartners/i', $_SERVER['HTTP_USER_AGENT'] ) );
+		return ( isset( $_SERVER['HTTP_USER_AGENT'] ) && preg_match( '/bot|crawl|slurp|spider|mediapartners/i', sanitize_text_field( wp_unslash( $_SERVER['HTTP_USER_AGENT'] ) ) ) );
 	}
 
 	public function set_plugin_cookies() {
@@ -356,7 +356,7 @@ class GDPR_Public {
 				setcookie( 'gdpr[consent_types]', '[]', time() + YEAR_IN_SECONDS, '/' );
 			} else {
 				$user_consents = get_user_meta( $user_id, 'gdpr_consents' );
-				setcookie( 'gdpr[consent_types]', json_encode( $user_consents ), time() + YEAR_IN_SECONDS, '/' );
+				setcookie( 'gdpr[consent_types]', wp_json_encode( $user_consents ), time() + YEAR_IN_SECONDS, '/' );
 			}
 		} else {
 			if ( $user_id ) {
@@ -367,7 +367,7 @@ class GDPR_Public {
 				$diff      = array_merge( array_diff( $user_consents, $intersect ), array_diff( $cookie_consents, $intersect ) );
 
 				if ( ! empty( $diff ) ) {
-					setcookie( 'gdpr[consent_types]', json_encode( $user_consents ), time() + YEAR_IN_SECONDS, '/' );
+					setcookie( 'gdpr[consent_types]', wp_json_encode( $user_consents ), time() + YEAR_IN_SECONDS, '/' );
 				}
 			}
 		}
@@ -392,7 +392,7 @@ class GDPR_Public {
 			}
 
 			if ( ! empty( $cookies ) ) {
-				setcookie( 'gdpr[allowed_cookies]', json_encode( $cookies ), time() + YEAR_IN_SECONDS, '/' );
+				setcookie( 'gdpr[allowed_cookies]', wp_json_encode( $cookies ), time() + YEAR_IN_SECONDS, '/' );
 			} else {
 				setcookie( 'gdpr[allowed_cookies]', '[]', time() + YEAR_IN_SECONDS, '/' );
 			}
@@ -413,6 +413,7 @@ class GDPR_Public {
 
 		foreach ( $consents as $consent ) {
 			add_user_meta( $user_id, 'gdpr_consents', $consent );
+			/* translators: 1: Consent name. */
 			GDPR_Audit_Log::log( $user_id, sprintf( esc_html__( 'User provided new consent for %1$s.', 'gdpr' ), esc_html( $consent ) ) );
 		}
 

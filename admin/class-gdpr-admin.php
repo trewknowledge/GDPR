@@ -558,7 +558,7 @@ class GDPR_Admin {
 			?>
 			<div class="notice notice-error">
 				<p><strong><?php esc_html_e( 'GDPR', 'gdpr' ); ?></strong></p>
-				<?php /* translators: 1) Current PHP version 2) Required PHP version. */ ?>
+				<?php /* translators: 1: Current PHP version 2: Required PHP version. */ ?>
 				<p><?php echo sprintf( esc_html__( 'Your current PHP version (%1$s) is below the plugin required version of %2$s.', 'gdpr' ), esc_html( phpversion() ), esc_html( GDPR_REQUIRED_PHP_VERSION ) ); ?></p>
 			</div>
 			<?php

@@ -54,9 +54,9 @@
 									<?php
 									$page_obj = get_post( $consent['policy-page'] );
 									if ( class_exists( 'SiteOrigin_Panels' ) && get_post_meta( $page_obj->ID, 'panels_data', true ) ) {
-										echo SiteOrigin_Panels::renderer()->render( $page_obj->ID );
+										echo wp_kses_post( SiteOrigin_Panels::renderer()->render( $page_obj->ID ) );
 									} else {
-										echo apply_filters( 'the_content', $page_obj->post_content );
+										echo wp_kses_post( apply_filters( 'the_content', $page_obj->post_content ) );
 									}
 									?>
 								</div>
