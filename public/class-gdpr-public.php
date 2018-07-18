@@ -11,6 +11,8 @@
  * @author     Fernando Claussen <fernandoclaussen@gmail.com>
  */
 
+require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/class-gdpr-templates.php';
+
 /**
  * The public-facing functionality of the plugin.
  *
@@ -115,7 +117,8 @@ class GDPR_Public {
 			$secret_key = get_option( 'gdpr_recaptcha_secret_key', '' );
 
 			if ( $site_key && $secret_key ) {
-				wp_enqueue_script( $this->plugin_name . '-recaptcha', 'https://www.google.com/recaptcha/api.js' );
+				$lang = get_locale();
+				wp_enqueue_script( $this->plugin_name . '-recaptcha', 'https://www.google.com/recaptcha/api.js?hl=' . $lang );
 			}
 		}
 		wp_enqueue_script( $this->plugin_name, plugin_dir_url( dirname( __FILE__ ) ) . 'assets/js/gdpr-public.js', array( 'jquery' ), $this->version, false );
@@ -158,7 +161,12 @@ class GDPR_Public {
 			return;
 		}
 
-		include plugin_dir_path( __FILE__ ) . 'partials/privacy-bar.php';
+		GDPR_Templates::get_template( 'privacy-bar.php', array(
+			'content' => $content,
+			'registered_cookies' => $registered_cookies,
+			'show_cookie_cat_checkboxes' => $show_cookie_cat_checkboxes,
+			'button_text' => $button_text,
+		) );
 	}
 
 	/**
@@ -178,7 +186,14 @@ class GDPR_Public {
 			return;
 		}
 
-		include plugin_dir_path( __FILE__ ) . 'partials/privacy-preferences-modal.php';
+		GDPR_Templates::get_template( 'privacy-preferences-modal.php', array(
+			'cookie_privacy_excerpt' => $cookie_privacy_excerpt,
+			'consent_types' => $consent_types,
+			'approved_cookies' => $approved_cookies,
+			'user_consents' => $user_consents,
+			'tabs' => $tabs,
+			'allowed_html' => $this->allowed_html,
+		) );
 	}
 
 	/**
@@ -297,7 +312,7 @@ class GDPR_Public {
 			return;
 		}
 
-		$updated_consents = array_filter_compat(
+		$updated_consents = array_filter(
 			$required_consents, function( $consent, $consent_id ) use ( $user_consents ) {
 				return ! in_array( $consent_id, $user_consents, true );
 			}, ARRAY_FILTER_USE_BOTH
@@ -310,9 +325,13 @@ class GDPR_Public {
 		$reconsent_template = get_option( 'gdpr_reconsent_template', 'modal' );
 
 		if ( 'bar' === $reconsent_template ) {
-			include plugin_dir_path( __FILE__ ) . 'partials/reconsent-bar.php';
+			GDPR_Templates::get_template( 'reconsent-bar.php', array(
+				'updated_consents' => $updated_consents,
+			) );
 		} else {
-			include plugin_dir_path( __FILE__ ) . 'partials/reconsent-modal.php';
+			GDPR_Templates::get_template( 'reconsent-modal.php', array(
+				'updated_consents' => $updated_consents,
+			) );
 		}
 
 	}

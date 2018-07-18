@@ -147,23 +147,6 @@
 	display: none;
 }
 
-.post-type-telemetry{
-	.page-title-action{
-		display: none;
-	}
-	.row-actions{
-		display: none;
-	}
-	.search-box {
-		display: none;
-	}
-	.actions{
-		#filter-by-date, #post-query-submit, &.bulkactions {
-			display: none;
-		}
-	}
-}
-
 .gdpr .not-full {
 	display: inline-block;
 }
@@ -218,9 +201,6 @@
 				margin-bottom: 10px;
 			}
 		}
-	}
-	.type-telemetry * {
-		word-wrap: break-word !important;
 	}
 }
 

@@ -15,12 +15,12 @@
 <div class="gdpr gdpr-privacy-bar" style="display:none;">
 	<div class="gdpr-wrapper">
 		<div class="gdpr-content">
-			<p><?php echo nl2br( wp_kses_post( $content ) ); ?></p>
+			<p><?php echo nl2br( wp_kses_post( $args['content'] ) ); ?></p>
 		</div>
 		<div class="gdpr-right">
-			<?php if ( $show_cookie_cat_checkboxes ) : ?>
+			<?php if ( $args['show_cookie_cat_checkboxes'] ) : ?>
 				<ul class="gdpr-cookie-categories">
-					<?php foreach ( $registered_cookies as $cookie_cat_id => $cookie_cat ) : ?>
+					<?php foreach ( $args['registered_cookies'] as $cookie_cat_id => $cookie_cat ) : ?>
 						<?php
 						$enabled = ( 'off' === $cookie_cat['status'] ) ? false : true;
 						if ( empty( $cookie_cat['cookies_used'] ) ) {
@@ -36,7 +36,7 @@
 			<?php endif ?>
 			<div class="gdpr-buttons">
 				<button class="gdpr-preferences" type="button"><?php esc_html_e( 'Privacy Preferences', 'gdpr' ); ?></button>
-				<button class="gdpr-agreement" type="button"><?php echo esc_html( $button_text ); ?></button>
+				<button class="gdpr-agreement" type="button"><?php echo esc_html( $args['button_text'] ); ?></button>
 			</div>
 			<span class="gdpr-close"></span>
 		</div>

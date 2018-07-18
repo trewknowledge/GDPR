@@ -9,7 +9,7 @@
 						<label for="consent-policy-page-{{data.key}}">
 							<?php esc_html_e( 'Policy Page', 'gdpr' ); ?>:
 							<span class="screen-reader-text"><?php esc_attr_e( 'This page will be tracked for changes and you will be prompted to ask users to re-consent to the new policy. Selecting a page will make this consent required.', 'gdpr' ); ?></span>
-							<span data-tooltip="<?php esc_attr_e( 'This page will be tracked for changes and you will be prompted to ask users to re-consent to the new policy. Selecting a page will make this consent required.', 'gdpr' ); ?>">
+							<span data-gdprtooltip="<?php esc_attr_e( 'This page will be tracked for changes and you will be prompted to ask users to re-consent to the new policy. Selecting a page will make this consent required.', 'gdpr' ); ?>">
 								<span class="dashicons dashicons-info"></span>
 							</span>
 						</label>
@@ -28,7 +28,7 @@
 						<label for="consent-description-{{data.key}}">
 							<?php esc_html_e( 'Long description', 'gdpr' ); ?>:<span class="gdpr-required">*</span>
 							<span class="screen-reader-text"><?php esc_attr_e( 'This will show up at the privacy preferences center, under the name of the consent.', 'gdpr' ); ?></span>
-							<span data-tooltip="<?php esc_attr_e( 'This will show up at the privacy preferences center, under the name of the consent.', 'gdpr' ); ?>">
+							<span data-gdprtooltip="<?php esc_attr_e( 'This will show up at the privacy preferences center, under the name of the consent.', 'gdpr' ); ?>">
 								<span class="dashicons dashicons-info"></span>
 							</span>
 						</label>
@@ -40,7 +40,7 @@
 						<label for="consent-registration-{{data.key}}">
 							<?php esc_html_e( 'Short description', 'gdpr' ); ?>:<span class="gdpr-required">*</span>
 							<span class="screen-reader-text"><?php esc_attr_e( 'This will show up at registration forms next to checkboxes.', 'gdpr' ); ?></span>
-							<span data-tooltip="<?php esc_attr_e( 'This will show up at registration forms next to checkboxes.', 'gdpr' ); ?>">
+							<span data-gdprtooltip="<?php esc_attr_e( 'This will show up at registration forms next to checkboxes.', 'gdpr' ); ?>">
 								<span class="dashicons dashicons-info"></span>
 							</span>
 						</label>
