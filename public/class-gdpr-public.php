@@ -117,6 +117,7 @@ class GDPR_Public {
 			$secret_key = get_option( 'gdpr_recaptcha_secret_key', '' );
 
 			if ( $site_key && $secret_key ) {
+				$lang = get_locale();
 				wp_enqueue_script( $this->plugin_name . '-recaptcha', 'https://www.google.com/recaptcha/api.js?hl=' . $lang );
 			}
 		}
