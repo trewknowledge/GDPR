@@ -25,7 +25,6 @@ class GDPR_Deactivator {
 
 	/**
 	 * Runs when the user deactivates the plugin.
-	 * Clears the CRON job that deletes telemetry posts every 12 hours.
 	 *
 	 * @since  1.0.0
 	 * @static
