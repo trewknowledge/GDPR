@@ -298,7 +298,7 @@ class GDPR {
 
 		if ( isset( $_POST['user_consents'] ) && is_array( $_POST['user_consents'] ) ) {
 
-			$consents = array_map( 'sanitize_text_field', array_keys( wp_unslash( $_POST['user_consents'] ) ) );  // WPCS: Input var ok, CSRF ok, XSS ok.
+			$consents = array_map( 'sanitize_text_field', array_keys( wp_unslash( $_POST['user_consents'] ) ) );  // WPCS: Input var ok, CSRF ok, XSS ok, sanitization ok.
 			foreach ( $consents as $consent ) {
 				/* translators: Name of consent */
 				GDPR_Audit_Log::log( $user_id, sprintf( esc_html__( 'User gave explicit consent to %s', 'gdpr' ), $consent ) );
@@ -318,10 +318,8 @@ class GDPR {
 		if ( empty( $consent_types ) ) {
 			return;
 		}
-		$sent_extras = ( isset( $_POST['user_consents'] ) ) ? wp_unslash( $_POST['user_consents'] ) : array(); // WPCS: Input var ok, CSRF ok.
-		if ( ! empty( $sent_extras ) ) {
-			$sent_extras = array_map( 'sanitize_text_field', $_POST['user_consents'] );
-		}
+		$sent_extras = ( isset( $_POST['user_consents'] ) ) ? array_map( 'sanitize_text_field', wp_unslash( $_POST['user_consents'] ) ) : array(); // WPCS: Input var ok, CSRF ok.
+
 		$allowed_html = array(
 			'a' => array(
 				'href'   => true,
@@ -343,9 +341,9 @@ class GDPR {
 			$required = ( isset( $consent['policy-page'] ) && $consent['policy-page'] ) ? 'required' : '';
 			$checked  = ( isset( $sent_extras[ $key ] ) ) ? checked( $sent_extras[ $key ], 1, false ) : '';
 			echo '<p>' .
-			  '<label class="gdpr-label">' .
+				'<label class="gdpr-label">' .
 				'<input type="checkbox" name="user_consents[' . esc_attr( $key ) . ']" id="' . esc_attr( $key ) . '-consent" value="1" ' . esc_html( $required ) . ' ' . esc_html( $checked ) . '>' .
-				  wp_kses( $consent['registration'], $allowed_html ) . '</label>' .
+					wp_kses( $consent['registration'], $allowed_html ) . '</label>' .
 			'</p>';
 		}
 

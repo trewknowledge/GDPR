@@ -32,7 +32,8 @@ class GDPR_Activator {
 	 */
 	public static function activate() {
 		if ( -1 === version_compare( phpversion(), GDPR_REQUIRED_PHP_VERSION ) ) {
-			die( sprintf( esc_html__( 'Your current PHP version (%1$s) is below the plugin required version of %2$s.', 'gdpr' ), phpversion(), GDPR_REQUIRED_PHP_VERSION ) );
+			/* translators: 1: Current PHP version 2: Required PHP version. */
+			die( sprintf( esc_html__( 'Your current PHP version (%1$s) is below the plugin required version of %2$s.', 'gdpr' ), esc_html( phpversion() ), esc_html( GDPR_REQUIRED_PHP_VERSION ) ) );
 		}
 
 		add_option( 'gdpr_disable_css', false );
