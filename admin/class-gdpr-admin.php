@@ -200,6 +200,7 @@ class GDPR_Admin {
 			'gdpr_enable_privacy_bar'                  => 'boolval',
 			'gdpr_display_cookie_categories_in_bar'    => 'boolval',
 			'gdpr_hide_from_bots'                      => 'boolval',
+			'gdpr_show_eu_only'                        => 'boolval',
 			'gdpr_reconsent_template'                  => 'sanitize_text_field',
 		);
 		foreach ( $settings as $option_name => $sanitize_callback ) {
