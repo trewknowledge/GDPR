@@ -548,6 +548,7 @@ class GDPR_Admin {
 					add_option( 'gdpr_enable_privacy_bar', true );
 					add_option( 'gdpr_display_cookie_categories_in_bar', false );
 					add_option( 'gdpr_hide_from_bots', true );
+					add_option( 'gdpr_show_eu_only', true );
 					add_option( 'gdpr_reconsent_template', 'modal' );
 				}
 			}
