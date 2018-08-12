@@ -222,7 +222,7 @@
 			if ( function_exists( 'geoip_continent_code_by_name' ) ) {
 				return ( geoip_continent_code_by_name( $this->get_visitor_ip() ) === 'EU' );
 			} else {
-				return apply_filters( 'geoip_is_eu_visitor', false, $this->get_visitor_ip() );
+				return apply_filters( 'gdpr_is_eu_visitor', false, $this->get_visitor_ip() );
 			}
 		}
 
