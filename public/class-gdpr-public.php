@@ -234,7 +234,19 @@
 		 */
 		public function get_visitor_ip () {
 
-			return $_SERVER[ "HTTP_CF_CONNECTING_IP" ] ?? $_SERVER[ "HTTP_X_REAL_IP" ] ?? $_SERVER[ "HTTP_X_FORWARDED_FOR" ] ?? $_SERVER[ "HTTP_CLIENT_IP" ] ?? $_SERVER[ "REMOTE_ADDR" ] ?? null;
+			if ( ! empty( $_SERVER[ 'HTTP_CF_CONNECTING_IP' ] ) ) {
+				return $_SERVER[ 'HTTP_CF_CONNECTING_IP' ];
+			} else if ( ! empty( $_SERVER[ 'HTTP_X_REAL_IP' ] ) ) {
+				return $_SERVER[ 'HTTP_X_REAL_IP' ];
+			} else if ( ! empty( $_SERVER[ 'HTTP_CLIENT_IP' ] ) ) {
+				return $_SERVER[ 'HTTP_CLIENT_IP' ];
+			} else if ( ! empty( $_SERVER[ 'HTTP_X_FORWARDED_FOR' ] ) ) {
+				return $_SERVER[ 'HTTP_X_FORWARDED_FOR' ];
+			} else if ( ! empty( $_SERVER[ 'REMOTE_ADDR' ] ) ) {
+				return $_SERVER[ 'REMOTE_ADDR' ];
+			}
+
+			return null;
 		}
 
 		/**
