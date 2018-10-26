@@ -132,7 +132,7 @@
 					</th>
 					<td>
 						<?php $privacy_bar_content = get_option( 'gdpr_cookie_banner_content', '' ); ?>
-						<textarea name="gdpr_cookie_banner_content" id="gdpr_cookie_banner_content" cols="80" rows="6"><?php echo esc_html( $privacy_bar_content ); ?></textarea>
+						<textarea name="gdpr_cookie_banner_content" id="gdpr_cookie_banner_content" cols="80" rows="6"><?php echo esc_textarea( $privacy_bar_content ); ?></textarea>
 					</td>
 				</tr>
 				<tr>

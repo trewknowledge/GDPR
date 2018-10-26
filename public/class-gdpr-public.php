@@ -64,12 +64,14 @@ class GDPR_Public {
 	public function __construct( $plugin_name, $version ) {
 		$this->plugin_name  = $plugin_name;
 		$this->version      = $version;
-		$this->allowed_html = array(
-			'a' => array(
-				'href'   => true,
-				'title'  => true,
-				'target' => true,
-			),
+		$this->allowed_html = apply_filters( 'gdpr_allowed_html',
+			array(
+				'a' => array(
+					'href'   => true,
+					'title'  => true,
+					'target' => true,
+				),
+			)
 		);
 	}
 

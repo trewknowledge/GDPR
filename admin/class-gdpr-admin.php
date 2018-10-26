@@ -60,12 +60,15 @@ class GDPR_Admin {
 	public function __construct( $plugin_name, $version ) {
 		$this->plugin_name  = $plugin_name;
 		$this->version      = $version;
-		$this->allowed_html = array(
-			'a' => array(
-				'href'   => true,
-				'title'  => true,
-				'target' => true,
-			),
+		$tabs = apply_filters( 'gdpr_tools_tabs', $tabs );
+		$this->allowed_html = apply_filters( 'gdpr_allowed_html',
+			array(
+				'a' => array(
+					'href'   => true,
+					'title'  => true,
+					'target' => true,
+				),
+			)
 		);
 	}
 
