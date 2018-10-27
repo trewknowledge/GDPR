@@ -64,9 +64,106 @@ class GDPR_Admin {
 		$this->allowed_html = apply_filters( 'gdpr_allowed_html',
 			array(
 				'a' => array(
-					'href'   => true,
-					'title'  => true,
-					'target' => true,
+					'id'     => array(),
+					'class'  => array(),
+					'href'   => array(),
+					'rel'    => array(),
+					'rev'    => array(),
+					'name'   => array(),
+					'title'  => array(),
+					'target' => array(),
+				),
+				'div' => array(
+					'id'     => array(),
+					'class'  => array(),
+				),
+				'span' => array(
+					'id'     => array(),
+					'class'  => array(),
+				),
+				'i' => array(
+					'id'     => array(),
+					'class'  => array(),
+				),
+				'p' => array(
+					'id'     => array(),
+					'class'  => array(),
+				),
+				'br' => array(),
+				'hr' => array(
+					'class'  => array(),
+				),
+				'em' => array(),
+				'strong' => array(),
+				'small' => array(),
+				'strike' => array(),
+				'ul' => array(
+					'id'     => array(),
+					'class'  => array(),
+				),
+				'ol' => array(
+					'id'     => array(),
+					'class'  => array(),
+					'start'  => array(),
+				),
+				'li' => array(
+					'id'     => array(),
+					'class'  => array(),
+					'value'  => array(),
+				),
+				'img' => array(
+					'id'     => array(),
+					'class'  => array(),
+					'alt'    => array(),
+					'height' => array(),
+					'src'    => array(),
+					'width'  => array(),
+					'title'  => array(),
+				),
+				'h1' => array(
+					'id'     => array(),
+					'class'  => array(),
+				),
+				'h2' => array(
+					'id'     => array(),
+					'class'  => array(),
+				),
+				'h3' => array(
+					'id'     => array(),
+					'class'  => array(),
+				),
+				'h4' => array(
+					'id'     => array(),
+					'class'  => array(),
+				),
+				'h5' => array(
+					'id'     => array(),
+					'class'  => array(),
+				),
+				'h6' => array(
+					'id'     => array(),
+					'class'  => array(),
+				),
+				'label' => array(
+					'id'     => array(),
+					'class'  => array(),
+					'for'    => array(),
+				),
+				'code' => array(
+					'id'     => array(),
+					'class'  => array(),
+				),
+				'button' => array(
+					'id'     => array(),
+					'class'  => array(),
+					'name'   => array(),
+					'value'  => array(),
+					'disabled'  => array(),
+				),
+				'abbr' => array(
+					'id'     => array(),
+					'class'  => array(),
+					'title'  => array(),
 				),
 			)
 		);
@@ -188,7 +285,7 @@ class GDPR_Admin {
 	public function register_settings() {
 		$settings = array(
 			'gdpr_cookie_banner_content'               => array( $this, 'sanitize_with_links' ),
-			'gdpr_cookie_privacy_excerpt'              => 'sanitize_textarea_field',
+			'gdpr_cookie_privacy_excerpt'              => array( $this, 'sanitize_with_links' ),
 			'gdpr_cookie_popup_content'                => array( $this, 'sanitize_cookie_categories' ),
 			'gdpr_email_limit'                         => 'intval',
 			'gdpr_consent_types'                       => array( $this, 'sanitize_consents' ),

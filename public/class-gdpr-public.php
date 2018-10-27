@@ -67,9 +67,106 @@ class GDPR_Public {
 		$this->allowed_html = apply_filters( 'gdpr_allowed_html',
 			array(
 				'a' => array(
-					'href'   => true,
-					'title'  => true,
-					'target' => true,
+					'id'     => array(),
+					'class'  => array(),
+					'href'   => array(),
+					'rel'    => array(),
+					'rev'    => array(),
+					'name'   => array(),
+					'title'  => array(),
+					'target' => array(),
+				),
+				'div' => array(
+					'id'     => array(),
+					'class'  => array(),
+				),
+				'span' => array(
+					'id'     => array(),
+					'class'  => array(),
+				),
+				'i' => array(
+					'id'     => array(),
+					'class'  => array(),
+				),
+				'p' => array(
+					'id'     => array(),
+					'class'  => array(),
+				),
+				'br' => array(),
+				'hr' => array(
+					'class'  => array(),
+				),
+				'em' => array(),
+				'strong' => array(),
+				'small' => array(),
+				'strike' => array(),
+				'ul' => array(
+					'id'     => array(),
+					'class'  => array(),
+				),
+				'ol' => array(
+					'id'     => array(),
+					'class'  => array(),
+					'start'  => array(),
+				),
+				'li' => array(
+					'id'     => array(),
+					'class'  => array(),
+					'value'  => array(),
+				),
+				'img' => array(
+					'id'     => array(),
+					'class'  => array(),
+					'alt'    => array(),
+					'height' => array(),
+					'src'    => array(),
+					'width'  => array(),
+					'title'  => array(),
+				),
+				'h1' => array(
+					'id'     => array(),
+					'class'  => array(),
+				),
+				'h2' => array(
+					'id'     => array(),
+					'class'  => array(),
+				),
+				'h3' => array(
+					'id'     => array(),
+					'class'  => array(),
+				),
+				'h4' => array(
+					'id'     => array(),
+					'class'  => array(),
+				),
+				'h5' => array(
+					'id'     => array(),
+					'class'  => array(),
+				),
+				'h6' => array(
+					'id'     => array(),
+					'class'  => array(),
+				),
+				'label' => array(
+					'id'     => array(),
+					'class'  => array(),
+					'for'    => array(),
+				),
+				'code' => array(
+					'id'     => array(),
+					'class'  => array(),
+				),
+				'button' => array(
+					'id'     => array(),
+					'class'  => array(),
+					'name'   => array(),
+					'value'  => array(),
+					'disabled'  => array(),
+				),
+				'abbr' => array(
+					'id'     => array(),
+					'class'  => array(),
+					'title'  => array(),
 				),
 			)
 		);
@@ -168,6 +265,7 @@ class GDPR_Public {
 			'registered_cookies' => $registered_cookies,
 			'show_cookie_cat_checkboxes' => $show_cookie_cat_checkboxes,
 			'button_text' => $button_text,
+			'allowed_html' => $this->allowed_html,
 		) );
 	}
 
