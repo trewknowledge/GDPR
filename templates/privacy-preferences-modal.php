@@ -65,7 +65,7 @@
 							<h4><?php esc_html_e( 'Consent Management', 'gdpr' ); ?></h4>
 						</header>
 						<div class="gdpr-info">
-							<p><?php echo nl2br( esc_html( $args['cookie_privacy_excerpt'] ) ); ?></p>
+							<p><?php echo nl2br( wp_kses( $args['cookie_privacy_excerpt'], $args['allowed_html'] ) ); ?></p>
 							<?php if ( ! empty( $args['consent_types'] ) ) : ?>
 								<?php foreach ( $args['consent_types'] as $consent_key => $type ) : ?>
 									<div class="gdpr-cookies-used">

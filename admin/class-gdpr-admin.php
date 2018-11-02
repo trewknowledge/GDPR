@@ -60,12 +60,112 @@ class GDPR_Admin {
 	public function __construct( $plugin_name, $version ) {
 		$this->plugin_name  = $plugin_name;
 		$this->version      = $version;
-		$this->allowed_html = array(
-			'a' => array(
-				'href'   => true,
-				'title'  => true,
-				'target' => true,
-			),
+		$tabs = apply_filters( 'gdpr_tools_tabs', $tabs );
+		$this->allowed_html = apply_filters( 'gdpr_allowed_html',
+			array(
+				'a' => array(
+					'id'     => array(),
+					'class'  => array(),
+					'href'   => array(),
+					'rel'    => array(),
+					'rev'    => array(),
+					'name'   => array(),
+					'title'  => array(),
+					'target' => array(),
+				),
+				'div' => array(
+					'id'     => array(),
+					'class'  => array(),
+				),
+				'span' => array(
+					'id'     => array(),
+					'class'  => array(),
+				),
+				'i' => array(
+					'id'     => array(),
+					'class'  => array(),
+				),
+				'p' => array(
+					'id'     => array(),
+					'class'  => array(),
+				),
+				'br' => array(),
+				'hr' => array(
+					'class'  => array(),
+				),
+				'em' => array(),
+				'strong' => array(),
+				'small' => array(),
+				'strike' => array(),
+				'ul' => array(
+					'id'     => array(),
+					'class'  => array(),
+				),
+				'ol' => array(
+					'id'     => array(),
+					'class'  => array(),
+					'start'  => array(),
+				),
+				'li' => array(
+					'id'     => array(),
+					'class'  => array(),
+					'value'  => array(),
+				),
+				'img' => array(
+					'id'     => array(),
+					'class'  => array(),
+					'alt'    => array(),
+					'height' => array(),
+					'src'    => array(),
+					'width'  => array(),
+					'title'  => array(),
+				),
+				'h1' => array(
+					'id'     => array(),
+					'class'  => array(),
+				),
+				'h2' => array(
+					'id'     => array(),
+					'class'  => array(),
+				),
+				'h3' => array(
+					'id'     => array(),
+					'class'  => array(),
+				),
+				'h4' => array(
+					'id'     => array(),
+					'class'  => array(),
+				),
+				'h5' => array(
+					'id'     => array(),
+					'class'  => array(),
+				),
+				'h6' => array(
+					'id'     => array(),
+					'class'  => array(),
+				),
+				'label' => array(
+					'id'     => array(),
+					'class'  => array(),
+					'for'    => array(),
+				),
+				'code' => array(
+					'id'     => array(),
+					'class'  => array(),
+				),
+				'button' => array(
+					'id'     => array(),
+					'class'  => array(),
+					'name'   => array(),
+					'value'  => array(),
+					'disabled'  => array(),
+				),
+				'abbr' => array(
+					'id'     => array(),
+					'class'  => array(),
+					'title'  => array(),
+				),
+			)
 		);
 	}
 
@@ -185,7 +285,7 @@ class GDPR_Admin {
 	public function register_settings() {
 		$settings = array(
 			'gdpr_cookie_banner_content'               => array( $this, 'sanitize_with_links' ),
-			'gdpr_cookie_privacy_excerpt'              => 'sanitize_textarea_field',
+			'gdpr_cookie_privacy_excerpt'              => array( $this, 'sanitize_with_links' ),
 			'gdpr_cookie_popup_content'                => array( $this, 'sanitize_cookie_categories' ),
 			'gdpr_email_limit'                         => 'intval',
 			'gdpr_consent_types'                       => array( $this, 'sanitize_consents' ),
@@ -260,6 +360,26 @@ class GDPR_Admin {
 
 		include_once plugin_dir_path( __FILE__ ) . 'partials/templates/tmpl-cookies.php';
 		include_once plugin_dir_path( __FILE__ ) . 'partials/templates/tmpl-consents.php';
+
+		/**
+		 * Extend tinymce valid elements to match our allowed_html.
+		 */
+		add_filter( 'tiny_mce_before_init', function( $initArray ) {
+			$extended_valid_elements = '';
+			foreach ( $this->allowed_html as $element => $attributes ) {
+				if ( strlen( $extended_valid_elements ) > 0 ) {
+					$extended_valid_elements .= ',';
+				}
+				$extended_valid_elements .= $element;
+				if ( is_array( $attributes ) && count( $attributes ) > 0 ) {
+					$extended_valid_elements .= '[' . implode( '|', array_keys( $attributes ) ) . ']';
+				}
+			}
+			$initArray['extended_valid_elements'] = $extended_valid_elements;
+			$initArray['entity_encoding'] = 'raw';
+
+			return $initArray;
+		}, 20, 1 );
 
 		include plugin_dir_path( __FILE__ ) . 'partials/settings.php';
 	}
