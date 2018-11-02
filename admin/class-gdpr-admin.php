@@ -361,6 +361,26 @@ class GDPR_Admin {
 		include_once plugin_dir_path( __FILE__ ) . 'partials/templates/tmpl-cookies.php';
 		include_once plugin_dir_path( __FILE__ ) . 'partials/templates/tmpl-consents.php';
 
+		/**
+		 * Extend tinymce valid elements to match our allowed_html.
+		 */
+		add_filter( 'tiny_mce_before_init', function( $initArray ) {
+			$extended_valid_elements = '';
+			foreach ( $this->allowed_html as $element => $attributes ) {
+				if ( strlen( $extended_valid_elements ) > 0 ) {
+					$extended_valid_elements .= ',';
+				}
+				$extended_valid_elements .= $element;
+				if ( is_array( $attributes ) && count( $attributes ) > 0 ) {
+					$extended_valid_elements .= '[' . implode( '|', array_keys( $attributes ) ) . ']';
+				}
+			}
+			$initArray['extended_valid_elements'] = $extended_valid_elements;
+			$initArray['entity_encoding'] = 'raw';
+
+			return $initArray;
+		}, 20, 1 );
+
 		include plugin_dir_path( __FILE__ ) . 'partials/settings.php';
 	}
 
