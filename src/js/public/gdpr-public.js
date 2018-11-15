@@ -5,6 +5,7 @@
 			base_url = location.protocol + '//' + location.host + location.pathname;
 
 	window.has_consent = function( consent ) {
+		consent = consent.substring( 0, consent.indexOf('{') );
 		if ( Cookies.get('gdpr[consent_types]') ) {
 			var consentArray = JSON.parse( Cookies.get('gdpr[consent_types]') );
 			if ( consentArray.indexOf( consent ) > -1 ) {
