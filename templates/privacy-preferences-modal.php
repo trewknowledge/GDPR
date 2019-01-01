@@ -73,7 +73,7 @@
 											<p><?php echo esc_html( $type['name'] ); ?></p>
 											<?php if ( $type['policy-page'] ) : ?>
 												<span class="gdpr-always-active"><?php esc_html_e( 'Required', 'gdpr' ); ?></span>
-												<input type="hidden" name="user_consents[]" value="<?php echo esc_attr( $consent_key ); ?>" checked style="display:none;">
+												<input type="hidden" name="user_consents[]" value="<?php echo esc_attr( $consent_key ); ?>">
 											<?php else : ?>
 												<label class="gdpr-switch">
 													<input type="checkbox" name="user_consents[]" value="<?php echo esc_attr( $consent_key ); ?>" <?php echo ! empty( $args['user_consents'] ) ? checked( in_array( $consent_key, $args['user_consents'], true ), 1, false ) : 'checked'; ?>>
