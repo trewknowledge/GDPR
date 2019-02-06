@@ -20,6 +20,3 @@ install:
     - php -d memory_limit=3G ./bin/composer.phar install -o
 script:
     - "./bin/phpcs . --severity=1"
-notifications:
-    slack:
-        secure: icnhPXYtBV8POXJZhVs9hq7EZ6FjkWGaEUjCUt7wu0RPM5VnnvZ97Kl2RZSXqspNQs7sXTcnOzAVzqAlvCiyWyXiMHelavqQsMYTvSDSmDt7EEO97XurkVfBm7BX2N14mCYS72lZeBLzatUQ21R1K1c3DJHtZxQf2qoR2Ly5rhOZFyWb22UZWWOwBH1THOxbKT2A4TJCC4sNV1zTMRsh5EfkqA5KYb45nZHAuVkodu3WZKNoJxyVEpOsa5/vJ2EWkV/BLJYualCR6V9ZbS+rmbTLWrAfkLrKXAIW2L1t51hxlDdrXem23wDypB23UzNnMOfH/ybjKMHGN1/xByXlniFIVmx+XDJLSJ+CQ1jEfZuYVohUJ9psyohBhsRFjqzB/KvYayqf/DaIJB3zugvpUMTsHY6+m0gTaJ2pG4UP9t6Z06P/1suRxzfAa5sKeITlgjuo4+Cds2c+kMBcLvshRP9TeiFmeFjcO3uoqNOKsiyj83EmJ2j2BruQV1iof4+fBLYiGM7muJKrA67Li9bYOFyP0CSCHLiAxMcnmkt6tFHVOW/HrbANsdX3QV8Yx01OGyMpjkL9Nlo4eHTP9mI8GLHeu/Oi1SMXleJ5uqVGSGU+BTOU2JpY6CpLjSH1lswFTyhIocR22alugGe1JK+nTgF0VHRsyLUxlYoBMQ3PGGA=
