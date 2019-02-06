@@ -1,41 +1,25 @@
-sudo: false
-dist: trusty
-
 language: php
-
+php:
+    - 7.2
+branches:
+    only:
+        - master
+        - develop
+        - "/^(dev-)?feature.*/"
 cache:
-  directories:
-    - vendor
-    - $HOME/.composer/cache
-
-matrix:
-  include:
-    - php: 7.1
-      env: WP_VERSION=latest
-    - php: 7.0
-      env: WP_VERSION=latest
-    - php: 5.6
-      env: WP_VERSION=latest
-    - php: 5.5
-      env: WP_VERSION=latest
-
-before_script:
-  - export PATH="$HOME/.composer/vendor/bin:$PATH"
-  - |
-    if [ -f ~/.phpenv/versions/$(phpenv version-name)/etc/conf.d/xdebug.ini ]; then
-      phpenv config-rm xdebug.ini
-    else
-      echo "xdebug.ini does not exist"
-    fi
-  - |
-    if [[ ! -z "$WP_VERSION" ]] ; then
-      bash bin/install-wp-tests.sh wordpress_test root '' localhost $WP_VERSION
-      composer global require "phpunit/phpunit=4.8.*|5.7.*"
-    fi
-
+    directories:
+        - "/home/travis/.composer/cache"
+env:
+    global:
+        -   secure: VgpQpeJSRqIb61y8dU3uHKTSie3MKb2EWFOlCwF8hjeRHdvie3psy5HlWizm0DlDPsMWONHuOVCUDvtuF5cd2tlbKQhA65JWdS1V0C9aYnVQhQNlSz4vtQG1TSWqEWTi5CeFY+CzIxtO4UG7f2xfvoXXsunhSx1EZ5uyAgU29VqMm7yFa4OnTLnODw1x3DniymwHsq84LQmVK2nEmlhUCGr5JhKl9kCKz1y6GY91Fgbk/d5kPllVyK3eVlfE6N5BS9omgVwUjFLIeQGAwKrj93XN3G6ir9HSRdkm4upuQQ8XmghQyoe39/PAjFiSkk8M2VN4euCYksh2OWqCpUO7isIdc/4eCOJlN7Iyiu0zKTqXn2apvFpjyhY65tWDTqN32+0MHkkkoFHCB1VBsVvnyh212YIWrin7Duu5JLUElCdFaU1Z7vMx0kI6OXirOndvz2J4rPmOzuO4JosFIfmABUuKPWxMmqYTQB510G0Yv57Oh1EeD2NF31vWVuYV2YED2cgEP0/U1Y4UPEFiH+FgwPxuha6VIFdy72D0gZLORbdGLrV/JBZvTaOrhuCqc8PDlHq2+CstJ1H4MUqaCnhMRPW1VCSGug8GTOGZohYY6quq2F200MslrQBObG7s9Z5mnsTcy9P8+l52o6JqCJ+7sFV+3OuTBUdFbemVA1Av8jo=
+before_install:
+    - "./bin/composer.phar selfupdate"
+    - "./bin/composer.phar config -g http-basic.satis.boxuk.org 53961ab9 $SATIS_PASSWORD"
+    - "./bin/ensure_satis"
+install:
+    - php -d memory_limit=3G ./bin/composer.phar install -o
 script:
-  - |
-    if [[ ! -z "$WP_VERSION" ]] ; then
-      phpunit
-      WP_MULTISITE=1 phpunit
-    fi
+    - "./bin/phpcs . --severity=1"
+notifications:
+    slack:
+        secure: icnhPXYtBV8POXJZhVs9hq7EZ6FjkWGaEUjCUt7wu0RPM5VnnvZ97Kl2RZSXqspNQs7sXTcnOzAVzqAlvCiyWyXiMHelavqQsMYTvSDSmDt7EEO97XurkVfBm7BX2N14mCYS72lZeBLzatUQ21R1K1c3DJHtZxQf2qoR2Ly5rhOZFyWb22UZWWOwBH1THOxbKT2A4TJCC4sNV1zTMRsh5EfkqA5KYb45nZHAuVkodu3WZKNoJxyVEpOsa5/vJ2EWkV/BLJYualCR6V9ZbS+rmbTLWrAfkLrKXAIW2L1t51hxlDdrXem23wDypB23UzNnMOfH/ybjKMHGN1/xByXlniFIVmx+XDJLSJ+CQ1jEfZuYVohUJ9psyohBhsRFjqzB/KvYayqf/DaIJB3zugvpUMTsHY6+m0gTaJ2pG4UP9t6Z06P/1suRxzfAa5sKeITlgjuo4+Cds2c+kMBcLvshRP9TeiFmeFjcO3uoqNOKsiyj83EmJ2j2BruQV1iof4+fBLYiGM7muJKrA67Li9bYOFyP0CSCHLiAxMcnmkt6tFHVOW/HrbANsdX3QV8Yx01OGyMpjkL9Nlo4eHTP9mI8GLHeu/Oi1SMXleJ5uqVGSGU+BTOU2JpY6CpLjSH1lswFTyhIocR22alugGe1JK+nTgF0VHRsyLUxlYoBMQ3PGGA=
