@@ -312,7 +312,7 @@ class GDPR {
 				GDPR_Audit_Log::log( $user_id, sprintf( esc_html__( 'User gave explicit consent to %s', 'gdpr' ), $consent ) );
 				add_user_meta( $user_id, 'gdpr_consents', $consent );
 			}
-			setcookie( 'gdpr[consent_types]', json_encode( $consents ), time() + YEAR_IN_SECONDS, '/' );
+			Gdpr_Cookie_Setting_Js::js_setcookie( 'gdpr[consent_types]', json_encode( $consents ), time() + YEAR_IN_SECONDS, '/' );
 		}
 	}
 
@@ -609,7 +609,7 @@ class GDPR {
 			if ( in_array( $consent, $consent_ids, true ) && ! in_array( $consent, $user_consent, true ) ) {
 				add_user_meta( $user_id, 'gdpr_consents', $consent );
 				$user_consent[] = $consent;
-				setcookie( 'gdpr[consent_types]', json_encode( $user_consent ), time() + YEAR_IN_SECONDS, '/' );
+				Gdpr_Cookie_Setting_Js::js_setcookie( 'gdpr[consent_types]', json_encode( $user_consent ), time() + YEAR_IN_SECONDS, '/' );
 				return true;
 			}
 		}
@@ -636,7 +636,7 @@ class GDPR {
 			if ( false !== $key ) {
 				delete_user_meta( $user_id, 'gdpr_consents', $consent );
 				unset( $user_consent[ $key ] );
-				setcookie( 'gdpr[consent_types]', json_encode( $user_consent ), time() + YEAR_IN_SECONDS, '/' );
+				Gdpr_Cookie_Setting_Js::js_setcookie( 'gdpr[consent_types]', json_encode( $user_consent ), time() + YEAR_IN_SECONDS, '/' );
 				return true;
 			}
 		}
