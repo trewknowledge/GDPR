@@ -115,6 +115,7 @@
 							$(window).scrollTop(Math.abs( parseInt( scrollDistance, 10 ) ) );
 							$('.gdpr.gdpr-privacy-preferences .gdpr-wrapper').fadeOut();
 							$('.gdpr-privacy-bar').fadeOut();
+							$( document ).trigger( "updatedPrivacyPreferences" );
 						}
 					} else {
 						displayNotification( response.data.title, response.data.content );
