@@ -1,5 +1,6 @@
 {
     "name": "boxuk/gdpr",
+    "description": "GDPR plugin",
     "require": {
         "phpdocumentor/phpdocumentor": "2.*"
     },
