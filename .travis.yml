@@ -1,41 +1,17 @@
-sudo: false
-dist: trusty
-
 language: php
-
+php:
+    - "7.2"
+branches:
+    only:
+        - master
+        - develop
+        - "/^(dev-)?feature.*/"
 cache:
-  directories:
-    - vendor
-    - $HOME/.composer/cache
-
-matrix:
-  include:
-    - php: 7.1
-      env: WP_VERSION=latest
-    - php: 7.0
-      env: WP_VERSION=latest
-    - php: 5.6
-      env: WP_VERSION=latest
-    - php: 5.5
-      env: WP_VERSION=latest
-
-before_script:
-  - export PATH="$HOME/.composer/vendor/bin:$PATH"
-  - |
-    if [ -f ~/.phpenv/versions/$(phpenv version-name)/etc/conf.d/xdebug.ini ]; then
-      phpenv config-rm xdebug.ini
-    else
-      echo "xdebug.ini does not exist"
-    fi
-  - |
-    if [[ ! -z "$WP_VERSION" ]] ; then
-      bash bin/install-wp-tests.sh wordpress_test root '' localhost $WP_VERSION
-      composer global require "phpunit/phpunit=4.8.*|5.7.*"
-    fi
-
+    directories:
+        - "/home/travis/.composer/cache"
+before_install:
+    - "./bin/composer.phar selfupdate"
+install:
+    - php -d memory_limit=3G ./bin/composer.phar install -o
 script:
-  - |
-    if [[ ! -z "$WP_VERSION" ]] ; then
-      phpunit
-      WP_MULTISITE=1 phpunit
-    fi
+    - "./bin/phpcs . --severity=1"
