@@ -2,7 +2,6 @@
     "name": "boxuk/gdpr",
     "description": "GDPR plugin",
     "require": {
-        "phpdocumentor/phpdocumentor": "2.*"
     },
     "require-dev": {
         "automattic/phpcs-neutron-standard": "^1.5",
