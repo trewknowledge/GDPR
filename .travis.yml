@@ -1,22 +1,17 @@
 language: php
 php:
-- "7.2"
+    - "7.2"
 branches:
-  only:
-  - master
-  - develop
-  - "/^(dev-)?feature.*/"
+    only:
+        - master
+        - develop
+        - "/^(dev-)?feature.*/"
 cache:
-  directories:
-  - "/home/travis/.composer/cache"
-env:
-  global:
-    secure: BPh7YEHLVEHK8JQSluyYHQhCZa/Zn4pGxRj1SQzNu6K7i4dspE+ERhrsoG+V/tSvPaHTf8vHgpikytBlxdC7hJPpcvObfiGOuWX0yChcucZZGh20rT4tr0oLCbMUeZmLk19fvXlXxQQkkxaZWw0F9ZdVV4WRJaNa0MRm6yBgyixLv6gKDXQsnmr4XCBm7af21F8S8LpRgEJYZ/3tm40g0gEd18vppLoJqr6saF6Dje8yedGJDcZjG81s+l2kjWwZs2EjvFmq79O6bBo9xI0VvkqcO6XiJwXw0UiwmtLG2Rwc2x5FSxbXx/9X1FZfCjbKX9jKHDODaZFXB8lWW01OdezWpRUCNAbUn7UTz6GkOqfNqt2vikUG/mrJTvno/XN3nCfRVTKbWEM9d/5+1Yh+J4nepEwKCzLmIxZTNCXse2d56wm+vOGazzqLkk4UyzxObNHeSNqVMGUGz0YGbuaxa+N2/hJSf5Z4XQznkpbofgdMGkT34K50i21+uoo7ciJRtjpQSRZQfFlctmV5uzVNu1JpiOVNDON0+qR5pB13NyhjXxK446VYd0ifJBJtM+PKxIyKpT+e1uKHIL1vpE35dX47EMEOA4PKwca0qW/V9mozVwGO0jaDb+qlTQ0QBGeS7NeFo95DBrkqpx985D3kzJYrXvT7b+OmJN7I4l1a3AU=
+    directories:
+        - "/home/travis/.composer/cache"
 before_install:
-- "./bin/composer.phar selfupdate"
-- "./bin/composer.phar config -g http-basic.satis.boxuk.org 53961ab9 $SATIS_PASSWORD"
-- "./bin/ensure_satis"
+    - "./bin/composer.phar selfupdate"
 install:
-- php -d memory_limit=3G ./bin/composer.phar install -o --prefer-dist
+    - php -d memory_limit=3G ./bin/composer.phar install -o
 script:
-- "./bin/phpcs . --severity=1"
+    - "./bin/phpcs . --severity=1"
