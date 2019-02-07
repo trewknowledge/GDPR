@@ -40,7 +40,7 @@ class GDPR_Requests_Public extends GDPR_Requests {
 
 		if ( parent::remove_from_requests( $index ) ) {
 			$token = GDPR::generate_pin();
-			GDPR_Email::send( $user->user_email, 'delete-resolved', array( 'token' => $token ) );
+			GDPR_Email::send( $this->get_escaped_user_email_address( $user ), 'delete-resolved', array( 'token' => $token ) );
 			GDPR_Audit_Log::log( $user->ID, esc_html__( 'User was removed from the site.', 'gdpr' ) );
 			GDPR_Audit_Log::export_log( $user->ID, $token );
 			wp_delete_user( $user->ID );
@@ -194,14 +194,15 @@ class GDPR_Requests_Public extends GDPR_Requests {
 				break;
 		}
 
-		$key = parent::add_to_requests( $user->user_email, $type, $data );
+		$escaped_user_email = $this->get_escaped_user_email_address( $user );
+		$key = parent::add_to_requests( $escaped_user_email, $type, $data );
 
 		if ( 'export-data' !== $type ) {
 			$email_args['confirm_url'] = add_query_arg(
 				array(
 					'type'  => $type,
 					'key'   => $key,
-					'email' => $user->user_email,
+					'email' => $escaped_user_email,
 				),
 				home_url()
 			);
@@ -210,7 +211,7 @@ class GDPR_Requests_Public extends GDPR_Requests {
 				array(
 					'type'   => $type,
 					'key'    => $key,
-					'email'  => $user->user_email,
+					'email'  => $escaped_user_email,
 					'format' => 'xml',
 				),
 				home_url()
@@ -219,7 +220,7 @@ class GDPR_Requests_Public extends GDPR_Requests {
 				array(
 					'type'   => $type,
 					'key'    => $key,
-					'email'  => $user->user_email,
+					'email'  => $escaped_user_email,
 					'format' => 'json',
 				),
 				home_url()
@@ -227,7 +228,7 @@ class GDPR_Requests_Public extends GDPR_Requests {
 		}
 
 		if ( GDPR_Email::send(
-			$user->user_email,
+			$escaped_user_email,
 			"{$type}-request",
 			$email_args
 		) ) {
@@ -376,7 +377,7 @@ class GDPR_Requests_Public extends GDPR_Requests {
 					$format = isset( $_GET['format'] ) ? sanitize_text_field( wp_unslash( $_GET['format'] ) ) : 'xml'; // WPCS: Input var ok, CSRF ok.
 					/* translators: File format. Can be XML or JSON */
 					GDPR_Audit_Log::log( $user->ID, sprintf( esc_html__( 'User downloaded all their data in %s format.', 'gdpr' ), $format ) );
-					$this->file_export_data( $user->user_email, $format, $key );
+					$this->file_export_data( $this->get_escaped_user_email_address( $user ), $format, $key );
 					break;
 			}
 		}
@@ -403,5 +404,40 @@ class GDPR_Requests_Public extends GDPR_Requests {
 			echo $export; // WPCS: XSS ok.
 		}
 		die();
+	}
+
+	/**
+	 * Provides escaping for uncommon, yet valid email address characters.
+	 *
+	 * @param string $email_in The starting email address.
+	 *
+	 * @return mixed|string
+	 */
+	private function escape_email_address( $email_in = '' ) {
+		$email_out = '';
+		$email_string_length = \strlen( $email_in );
+
+		for ( $i = 0; $i < $email_string_length; $i++ ) {
+			$hex = dechex( ord( $email_in[ $i ] ) );
+			if ('' === $hex) {
+				$email_out .= rawurlencode( $email_in[ $i ] );
+			} else {
+				$email_out = $email_out . '%' . ( ( 1 === strlen( $hex ) ) ? ( '0' . strtoupper( $hex ) ) : strtoupper( $hex ) );
+			}
+		}
+		$email_out = str_replace( array( '+', '_', '.', '-' ), array( '%20', '%5F', '%2E', '%2D' ), $email_out );
+
+		return $email_out;
+	}
+
+	/**
+	 * Get the escpaed user email address.
+	 *
+	 * @param WP_User $user the User object.
+	 *
+	 * @return mixed|string
+	 */
+	private function get_escaped_user_email_address( WP_User $user ) {
+		return $this->escape_email_address( $user->user_email );
 	}
 }
