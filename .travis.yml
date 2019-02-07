@@ -17,6 +17,6 @@ before_install:
 - "./bin/composer.phar config -g http-basic.satis.boxuk.org 53961ab9 $SATIS_PASSWORD"
 - "./bin/ensure_satis"
 install:
-- php -d memory_limit=3G ./bin/composer.phar install -o
+- php -d memory_limit=3G ./bin/composer.phar install -o --prefer-dist
 script:
 - "./bin/phpcs . --severity=1"
