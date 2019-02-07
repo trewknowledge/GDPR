@@ -1,5 +1,14 @@
 {
     "name": "boxuk/gdpr",
+    "repositories": [
+        {
+            "packagist": false
+        },
+        {
+            "type": "composer",
+            "url": "https://satis.boxuk.org/6ab28a48-b9d1-4ba3-9df7-74ee45eff373"
+        }
+    ],
     "require": {
         "phpdocumentor/phpdocumentor": "2.*"
     },

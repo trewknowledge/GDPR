@@ -1,22 +1,22 @@
 language: php
 php:
-    - 7.2
+- "7.2"
 branches:
-    only:
-        - master
-        - develop
-        - "/^(dev-)?feature.*/"
+  only:
+  - master
+  - develop
+  - "/^(dev-)?feature.*/"
 cache:
-    directories:
-        - "/home/travis/.composer/cache"
+  directories:
+  - "/home/travis/.composer/cache"
 env:
-    global:
-        -   secure: VgpQpeJSRqIb61y8dU3uHKTSie3MKb2EWFOlCwF8hjeRHdvie3psy5HlWizm0DlDPsMWONHuOVCUDvtuF5cd2tlbKQhA65JWdS1V0C9aYnVQhQNlSz4vtQG1TSWqEWTi5CeFY+CzIxtO4UG7f2xfvoXXsunhSx1EZ5uyAgU29VqMm7yFa4OnTLnODw1x3DniymwHsq84LQmVK2nEmlhUCGr5JhKl9kCKz1y6GY91Fgbk/d5kPllVyK3eVlfE6N5BS9omgVwUjFLIeQGAwKrj93XN3G6ir9HSRdkm4upuQQ8XmghQyoe39/PAjFiSkk8M2VN4euCYksh2OWqCpUO7isIdc/4eCOJlN7Iyiu0zKTqXn2apvFpjyhY65tWDTqN32+0MHkkkoFHCB1VBsVvnyh212YIWrin7Duu5JLUElCdFaU1Z7vMx0kI6OXirOndvz2J4rPmOzuO4JosFIfmABUuKPWxMmqYTQB510G0Yv57Oh1EeD2NF31vWVuYV2YED2cgEP0/U1Y4UPEFiH+FgwPxuha6VIFdy72D0gZLORbdGLrV/JBZvTaOrhuCqc8PDlHq2+CstJ1H4MUqaCnhMRPW1VCSGug8GTOGZohYY6quq2F200MslrQBObG7s9Z5mnsTcy9P8+l52o6JqCJ+7sFV+3OuTBUdFbemVA1Av8jo=
+  global:
+    secure: BPh7YEHLVEHK8JQSluyYHQhCZa/Zn4pGxRj1SQzNu6K7i4dspE+ERhrsoG+V/tSvPaHTf8vHgpikytBlxdC7hJPpcvObfiGOuWX0yChcucZZGh20rT4tr0oLCbMUeZmLk19fvXlXxQQkkxaZWw0F9ZdVV4WRJaNa0MRm6yBgyixLv6gKDXQsnmr4XCBm7af21F8S8LpRgEJYZ/3tm40g0gEd18vppLoJqr6saF6Dje8yedGJDcZjG81s+l2kjWwZs2EjvFmq79O6bBo9xI0VvkqcO6XiJwXw0UiwmtLG2Rwc2x5FSxbXx/9X1FZfCjbKX9jKHDODaZFXB8lWW01OdezWpRUCNAbUn7UTz6GkOqfNqt2vikUG/mrJTvno/XN3nCfRVTKbWEM9d/5+1Yh+J4nepEwKCzLmIxZTNCXse2d56wm+vOGazzqLkk4UyzxObNHeSNqVMGUGz0YGbuaxa+N2/hJSf5Z4XQznkpbofgdMGkT34K50i21+uoo7ciJRtjpQSRZQfFlctmV5uzVNu1JpiOVNDON0+qR5pB13NyhjXxK446VYd0ifJBJtM+PKxIyKpT+e1uKHIL1vpE35dX47EMEOA4PKwca0qW/V9mozVwGO0jaDb+qlTQ0QBGeS7NeFo95DBrkqpx985D3kzJYrXvT7b+OmJN7I4l1a3AU=
 before_install:
-    - "./bin/composer.phar selfupdate"
-    - "./bin/composer.phar config -g http-basic.satis.boxuk.org 53961ab9 $SATIS_PASSWORD"
-    - "./bin/ensure_satis"
+- "./bin/composer.phar selfupdate"
+- "./bin/composer.phar config -g http-basic.satis.boxuk.org 53961ab9 $SATIS_PASSWORD"
+- "./bin/ensure_satis"
 install:
-    - php -d memory_limit=3G ./bin/composer.phar install -o
+- php -d memory_limit=3G ./bin/composer.phar install -o
 script:
-    - "./bin/phpcs . --severity=1"
+- "./bin/phpcs . --severity=1"
