@@ -234,16 +234,16 @@ class GDPR_Public {
 		$cookies_as_json  = json_encode( $approved_cookies );
 		$consents_as_json = json_encode( $consents );
 
-		setcookie( 'gdpr[allowed_cookies]', $cookies_as_json, time() + YEAR_IN_SECONDS, '/' );
-		setcookie( 'gdpr[consent_types]', $consents_as_json, time() + YEAR_IN_SECONDS, '/' );
+		Gdpr_Cookie_Setting_Js::js_setcookie( 'gdpr[allowed_cookies]', $cookies_as_json, time() + YEAR_IN_SECONDS, '/' );
+		Gdpr_Cookie_Setting_Js::js_setcookie( 'gdpr[consent_types]', $consents_as_json, time() + YEAR_IN_SECONDS, '/' );
 
 		foreach ( $cookies_to_remove as $cookie ) {
 			if ( GDPR::similar_in_array( $cookie, array_keys( $_COOKIE ) ) ) { // WPCS: Input var ok.
 				$domain = get_site_url();
 				$domain = wp_parse_url( $domain, PHP_URL_HOST );
 				unset( $_COOKIE[ $cookie ] ); // WPCS: Input var ok.
-				setcookie( $cookie, null, -1, '/', $domain );
-				setcookie( $cookie, null, -1, '/', '.' . $domain );
+				Gdpr_Cookie_Setting_Js::js_setcookie( $cookie, null, -1, '/', $domain );
+				Gdpr_Cookie_Setting_Js::js_setcookie( $cookie, null, -1, '/', '.' . $domain );
 			}
 		}
 
@@ -326,10 +326,10 @@ class GDPR_Public {
 
 		if ( ! isset( $_COOKIE['gdpr']['consent_types'] ) ) { // WPCS: Input var ok.
 			if ( ! $user_id ) {
-				setcookie( 'gdpr[consent_types]', '[]', time() + YEAR_IN_SECONDS, '/' );
+				Gdpr_Cookie_Setting_Js::js_setcookie( 'gdpr[consent_types]', '[]', time() + YEAR_IN_SECONDS, '/' );
 			} else {
 				$user_consents = get_user_meta( $user_id, 'gdpr_consents' );
-				setcookie( 'gdpr[consent_types]', json_encode( $user_consents ), time() + YEAR_IN_SECONDS, '/' );
+				Gdpr_Cookie_Setting_Js::js_setcookie( 'gdpr[consent_types]', json_encode( $user_consents ), time() + YEAR_IN_SECONDS, '/' );
 			}
 		} else {
 			if ( $user_id ) {
@@ -340,7 +340,7 @@ class GDPR_Public {
 				$diff      = array_merge( array_diff( $user_consents, $intersect ), array_diff( $cookie_consents, $intersect ) );
 
 				if ( ! empty( $diff ) ) {
-					setcookie( 'gdpr[consent_types]', json_encode( $user_consents ), time() + YEAR_IN_SECONDS, '/' );
+					Gdpr_Cookie_Setting_Js::js_setcookie( 'gdpr[consent_types]', json_encode( $user_consents ), time() + YEAR_IN_SECONDS, '/' );
 				}
 			}
 		}
@@ -365,9 +365,9 @@ class GDPR_Public {
 			}
 
 			if ( ! empty( $cookies ) ) {
-				setcookie( 'gdpr[allowed_cookies]', json_encode( $cookies ), time() + YEAR_IN_SECONDS, '/' );
+				Gdpr_Cookie_Setting_Js::js_setcookie( 'gdpr[allowed_cookies]', json_encode( $cookies ), time() + YEAR_IN_SECONDS, '/' );
 			} else {
-				setcookie( 'gdpr[allowed_cookies]', '[]', time() + YEAR_IN_SECONDS, '/' );
+				Gdpr_Cookie_Setting_Js::js_setcookie( 'gdpr[allowed_cookies]', '[]', time() + YEAR_IN_SECONDS, '/' );
 			}
 		}
 	}
