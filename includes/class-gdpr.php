@@ -132,6 +132,10 @@ class GDPR {
 		 */
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'public/class-gdpr-public.php';
 
+		/**
+		 * The class responsible for using JavaScript to set cookies, instead of `setcookie`.
+		 */
+		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'public/class-gdpr-cookie-setting-js.php';
 	}
 
 	/**
