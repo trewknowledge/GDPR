@@ -1,6 +1,7 @@
 {
     "name": "boxuk/gdpr",
     "description": "GDPR plugin",
+    "type": "wordpress-plugin",
     "require": {
     },
     "require-dev": {
