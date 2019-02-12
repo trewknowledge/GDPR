@@ -67,10 +67,13 @@ class GDPR_Audit_Log {
 	 * @param  string $input   The string to be logged.
 	 */
 	public static function log( $user_id, $input ) {
-		$user      = get_user_by( 'ID', $user_id );
-		$date      = '[' . date( 'Y/m/d H:i:s' ) . '] ';
-		$encrypted = self::crypt( $user->user_email, $date . $input );
-		add_user_meta( $user_id, 'gdpr_audit_log', $encrypted );
+		$user = get_user_by( 'ID', $user_id );
+
+		if ( $user instanceof WP_User ) {
+			$date = '[' . date( 'Y/m/d H:i:s' ) . '] ';
+			$encrypted = self::crypt( $user->user_email, $date . $input );
+			add_user_meta( $user_id, 'gdpr_audit_log', $encrypted );
+		}
 	}
 
 	/**
