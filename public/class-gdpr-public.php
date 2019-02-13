@@ -323,7 +323,8 @@ class GDPR_Public {
 	}
 
 	protected function is_crawler() {
-		return ( isset( $_SERVER['HTTP_USER_AGENT'] ) && preg_match( '/bot|crawl|slurp|spider|mediapartners/i', $_SERVER['HTTP_USER_AGENT'] ) );
+		$user_agent = filter_var( INPUT_SERVER, 'HTTP_USER_AGENT', FILTER_SANITIZE_STRING );
+		return ( isset( $user_agent ) && preg_match( '/bot|crawl|slurp|spider|mediapartners/i', $user_agent ) );
 	}
 
 	public function set_plugin_cookies() {
