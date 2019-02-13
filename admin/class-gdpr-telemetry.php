@@ -311,7 +311,9 @@ class GDPR_Telemetry {
 		/* Item post data */
 		$postdata = self::_get_post_meta( $post_id, 'postdata' );
 
-		/* Empty data? */
+		/**
+		 * Is this Empty data?
+		 */
 		if ( empty( $postdata ) ) {
 			return;
 		}
@@ -321,7 +323,9 @@ class GDPR_Telemetry {
 			wp_parse_str( $postdata, $postdata );
 		}
 
-		/* Empty array? */
+		/**
+		 * Is this an Empty array?
+		 */
 		if ( empty( $postdata ) ) {
 			return;
 		}
@@ -333,7 +337,9 @@ class GDPR_Telemetry {
 		);
 
 		/* POST data */
+		// phpcs:disable WordPress.PHP.DevelopmentFunctions.error_log_print_r
 		print_r( $postdata );
+		// phpcs:enable WordPress.PHP.DevelopmentFunctions.error_log_print_r
 
 		/* Thickbox content end */
 		echo '</pre></div>';
@@ -373,7 +379,9 @@ class GDPR_Telemetry {
 	 */
 	private static function _debug_backtrace() {
 		/* Reverse items */
+		// phpcs:disable WordPress.PHP.DevelopmentFunctions.error_log_debug_backtrace
 		$trace = array_reverse( debug_backtrace() );
+		// phpcs:enable WordPress.PHP.DevelopmentFunctions.error_log_debug_backtrace
 
 		/* Loop items */
 		foreach ( $trace as $index => $item ) {
