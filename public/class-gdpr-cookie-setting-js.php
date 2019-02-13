@@ -62,7 +62,7 @@ class Gdpr_Cookie_Setting_Js {
 		}
 
 		echo '<script type="text/javascript">',
-			"document.cookie = '" . esc_js( $cookie_val ) . "'",
+			"document.cookie = '" . wp_kses_post( $cookie_val ) . "'",
 		'</script>';
 
 		return true;
