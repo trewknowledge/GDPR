@@ -169,14 +169,17 @@ class GDPR_Requests {
 			update_option( 'gdpr_requests', $requests );
 			delete_user_meta( $user->ID, $meta_key );
 			$time = wp_next_scheduled(
-				'clean_gdpr_user_request_key', array(
+				'clean_gdpr_user_request_key',
+				array(
 					'user_id'  => $user->ID,
 					'meta_key' => $meta_key,
 				)
 			);
 			if ( $time ) {
 				wp_unschedule_event(
-					$time, 'clean_gdpr_user_request_key', array(
+					$time,
+					'clean_gdpr_user_request_key',
+					array(
 						'user_id'  => $user->ID,
 						'meta_key' => $meta_key,
 					)
@@ -265,21 +268,26 @@ class GDPR_Requests {
 			$meta_key = self::$plugin_name . '_' . $type . '_key';
 			update_user_meta( $user->ID, $meta_key, $key );
 			$time = wp_next_scheduled(
-				'clean_gdpr_user_request_key', array(
+				'clean_gdpr_user_request_key',
+				array(
 					'user_id'  => $user->ID,
 					'meta_key' => $meta_key,
 				)
 			);
 			if ( $time ) {
 				wp_unschedule_event(
-					$time, 'clean_gdpr_user_request_key', array(
+					$time,
+					'clean_gdpr_user_request_key',
+					array(
 						'user_id'  => $user->ID,
 						'meta_key' => $meta_key,
 					)
 				);
 			}
 			wp_schedule_single_event(
-				time() + 2 * DAY_IN_SECONDS, 'clean_gdpr_user_request_key', array(
+				time() + 2 * DAY_IN_SECONDS,
+				'clean_gdpr_user_request_key',
+				array(
 					'user_id'  => $user->ID,
 					'meta_key' => $meta_key,
 				)

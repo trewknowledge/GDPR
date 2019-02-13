@@ -15,7 +15,7 @@
 $title = '';
 $text  = '';
 if ( isset( $_GET['notify'] ) && absint( $_GET['notify'] ) ) : // WPCS: Input var ok, CSRF ok.
-?>
+	?>
 	<?php
 	if ( isset( $_GET['user-deleted'] ) ) { // WPCS: Input var ok, CSRF ok.
 		$title = __( 'Your account', 'gdpr' );

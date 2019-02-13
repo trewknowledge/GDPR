@@ -105,7 +105,8 @@ class GDPR_Admin {
 
 		$requests           = get_option( 'gdpr_requests', array() );
 		$confirmed_requests = array_filter(
-			$requests, function( $item ) {
+			$requests,
+			function( $item ) {
 				return true === $item['confirmed'];
 			}
 		);
@@ -563,11 +564,11 @@ class GDPR_Admin {
 	}
 
 	public function version_check_notice() {
-		if( -1 === version_compare( phpversion(), GDPR_REQUIRED_PHP_VERSION ) ) {
+		if ( -1 === version_compare( phpversion(), GDPR_REQUIRED_PHP_VERSION ) ) {
 			?>
 			<div class="notice notice-error">
 				<p><strong><?php esc_html_e( 'GDPR', 'gdpr' ); ?></strong></p>
-				<p><?php echo sprintf( esc_html__( 'Your current PHP version (%1$s) is below the plugin required version of %2$s.', 'gdpr' ), phpversion(), GDPR_REQUIRED_PHP_VERSION ) ?></p>
+				<p><?php echo sprintf( esc_html__( 'Your current PHP version (%1$s) is below the plugin required version of %2$s.', 'gdpr' ), phpversion(), GDPR_REQUIRED_PHP_VERSION ); ?></p>
 			</div>
 			<?php
 			deactivate_plugins( 'gdpr/gdpr.php' );
@@ -586,7 +587,7 @@ class GDPR_Admin {
 		}
 
 		foreach ( $policies_updated as $key => $policy ) {
-		?>
+			?>
 			<div class="notice notice-warning policy-page-updated-notice">
 				<?php /* translators: Name of the page that was updated. */ ?>
 				<strong><?php echo sprintf( esc_html__( 'Your %s page has been updated.', 'gdpr' ), esc_html( $policy ) ); ?></strong>
@@ -613,7 +614,7 @@ class GDPR_Admin {
 					</p>
 				</form>
 			</div>
-		<?php
+			<?php
 		}
 	}
 
@@ -649,7 +650,8 @@ class GDPR_Admin {
 
 		$key = wp_generate_password( 20, false );
 		update_option(
-			'gdpr_data_breach_initiated', array(
+			'gdpr_data_breach_initiated',
+			array(
 				'key'            => $key,
 				'content'        => $content,
 				'nature'         => $nature,
@@ -748,7 +750,8 @@ class GDPR_Admin {
 			if ( $consent['policy-page'] ) {
 				if ( ! isset( $_POST['user_consents'][ $key ] ) ) { // WPCS: Input var ok, CSRF ok.
 					$errors->add(
-						'missing_required_consents', sprintf(
+						'missing_required_consents',
+						sprintf(
 							'<strong>%s</strong>: %s %s.',
 							__( 'ERROR', 'gdpr' ),
 							$consent['name'],
@@ -804,15 +807,16 @@ class GDPR_Admin {
 	 * @param  WP_Post $post The post object.
 	 */
 	public function policy_updated( $id, $post ) {
-		$policies_updated  = get_option( 'gdpr_policies_updated', array() );
-		$consents          = get_option( 'gdpr_consent_types', array() );
+		$policies_updated = get_option( 'gdpr_policies_updated', array() );
+		$consents         = get_option( 'gdpr_consent_types', array() );
 
 		if ( empty( $consents ) ) {
 			return;
 		}
 
 		$required_consents = array_filter(
-			$consents, function( $consent ) {
+			$consents,
+			function( $consent ) {
 				return ! empty( $consent['policy-page'] );
 			}
 		);
@@ -822,7 +826,8 @@ class GDPR_Admin {
 				if ( $id === $consent['policy-page'] ) {
 					$revisions = wp_get_post_revisions( $id );
 					$revisions = array_filter(
-						$revisions, function( $rev ) {
+						$revisions,
+						function( $rev ) {
 							return strpos( $rev->post_name, 'autosave' ) === false;
 						}
 					);
@@ -952,7 +957,8 @@ class GDPR_Admin {
 	public function woocommerce_checkout_save_consent( $customer_id, $data ) {
 		$data        = array_filter( $data );
 		$consent_arr = array_filter(
-			array_keys( $data ), function( $item ) {
+			array_keys( $data ),
+			function( $item ) {
 				return false !== strpos( $item, 'user_consents_' );
 			}
 		);

@@ -174,7 +174,9 @@ class GDPR_Email {
 		}
 
 		self::send(
-			$emails, 'data-breach-notification', array(
+			$emails,
+			'data-breach-notification',
+			array(
 				'content'        => $content,
 				'nature'         => $nature,
 				'office_contact' => $office_contact,
@@ -199,7 +201,8 @@ class GDPR_Email {
 	 */
 	public static function send( $emails, $type, $args = array(), $attachments = array() ) {
 		$possible_types = apply_filters(
-			'gdpr_email_types', array(
+			'gdpr_email_types',
+			array(
 				'new-request'              => apply_filters( 'gdpr_new_request_email_subject', esc_html__( 'GDPR Notification: There is a new request waiting to be reviewed.', 'gdpr' ) ),
 				'delete-request'           => apply_filters( 'gdpr_delete_request_email_subject', esc_html__( 'Someone requested to close your account.', 'gdpr' ) ),
 				'delete-resolved'          => apply_filters( 'gdpr_delete_resolved_email_subject', esc_html__( 'Your account has been closed.', 'gdpr' ) ),

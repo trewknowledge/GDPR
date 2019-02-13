@@ -109,7 +109,8 @@ class GDPR_Requests_Public extends GDPR_Requests {
 				}
 
 				$response = wp_remote_post(
-					'https://www.google.com/recaptcha/api/siteverify', array(
+					'https://www.google.com/recaptcha/api/siteverify',
+					array(
 						'body' => array(
 							'secret'   => $secret_key,
 							'response' => sanitize_text_field( wp_unslash( $_POST['g-recaptcha-response'] ) ), // WPCS: Input var ok.
@@ -195,7 +196,7 @@ class GDPR_Requests_Public extends GDPR_Requests {
 		}
 
 		$escaped_user_email = $this->get_escaped_user_email_address( $user );
-		$key = parent::add_to_requests( $escaped_user_email, $type, $data );
+		$key                = parent::add_to_requests( $escaped_user_email, $type, $data );
 
 		if ( 'export-data' !== $type ) {
 			$email_args['confirm_url'] = add_query_arg(
@@ -414,12 +415,12 @@ class GDPR_Requests_Public extends GDPR_Requests {
 	 * @return mixed|string
 	 */
 	private function escape_email_address( $email_in = '' ) {
-		$email_out = '';
+		$email_out           = '';
 		$email_string_length = \strlen( $email_in );
 
 		for ( $i = 0; $i < $email_string_length; $i++ ) {
 			$hex = dechex( ord( $email_in[ $i ] ) );
-			if ('' === $hex) {
+			if ( '' === $hex ) {
 				$email_out .= rawurlencode( $email_in[ $i ] );
 			} else {
 				$email_out = $email_out . '%' . ( ( 1 === strlen( $hex ) ) ? ( '0' . strtoupper( $hex ) ) : strtoupper( $hex ) );

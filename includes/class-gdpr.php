@@ -330,11 +330,11 @@ class GDPR {
 		if ( empty( $consent_types ) ) {
 			return;
 		}
-		$sent_extras   = ( isset( $_POST['user_consents'] ) ) ? wp_unslash( $_POST['user_consents'] ) : array(); // WPCS: Input var ok, CSRF ok.
+		$sent_extras = ( isset( $_POST['user_consents'] ) ) ? wp_unslash( $_POST['user_consents'] ) : array(); // WPCS: Input var ok, CSRF ok.
 		if ( ! empty( $sent_extras ) ) {
 			$sent_extras = array_map( 'sanitize_text_field', $_POST['user_consents'] );
 		}
-		$allowed_html  = array(
+		$allowed_html = array(
 			'a' => array(
 				'href'   => true,
 				'title'  => true,
@@ -344,9 +344,11 @@ class GDPR {
 
 		if ( $consent_key ) {
 			$consent_types = array_filter(
-				$consent_types, function( $key ) use ( $consent_key ) {
+				$consent_types,
+				function( $key ) use ( $consent_key ) {
 					return $key === $consent_key;
-				}, ARRAY_FILTER_USE_KEY
+				},
+				ARRAY_FILTER_USE_KEY
 			);
 		}
 
@@ -357,7 +359,7 @@ class GDPR {
 			echo '<p>' .
 			  '<label class="gdpr-label">' .
 				'<input type="checkbox" name="user_consents[' . esc_attr( $key ) . ']" id="' . esc_attr( $key ) . '-consent" value="1" ' . esc_html( $required ) . ' ' . esc_html( $checked ) . '>' .
-				  wp_kses( $consent['registration'], $allowed_html ) .'</label>' .
+				  wp_kses( $consent['registration'], $allowed_html ) . '</label>' .
 			'</p>';
 		}
 
@@ -604,9 +606,9 @@ class GDPR {
 		if ( empty( $registered_consent ) ) {
 			return false;
 		}
-		$consent_ids        = array_keys( $registered_consent );
-		$user               = get_user_by( 'ID', $user_id );
-		$consent            = sanitize_text_field( wp_unslash( $consent ) );
+		$consent_ids = array_keys( $registered_consent );
+		$user        = get_user_by( 'ID', $user_id );
+		$consent     = sanitize_text_field( wp_unslash( $consent ) );
 
 		if ( $user ) {
 			$user_consent = get_user_meta( $user_id, 'gdpr_consents' );

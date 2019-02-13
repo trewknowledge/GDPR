@@ -92,8 +92,8 @@
 					<td>
 						<?php $reconsent_template = get_option( 'gdpr_reconsent_template', 'modal' ); ?>
 						<select name="gdpr_reconsent_template" id="gdpr_reconsent_template">
-							<option value="bar" <?php selected( 'bar', $reconsent_template ) ?>><?php esc_html_e( 'Bar', 'gdpr' ); ?></option>
-							<option value="modal" <?php selected( 'modal', $reconsent_template ) ?>><?php esc_html_e( 'Modal', 'gdpr' ); ?></option>
+							<option value="bar" <?php selected( 'bar', $reconsent_template ); ?>><?php esc_html_e( 'Bar', 'gdpr' ); ?></option>
+							<option value="modal" <?php selected( 'modal', $reconsent_template ); ?>><?php esc_html_e( 'Modal', 'gdpr' ); ?></option>
 						</select>
 					</td>
 				</tr>
@@ -314,7 +314,7 @@
 						</table>
 						<div class="tab-hosts" data-tabid="<?php echo esc_attr( $cat_id ); ?>">
 				<?php if ( isset( $cookie_cat['hosts'] ) && $cookie_cat['hosts'] ) : ?>
-				<?php foreach ( $cookie_cat['hosts'] as $domain_id => $domain ) : ?>
+					<?php foreach ( $cookie_cat['hosts'] as $domain_id => $domain ) : ?>
 					<div class="postbox">
 					<h2 class="hndle"><?php echo esc_attr( $domain_id ); ?><button class="notice-dismiss" type="button" aria-label="<?php esc_attr_e( 'Remove this domain.', 'gdpr' ); ?>"></button></h2>
 					<div class="inside">

@@ -94,8 +94,9 @@ class GDPR_Requests_Admin extends GDPR_Requests {
 			exit;
 		}
 
-		$deletion_requests = array_filter(
-			$requests, function( $arr ) {
+		$deletion_requests          = array_filter(
+			$requests,
+			function( $arr ) {
 				return 'delete' === $arr['type'];
 			}
 		);

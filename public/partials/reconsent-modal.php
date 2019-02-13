@@ -57,7 +57,7 @@
 				<div class="gdpr-tab-content">
 					<?php $counter = 0; ?>
 					<?php foreach ( $updated_consents as $consent_id => $consent ) : ?>
-						<div class="<?php echo esc_attr( $consent_id ); ?> <?php echo ( 0 === $counter ? 'gdpr-active' : '' ) ?>">
+						<div class="<?php echo esc_attr( $consent_id ); ?> <?php echo ( 0 === $counter ? 'gdpr-active' : '' ); ?>">
 							<header>
 								<h4><?php echo esc_html( $consent['name'] ); ?></h4>
 							</header><!-- /header -->
