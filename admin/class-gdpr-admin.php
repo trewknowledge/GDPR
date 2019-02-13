@@ -470,9 +470,11 @@ class GDPR_Admin {
 				foreach ( $v as $value ) {
 					if ( is_serialized( $value ) ) {
 
+					// phpcs:disable WordPress.PHP.DevelopmentFunctions.error_log_print_r
 						echo '<pre>' . esc_html( print_r( maybe_unserialize( $value ), true ) ) . '</pre><br />';
 					} else {
 						echo esc_html( print_r( $value, true ) ) . '<br />';
+					// phpcs:enable WordPress.PHP.DevelopmentFunctions.error_log_print_r
 					}
 				}
 				echo '</td>';
@@ -560,18 +562,6 @@ class GDPR_Admin {
 					add_option( 'gdpr_reconsent_template', 'modal' );
 				}
 			}
-		}
-	}
-
-	public function version_check_notice() {
-		if ( -1 === version_compare( phpversion(), GDPR_REQUIRED_PHP_VERSION ) ) {
-			?>
-			<div class="notice notice-error">
-				<p><strong><?php esc_html_e( 'GDPR', 'gdpr' ); ?></strong></p>
-				<p><?php echo sprintf( esc_html__( 'Your current PHP version (%1$s) is below the plugin required version of %2$s.', 'gdpr' ), phpversion(), GDPR_REQUIRED_PHP_VERSION ); ?></p>
-			</div>
-			<?php
-			deactivate_plugins( 'gdpr/gdpr.php' );
 		}
 	}
 
@@ -720,7 +710,7 @@ class GDPR_Admin {
 	public function telemetry_cleanup() {
 		$args = array(
 			'post_type'      => 'telemetry',
-			'posts_per_page' => -1,
+			'posts_per_page' => 100,
 			'fields'         => 'ids',
 		);
 
@@ -789,7 +779,7 @@ class GDPR_Admin {
 
 		foreach ( $users as $user ) {
 			$usermeta = get_user_meta( $user->ID, 'gdpr_consents' );
-			if ( in_array( $policy_id, $usermeta ) ) {
+			if ( in_array( $policy_id, $usermeta, true ) ) {
 				/* translators: 1: The name of the policy that was updated. */
 				GDPR_Audit_Log::log( $user->ID, sprintf( esc_html__( '%1$s has been updated. Removing the %1$s consent and requesting new consent.', 'gdpr' ), esc_html( $policy_name ) ) );
 				delete_user_meta( $user->ID, 'gdpr_consents', $policy_id );
