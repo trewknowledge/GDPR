@@ -308,9 +308,10 @@ class GDPR {
 	public static function save_user_consent_on_registration( $user_id ) {
 		GDPR_Audit_Log::log( $user_id, esc_html__( 'User registered to the site.', 'gdpr' ) );
 
-		if ( isset( $_POST['user_consents'] ) && is_array( $_POST['user_consents'] ) ) {
+		$user_consents = filter_input( INPUT_POST, 'shipping_method', FILTER_DEFAULT, FILTER_REQUIRE_ARRAY );
+		if ( is_array( $user_consents ) ) {
 
-			$consents = array_map( 'sanitize_text_field', array_keys( wp_unslash( $_POST['user_consents'] ) ) );  // WPCS: Input var ok, CSRF ok, XSS ok.
+			$consents = array_map( 'sanitize_text_field', array_keys( wp_unslash( $user_consents ) ) );
 			foreach ( $consents as $consent ) {
 				/* translators: Name of consent */
 				GDPR_Audit_Log::log( $user_id, sprintf( esc_html__( 'User gave explicit consent to %s', 'gdpr' ), $consent ) );
@@ -330,9 +331,10 @@ class GDPR {
 		if ( empty( $consent_types ) ) {
 			return;
 		}
-		$sent_extras = ( isset( $_POST['user_consents'] ) ) ? wp_unslash( $_POST['user_consents'] ) : array(); // WPCS: Input var ok, CSRF ok.
+		$user_consents = filter_input( INPUT_POST, 'shipping_method', FILTER_DEFAULT, FILTER_REQUIRE_ARRAY );
+		$sent_extras   = $user_consents ? wp_unslash( $user_consents ) : array();
 		if ( ! empty( $sent_extras ) ) {
-			$sent_extras = array_map( 'sanitize_text_field', $_POST['user_consents'] );
+			$sent_extras = array_map( 'sanitize_text_field', $user_consents );
 		}
 		$allowed_html = array(
 			'a' => array(
@@ -357,9 +359,9 @@ class GDPR {
 			$required = ( isset( $consent['policy-page'] ) && $consent['policy-page'] ) ? 'required' : '';
 			$checked  = ( isset( $sent_extras[ $key ] ) ) ? checked( $sent_extras[ $key ], 1, false ) : '';
 			echo '<p>' .
-			  '<label class="gdpr-label">' .
+			'<label class="gdpr-label">' .
 				'<input type="checkbox" name="user_consents[' . esc_attr( $key ) . ']" id="' . esc_attr( $key ) . '-consent" value="1" ' . esc_html( $required ) . ' ' . esc_html( $checked ) . '>' .
-				  wp_kses( $consent['registration'], $allowed_html ) . '</label>' .
+				wp_kses( $consent['registration'], $allowed_html ) . '</label>' .
 			'</p>';
 		}
 
@@ -557,8 +559,11 @@ class GDPR {
 					}
 				}
 
+				// phpcs:disable WordPress.NamingConventions.ValidVariableName.NotSnakeCaseMemberVar
 				$dom->preserveWhiteSpace = false;
 				$dom->formatOutput       = true;
+				// phpcs:enable WordPress.NamingConventions.ValidVariableName.NotSnakeCaseMemberVar
+
 				return $dom->saveXML();
 				break;
 		}
