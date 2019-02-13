@@ -164,6 +164,7 @@ class GDPR_Requests {
 
 		$user = get_user_by( 'email', $email );
 
+		// phpcs:disable WordPress.DB.SlowDBQuery.slow_db_query_meta_key
 		if ( $user instanceof WP_User ) {
 			$meta_key = self::$plugin_name . "_{$type}_key";
 			update_option( 'gdpr_requests', $requests );
@@ -186,6 +187,7 @@ class GDPR_Requests {
 				);
 			}
 		}
+		// phpcs:enable WordPress.DB.SlowDBQuery.slow_db_query_meta_key
 
 		return true;
 	}
@@ -263,6 +265,7 @@ class GDPR_Requests {
 		/**
 		 * Remove user from the requests if it did not confirm in 2 days.
 		 */
+		// phpcs:disable WordPress.DB.SlowDBQuery.slow_db_query_meta_key
 		$user = get_user_by( 'email', $email );
 		if ( $user instanceof WP_User ) {
 			$meta_key = self::$plugin_name . '_' . $type . '_key';
@@ -293,6 +296,7 @@ class GDPR_Requests {
 				)
 			);
 		}
+		// phpcs:enable WordPress.DB.SlowDBQuery.slow_db_query_meta_key
 
 		update_option( 'gdpr_requests', $requests );
 
