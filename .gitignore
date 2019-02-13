@@ -2,6 +2,7 @@ node_modules/
 .DS_Store
 vendor/
 docs/
+.idea/
 
 # Composer Installed Binaries
 bin/jsonlint
