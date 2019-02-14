@@ -70,7 +70,7 @@ class GDPR_Audit_Log {
 		$user = get_user_by( 'ID', $user_id );
 
 		if ( $user instanceof WP_User ) {
-			$date = '[' . date( 'Y/m/d H:i:s' ) . '] ';
+			$date      = '[' . date( 'Y/m/d H:i:s' ) . '] ';
 			$encrypted = self::crypt( $user->user_email, $date . $input );
 			add_user_meta( $user_id, 'gdpr_audit_log', $encrypted );
 		}
@@ -148,26 +148,15 @@ class GDPR_Audit_Log {
 	 * @param  string $token   The 6 digit token the user gets on deletion.
 	 */
 	public static function export_log( $user_id, $token ) {
-		$user = get_user_by( 'ID', $user_id );
-		if ( ! $user instanceof WP_User ) {
-			return;
+		// see : https://github.com/trewknowledge/GDPR/blob/2.1.0/includes/class-gdpr-audit-log.php#L147.
+		if ( class_exists( 'Logger' ) ) {
+			//phpcs:disable WordPress.PHP.DevelopmentFunctions.error_log_var_export
+			Logger::log(
+				__CLASS__ . '::' . __FUNCTION__ . ' is not currently implemented.',
+				true
+			);
+			//phpcs:enable
 		}
-
-		$uploads_dir = wp_upload_dir();
-		$basedir     = $uploads_dir['basedir'];
-		$path        = $basedir . '/gdpr_logs/';
-
-		if ( wp_mkdir_p( $path ) ) {
-			if ( ! file_exists( $path . 'index.php' ) ) {
-				file_put_contents( $path . 'index.php', '' );
-			}
-			$log      = self::get_log( $user->user_email );
-			$filename = self::email_mask( $user->user_email . $token );
-			$filename = base64_encode( $filename );
-
-			file_put_contents( $path . $filename, self::crypt( $user->user_email, $log ) );
-		}
-
 	}
 
 }

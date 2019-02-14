@@ -120,7 +120,9 @@ class GDPR_Public {
 		}
 		wp_enqueue_script( $this->plugin_name, plugin_dir_url( dirname( __FILE__ ) ) . 'assets/js/gdpr-public.js', array( 'jquery' ), $this->version, false );
 		wp_localize_script(
-			$this->plugin_name, 'GDPR', array(
+			$this->plugin_name,
+			'GDPR',
+			array(
 				'ajaxurl'           => admin_url( 'admin-ajax.php' ),
 				'logouturl'         => is_user_logged_in() ? esc_url( wp_logout_url( home_url() ) ) : '',
 				'i18n'              => array(
@@ -281,7 +283,8 @@ class GDPR_Public {
 			return;
 		}
 		$required_consents = array_filter(
-			$consents, function( $consent ) {
+			$consents,
+			function( $consent ) {
 				return ! empty( $consent['policy-page'] );
 			}
 		);
@@ -298,9 +301,11 @@ class GDPR_Public {
 		}
 
 		$updated_consents = array_filter(
-			$required_consents, function( $consent, $consent_id ) use ( $user_consents ) {
+			$required_consents,
+			function( $consent, $consent_id ) use ( $user_consents ) {
 				return ! in_array( $consent_id, $user_consents, true );
-			}, ARRAY_FILTER_USE_BOTH
+			},
+			ARRAY_FILTER_USE_BOTH
 		);
 
 		if ( empty( $updated_consents ) ) {
@@ -318,7 +323,8 @@ class GDPR_Public {
 	}
 
 	protected function is_crawler() {
-	  return ( isset( $_SERVER['HTTP_USER_AGENT'] ) && preg_match('/bot|crawl|slurp|spider|mediapartners/i', $_SERVER['HTTP_USER_AGENT'] ) );
+		$user_agent = filter_var( INPUT_SERVER, 'HTTP_USER_AGENT', FILTER_SANITIZE_STRING );
+		return ( isset( $user_agent ) && preg_match( '/bot|crawl|slurp|spider|mediapartners/i', $user_agent ) );
 	}
 
 	public function set_plugin_cookies() {
@@ -350,7 +356,8 @@ class GDPR_Public {
 			$cookies            = array();
 			if ( ! empty( $registered_cookies ) ) {
 				$required_cookies = array_filter(
-					$registered_cookies, function( $item ) {
+					$registered_cookies,
+					function( $item ) {
 						return 'required' === $item['status'] || 'soft' === $item['status'];
 					}
 				);

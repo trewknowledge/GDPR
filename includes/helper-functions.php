@@ -26,7 +26,9 @@ function gdpr_preferences_shortcode( $atts ) {
 		array(
 			'text' => esc_html__( 'Privacy Preferences', 'gdpr' ),
 			'tab'  => 'gdpr-consent-management',
-		), $atts, 'gdpr_preferences'
+		),
+		$atts,
+		'gdpr_preferences'
 	);
 
 	ob_start();
@@ -58,7 +60,9 @@ function gdpr_request_form_shortcode( $atts ) {
 		array(
 			'type' => '',
 			'text' => '',
-		), $atts, 'gdpr_request_form'
+		),
+		$atts,
+		'gdpr_request_form'
 	);
 
 	return GDPR_Requests_Public::request_form( $atts['type'], $atts['text'] );
@@ -70,7 +74,9 @@ function gdpr_get_consent_checkboxes( $atts ) {
 	$atts = shortcode_atts(
 		array(
 			'id' => false,
-		), $atts, 'gdpr_consent_checkboxes'
+		),
+		$atts,
+		'gdpr_consent_checkboxes'
 	);
 
 	return GDPR::get_consent_checkboxes( $atts['id'] );

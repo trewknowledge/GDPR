@@ -104,14 +104,15 @@
 										<div class="gdpr-cookie-title">
 											<p><?php esc_html_e( 'Cookies Used', 'gdpr' ); ?></p>
 											<?php
-											$site_cookies     = array();
-											$enabled          = ( 'off' === $tab['status'] ) ? false : true;
-											$cookies_used     = explode( ',', $tab['cookies_used'] );
-											$approved_cookies = isset( $_COOKIE['gdpr']['allowed_cookies'] ) ? json_decode( sanitize_text_field( wp_unslash( $_COOKIE['gdpr']['allowed_cookies'] ) ) ) : array(); // WPCS: input var ok.
+											$site_cookies       = array();
+											$enabled            = ( 'off' === $tab['status'] ) ? false : true;
+											$cookies_used       = explode( ',', $tab['cookies_used'] );
+											$gdpr_cookies_array = filter_input( INPUT_COOKIE, 'gdpr', FILTER_DEFAULT, FILTER_REQUIRE_ARRAY );
+											$approved_cookies   = isset( $gdpr_cookies_array['allowed_cookies'] ) ? json_decode( sanitize_text_field( wp_unslash( $gdpr_cookies_array['allowed_cookies'] ) ) ) : array(); // WPCS: input var ok.
 											foreach ( $cookies_used as $cookie ) {
 												$site_cookies[] = trim( $cookie );
 												$all_cookies[]  = trim( $cookie );
-												if ( ! empty( $approved_cookies ) && isset( $_COOKIE['gdpr']['privacy_bar'] ) ) {
+												if ( ! empty( $approved_cookies ) && isset( $gdpr_cookies_array['privacy_bar'] ) ) {
 													if ( in_array( trim( $cookie ), $approved_cookies, true ) ) {
 														$enabled = true;
 													} else {
@@ -133,7 +134,7 @@
 											<?php endif; ?>
 										</div>
 										<div class="gdpr-cookies">
-											<span><?php echo esc_html( $tab['cookies_used'] ); ?></span>
+											<span><?php echo wp_kses_post( $tab['cookies_used'] ); ?></span>
 										</div>
 									</div>
 								<?php endif ?>

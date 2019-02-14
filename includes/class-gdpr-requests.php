@@ -164,25 +164,30 @@ class GDPR_Requests {
 
 		$user = get_user_by( 'email', $email );
 
+		// phpcs:disable WordPress.DB.SlowDBQuery.slow_db_query_meta_key
 		if ( $user instanceof WP_User ) {
 			$meta_key = self::$plugin_name . "_{$type}_key";
 			update_option( 'gdpr_requests', $requests );
 			delete_user_meta( $user->ID, $meta_key );
 			$time = wp_next_scheduled(
-				'clean_gdpr_user_request_key', array(
+				'clean_gdpr_user_request_key',
+				array(
 					'user_id'  => $user->ID,
 					'meta_key' => $meta_key,
 				)
 			);
 			if ( $time ) {
 				wp_unschedule_event(
-					$time, 'clean_gdpr_user_request_key', array(
+					$time,
+					'clean_gdpr_user_request_key',
+					array(
 						'user_id'  => $user->ID,
 						'meta_key' => $meta_key,
 					)
 				);
 			}
 		}
+		// phpcs:enable WordPress.DB.SlowDBQuery.slow_db_query_meta_key
 
 		return true;
 	}
@@ -260,31 +265,38 @@ class GDPR_Requests {
 		/**
 		 * Remove user from the requests if it did not confirm in 2 days.
 		 */
+		// phpcs:disable WordPress.DB.SlowDBQuery.slow_db_query_meta_key
 		$user = get_user_by( 'email', $email );
 		if ( $user instanceof WP_User ) {
 			$meta_key = self::$plugin_name . '_' . $type . '_key';
 			update_user_meta( $user->ID, $meta_key, $key );
 			$time = wp_next_scheduled(
-				'clean_gdpr_user_request_key', array(
+				'clean_gdpr_user_request_key',
+				array(
 					'user_id'  => $user->ID,
 					'meta_key' => $meta_key,
 				)
 			);
 			if ( $time ) {
 				wp_unschedule_event(
-					$time, 'clean_gdpr_user_request_key', array(
+					$time,
+					'clean_gdpr_user_request_key',
+					array(
 						'user_id'  => $user->ID,
 						'meta_key' => $meta_key,
 					)
 				);
 			}
 			wp_schedule_single_event(
-				time() + 2 * DAY_IN_SECONDS, 'clean_gdpr_user_request_key', array(
+				time() + 2 * DAY_IN_SECONDS,
+				'clean_gdpr_user_request_key',
+				array(
 					'user_id'  => $user->ID,
 					'meta_key' => $meta_key,
 				)
 			);
 		}
+		// phpcs:enable WordPress.DB.SlowDBQuery.slow_db_query_meta_key
 
 		update_option( 'gdpr_requests', $requests );
 

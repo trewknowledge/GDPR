@@ -48,12 +48,13 @@
 							<td class="text-center">
 							<?php
 							echo wp_kses(
-								wpautop( wp_unslash( $request['data'] ) ), array(
+								wpautop( wp_unslash( $request['data'] ) ),
+								array(
 									'p'  => true,
 									'br' => true,
 								)
 							);
-?>
+							?>
 </td>
 							<td class="text-center">
 								<form class="frm-process-rectification" action="<?php echo esc_url( admin_url( 'admin-post.php' ) ); ?>" method="post">

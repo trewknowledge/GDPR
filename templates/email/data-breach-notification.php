@@ -2,7 +2,7 @@
 echo sprintf(
 	/* translators: 1: Email content, 2: Nature of data breach, 3: Contact details for data protection officer, 4: Likely consequences of breach, 5: Measures taken */
 	esc_html__(
-'%1$s
+		'%1$s
 
 --------------------------------------------------------
 Nature of the personal data breach:
@@ -23,7 +23,9 @@ Likely consequences of the personal data breach:
 Measures taken or proposed to be taken:
 --------------------------------------------------------
 %5$s
-', 'gdpr' ),
+',
+		'gdpr'
+	),
 	esc_html( $args['content'] ),
 	esc_html( $args['nature'] ),
 	esc_html( $args['office_contact'] ),
