@@ -105,7 +105,7 @@ class GDPR_Audit_Log {
 			if ( ! $file_found ) {
 				return false;
 			} else {
-				$log = file_get_contents( $path . $filename );
+				$log = wpcom_vip_file_get_contents( $path . $filename );
 				return self::decrypt( $email, $log );
 			}
 		}

@@ -233,8 +233,8 @@ class GDPR_Public {
 
 		$cookies_to_remove = array_diff( $all_cookies, $approved_cookies );
 
-		$cookies_as_json  = json_encode( $approved_cookies );
-		$consents_as_json = json_encode( $consents );
+		$cookies_as_json  = wp_json_encode( $approved_cookies );
+		$consents_as_json = wp_json_encode( $consents );
 
 		Gdpr_Cookie_Setting_Js::js_setcookie( 'gdpr[allowed_cookies]', $cookies_as_json, time() + YEAR_IN_SECONDS, '/' );
 		Gdpr_Cookie_Setting_Js::js_setcookie( 'gdpr[consent_types]', $consents_as_json, time() + YEAR_IN_SECONDS, '/' );
@@ -335,7 +335,7 @@ class GDPR_Public {
 				Gdpr_Cookie_Setting_Js::js_setcookie( 'gdpr[consent_types]', '[]', time() + YEAR_IN_SECONDS, '/' );
 			} else {
 				$user_consents = get_user_meta( $user_id, 'gdpr_consents' );
-				Gdpr_Cookie_Setting_Js::js_setcookie( 'gdpr[consent_types]', json_encode( $user_consents ), time() + YEAR_IN_SECONDS, '/' );
+				Gdpr_Cookie_Setting_Js::js_setcookie( 'gdpr[consent_types]', wp_json_encode( $user_consents ), time() + YEAR_IN_SECONDS, '/' );
 			}
 		} else {
 			if ( $user_id ) {
@@ -346,7 +346,7 @@ class GDPR_Public {
 				$diff      = array_merge( array_diff( $user_consents, $intersect ), array_diff( $cookie_consents, $intersect ) );
 
 				if ( ! empty( $diff ) ) {
-					Gdpr_Cookie_Setting_Js::js_setcookie( 'gdpr[consent_types]', json_encode( $user_consents ), time() + YEAR_IN_SECONDS, '/' );
+					Gdpr_Cookie_Setting_Js::js_setcookie( 'gdpr[consent_types]', wp_json_encode( $user_consents ), time() + YEAR_IN_SECONDS, '/' );
 				}
 			}
 		}
@@ -372,7 +372,7 @@ class GDPR_Public {
 			}
 
 			if ( ! empty( $cookies ) ) {
-				Gdpr_Cookie_Setting_Js::js_setcookie( 'gdpr[allowed_cookies]', json_encode( $cookies ), time() + YEAR_IN_SECONDS, '/' );
+				Gdpr_Cookie_Setting_Js::js_setcookie( 'gdpr[allowed_cookies]', wp_json_encode( $cookies ), time() + YEAR_IN_SECONDS, '/' );
 			} else {
 				Gdpr_Cookie_Setting_Js::js_setcookie( 'gdpr[allowed_cookies]', '[]', time() + YEAR_IN_SECONDS, '/' );
 			}

@@ -316,7 +316,7 @@ class GDPR {
 				GDPR_Audit_Log::log( $user_id, sprintf( esc_html__( 'User gave explicit consent to %s', 'gdpr' ), $consent ) );
 				add_user_meta( $user_id, 'gdpr_consents', $consent );
 			}
-			Gdpr_Cookie_Setting_Js::js_setcookie( 'gdpr[consent_types]', json_encode( $consents ), time() + YEAR_IN_SECONDS, '/' );
+			Gdpr_Cookie_Setting_Js::js_setcookie( 'gdpr[consent_types]', wp_json_encode( $consents ), time() + YEAR_IN_SECONDS, '/' );
 		}
 	}
 
@@ -489,7 +489,7 @@ class GDPR {
 				if ( $extra_content ) {
 					$json[ $extra_content['name'] ] = $extra_content['content'];
 				}
-				return json_encode( $json );
+				return wp_json_encode( $json );
 				break;
 			case 'md':
 			case 'markdown':
@@ -553,7 +553,7 @@ class GDPR {
 					foreach ( $extra_content['content'] as $key => $obj ) {
 						$item = $extra->appendChild( $dom->createElement( 'item' ) );
 						foreach ( $obj as $k => $value ) {
-							$item->appendChild( $dom->createElement( $k, ( is_object( $value ) || is_array( $value ) ) ? json_encode( (array) $value ) : $value ) );
+							$item->appendChild( $dom->createElement( $k, ( is_object( $value ) || is_array( $value ) ) ? wp_json_encode( (array) $value ) : $value ) );
 						}
 					}
 				}
@@ -619,7 +619,7 @@ class GDPR {
 			if ( in_array( $consent, $consent_ids, true ) && ! in_array( $consent, $user_consent, true ) ) {
 				add_user_meta( $user_id, 'gdpr_consents', $consent );
 				$user_consent[] = $consent;
-				Gdpr_Cookie_Setting_Js::js_setcookie( 'gdpr[consent_types]', json_encode( $user_consent ), time() + YEAR_IN_SECONDS, '/' );
+				Gdpr_Cookie_Setting_Js::js_setcookie( 'gdpr[consent_types]', wp_json_encode( $user_consent ), time() + YEAR_IN_SECONDS, '/' );
 				return true;
 			}
 		}
@@ -646,7 +646,7 @@ class GDPR {
 			if ( false !== $key ) {
 				delete_user_meta( $user_id, 'gdpr_consents', $consent );
 				unset( $user_consent[ $key ] );
-				Gdpr_Cookie_Setting_Js::js_setcookie( 'gdpr[consent_types]', json_encode( $user_consent ), time() + YEAR_IN_SECONDS, '/' );
+				Gdpr_Cookie_Setting_Js::js_setcookie( 'gdpr[consent_types]', wp_json_encode( $user_consent ), time() + YEAR_IN_SECONDS, '/' );
 				return true;
 			}
 		}

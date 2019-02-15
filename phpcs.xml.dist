@@ -12,15 +12,8 @@
 	<!-- Check all files in this directory and the directories below it. -->
 	<file>.</file>
 
-	<rule ref="WordPress-VIP">
-    <exclude name="WordPress.VIP.RestrictedFunctions" />
-    <exclude name="WordPress.VIP.SlowDBQuery" />
-    <exclude name="WordPress.VIP.TimezoneChange" />
-    <exclude name="WordPress.VIP.RestrictedVariables" />
-		<exclude name="WordPress.WP.I18n.TranslatorsCommentWrongStyle" />
-		<exclude name="WordPress.WP.I18n.MissingTranslatorsComment" />
-		<exclude name="WordPress.WP.AlternativeFunctions" />
-	</rule>
+    <!-- Include the VIP GO standard. -->
+    <rule ref="WordPress-VIP-Go" />
 
 	<arg value="ps"/>
 
