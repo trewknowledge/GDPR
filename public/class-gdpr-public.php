@@ -323,7 +323,7 @@ class GDPR_Public {
 	}
 
 	protected function is_crawler() {
-		$user_agent = filter_var( INPUT_SERVER, 'HTTP_USER_AGENT', FILTER_SANITIZE_STRING );
+		$user_agent = filter_input( INPUT_SERVER, 'HTTP_USER_AGENT', FILTER_SANITIZE_STRING );
 		return ( isset( $user_agent ) && preg_match( '/bot|crawl|slurp|spider|mediapartners/i', $user_agent ) );
 	}
 
