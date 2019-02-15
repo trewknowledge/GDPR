@@ -35,11 +35,11 @@
 							<li><button type="button" class="gdpr-tab-button gdpr-cookie-settings" data-target="<?php echo esc_attr( key( $tabs ) ); ?>"><?php esc_html_e( 'Cookie Settings', 'gdpr' ); ?></button>
 								<ul class="gdpr-subtabs">
 									<?php
-									foreach ( $tabs as $key => $tab ) {
-										if ( ( isset( $tab['cookies_used'] ) && empty( $tab['cookies_used'] ) ) && ( isset( $tab['hosts'] ) && empty( $tab['hosts'] ) ) ) {
+									foreach ( $tabs as $key => $modal_tab ) {
+										if ( ( isset( $modal_tab['cookies_used'] ) && empty( $modal_tab['cookies_used'] ) ) && ( isset( $modal_tab['hosts'] ) && empty( $modal_tab['hosts'] ) ) ) {
 											continue;
 										}
-										echo '<li><button type="button" data-target="' . esc_attr( $key ) . '" ' . '>' . esc_html( $tab['name'] ) . '</button></li>';
+										echo '<li><button type="button" data-target="' . esc_attr( $key ) . '" ' . '>' . esc_html( $modal_tab['name'] ) . '</button></li>';
 									}
 									?>
 								</ul>
@@ -48,13 +48,13 @@
 					</ul>
 					<ul class="gdpr-policies">
 						<?php if ( ! empty( $consent_types ) ) : ?>
-							<?php foreach ( $consent_types as $consent_key => $type ) : ?>
+							<?php foreach ( $consent_types as $consent_key => $consent_type ) : ?>
 								<?php
-								if ( ! $type['policy-page'] ) {
+								if ( ! $consent_type['policy-page'] ) {
 									continue;
 								}
 								?>
-								<li><a href="<?php echo esc_url( get_permalink( $type['policy-page'] ) ); ?>" target="_blank"><?php echo esc_html( $type['name'] ); ?></a></li>
+								<li><a href="<?php echo esc_url( get_permalink( $consent_type['policy-page'] ) ); ?>" target="_blank"><?php echo esc_html( $consent_type['name'] ); ?></a></li>
 							<?php endforeach; ?>
 						<?php endif; ?>
 					</ul>
@@ -67,11 +67,11 @@
 						<div class="gdpr-info">
 							<p><?php echo nl2br( esc_html( $cookie_privacy_excerpt ) ); ?></p>
 							<?php if ( ! empty( $consent_types ) ) : ?>
-								<?php foreach ( $consent_types as $consent_key => $type ) : ?>
+								<?php foreach ( $consent_types as $consent_key => $consent_type ) : ?>
 									<div class="gdpr-cookies-used">
 										<div class="gdpr-cookie-title">
-											<p><?php echo esc_html( $type['name'] ); ?></p>
-											<?php if ( $type['policy-page'] ) : ?>
+											<p><?php echo esc_html( $consent_type['name'] ); ?></p>
+											<?php if ( $consent_type['policy-page'] ) : ?>
 												<span class="gdpr-always-active"><?php esc_html_e( 'Required', 'gdpr' ); ?></span>
 												<input type="hidden" name="user_consents[]" value="<?php echo esc_attr( $consent_key ); ?>" checked style="display:none;">
 											<?php else : ?>
@@ -84,7 +84,7 @@
 											<?php endif; ?>
 										</div>
 										<div class="gdpr-cookies">
-											<span><?php echo wp_kses( $type['description'], $this->allowed_html ); ?></span>
+											<span><?php echo wp_kses( $consent_type['description'], $this->allowed_html ); ?></span>
 										</div>
 									</div>
 								<?php endforeach; ?>
@@ -92,22 +92,24 @@
 						</div>
 					</div>
 					<?php $all_cookies = array(); ?>
-					<?php foreach ( $tabs as $key => $tab ) : ?>
+					<?php foreach ( $tabs as $key => $modal_tab ) : ?>
 						<div class="<?php echo esc_attr( $key ); ?>">
 							<header>
-								<h4><?php echo esc_html( $tab['name'] ); ?></h4>
+								<h4><?php echo esc_html( $modal_tab['name'] ); ?></h4>
 							</header><!-- /header -->
 							<div class="gdpr-info">
-								<p><?php echo nl2br( wp_kses_post( $tab['how_we_use'] ) ); ?></p>
-								<?php if ( isset( $tab['cookies_used'] ) && $tab['cookies_used'] ) : ?>
+								<p><?php echo nl2br( wp_kses_post( $modal_tab['how_we_use'] ) ); ?></p>
+								<?php if ( isset( $modal_tab['cookies_used'] ) && $modal_tab['cookies_used'] ) : ?>
 									<div class="gdpr-cookies-used">
 										<div class="gdpr-cookie-title">
 											<p><?php esc_html_e( 'Cookies Used', 'gdpr' ); ?></p>
 											<?php
 											$site_cookies       = array();
-											$enabled            = ( 'off' === $tab['status'] ) ? false : true;
-											$cookies_used       = explode( ',', $tab['cookies_used'] );
+											$enabled            = ( 'off' === $modal_tab['status'] ) ? false : true;
+											$cookies_used       = explode( ',', $modal_tab['cookies_used'] );
+											// phpcs:disable WordPressVIPMinimum.VIP.PHPFilterFunctions.RestrictedFilter
 											$gdpr_cookies_array = filter_input( INPUT_COOKIE, 'gdpr', FILTER_DEFAULT, FILTER_REQUIRE_ARRAY );
+											// phpcs:enable WordPressVIPMinimum.VIP.PHPFilterFunctions.RestrictedFilter
 											$approved_cookies   = isset( $gdpr_cookies_array['allowed_cookies'] ) ? json_decode( sanitize_text_field( wp_unslash( $gdpr_cookies_array['allowed_cookies'] ) ) ) : array(); // WPCS: input var ok.
 											foreach ( $cookies_used as $cookie ) {
 												$site_cookies[] = trim( $cookie );
@@ -121,7 +123,7 @@
 												}
 											}
 											?>
-											<?php if ( 'required' === $tab['status'] ) : ?>
+											<?php if ( 'required' === $modal_tab['status'] ) : ?>
 												<span class="gdpr-always-active"><?php esc_html_e( 'Required', 'gdpr' ); ?></span>
 												<input type="hidden" name="approved_cookies[]" value="<?php echo esc_attr( wp_json_encode( $site_cookies ) ); ?>">
 											<?php else : ?>
@@ -134,12 +136,12 @@
 											<?php endif; ?>
 										</div>
 										<div class="gdpr-cookies">
-											<span><?php echo wp_kses_post( $tab['cookies_used'] ); ?></span>
+											<span><?php echo wp_kses_post( $modal_tab['cookies_used'] ); ?></span>
 										</div>
 									</div>
 								<?php endif ?>
-								<?php if ( isset( $tab['hosts'] ) && ! empty( $tab['hosts'] ) ) : ?>
-									<?php foreach ( $tab['hosts'] as $host_key => $host ) : ?>
+								<?php if ( isset( $modal_tab['hosts'] ) && ! empty( $modal_tab['hosts'] ) ) : ?>
+									<?php foreach ( $modal_tab['hosts'] as $host_key => $host ) : ?>
 										<div class="gdpr-cookies-used">
 											<div class="gdpr-cookie-title">
 												<p><?php echo esc_html( $host_key ); ?></p>

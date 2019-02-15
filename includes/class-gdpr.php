@@ -307,7 +307,9 @@ class GDPR {
 	public static function save_user_consent_on_registration( $user_id ) {
 		GDPR_Audit_Log::log( $user_id, esc_html__( 'User registered to the site.', 'gdpr' ) );
 
+		// phpcs:disable WordPressVIPMinimum.VIP.PHPFilterFunctions.RestrictedFilter
 		$user_consents = filter_input( INPUT_POST, 'shipping_method', FILTER_DEFAULT, FILTER_REQUIRE_ARRAY );
+		// phpcs:enable WordPressVIPMinimum.VIP.PHPFilterFunctions.RestrictedFilter
 		if ( is_array( $user_consents ) ) {
 
 			$consents = array_map( 'sanitize_text_field', array_keys( wp_unslash( $user_consents ) ) );
@@ -330,7 +332,9 @@ class GDPR {
 		if ( empty( $consent_types ) ) {
 			return;
 		}
+		// phpcs:disable WordPressVIPMinimum.VIP.PHPFilterFunctions.RestrictedFilter
 		$user_consents = filter_input( INPUT_POST, 'shipping_method', FILTER_DEFAULT, FILTER_REQUIRE_ARRAY );
+		// phpcs:enable WordPressVIPMinimum.VIP.PHPFilterFunctions.RestrictedFilter
 		$sent_extras   = $user_consents ? wp_unslash( $user_consents ) : array();
 		if ( ! empty( $sent_extras ) ) {
 			$sent_extras = array_map( 'sanitize_text_field', $user_consents );
