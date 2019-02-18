@@ -43,7 +43,7 @@ if ( isset( $_GET['type'], $_GET['key'] ) ) { // WPCS: CSRF ok.
 	<?php settings_errors(); ?>
 	<div class="nav-tab-wrapper">
 		<?php foreach ( $tabs as $key => $value ) : ?>
-			<a href="<?php echo esc_html( '#' . $key ); ?>" class="nav-tab">
+			<a href="<?php echo esc_url( '#' . $key ); ?>" class="nav-tab">
 				<?php echo esc_html( $value ); ?>
 			</a>
 		<?php endforeach; ?>

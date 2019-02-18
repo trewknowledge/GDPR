@@ -88,7 +88,7 @@ class GDPR_Telemetry {
 		}
 
 		/* Validate host */
-		$host = parse_url( $url, PHP_URL_HOST );
+		$host = wp_parse_url( $url, PHP_URL_HOST );
 
 		if ( ! $host ) {
 			return false;

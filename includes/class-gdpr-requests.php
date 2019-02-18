@@ -96,7 +96,7 @@ class GDPR_Requests {
 
 		$post_types = get_post_types( array( 'public' => true ) );
 		foreach ( $post_types as $pt ) {
-			$post_count = count_user_posts( $user->ID, $pt );
+			$post_count = wpcom_vip_count_user_posts( $user->ID, $pt );
 			if ( $post_count > 0 ) {
 				return true;
 			}
