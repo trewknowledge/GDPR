@@ -343,7 +343,7 @@ class GDPR_Requests_Admin extends GDPR_Requests {
 			'posts_per_page' => $post_count,
 		);
 
-		$posts = get_posts( $args );
+		$posts = new WP_Query( $args );
 
 		if ( ! empty( $posts ) ) {
 			foreach ( $posts as $post ) {
