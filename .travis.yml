@@ -14,4 +14,4 @@ before_install:
 install:
     - php -d memory_limit=3G ./bin/composer.phar install -o
 script:
-    - "./bin/phpcs . --severity=8"
+    - "./bin/phpcs . --severity=1"
