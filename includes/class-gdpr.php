@@ -136,6 +136,12 @@ class GDPR {
 		 * The class responsible for using JavaScript to set cookies, instead of `setcookie`.
 		 */
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'public/class-gdpr-cookie-setting-js.php';
+
+		/**
+		 * The class responsible for enabling or disabling various tracking scripts depending on user acceptance of
+		 * the cookie policy.
+		 */
+		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'public/class-gdpr-cookie-setting-tracking.php';
 	}
 
 	/**
@@ -285,6 +291,14 @@ class GDPR {
 
 		add_action( 'wp_ajax_agree_with_new_policies', [ $gdpr_logging, 'track_ip_at_time_of_accepting_consent' ] );
 		add_action( 'wp_ajax_nopriv_agree_with_new_policies', [ $gdpr_logging, 'track_ip_at_time_of_accepting_consent' ] );
+
+		/**
+		 * Disable tracking / analytics based on whether the user has agreed to the cookie policy or not.
+		 */
+		$gdpr_cookie_tracking = new Gdpr_Cookie_Tracking();
+
+		add_action( 'muplugins_loaded', [ $gdpr_cookie_tracking, 'do_not_track_automattic_jetpack' ], 1 );
+		add_action( 'muplugins_loaded', [ $gdpr_cookie_tracking, 'do_not_track_google' ], 1 );
 	}
 
 	/**
