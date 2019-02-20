@@ -561,7 +561,7 @@ msgid "Close your account?"
 msgstr ""
 
 #: public/class-gdpr-public.php:133
-msgid "Your account will be closed and all data will be permanently deleted and cannot be recovered. Are you sure?"
+msgid "Please note it will take up to 30 days to process this request, and we'll confirm by email once it is done. Click OK to continue."
 msgstr ""
 
 #: public/class-gdpr-public.php:134
@@ -601,7 +601,7 @@ msgid "Email confirmation"
 msgstr ""
 
 #: public/class-gdpr-requests-public.php:146, public/class-gdpr-requests-public.php:176, public/class-gdpr-requests-public.php:237
-msgid "If this email is connected to an existing user, you should receive an email confirmation soon."
+msgid "An email has been sent to the address associated with this account. Please follow the instructions in the email to confirm you would like to delete your account."
 msgstr ""
 
 #: public/class-gdpr-requests-public.php:189
