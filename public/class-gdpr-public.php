@@ -148,6 +148,8 @@ class GDPR_Public {
 	 * @author Fernando Claussen <fernandoclaussen@gmail.com>
 	 */
 	public function privacy_bar() {
+		// variables used in template
+		// phpcs:disable WordPressVIPMinimum.Variables.VariableAnalysis.UnusedVariable
 		$privacy_bar_enabled        = get_option( 'gdpr_enable_privacy_bar', true );
 		$content                    = get_option( 'gdpr_cookie_banner_content', '' );
 		$registered_cookies         = get_option( 'gdpr_cookie_popup_content', array() );
@@ -155,6 +157,7 @@ class GDPR_Public {
 		$button_text                = apply_filters( 'gdpr_privacy_bar_button_text', esc_html__( 'I Agree', 'gdpr' ) );
 		$privacy_bar_enabled        = apply_filters( 'gdpr_privacy_bar_display', $privacy_bar_enabled );
 		$hide_from_bots             = get_option( 'gdpr_hide_from_bots', true );
+		// phpcs:enable WordPressVIPMinimum.Variables.VariableAnalysis.UnusedVariable
 
 		if ( ! $privacy_bar_enabled || ( $hide_from_bots && $this->is_crawler() ) ) {
 			return;
@@ -169,12 +172,15 @@ class GDPR_Public {
 	 * @author Fernando Claussen <fernandoclaussen@gmail.com>
 	 */
 	public function privacy_preferences_modal() {
+		// variables used in template
+		// phpcs:disable WordPressVIPMinimum.Variables.VariableAnalysis.UnusedVariable
 		$cookie_privacy_excerpt = get_option( 'gdpr_cookie_privacy_excerpt', '' );
 		$consent_types          = get_option( 'gdpr_consent_types', array() );
 		$approved_cookies       = isset( $_COOKIE['gdpr']['allowed_cookies'] ) ? json_decode( wp_unslash( $_COOKIE['gdpr']['allowed_cookies'] ) ) : array(); // WPCS: Input var ok, sanitization ok..
 		$user_consents          = isset( $_COOKIE['gdpr']['consent_types'] ) ? json_decode( wp_unslash( $_COOKIE['gdpr']['consent_types'] ) ) : array(); // WPCS: Input var ok, sanitization ok.
 		$tabs                   = get_option( 'gdpr_cookie_popup_content', array() );
 		$hide_from_bots         = get_option( 'gdpr_hide_from_bots', true );
+		// phpcs:enable WordPressVIPMinimum.Variables.VariableAnalysis.UnusedVariable
 
 		if ( $hide_from_bots && $this->is_crawler() ) {
 			return;
