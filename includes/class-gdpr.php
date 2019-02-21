@@ -280,6 +280,11 @@ class GDPR {
 		add_action( 'wp', array( $requests_public, 'request_confirmed' ) );
 		add_action( 'wp_ajax_gdpr_send_request_email', array( $requests_public, 'send_request_email' ) );
 		add_action( 'wp_ajax_nopriv_gdpr_send_request_email', array( $requests_public, 'send_request_email' ) );
+
+		$gdpr_logging = new Gdpr_Logging();
+
+		add_action( 'wp_ajax_agree_with_new_policies', [ $gdpr_logging, 'track_ip_at_time_of_accepting_consent' ] );
+		add_action( 'wp_ajax_nopriv_agree_with_new_policies', [ $gdpr_logging, 'track_ip_at_time_of_accepting_consent' ] );
 	}
 
 	/**
