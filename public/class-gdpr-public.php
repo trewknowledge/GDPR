@@ -176,8 +176,11 @@ class GDPR_Public {
 		// phpcs:disable WordPressVIPMinimum.Variables.VariableAnalysis.UnusedVariable
 		$cookie_privacy_excerpt = get_option( 'gdpr_cookie_privacy_excerpt', '' );
 		$consent_types          = get_option( 'gdpr_consent_types', array() );
+		// Approved usage by VIP support.
+		// phpcs:disable WordPress.VIP.RestrictedVariables.cache_constraints___COOKIE
 		$approved_cookies       = isset( $_COOKIE['gdpr']['allowed_cookies'] ) ? json_decode( wp_unslash( $_COOKIE['gdpr']['allowed_cookies'] ) ) : array(); // WPCS: Input var ok, sanitization ok..
 		$user_consents          = isset( $_COOKIE['gdpr']['consent_types'] ) ? json_decode( wp_unslash( $_COOKIE['gdpr']['consent_types'] ) ) : array(); // WPCS: Input var ok, sanitization ok.
+		// phpcs:enable WordPress.VIP.RestrictedVariables.cache_constraints___COOKIE
 		$tabs                   = get_option( 'gdpr_cookie_popup_content', array() );
 		$hide_from_bots         = get_option( 'gdpr_hide_from_bots', true );
 		// phpcs:enable WordPressVIPMinimum.Variables.VariableAnalysis.UnusedVariable
@@ -246,10 +249,13 @@ class GDPR_Public {
 		Gdpr_Cookie_Setting_Js::js_setcookie( 'gdpr[consent_types]', $consents_as_json, time() + YEAR_IN_SECONDS, '/' );
 
 		foreach ( $cookies_to_remove as $cookie ) {
+			// Approved usage by VIP support.
+			// phpcs:disable WordPress.VIP.RestrictedVariables.cache_constraints___COOKIE
 			if ( GDPR::similar_in_array( $cookie, array_keys( $_COOKIE ) ) ) { // WPCS: Input var ok.
 				$domain = get_site_url();
 				$domain = wp_parse_url( $domain, PHP_URL_HOST );
 				unset( $_COOKIE[ $cookie ] ); // WPCS: Input var ok.
+				// phpcs:enable WordPress.VIP.RestrictedVariables.cache_constraints___COOKIE
 				Gdpr_Cookie_Setting_Js::js_setcookie( $cookie, null, -1, '/', $domain );
 				Gdpr_Cookie_Setting_Js::js_setcookie( $cookie, null, -1, '/', '.' . $domain );
 			}
@@ -336,6 +342,8 @@ class GDPR_Public {
 	public function set_plugin_cookies() {
 		$user_id = get_current_user_id();
 
+		// Approved usage by VIP support.
+		// phpcs:disable WordPress.VIP.RestrictedVariables.cache_constraints___COOKIE
 		if ( ! isset( $_COOKIE['gdpr']['consent_types'] ) ) { // WPCS: Input var ok.
 			if ( ! $user_id ) {
 				Gdpr_Cookie_Setting_Js::js_setcookie( 'gdpr[consent_types]', '[]', time() + YEAR_IN_SECONDS, '/' );
@@ -358,6 +366,7 @@ class GDPR_Public {
 		}
 
 		if ( ! isset( $_COOKIE['gdpr']['allowed_cookies'] ) ) { // WPCS: Input var ok.
+			// phpcs:enable WordPress.VIP.RestrictedVariables.cache_constraints___COOKIE
 			$registered_cookies = get_option( 'gdpr_cookie_popup_content', array() );
 			$cookies            = array();
 			if ( ! empty( $registered_cookies ) ) {
