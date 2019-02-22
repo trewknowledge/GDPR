@@ -141,7 +141,7 @@ class GDPR {
 		 * The class responsible for enabling or disabling various tracking scripts depending on user acceptance of
 		 * the cookie policy.
 		 */
-		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'public/class-gdpr-cookie-setting-tracking.php';
+		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'public/class-gdpr-cookie-tracking.php';
 
 		/**
 		 * The class responsible for extra logging.
