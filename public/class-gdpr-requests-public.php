@@ -59,9 +59,12 @@ class GDPR_Requests_Public extends GDPR_Requests {
 	 * @return mixed        Print the form html.
 	 */
 	public static function request_form( $type, $submit_button_text = '' ) {
+		// Variable is defined, but in parent class - not sure why PHPCS doesn't understand this.
+		// phpcs:disable WordPressVIPMinimum.Variables.VariableAnalysis.UndefinedVariable
 		if ( ! in_array( $type, parent::$allowed_types, true ) ) {
 			return;
 		}
+		// phpcs:enable WordPressVIPMinimum.Variables.VariableAnalysis.UndefinedVariable
 
 		ob_start();
 		include plugin_dir_path( dirname( __FILE__ ) ) . 'public/partials/' . $type . '-form.php';
@@ -88,7 +91,10 @@ class GDPR_Requests_Public extends GDPR_Requests {
 
 		$type = filter_input( INPUT_POST, 'type', FILTER_SANITIZE_STRING );
 
+		// Variable is defined, but in parent class - not sure why PHPCS doesn't understand this.
+		// phpcs:disable WordPressVIPMinimum.Variables.VariableAnalysis.UndefinedVariable
 		if ( null === $type || ! \in_array( $type, self::$allowed_types, true ) ) {
+			// phpcs:enable WordPressVIPMinimum.Variables.VariableAnalysis.UndefinedVariable
 			wp_send_json_error(
 				[
 					'title' => esc_html__( 'Error!', 'gdpr' ),

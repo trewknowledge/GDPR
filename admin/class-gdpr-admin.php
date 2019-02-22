@@ -265,10 +265,13 @@ class GDPR_Admin {
 	 * @author Fernando Claussen <fernandoclaussen@gmail.com>
 	 */
 	public function settings_page_template() {
+		// used in the includes.
+		// phpcs:disable WordPressVIPMinimum.Variables.VariableAnalysis.UnusedVariable
 		$registered_cookies = get_option( 'gdpr_cookie_popup_content', array() );
 		$consent_types      = get_option( 'gdpr_consent_types', array() );
 
 		$pages = get_pages();
+		// phpcs:enable WordPressVIPMinimum.Variables.VariableAnalysis.UnusedVariable
 
 		include_once plugin_dir_path( __FILE__ ) . 'partials/templates/tmpl-cookies.php';
 		include_once plugin_dir_path( __FILE__ ) . 'partials/templates/tmpl-consents.php';
@@ -285,6 +288,10 @@ class GDPR_Admin {
 	public function requests_page_template() {
 		$requests = (array) get_option( 'gdpr_requests', array() );
 
+		$rectify = 0;
+		$complaint = 0;
+		$delete = 0;
+
 		if ( ! empty( $requests ) ) {
 			foreach ( $requests as $index => $request ) {
 				if ( ! $request['confirmed'] ) {
@@ -294,6 +301,8 @@ class GDPR_Admin {
 			}
 		}
 
+		// used in the includes.
+		// phpcs:disable WordPressVIPMinimum.Variables.VariableAnalysis.UnusedVariable
 		$tabs = array(
 			'rectify'   => array(
 				'name'  => __( 'Rectify Data', 'gdpr' ),
@@ -308,6 +317,7 @@ class GDPR_Admin {
 				'count' => isset( $delete ) ? count( $delete ) : 0,
 			),
 		);
+		// phpcs:enable WordPressVIPMinimum.Variables.VariableAnalysis.UnusedVariable
 
 		include plugin_dir_path( __FILE__ ) . 'partials/requests.php';
 	}
@@ -320,11 +330,14 @@ class GDPR_Admin {
 	 */
 	public function tools_page_template() {
 
+		// used in the includes.
+		// phpcs:disable WordPressVIPMinimum.Variables.VariableAnalysis.UnusedVariable
 		$tabs = array(
 			'access'      => esc_html__( 'Access Data', 'gdpr' ),
 			'data-breach' => esc_html__( 'Data Breach', 'gdpr' ),
 			'audit-log'   => esc_html__( 'Audit Log', 'gdpr' ),
 		);
+		// phpcs:enable WordPressVIPMinimum.Variables.VariableAnalysis.UnusedVariable
 
 		include plugin_dir_path( __FILE__ ) . 'partials/tools.php';
 	}
@@ -714,7 +727,7 @@ class GDPR_Admin {
 			'fields'         => 'ids',
 		);
 
-		$telemetry_posts = get_posts( $args );
+		$telemetry_posts = WP_Query( $args );
 
 		foreach ( $telemetry_posts as $post ) {
 			wp_delete_post( $post, true );
@@ -953,10 +966,12 @@ class GDPR_Admin {
 			}
 		);
 
+		// phpcs:disable WordPressVIPMinimum.Variables.VariableAnalysis.UnusedVariable
 		foreach ( $consent_arr as $key => $value ) {
 			$consent = str_replace( 'user_consents_', '', $value );
 			add_user_meta( $customer_id, 'gdpr_consents', $consent );
 		}
+		// phpcs:enable WordPressVIPMinimum.Variables.VariableAnalysis.UnusedVariable
 	}
 
 

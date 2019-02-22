@@ -73,7 +73,9 @@ class GDPR_Email {
 		if ( ! file_exists( $template_file ) ) {
 			return;
 		}
+		// phpcs:disable WordPressVIPMinimum.Files.IncludingFile.IncludingFile
 		include $template_file;
+		// phpcs:enable WordPressVIPMinimum.Files.IncludingFile.IncludingFile
 	}
 
 	/**
@@ -229,6 +231,8 @@ class GDPR_Email {
 
 		$content = self::get_email_content( $type . '.php', $args );
 
+		// All `wp_mail` calls are handled by Mandrill.
+		// phpcs:disable WordPressVIPMinimum.VIP.RestrictedFunctions.wp_mail_wp_mail
 		return wp_mail(
 			$no_reply,
 			$possible_types[ $type ],
@@ -236,5 +240,6 @@ class GDPR_Email {
 			$headers,
 			( ! empty( $attachments ) ) ? $attachments : array()
 		);
+		// phpcs:enable WordPressVIPMinimum.VIP.RestrictedFunctions.wp_mail_wp_mail
 	}
 }
