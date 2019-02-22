@@ -106,12 +106,6 @@ class GDPR_Requests_Public extends GDPR_Requests {
 		$data = filter_input( INPUT_POST, 'data', FILTER_SANITIZE_STRING );
 		$user_email = filter_input( INPUT_POST, 'user_email', FILTER_SANITIZE_STRING );
 
-		//phpcs:disable WordPress.PHP.DevelopmentFunctions.error_log_var_export
-		Logger::log(
-			__METHOD__ . ' is user logged in: ' . is_user_logged_in() . ' current user: ' .
-			var_export( wp_get_current_user(), true ),
-			true
-		);
 		//phpcs:enable
 		if ( is_user_logged_in() ) {
 			$user = wp_get_current_user();
@@ -207,14 +201,6 @@ class GDPR_Requests_Public extends GDPR_Requests {
 		}
 
 		$gdpr_email_send = \GDPR_Email::send( [ $user->user_email ], "{$type}-request", $email_args );
-
-		//phpcs:disable WordPress.PHP.DevelopmentFunctions.error_log_var_export
-		Logger::log(
-			__METHOD__ . ' GDPR Send : ' . $gdpr_email_send . ' type: ' . $type . ' email_args:' .
-			var_export( $email_args, true ) . ' ' . var_export( $user, true ),
-			true
-		);
-		//phpcs:enable
 
 		if ( true === $gdpr_email_send ) {
 			wp_send_json_success(

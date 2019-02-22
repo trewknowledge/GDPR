@@ -149,14 +149,7 @@ class GDPR_Audit_Log {
 	 */
 	public static function export_log( $user_id, $token ) {
 		// see : https://github.com/trewknowledge/GDPR/blob/2.1.0/includes/class-gdpr-audit-log.php#L147.
-		if ( class_exists( 'Logger' ) ) {
-			//phpcs:disable WordPress.PHP.DevelopmentFunctions.error_log_var_export
-			Logger::log(
-				__CLASS__ . '::' . __FUNCTION__ . ' is not currently implemented.',
-				true
-			);
-			//phpcs:enable
-		}
+		throw new \DomainException('This function is not implemented.');
 	}
 
 }
