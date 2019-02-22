@@ -132,7 +132,7 @@ class GDPR_Public {
 					'cancel'                => esc_html__( 'Cancel', 'gdpr' ),
 					'ok'                    => esc_html__( 'OK', 'gdpr' ),
 					'close_account'         => esc_html__( 'Close your account?', 'gdpr' ),
-					'close_account_warning' => esc_html__( 'Your account will be closed and all data will be permanently deleted and cannot be recovered. Are you sure?', 'gdpr' ),
+					'close_account_warning' => esc_html__( 'Please note it will take up to 30 days to process this request, and we\'ll confirm by email once it is done. Click OK to continue.', 'gdpr' ),
 					'are_you_sure'          => esc_html__( 'Are you sure?', 'gdpr' ),
 					'policy_disagree'       => esc_html__( 'By disagreeing you will no longer have access to our site and will be logged out.', 'gdpr' ),
 				),

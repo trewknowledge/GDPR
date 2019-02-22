@@ -144,7 +144,7 @@ class GDPR_Requests_Public extends GDPR_Requests {
 			wp_send_json_error(
 				array(
 					'title'   => esc_html__( 'Email confirmation', 'gdpr' ),
-					'content' => esc_html__( 'If this email is connected to an existing user, you should receive an email confirmation soon.', 'gdpr' ),
+					'content' => esc_html__( 'An email has been sent to the address associated with this account. Please follow the instructions in the email to confirm you would like to delete your account.', 'gdpr' ),
 				)
 			);
 		}
@@ -174,7 +174,7 @@ class GDPR_Requests_Public extends GDPR_Requests {
 						wp_send_json_error(
 							array(
 								'title'   => esc_html__( 'Email confirmation', 'gdpr' ),
-								'content' => esc_html__( 'If this email is connected to an existing user, you should receive an email confirmation soon.', 'gdpr' ),
+								'content' => esc_html__( 'An email has been sent to the address associated with this account. Please follow the instructions in the email to confirm you would like to delete your account.', 'gdpr' ),
 							)
 						);
 					}
@@ -236,7 +236,7 @@ class GDPR_Requests_Public extends GDPR_Requests {
 			wp_send_json_success(
 				array(
 					'title'   => esc_html__( 'Email confirmation', 'gdpr' ),
-					'content' => esc_html__( 'If this email is connected to an existing user, you should receive an email confirmation soon.', 'gdpr' ),
+					'content' => esc_html__( 'An email has been sent to the address associated with this account. Please follow the instructions in the email to confirm you would like to delete your account.', 'gdpr' ),
 				)
 			);
 		} else {
