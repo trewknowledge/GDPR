@@ -142,6 +142,11 @@ class GDPR {
 		 * the cookie policy.
 		 */
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'public/class-gdpr-cookie-setting-tracking.php';
+
+		/**
+		 * The class responsible for extra logging.
+		 */
+		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'admin/class-gdpr-logging.php';
 	}
 
 	/**
