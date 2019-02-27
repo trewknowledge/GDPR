@@ -70,7 +70,11 @@ class GDPR_Audit_Log {
 		$user      = get_user_by( 'ID', $user_id );
 		$date      = '[' . date( 'Y/m/d H:i:s' ) . '] ';
 		$encrypted = self::crypt( $user->user_email, $date . $input );
-		add_user_meta( $user_id, 'gdpr_audit_log', $encrypted );
+		if ( defined( 'WPCOM_IS_VIP_ENV' ) && WPCOM_IS_VIP_ENV ) {
+			add_user_attribute( $user_id, 'gdpr_audit_log', $encrypted );
+		} else {
+			add_user_meta( $user_id, 'gdpr_audit_log', $encrypted );
+		}
 	}
 
 	/**
@@ -86,7 +90,11 @@ class GDPR_Audit_Log {
 		// Try getting an existing user
 		$user = get_user_by( 'email', $email );
 		if ( $user instanceof WP_User ) {
-			$user_log = get_user_meta( $user->ID, 'gdpr_audit_log', false );
+			if ( defined( 'WPCOM_IS_VIP_ENV' ) && WPCOM_IS_VIP_ENV ) {
+				$user_log = get_user_attribute( $user->ID, 'gdpr_audit_log', false );
+			} else {
+				$user_log = get_user_meta( $user->ID, 'gdpr_audit_log', false );
+			}
 			ob_start();
 			foreach ( $user_log as $log ) {
 				echo esc_html( self::decrypt( $email, $log ) ) . "\n";

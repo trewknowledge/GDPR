@@ -281,7 +281,11 @@ class GDPR_Requests_Public extends GDPR_Requests {
 			exit;
 		}
 
-		$meta_key = get_user_meta( $user->ID, self::$plugin_name . "_{$type}_key", true );
+		if ( defined( 'WPCOM_IS_VIP_ENV' ) && WPCOM_IS_VIP_ENV ) {
+			$meta_key = get_user_attribute( $user->ID, self::$plugin_name . "_{$type}_key", true );
+		} else {
+			$meta_key = get_user_meta( $user->ID, self::$plugin_name . "_{$type}_key", true );
+		}
 		if ( empty( $meta_key ) ) {
 			wp_safe_redirect(
 				esc_url_raw(

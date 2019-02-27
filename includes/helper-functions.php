@@ -121,8 +121,12 @@ function have_consent( $consent ) {
 function has_consent( $consent ) {
 
 	if ( is_user_logged_in() ) {
-		$user     = wp_get_current_user();
-		$consents = (array) get_user_meta( $user->ID, 'gdpr_consents' );
+		$user = wp_get_current_user();
+		if ( defined( 'WPCOM_IS_VIP_ENV' ) && WPCOM_IS_VIP_ENV ) {
+			$consents = (array) get_user_attribute( $user->ID, 'gdpr_consents' );
+		} else {
+			$consents = (array) get_user_meta( $user->ID, 'gdpr_consents' );
+		}
 	} elseif ( isset( $_COOKIE['gdpr']['consent_types'] ) && ! empty( $_COOKIE['gdpr']['consent_types'] ) ) { // WPCS: Input var ok.
 		$consents = array_map( 'sanitize_text_field', (array) json_decode( wp_unslash( $_COOKIE['gdpr']['consent_types'] ) ) ); // WPCS: Input var ok, sanitization ok.
 	}
