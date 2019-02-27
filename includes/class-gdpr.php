@@ -298,13 +298,17 @@ class GDPR {
 
 		if ( isset( $_POST['user_consents'] ) && is_array( $_POST['user_consents'] ) ) {
 
-			$consents = array_map( 'sanitize_text_field', array_keys( wp_unslash( $_POST['user_consents'] ) ) );  // WPCS: Input var ok, CSRF ok, XSS ok.
+			$consents = array_map( 'sanitize_text_field', array_keys( wp_unslash( $_POST['user_consents'] ) ) );  // WPCS: Input var ok, CSRF ok, XSS ok, sanitization ok.
 			foreach ( $consents as $consent ) {
 				/* translators: Name of consent */
 				GDPR_Audit_Log::log( $user_id, sprintf( esc_html__( 'User gave explicit consent to %s', 'gdpr' ), $consent ) );
-				add_user_meta( $user_id, 'gdpr_consents', $consent );
+				if ( defined( 'WPCOM_IS_VIP_ENV' ) && WPCOM_IS_VIP_ENV ) {
+					add_user_attribute( $user_id, 'gdpr_consents', $consent );
+				} else {
+					add_user_meta( $user_id, 'gdpr_consents', $consent );
+				}
 			}
-			setcookie( 'gdpr[consent_types]', json_encode( $consents ), time() + YEAR_IN_SECONDS, '/' );
+			setcookie( 'gdpr[consent_types]', wp_json_encode( $consents ), time() + YEAR_IN_SECONDS, '/' );
 		}
 	}
 
@@ -318,11 +322,9 @@ class GDPR {
 		if ( empty( $consent_types ) ) {
 			return;
 		}
-		$sent_extras   = ( isset( $_POST['user_consents'] ) ) ? wp_unslash( $_POST['user_consents'] ) : array(); // WPCS: Input var ok, CSRF ok.
-		if ( ! empty( $sent_extras ) ) {
-			$sent_extras = array_map( 'sanitize_text_field', $_POST['user_consents'] );
-		}
-		$allowed_html  = array(
+		$sent_extras = ( isset( $_POST['user_consents'] ) ) ? array_map( 'sanitize_text_field', wp_unslash( $_POST['user_consents'] ) ) : array(); // WPCS: Input var ok, CSRF ok.
+
+		$allowed_html = array(
 			'a' => array(
 				'href'   => true,
 				'title'  => true,
@@ -343,9 +345,9 @@ class GDPR {
 			$required = ( isset( $consent['policy-page'] ) && $consent['policy-page'] ) ? 'required' : '';
 			$checked  = ( isset( $sent_extras[ $key ] ) ) ? checked( $sent_extras[ $key ], 1, false ) : '';
 			echo '<p>' .
-			  '<label class="gdpr-label">' .
+				'<label class="gdpr-label">' .
 				'<input type="checkbox" name="user_consents[' . esc_attr( $key ) . ']" id="' . esc_attr( $key ) . '-consent" value="1" ' . esc_html( $required ) . ' ' . esc_html( $checked ) . '>' .
-				  wp_kses( $consent['registration'], $allowed_html ) .'</label>' .
+					wp_kses( $consent['registration'], $allowed_html ) . '</label>' .
 			'</p>';
 		}
 
@@ -370,7 +372,11 @@ class GDPR {
 	 * @return array           The user meta minus not important metas.
 	 */
 	static function get_user_meta( $user_id ) {
-		$usermeta        = get_user_meta( $user_id );
+		if ( defined( 'WPCOM_IS_VIP_ENV' ) && WPCOM_IS_VIP_ENV ) {
+			$usermeta = get_user_attribute( $user_id );
+		} else {
+			$usermeta = get_user_meta( $user_id );
+		}
 		$remove_metadata = array(
 			'nickname',
 			'first_name',
@@ -415,14 +421,18 @@ class GDPR {
 			return false;
 		}
 
-		$usermeta      = self::get_user_meta( $user->ID );
-		$comments      = get_comments(
+		$usermeta = self::get_user_meta( $user->ID );
+		$comments = get_comments(
 			array(
 				'author_email'       => $user->user_email,
 				'include_unapproved' => true,
 			)
 		);
-		$user_consents = get_user_meta( $user->ID, 'gdpr_consents' );
+		if ( defined( 'WPCOM_IS_VIP_ENV' ) && WPCOM_IS_VIP_ENV ) {
+			$user_consents = get_user_attribute( $user->ID, 'gdpr_consents' );
+		} else {
+			$user_consents = get_user_meta( $user->ID, 'gdpr_consents' );
+		}
 		$extra_content = apply_filters( 'gdpr_export_data_extra_tables', '', $email );
 
 		switch ( strtolower( $format ) ) {
@@ -474,7 +484,7 @@ class GDPR {
 				if ( $extra_content ) {
 					$json[ $extra_content['name'] ] = $extra_content['content'];
 				}
-				return json_encode( $json );
+				return wp_json_encode( $json );
 				break;
 			case 'md':
 			case 'markdown':
@@ -538,7 +548,7 @@ class GDPR {
 					foreach ( $extra_content['content'] as $key => $obj ) {
 						$item = $extra->appendChild( $dom->createElement( 'item' ) );
 						foreach ( $obj as $k => $value ) {
-							$item->appendChild( $dom->createElement( $k, ( is_object( $value ) || is_array( $value ) ) ? json_encode( (array) $value ) : $value ) );
+							$item->appendChild( $dom->createElement( $k, ( is_object( $value ) || is_array( $value ) ) ? wp_json_encode( (array) $value ) : $value ) );
 						}
 					}
 				}
@@ -592,16 +602,24 @@ class GDPR {
 		if ( empty( $registered_consent ) ) {
 			return false;
 		}
-		$consent_ids        = array_keys( $registered_consent );
-		$user               = get_user_by( 'ID', $user_id );
-		$consent            = sanitize_text_field( wp_unslash( $consent ) );
+		$consent_ids = array_keys( $registered_consent );
+		$user        = get_user_by( 'ID', $user_id );
+		$consent     = sanitize_text_field( wp_unslash( $consent ) );
 
 		if ( $user ) {
-			$user_consent = get_user_meta( $user_id, 'gdpr_consents' );
+			if ( defined( 'WPCOM_IS_VIP_ENV' ) && WPCOM_IS_VIP_ENV ) {
+				$user_consent = get_user_attribute( $user_id, 'gdpr_consents' );
+			} else {
+				$user_consent = get_user_meta( $user_id, 'gdpr_consents' );
+			}
 			if ( in_array( $consent, $consent_ids, true ) && ! in_array( $consent, $user_consent, true ) ) {
-				add_user_meta( $user_id, 'gdpr_consents', $consent );
+				if ( defined( 'WPCOM_IS_VIP_ENV' ) && WPCOM_IS_VIP_ENV ) {
+					add_user_attribute( $user_id, 'gdpr_consents', $consent );
+				} else {
+					add_user_meta( $user_id, 'gdpr_consents', $consent );
+				}
 				$user_consent[] = $consent;
-				setcookie( 'gdpr[consent_types]', json_encode( $user_consent ), time() + YEAR_IN_SECONDS, '/' );
+				setcookie( 'gdpr[consent_types]', wp_json_encode( $user_consent ), time() + YEAR_IN_SECONDS, '/' );
 				return true;
 			}
 		}
@@ -621,14 +639,22 @@ class GDPR {
 		$user = get_user_by( 'ID', $user_id );
 
 		if ( $user ) {
-			$user_consent = get_user_meta( $user_id, 'gdpr_consents' );
+			if ( defined( 'WPCOM_IS_VIP_ENV' ) && WPCOM_IS_VIP_ENV ) {
+				$user_consent = get_user_attribute( $user_id, 'gdpr_consents' );
+			} else {
+				$user_consent = get_user_meta( $user_id, 'gdpr_consents' );
+			}
 
 			$consent = sanitize_text_field( wp_unslash( $consent ) );
 			$key     = array_search( $consent, $user_consent, true );
 			if ( false !== $key ) {
-				delete_user_meta( $user_id, 'gdpr_consents', $consent );
+				if ( defined( 'WPCOM_IS_VIP_ENV' ) && WPCOM_IS_VIP_ENV ) {
+					delete_user_attribute( $user_id, 'gdpr_consents', $consent );
+				} else {
+					delete_user_meta( $user_id, 'gdpr_consents', $consent );
+				}
 				unset( $user_consent[ $key ] );
-				setcookie( 'gdpr[consent_types]', json_encode( $user_consent ), time() + YEAR_IN_SECONDS, '/' );
+				setcookie( 'gdpr[consent_types]', wp_json_encode( $user_consent ), time() + YEAR_IN_SECONDS, '/' );
 				return true;
 			}
 		}

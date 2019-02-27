@@ -5,8 +5,8 @@
  * @package    GDPR
  */
 
-if( ! function_exists( 'boolval' ) ) {
-  function boolval( $var ){
-    return (bool) $var;
-  }
+if ( ! function_exists( 'boolval' ) ) {
+	function boolval( $var ) {
+		return (bool) $var;
+	}
 }

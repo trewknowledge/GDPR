@@ -336,14 +336,18 @@ class GDPR_Admin {
 			wp_send_json_error();
 		}
 
-		$usermeta      = GDPR::get_user_meta( $user->ID );
-		$comments      = get_comments(
+		$usermeta = GDPR::get_user_meta( $user->ID );
+		$comments = get_comments(
 			array(
 				'author_email'       => $user->user_email,
 				'include_unapproved' => true,
 			)
 		);
-		$user_consents = get_user_meta( $user->ID, 'gdpr_consents' );
+		if ( defined( 'WPCOM_IS_VIP_ENV' ) && WPCOM_IS_VIP_ENV ) {
+			$user_consents = get_user_attribute( $user->ID, 'gdpr_consents' );
+		} else {
+			$user_consents = get_user_meta( $user->ID, 'gdpr_consents' );
+		}
 
 		ob_start();
 		echo '<h2>' . esc_html( $user->display_name ) . '<span>( ' . esc_html( $email ) . ' )</span></h2>';
@@ -554,11 +558,12 @@ class GDPR_Admin {
 	}
 
 	public function version_check_notice() {
-		if( -1 === version_compare( phpversion(), GDPR_REQUIRED_PHP_VERSION ) ) {
+		if ( -1 === version_compare( phpversion(), GDPR_REQUIRED_PHP_VERSION ) ) {
 			?>
 			<div class="notice notice-error">
 				<p><strong><?php esc_html_e( 'GDPR', 'gdpr' ); ?></strong></p>
-				<p><?php echo sprintf( esc_html__( 'Your current PHP version (%1$s) is below the plugin required version of %2$s.', 'gdpr' ), phpversion(), GDPR_REQUIRED_PHP_VERSION ) ?></p>
+				<?php /* translators: 1: Current PHP version 2: Required PHP version. */ ?>
+				<p><?php echo sprintf( esc_html__( 'Your current PHP version (%1$s) is below the plugin required version of %2$s.', 'gdpr' ), esc_html( phpversion() ), esc_html( GDPR_REQUIRED_PHP_VERSION ) ); ?></p>
 			</div>
 			<?php
 			deactivate_plugins( 'gdpr/gdpr.php' );
@@ -757,11 +762,19 @@ class GDPR_Admin {
 		);
 
 		foreach ( $users as $user ) {
-			$usermeta = get_user_meta( $user->ID, 'gdpr_consents' );
-			if ( in_array( $policy_id, $usermeta ) ) {
+			if ( defined( 'WPCOM_IS_VIP_ENV' ) && WPCOM_IS_VIP_ENV ) {
+				$usermeta = get_user_attribute( $user->ID, 'gdpr_consents' );
+			} else {
+				$usermeta = get_user_meta( $user->ID, 'gdpr_consents' );
+			}
+			if ( in_array( $policy_id, $usermeta, true ) ) {
 				/* translators: 1: The name of the policy that was updated. */
 				GDPR_Audit_Log::log( $user->ID, sprintf( esc_html__( '%1$s has been updated. Removing the %1$s consent and requesting new consent.', 'gdpr' ), esc_html( $policy_name ) ) );
-				delete_user_meta( $user->ID, 'gdpr_consents', $policy_id );
+				if ( defined( 'WPCOM_IS_VIP_ENV' ) && WPCOM_IS_VIP_ENV ) {
+					delete_user_attribute( $user->ID, 'gdpr_consents', $policy_id );
+				} else {
+					delete_user_meta( $user->ID, 'gdpr_consents', $policy_id );
+				}
 			}
 		}
 
@@ -776,8 +789,8 @@ class GDPR_Admin {
 	 * @param  WP_Post $post The post object.
 	 */
 	public function policy_updated( $id, $post ) {
-		$policies_updated  = get_option( 'gdpr_policies_updated', array() );
-		$consents          = get_option( 'gdpr_consent_types', array() );
+		$policies_updated = get_option( 'gdpr_policies_updated', array() );
+		$consents         = get_option( 'gdpr_consent_types', array() );
 
 		if ( empty( $consents ) ) {
 			return;
@@ -834,7 +847,11 @@ class GDPR_Admin {
 	 */
 	public function edit_user_profile( $user ) {
 		$consent_types = get_option( 'gdpr_consent_types', array() );
-		$user_consents = get_user_meta( $user->ID, 'gdpr_consents' );
+		if ( defined( 'WPCOM_IS_VIP_ENV' ) && WPCOM_IS_VIP_ENV ) {
+			$user_consents = get_user_attribute( $user->ID, 'gdpr_consents' );
+		} else {
+			$user_consents = get_user_meta( $user->ID, 'gdpr_consents' );
+		}
 		if ( empty( $consent_types ) ) {
 			return;
 		}
@@ -878,15 +895,23 @@ class GDPR_Admin {
 
 		GDPR_Audit_Log::log( $user_id, esc_html__( 'Profile Updated. These are the user consents after the save:', 'gdpr' ) );
 
-		delete_user_meta( $user_id, 'gdpr_consents' );
+		if ( defined( 'WPCOM_IS_VIP_ENV' ) && WPCOM_IS_VIP_ENV ) {
+			delete_user_attribute( $user_id, 'gdpr_consents' );
+		} else {
+			delete_user_meta( $user_id, 'gdpr_consents' );
+		}
 
 		foreach ( (array) $consents as $consent ) {
 			$consent = sanitize_text_field( wp_unslash( $consent ) );
-			add_user_meta( $user_id, 'gdpr_consents', $consent );
+			if ( defined( 'WPCOM_IS_VIP_ENV' ) && WPCOM_IS_VIP_ENV ) {
+				add_user_attribute( $user_id, 'gdpr_consents', $consent );
+			} else {
+				add_user_meta( $user_id, 'gdpr_consents', $consent );
+			}
 			GDPR_Audit_Log::log( $user_id, $consent );
 		}
 
-		setcookie( 'gdpr[consent_types]', json_encode( $consents ), time() + YEAR_IN_SECONDS, '/' );
+		setcookie( 'gdpr[consent_types]', wp_json_encode( $consents ), time() + YEAR_IN_SECONDS, '/' );
 	}
 
 	/**
@@ -931,7 +956,11 @@ class GDPR_Admin {
 
 		foreach ( $consent_arr as $key => $value ) {
 			$consent = str_replace( 'user_consents_', '', $value );
-			add_user_meta( $customer_id, 'gdpr_consents', $consent );
+			if ( defined( 'WPCOM_IS_VIP_ENV' ) && WPCOM_IS_VIP_ENV ) {
+				add_user_attribute( $customer_id, 'gdpr_consents', $consent );
+			} else {
+				add_user_meta( $customer_id, 'gdpr_consents', $consent );
+			}
 		}
 	}
 
@@ -947,7 +976,11 @@ class GDPR_Admin {
 	 */
 	public function add_consents_to_consents_column( $val, $column_name, $user_id ) {
 		if ( 'consents' === $column_name ) {
-			$user_consents = get_user_meta( $user_id, 'gdpr_consents' );
+			if ( defined( 'WPCOM_IS_VIP_ENV' ) && WPCOM_IS_VIP_ENV ) {
+				$user_consents = get_user_attribute( $user_id, 'gdpr_consents' );
+			} else {
+				$user_consents = get_user_meta( $user_id, 'gdpr_consents' );
+			}
 			return implode( ', ', $user_consents );
 		}
 
