@@ -35,7 +35,7 @@ if ( ! defined( 'WPINC' ) ) {
  * Start at version 1.0.0 and use SemVer - https://semver.org
  * Rename this for your plugin and update it as you release new versions.
  */
-define( 'GDPR_VERSION', '3.8.1' );
+define( 'GDPR_VERSION', '3.9.0' );
 
 /**
  * The minimum PHP version required to run the plugin.
