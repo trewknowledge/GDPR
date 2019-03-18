@@ -16,7 +16,7 @@
  * Plugin Name:       GDPR
  * Plugin URI:        https://trewknowledge.com
  * Description:       This plugin is meant to assist a Controller, Data Processor, and Data Protection Officer (DPO) with efforts to meet the obligations and rights enacted under the GDPR.
- * Version:           3.8.1
+ * Version:           3.9.0
  * Author:            Box UK (forked from Trew Knowledge)
  * Author URI:        https://trewknowledge.com
  * License:           GPL-2.0+

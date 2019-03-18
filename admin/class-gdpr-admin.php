@@ -922,7 +922,8 @@ class GDPR_Admin {
 			GDPR_Audit_Log::log( $user_id, $consent );
 		}
 
-		Gdpr_Cookie_Setting_Js::js_setcookie( 'gdpr[consent_types]', wp_json_encode( $consents ), time() + YEAR_IN_SECONDS, '/' );
+		(new Gdpr_Cookie_Setting_Js())
+			->js_setcookie( 'gdpr[consent_types]', wp_json_encode( $consents ), time() + YEAR_IN_SECONDS, '/' );
 	}
 
 	/**
