@@ -78,8 +78,7 @@ class Gdpr_Cookie_Setting_Js {
 	 * For each of the `GDPR_Cookies`, write any saved cookie information for the visitor, as per the data they have
 	 * stored in transients on previous requests.
 	 */
-	public function set_cookies_from_transients_on_page_load(): void
-	{
+	public function set_cookies_from_transients_on_page_load(): void {
 		array_map(
 			function ( string $cookie_name ) : bool {
 				$transient_name = $this->get_transient_name( $cookie_name );
@@ -134,6 +133,8 @@ class Gdpr_Cookie_Setting_Js {
 		if ( '' !== $domain ) {
 			$cookie_val .= sprintf( 'domain=%s;', $domain );
 		}
+
+		$cookie_val .= 'secure;';
 
 		echo '<script type="text/javascript">',
 			"document.cookie = '" . wp_kses_post( $cookie_val ) . "'",
