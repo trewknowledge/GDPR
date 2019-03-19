@@ -245,8 +245,10 @@ class GDPR_Public {
 		$cookies_as_json  = wp_json_encode( $approved_cookies );
 		$consents_as_json = wp_json_encode( $consents );
 
-		Gdpr_Cookie_Setting_Js::js_setcookie( 'gdpr[allowed_cookies]', $cookies_as_json, time() + YEAR_IN_SECONDS, '/' );
-		Gdpr_Cookie_Setting_Js::js_setcookie( 'gdpr[consent_types]', $consents_as_json, time() + YEAR_IN_SECONDS, '/' );
+		(new Gdpr_Cookie_Setting_Js())
+			->js_setcookie( 'gdpr[allowed_cookies]', $cookies_as_json, time() + YEAR_IN_SECONDS, '/' );
+		(new Gdpr_Cookie_Setting_Js())
+			->js_setcookie( 'gdpr[consent_types]', $consents_as_json, time() + YEAR_IN_SECONDS, '/' );
 
 		foreach ( $cookies_to_remove as $cookie ) {
 			// Approved usage by VIP support.
@@ -256,8 +258,10 @@ class GDPR_Public {
 				$domain = wp_parse_url( $domain, PHP_URL_HOST );
 				unset( $_COOKIE[ $cookie ] ); // WPCS: Input var ok.
 				// phpcs:enable WordPress.VIP.RestrictedVariables.cache_constraints___COOKIE
-				Gdpr_Cookie_Setting_Js::js_setcookie( $cookie, null, -1, '/', $domain );
-				Gdpr_Cookie_Setting_Js::js_setcookie( $cookie, null, -1, '/', '.' . $domain );
+				(new Gdpr_Cookie_Setting_Js())
+					->js_setcookie( $cookie, null, -1, '/', $domain );
+				(new Gdpr_Cookie_Setting_Js())
+					->js_setcookie( $cookie, null, -1, '/', '.' . $domain );
 			}
 		}
 
@@ -346,10 +350,12 @@ class GDPR_Public {
 		// phpcs:disable WordPress.VIP.RestrictedVariables.cache_constraints___COOKIE
 		if ( ! isset( $_COOKIE['gdpr']['consent_types'] ) ) { // WPCS: Input var ok.
 			if ( ! $user_id ) {
-				Gdpr_Cookie_Setting_Js::js_setcookie( 'gdpr[consent_types]', '[]', time() + YEAR_IN_SECONDS, '/' );
+				(new Gdpr_Cookie_Setting_Js())
+					->js_setcookie( 'gdpr[consent_types]', '[]', time() + YEAR_IN_SECONDS, '/' );
 			} else {
 				$user_consents = get_user_meta( $user_id, 'gdpr_consents' );
-				Gdpr_Cookie_Setting_Js::js_setcookie( 'gdpr[consent_types]', wp_json_encode( $user_consents ), time() + YEAR_IN_SECONDS, '/' );
+				(new Gdpr_Cookie_Setting_Js())
+					->js_setcookie( 'gdpr[consent_types]', wp_json_encode( $user_consents ), time() + YEAR_IN_SECONDS, '/' );
 			}
 		} else {
 			if ( $user_id ) {
@@ -360,7 +366,8 @@ class GDPR_Public {
 				$diff      = array_merge( array_diff( $user_consents, $intersect ), array_diff( $cookie_consents, $intersect ) );
 
 				if ( ! empty( $diff ) ) {
-					Gdpr_Cookie_Setting_Js::js_setcookie( 'gdpr[consent_types]', wp_json_encode( $user_consents ), time() + YEAR_IN_SECONDS, '/' );
+					(new Gdpr_Cookie_Setting_Js())
+						->js_setcookie( 'gdpr[consent_types]', wp_json_encode( $user_consents ), time() + YEAR_IN_SECONDS, '/' );
 				}
 			}
 		}
@@ -387,9 +394,11 @@ class GDPR_Public {
 			}
 
 			if ( ! empty( $cookies ) ) {
-				Gdpr_Cookie_Setting_Js::js_setcookie( 'gdpr[allowed_cookies]', wp_json_encode( $cookies ), time() + YEAR_IN_SECONDS, '/' );
+				(new Gdpr_Cookie_Setting_Js())
+					->js_setcookie( 'gdpr[allowed_cookies]', wp_json_encode( $cookies ), time() + YEAR_IN_SECONDS, '/' );
 			} else {
-				Gdpr_Cookie_Setting_Js::js_setcookie( 'gdpr[allowed_cookies]', '[]', time() + YEAR_IN_SECONDS, '/' );
+				(new Gdpr_Cookie_Setting_Js())
+					->js_setcookie( 'gdpr[allowed_cookies]', '[]', time() + YEAR_IN_SECONDS, '/' );
 			}
 		}
 	}
