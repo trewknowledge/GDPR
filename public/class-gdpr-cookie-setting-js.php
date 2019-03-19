@@ -7,6 +7,9 @@
 
 declare( strict_types=1 );
 
+// Disable undefined variables sniff due to many false positives in the use of closures.
+// phpcs:disable WordPressVIPMinimum.Variables.VariableAnalysis.UndefinedVariable
+
 /**
  * Class Gdpr_Cookie_Setting_Js
  *
