@@ -272,12 +272,10 @@ class GDPR {
 
 		$plugin_public   = new GDPR_Public( $this->get_plugin_name(), $this->get_version() );
 		$requests_public = new GDPR_Requests_Public( $this->get_plugin_name(), $this->get_version() );
-		$cookie_setting_public = new Gdpr_Cookie_Setting_Js();
 
 		add_action( 'wp_enqueue_scripts', array( $plugin_public, 'enqueue_styles' ) );
 		add_action( 'wp_enqueue_scripts', array( $plugin_public, 'enqueue_scripts' ) );
 		add_action( 'init', array( $plugin_public, 'set_plugin_cookies' ) );
-		add_action( 'init', array( $cookie_setting_public, 'set_cookies_from_transients_on_page_load' ) );
 		add_action( 'wp_footer', array( $plugin_public, 'overlay' ) );
 		add_action( 'wp_footer', array( $plugin_public, 'privacy_bar' ) );
 		add_action( 'wp_footer', array( $plugin_public, 'is_consent_needed' ) );
@@ -344,8 +342,10 @@ class GDPR {
 				GDPR_Audit_Log::log( $user_id, sprintf( esc_html__( 'User gave explicit consent to %s', 'gdpr' ), $consent ) );
 				add_user_meta( $user_id, 'gdpr_consents', $consent );
 			}
-			(new Gdpr_Cookie_Setting_Js())
-				->js_setcookie( 'gdpr[consent_types]', wp_json_encode( $consents ), time() + YEAR_IN_SECONDS, '/' );
+			// This only happens on a POST request and should have no impact on caching.
+			// phpcs:disable WordPressVIPMinimum.VIP.RestrictedFunctions.cookies_setcookie
+			setcookie( 'gdpr[consent_types]', wp_json_encode( $consents ), time() + YEAR_IN_SECONDS, '/' );
+			// phpcs:enable WordPressVIPMinimum.VIP.RestrictedFunctions.cookies_setcookie
 		}
 	}
 
@@ -650,8 +650,10 @@ class GDPR {
 			if ( in_array( $consent, $consent_ids, true ) && ! in_array( $consent, $user_consent, true ) ) {
 				add_user_meta( $user_id, 'gdpr_consents', $consent );
 				$user_consent[] = $consent;
-				(new Gdpr_Cookie_Setting_Js())
-					->js_setcookie( 'gdpr[consent_types]', wp_json_encode( $user_consent ), time() + YEAR_IN_SECONDS, '/' );
+				// This only happens on a POST request and should have no impact on caching.
+				// phpcs:disable WordPressVIPMinimum.VIP.RestrictedFunctions.cookies_setcookie
+				setcookie( 'gdpr[consent_types]', wp_json_encode( $user_consent ), time() + YEAR_IN_SECONDS, '/' );
+				// phpcs:enable WordPressVIPMinimum.VIP.RestrictedFunctions.cookies_setcookie
 				return true;
 			}
 		}
@@ -678,8 +680,10 @@ class GDPR {
 			if ( false !== $key ) {
 				delete_user_meta( $user_id, 'gdpr_consents', $consent );
 				unset( $user_consent[ $key ] );
-				(new Gdpr_Cookie_Setting_Js())
-					->js_setcookie( 'gdpr[consent_types]', wp_json_encode( $user_consent ), time() + YEAR_IN_SECONDS, '/' );
+				// This only happens on a POST request and should have no impact on caching.
+				// phpcs:disable WordPressVIPMinimum.VIP.RestrictedFunctions.cookies_setcookie
+				setcookie( 'gdpr[consent_types]', wp_json_encode( $user_consent ), time() + YEAR_IN_SECONDS, '/' );
+				// phpcs:enable WordPressVIPMinimum.VIP.RestrictedFunctions.cookies_setcookie
 				return true;
 			}
 		}
