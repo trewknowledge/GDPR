@@ -922,8 +922,10 @@ class GDPR_Admin {
 			GDPR_Audit_Log::log( $user_id, $consent );
 		}
 
-		(new Gdpr_Cookie_Setting_Js())
-			->js_setcookie( 'gdpr[consent_types]', wp_json_encode( $consents ), time() + YEAR_IN_SECONDS, '/' );
+		// This only happens on a POST request and should have no impact on caching.
+		// phpcs:disable WordPressVIPMinimum.VIP.RestrictedFunctions.cookies_setcookie
+		setcookie( 'gdpr[consent_types]', wp_json_encode( $consents ), time() + YEAR_IN_SECONDS, '/' );
+		// phpcs:enable WordPressVIPMinimum.VIP.RestrictedFunctions.cookies_setcookie
 	}
 
 	/**
