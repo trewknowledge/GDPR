@@ -288,9 +288,9 @@ class GDPR_Admin {
 	public function requests_page_template() {
 		$requests = (array) get_option( 'gdpr_requests', array() );
 
-		$rectify = 0;
-		$complaint = 0;
-		$delete = 0;
+		$rectify = [];
+		$complaint = [];
+		$delete = [];
 
 		if ( ! empty( $requests ) ) {
 			foreach ( $requests as $index => $request ) {
