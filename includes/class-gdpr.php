@@ -332,7 +332,7 @@ class GDPR {
 		GDPR_Audit_Log::log( $user_id, esc_html__( 'User registered to the site.', 'gdpr' ) );
 
 		// phpcs:disable WordPressVIPMinimum.VIP.PHPFilterFunctions.RestrictedFilter
-		$user_consents = filter_input( INPUT_POST, 'shipping_method', FILTER_DEFAULT, FILTER_REQUIRE_ARRAY );
+		$user_consents = filter_input( INPUT_POST, 'user_consents', FILTER_DEFAULT, FILTER_REQUIRE_ARRAY );
 		// phpcs:enable WordPressVIPMinimum.VIP.PHPFilterFunctions.RestrictedFilter
 		if ( is_array( $user_consents ) ) {
 
@@ -340,7 +340,11 @@ class GDPR {
 			foreach ( $consents as $consent ) {
 				/* translators: Name of consent */
 				GDPR_Audit_Log::log( $user_id, sprintf( esc_html__( 'User gave explicit consent to %s', 'gdpr' ), $consent ) );
-				add_user_meta( $user_id, 'gdpr_consents', $consent );
+				if ( defined( 'WPCOM_IS_VIP_ENV' ) && WPCOM_IS_VIP_ENV ) {
+					add_user_attribute( $user_id, 'gdpr_consents', $consent );
+				} else {
+					add_user_meta( $user_id, 'gdpr_consents', $consent );
+				}
 			}
 			// This only happens on a POST request and should have no impact on caching.
 			// phpcs:disable WordPressVIPMinimum.VIP.RestrictedFunctions.cookies_setcookie
