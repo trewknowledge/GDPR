@@ -178,8 +178,10 @@ class GDPR_Public {
 		$consent_types          = get_option( 'gdpr_consent_types', array() );
 		// Approved usage by VIP support.
 		// phpcs:disable WordPress.VIP.RestrictedVariables.cache_constraints___COOKIE
+		// phpcs:disable WordPressVIPMinimum.Variables.RestrictedVariables.cache_constraints___COOKIE
 		$approved_cookies       = isset( $_COOKIE['gdpr']['allowed_cookies'] ) ? json_decode( wp_unslash( $_COOKIE['gdpr']['allowed_cookies'] ) ) : array(); // WPCS: Input var ok, sanitization ok..
 		$user_consents          = isset( $_COOKIE['gdpr']['consent_types'] ) ? json_decode( wp_unslash( $_COOKIE['gdpr']['consent_types'] ) ) : array(); // WPCS: Input var ok, sanitization ok.
+		// phpcs:enable WordPressVIPMinimum.Variables.RestrictedVariables.cache_constraints___COOKIE
 		// phpcs:enable WordPress.VIP.RestrictedVariables.cache_constraints___COOKIE
 		$tabs                   = get_option( 'gdpr_cookie_popup_content', array() );
 		$hide_from_bots         = get_option( 'gdpr_hide_from_bots', true );
@@ -246,25 +248,29 @@ class GDPR_Public {
 		$consents_as_json = wp_json_encode( $consents );
 
 		// This only happens on a POST request and should have no impact on caching.
-		// phpcs:disable WordPressVIPMinimum.VIP.RestrictedFunctions.cookies_setcookie
+		// phpcs:disable WordPressVIPMinimum.Functions.RestrictedFunctions.cookies_setcookie
+		// phpcs:disable WordPressVIPMinimum.Variables.RestrictedVariables.cache_constraints___COOKIE
 		setcookie( 'gdpr[allowed_cookies]', $cookies_as_json, time() + YEAR_IN_SECONDS, '/' );
 		setcookie( 'gdpr[consent_types]', $consents_as_json, time() + YEAR_IN_SECONDS, '/' );
-		// phpcs:enable WordPressVIPMinimum.VIP.RestrictedFunctions.cookies_setcookie
+		// phpcs:enable WordPressVIPMinimum.Variables.RestrictedVariables.cache_constraints___COOKIE
+		// phpcs:enable WordPressVIPMinimum.Functions.RestrictedFunctions.cookies_setcookie
 
 		foreach ( $cookies_to_remove as $cookie ) {
 			// Approved usage by VIP support.
 			// phpcs:disable WordPress.VIP.RestrictedVariables.cache_constraints___COOKIE
+			// phpcs:disable WordPressVIPMinimum.Variables.RestrictedVariables.cache_constraints___COOKIE
 			if ( GDPR::similar_in_array( $cookie, array_keys( $_COOKIE ) ) ) { // WPCS: Input var ok.
 				$domain = get_site_url();
 				$domain = wp_parse_url( $domain, PHP_URL_HOST );
 				unset( $_COOKIE[ $cookie ] ); // WPCS: Input var ok.
+				// phpcs:enable WordPressVIPMinimum.Variables.RestrictedVariables.cache_constraints___COOKIE
 				// phpcs:enable WordPress.VIP.RestrictedVariables.cache_constraints___COOKIE
 
 				// This only happens on a POST request and should have no impact on caching.
-				// phpcs:disable WordPressVIPMinimum.VIP.RestrictedFunctions.cookies_setcookie
+				// phpcs:disable WordPressVIPMinimum.Functions.RestrictedFunctions.cookies_setcookie
 				setcookie( $cookie, null, -1, '/', $domain );
 				setcookie( $cookie, null, -1, '/', '.' . $domain );
-				// phpcs:enable WordPressVIPMinimum.VIP.RestrictedFunctions.cookies_setcookie
+				// phpcs:enable WordPressVIPMinimum.Functions.RestrictedFunctions.cookies_setcookie
 			}
 		}
 
@@ -351,6 +357,7 @@ class GDPR_Public {
 
 		// Approved usage by VIP support.
 		// phpcs:disable WordPress.VIP.RestrictedVariables.cache_constraints___COOKIE
+		// phpcs:disable WordPressVIPMinimum.Variables.RestrictedVariables.cache_constraints___COOKIE
 		if ( ! isset( $_COOKIE['gdpr']['consent_types'] ) ) { // WPCS: Input var ok.
 			if ( ! $user_id ) {
 				(new Gdpr_Cookie_Setting_Js())
@@ -376,6 +383,7 @@ class GDPR_Public {
 		}
 
 		if ( ! isset( $_COOKIE['gdpr']['allowed_cookies'] ) ) { // WPCS: Input var ok.
+			// phpcs:enable WordPressVIPMinimum.Variables.RestrictedVariables.cache_constraints___COOKIE
 			// phpcs:enable WordPress.VIP.RestrictedVariables.cache_constraints___COOKIE
 			$registered_cookies = get_option( 'gdpr_cookie_popup_content', array() );
 			$cookies            = array();

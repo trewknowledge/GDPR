@@ -331,9 +331,7 @@ class GDPR {
 	public static function save_user_consent_on_registration( $user_id ) {
 		GDPR_Audit_Log::log( $user_id, esc_html__( 'User registered to the site.', 'gdpr' ) );
 
-		// phpcs:disable WordPressVIPMinimum.VIP.PHPFilterFunctions.RestrictedFilter
-		$user_consents = filter_input( INPUT_POST, 'user_consents', FILTER_DEFAULT, FILTER_REQUIRE_ARRAY );
-		// phpcs:enable WordPressVIPMinimum.VIP.PHPFilterFunctions.RestrictedFilter
+		$user_consents = filter_input( INPUT_POST, 'user_consents', FILTER_SANITIZE_STRING, FILTER_REQUIRE_ARRAY );
 		if ( is_array( $user_consents ) ) {
 
 			$consents = array_map( 'sanitize_text_field', array_keys( wp_unslash( $user_consents ) ) );
@@ -348,7 +346,9 @@ class GDPR {
 			}
 			// This only happens on a POST request and should have no impact on caching.
 			// phpcs:disable WordPressVIPMinimum.VIP.RestrictedFunctions.cookies_setcookie
+			// phpcs:disable WordPressVIPMinimum.Functions.RestrictedFunctions.cookies_setcookie
 			setcookie( 'gdpr[consent_types]', wp_json_encode( $consents ), time() + YEAR_IN_SECONDS, '/' );
+			// phpcs:enable WordPressVIPMinimum.Functions.RestrictedFunctions.cookies_setcookie
 			// phpcs:enable WordPressVIPMinimum.VIP.RestrictedFunctions.cookies_setcookie
 		}
 	}
@@ -363,9 +363,7 @@ class GDPR {
 		if ( empty( $consent_types ) ) {
 			return;
 		}
-		// phpcs:disable WordPressVIPMinimum.VIP.PHPFilterFunctions.RestrictedFilter
-		$user_consents = filter_input( INPUT_POST, 'shipping_method', FILTER_DEFAULT, FILTER_REQUIRE_ARRAY );
-		// phpcs:enable WordPressVIPMinimum.VIP.PHPFilterFunctions.RestrictedFilter
+		$user_consents = filter_input( INPUT_POST, 'user_consents', FILTER_SANITIZE_STRING, FILTER_REQUIRE_ARRAY );
 		$sent_extras   = $user_consents ? wp_unslash( $user_consents ) : array();
 		if ( ! empty( $sent_extras ) ) {
 			$sent_extras = array_map( 'sanitize_text_field', $user_consents );
@@ -656,7 +654,9 @@ class GDPR {
 				$user_consent[] = $consent;
 				// This only happens on a POST request and should have no impact on caching.
 				// phpcs:disable WordPressVIPMinimum.VIP.RestrictedFunctions.cookies_setcookie
+				// phpcs:disable WordPressVIPMinimum.Functions.RestrictedFunctions.cookies_setcookie
 				setcookie( 'gdpr[consent_types]', wp_json_encode( $user_consent ), time() + YEAR_IN_SECONDS, '/' );
+				// phpcs:enable WordPressVIPMinimum.Functions.RestrictedFunctions.cookies_setcookie
 				// phpcs:enable WordPressVIPMinimum.VIP.RestrictedFunctions.cookies_setcookie
 				return true;
 			}
@@ -686,7 +686,9 @@ class GDPR {
 				unset( $user_consent[ $key ] );
 				// This only happens on a POST request and should have no impact on caching.
 				// phpcs:disable WordPressVIPMinimum.VIP.RestrictedFunctions.cookies_setcookie
+				// phpcs:disable WordPressVIPMinimum.Functions.RestrictedFunctions.cookies_setcookie
 				setcookie( 'gdpr[consent_types]', wp_json_encode( $user_consent ), time() + YEAR_IN_SECONDS, '/' );
+				// phpcs:enable WordPressVIPMinimum.Functions.RestrictedFunctions.cookies_setcookie
 				// phpcs:enable WordPressVIPMinimum.VIP.RestrictedFunctions.cookies_setcookie
 				return true;
 			}

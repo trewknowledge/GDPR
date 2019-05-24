@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "d2ce6eb549dd357f880fc338fcf999a3",
+    "content-hash": "6d4aa9adedf169ba2b2003fb0f6a4412",
     "packages": [],
     "packages-dev": [
         {
@@ -52,16 +52,16 @@
         },
         {
             "name": "automattic/vipwpcs",
-            "version": "0.4.0",
+            "version": "1.0.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/Automattic/VIP-Coding-Standards.git",
-                "reference": "423dd6d34ad3085a3de155603551043e81545ab1"
+                "reference": "8544a94c32f990b6669f2c7f034d4ba75ccbb558"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/Automattic/VIP-Coding-Standards/zipball/423dd6d34ad3085a3de155603551043e81545ab1",
-                "reference": "423dd6d34ad3085a3de155603551043e81545ab1",
+                "url": "https://api.github.com/repos/Automattic/VIP-Coding-Standards/zipball/8544a94c32f990b6669f2c7f034d4ba75ccbb558",
+                "reference": "8544a94c32f990b6669f2c7f034d4ba75ccbb558",
                 "shasum": ""
             },
             "require": {
@@ -70,11 +70,12 @@
                 "wp-coding-standards/wpcs": "1.*"
             },
             "require-dev": {
+                "dealerdirect/phpcodesniffer-composer-installer": "^0.5",
                 "phpcompatibility/php-compatibility": "^9",
-                "phpunit/phpunit": "*"
+                "phpunit/phpunit": "^5 || ^6 || ^7"
             },
             "suggest": {
-                "dealerdirect/phpcodesniffer-composer-installer": "^0.4.3 || This Composer plugin will sort out the PHPCS 'installed_paths' automatically."
+                "dealerdirect/phpcodesniffer-composer-installer": "^0.5 || This Composer plugin will sort out the PHPCS 'installed_paths' automatically."
             },
             "type": "phpcodesniffer-standard",
             "notification-url": "https://packagist.org/downloads/",
@@ -93,7 +94,7 @@
                 "standards",
                 "wordpress"
             ],
-            "time": "2018-12-18T19:38:56+00:00"
+            "time": "2019-04-24T21:34:09+00:00"
         },
         {
             "name": "dealerdirect/phpcodesniffer-composer-installer",
@@ -1024,6 +1025,7 @@
                 "mock",
                 "xunit"
             ],
+            "abandoned": true,
             "time": "2017-06-30T09:13:00+00:00"
         },
         {

@@ -107,9 +107,7 @@
 											$site_cookies       = array();
 											$enabled            = ( 'off' === $modal_tab['status'] ) ? false : true;
 											$cookies_used       = explode( ',', $modal_tab['cookies_used'] );
-											// phpcs:disable WordPressVIPMinimum.VIP.PHPFilterFunctions.RestrictedFilter
-											$gdpr_cookies_array = filter_input( INPUT_COOKIE, 'gdpr', FILTER_DEFAULT, FILTER_REQUIRE_ARRAY );
-											// phpcs:enable WordPressVIPMinimum.VIP.PHPFilterFunctions.RestrictedFilter
+											$gdpr_cookies_array = filter_input( INPUT_COOKIE, 'gdpr', FILTER_SANITIZE_STRING, FILTER_REQUIRE_ARRAY );
 											$approved_cookies   = isset( $gdpr_cookies_array['allowed_cookies'] ) ? json_decode( sanitize_text_field( wp_unslash( $gdpr_cookies_array['allowed_cookies'] ) ) ) : array(); // WPCS: input var ok.
 											foreach ( $cookies_used as $cookie ) {
 												$site_cookies[] = trim( $cookie );
