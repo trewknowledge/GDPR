@@ -924,7 +924,9 @@ class GDPR_Admin {
 
 		// This only happens on a POST request and should have no impact on caching.
 		// phpcs:disable WordPressVIPMinimum.VIP.RestrictedFunctions.cookies_setcookie
+		// phpcs:disable WordPressVIPMinimum.Functions.RestrictedFunctions.cookies_setcookie
 		setcookie( 'gdpr[consent_types]', wp_json_encode( $consents ), time() + YEAR_IN_SECONDS, '/' );
+		// phpcs:enable WordPressVIPMinimum.Functions.RestrictedFunctions.cookies_setcookie
 		// phpcs:enable WordPressVIPMinimum.VIP.RestrictedFunctions.cookies_setcookie
 	}
 

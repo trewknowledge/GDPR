@@ -92,8 +92,10 @@ function gdpr_get_consent_checkboxes( $atts ) {
 function is_allowed_cookie( $cookie_name ) {
 	// Approved usage by VIP support.
 	// phpcs:disable WordPress.VIP.RestrictedVariables.cache_constraints___COOKIE
+	// phpcs:disable WordPressVIPMinimum.Variables.RestrictedVariables.cache_constraints___COOKIE
 	if ( isset( $_COOKIE['gdpr']['allowed_cookies'] ) ) {
 		$allowed_cookies = array_map( 'sanitize_text_field', json_decode( wp_unslash( $_COOKIE['gdpr']['allowed_cookies'] ), true ) );  // WPCS: Input var ok, sanitization ok.
+		// phpcs:enable WordPressVIPMinimum.Variables.RestrictedVariables.cache_constraints___COOKIE
 		// phpcs:enable WordPress.VIP.RestrictedVariables.cache_constraints___COOKIE
 		$name            = preg_quote( $cookie_name, '~' );
 		$result          = preg_grep( '~' . $name . '~', $allowed_cookies );
@@ -134,8 +136,10 @@ function has_consent( $consent ) {
 		$consents = (array) get_user_meta( $user->ID, 'gdpr_consents' );
 		// Approved usage by VIP support.
 		// phpcs:disable WordPress.VIP.RestrictedVariables.cache_constraints___COOKIE
+		// phpcs:disable WordPressVIPMinimum.Variables.RestrictedVariables.cache_constraints___COOKIE
 	} elseif ( isset( $_COOKIE['gdpr']['consent_types'] ) && ! empty( $_COOKIE['gdpr']['consent_types'] ) ) { // WPCS: Input var ok.
 		$consents = array_map( 'sanitize_text_field', (array) json_decode( wp_unslash( $_COOKIE['gdpr']['consent_types'] ) ) ); // WPCS: Input var ok, sanitization ok.
+		// phpcs:enable WordPressVIPMinimum.Variables.RestrictedVariables.cache_constraints___COOKIE
 		// phpcs:enable WordPress.VIP.RestrictedVariables.cache_constraints___COOKIE
 	}
 
