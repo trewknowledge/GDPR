@@ -104,9 +104,12 @@ class GDPR_Audit_Log {
 			$file_found   = file_exists( $path . $filename );
 			if ( ! $file_found ) {
 				return false;
+			}
+
+			if (defined('VIP_GO_ENV') & false !== VIP_GO_ENV) {
+				$log = wpcom_vip_file_get_contents($path . $filename);
 			} else {
-				$log = wpcom_vip_file_get_contents( $path . $filename );
-				return self::decrypt( $email, $log );
+				$log = file_get_contents($path . $filename);
 			}
 		}
 
@@ -148,8 +151,26 @@ class GDPR_Audit_Log {
 	 * @param  string $token   The 6 digit token the user gets on deletion.
 	 */
 	public static function export_log( $user_id, $token ) {
-		// see : https://github.com/trewknowledge/GDPR/blob/2.1.0/includes/class-gdpr-audit-log.php#L147.
-		throw new \DomainException('This function is not implemented.');
-	}
+		if (defined('VIP_GO_ENV') & false !== VIP_GO_ENV) {
+			// TODO: Fix this to work on VIP environments.
+			throw new \DomainException('This function is not implemented.');
+		}
 
+		$user = get_user_by( 'ID', $user_id );
+		if ( ! $user instanceof WP_User ) {
+			return;
+		}
+		$uploads_dir = wp_upload_dir();
+		$basedir     = $uploads_dir['basedir'];
+		$path        = $basedir . '/gdpr_logs/';
+		if ( wp_mkdir_p( $path ) ) {
+			if ( ! file_exists( $path . 'index.php' ) ) {
+				file_put_contents( $path . 'index.php', '' );
+			}
+			$log      = self::get_log( $user->user_email );
+			$filename = self::email_mask( $user->user_email . $token );
+			$filename = base64_encode( $filename );
+			file_put_contents( $path . $filename, self::crypt( $user->user_email, $log ) );
+		}
+	}
 }

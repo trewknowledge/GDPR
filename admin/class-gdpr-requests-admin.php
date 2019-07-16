@@ -253,8 +253,17 @@ class GDPR_Requests_Admin extends GDPR_Requests {
 		GDPR_Email::send( $user->user_email, 'delete-resolved', array( 'token' => $token ) );
 
 		GDPR_Audit_Log::log( $user->ID, esc_html__( 'User was removed from the site.', 'gdpr' ) );
-		GDPR_Audit_Log::export_log( $user->ID, $token );
-		wp_delete_user( $user->ID );
+		try {
+			GDPR_Audit_Log::export_log($user->ID, $token);
+		} catch (DomainException $e) {
+			// Swallow any domain exceptions.
+		}
+
+		if ( is_multisite() ) {
+			wpmu_delete_user( $user->ID );
+		} else {
+			wp_delete_user($user->ID);
+		}
 
 		/* translators: User email */
 		add_settings_error( 'gdpr-requests', 'new-request', sprintf( esc_html__( 'User %s was deleted from the site.', 'gdpr' ), $email ), 'updated' );
