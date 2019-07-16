@@ -751,7 +751,8 @@ class GDPR_Admin {
 
 		foreach ( $consent_types as $key => $consent ) {
 			if ( $consent['policy-page'] ) {
-				if ( ! isset( $_POST['user_consents'][ $key ] ) ) { // WPCS: Input var ok, CSRF ok.
+				// phpcs:ignore WordPress.Security.NonceVerification.Missing
+				if ( ! isset( $_POST['user_consents'][ $key ] ) ) {
 					$errors->add(
 						'missing_required_consents',
 						sprintf(
@@ -906,11 +907,13 @@ class GDPR_Admin {
 	 * @param  int $user_id The user ID.
 	 */
 	public function user_profile_update( $user_id ) {
-		if ( ! isset( $_POST['user_consents'] ) ) { // WPCS: Input var ok, CSRF ok.
+		// phpcs:ignore WordPress.Security.NonceVerification.Missing
+		if ( ! isset( $_POST['user_consents'] ) ) {
 			return;
 		}
 
-		$consents = array_map( 'sanitize_text_field', (array) wp_unslash( $_POST['user_consents'] ) ); // WPCS: Input var ok, CSRF ok.
+		// phpcs:ignore WordPress.Security.NonceVerification.Missing
+		$consents = array_map( 'sanitize_text_field', (array) wp_unslash( $_POST['user_consents'] ) );
 
 		GDPR_Audit_Log::log( $user_id, esc_html__( 'Profile Updated. These are the user consents after the save:', 'gdpr' ) );
 

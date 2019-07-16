@@ -146,7 +146,7 @@ class GDPR_Requests_Admin extends GDPR_Requests {
 			wp_die( esc_html__( 'We could not verify the type of request you want to cancel.', 'gdpr' ) );
 		}
 
-		$type          = trim( strtolower( sanitize_text_field( wp_unslash( $_POST['type'] ) ) ) ); // WPCS: Input var ok, CSRF ok.
+		$type          = trim( strtolower( sanitize_text_field( wp_unslash( $_POST['type'] ) ) ) );
 		$allowed_types = parent::get_allowed_types();
 
 		if ( ! in_array( $type, $allowed_types, true ) ) {
@@ -194,7 +194,7 @@ class GDPR_Requests_Admin extends GDPR_Requests {
 			wp_die( esc_html__( 'We could not verify the type of request you want to cancel.', 'gdpr' ) );
 		}
 
-		$type          = isset( $_POST['type'] ) ? trim( strtolower( sanitize_text_field( wp_unslash( $_POST['type'] ) ) ) ) : ''; // WPCS: Input var ok, CSRF ok.
+		$type          = isset( $_POST['type'] ) ? trim( strtolower( sanitize_text_field( wp_unslash( $_POST['type'] ) ) ) ) : '';
 		$allowed_types = parent::get_allowed_types();
 
 		if ( ! in_array( $type, $allowed_types, true ) ) {

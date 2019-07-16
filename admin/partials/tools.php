@@ -14,10 +14,13 @@
 
 include_once plugin_dir_path( __FILE__ ) . 'templates/tmpl-tools.php';
 
-if ( isset( $_GET['type'], $_GET['key'] ) ) { // WPCS: CSRF ok.
+// phpcs:ignore WordPress.Security.NonceVerification.Recommended
+if ( isset( $_GET['type'], $_GET['key'] ) ) {
 
-	if ( 'data-breach-confirmed' === $_GET['type'] ) { // WPCS: CSRF ok.
-		$key = sanitize_text_field( wp_unslash( $_GET['key'] ) ); // WPCS: Input var ok, CSRF ok.
+	// phpcs:ignore WordPress.Security.NonceVerification.Recommended
+	if ( 'data-breach-confirmed' === $_GET['type'] ) {
+		// phpcs:ignore WordPress.Security.NonceVerification.Recommended
+		$key = sanitize_text_field( wp_unslash( $_GET['key'] ) );
 
 		$data_breach = get_option( 'gdpr_data_breach_initiated', array( 'key' => '' ) );
 		if ( ! empty( $data_breach ) ) {

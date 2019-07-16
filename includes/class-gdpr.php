@@ -406,7 +406,8 @@ class GDPR {
 	 * @author Fernando Claussen <fernandoclaussen@gmail.com>
 	 */
 	public static function consent_checkboxes( $consent_key = false ) {
-		echo self::get_consent_checkboxes( $consent_key );  // WPCS: XSS ok.
+		// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
+		echo self::get_consent_checkboxes( $consent_key );
 	}
 
 	/**
