@@ -246,10 +246,12 @@ class GDPR_Telemetry {
 		$host = self::_get_post_meta( $post_id, 'host' );
 
 		/* Print output */
+        // phpcs:disable WordPress.Security.EscapeOutput.OutputNotEscaped
 		echo sprintf(
 			'<div>%s</div>',
 			str_replace( $host, '<code>' . $host . '</code>', esc_url( $url ) )
-		); // WPCS: XSS ok.
+		);
+		// phpcs:enable WordPress.Security.EscapeOutput.OutputNotEscaped
 	}
 
 	/**

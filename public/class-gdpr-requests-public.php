@@ -226,13 +226,14 @@ class GDPR_Requests_Public extends GDPR_Requests {
 	 * @author Fernando Claussen <fernandoclaussen@gmail.com>
 	 */
 	public function request_confirmed() {
-		if ( is_admin() || ! isset( $_GET['type'], $_GET['key'], $_GET['email'] ) ) { // WPCS: Input var ok CSRF ok.
+		// phpcs:disable WordPress.Security.NonceVerification.Recommended
+		if ( is_admin() || ! isset( $_GET['type'], $_GET['key'], $_GET['email'] ) ) {
 			return;
 		}
 
-		$type               = sanitize_text_field( wp_unslash( $_GET['type'] ) ); // WPCS: Input var ok, CSRF ok.
-		$key                = sanitize_text_field( wp_unslash( $_GET['key'] ) ); // WPCS: Input var ok, CSRF ok.
-		$email              = sanitize_email( wp_unslash( $_GET['email'] ) ); // WPCS: Input var ok, CSRF ok.
+		$type               = sanitize_text_field( wp_unslash( $_GET['type'] ) );
+		$key                = sanitize_text_field( wp_unslash( $_GET['key'] ) );
+		$email              = sanitize_email( wp_unslash( $_GET['email'] ) );
 		$notification_email = sanitize_email( apply_filters( 'gdpr_admin_notification_email', get_option( 'admin_email' ) ) );
 
 		$user = get_user_by( 'email', $email );
@@ -345,13 +346,14 @@ class GDPR_Requests_Public extends GDPR_Requests {
 					exit;
 					break;
 				case 'export-data':
-					$format = isset( $_GET['format'] ) ? sanitize_text_field( wp_unslash( $_GET['format'] ) ) : 'xml'; // WPCS: Input var ok, CSRF ok.
+					$format = isset( $_GET['format'] ) ? sanitize_text_field( wp_unslash( $_GET['format'] ) ) : 'xml';
 					/* translators: File format. Can be XML or JSON */
 					GDPR_Audit_Log::log( $user->ID, sprintf( esc_html__( 'User downloaded all their data in %s format.', 'gdpr' ), $format ) );
 					$this->file_export_data( $this->get_escaped_user_email_address( $user ), $format, $key );
 					break;
 			}
 		}
+		// phpcs:enable WordPress.Security.NonceVerification.Recommended
 	}
 
 	/**
@@ -372,7 +374,8 @@ class GDPR_Requests_Public extends GDPR_Requests {
 			header( 'Content-Type: application/octet-stream' );
 			header( 'Content-Description: File Transfer' );
 			header( 'Content-Disposition: attachment; filename=' . $email . '.' . $format );
-			echo $export; // WPCS: XSS ok.
+			// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
+			echo $export;
 		}
 		die();
 	}

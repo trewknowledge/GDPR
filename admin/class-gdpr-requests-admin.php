@@ -146,7 +146,7 @@ class GDPR_Requests_Admin extends GDPR_Requests {
 			wp_die( esc_html__( 'We could not verify the type of request you want to cancel.', 'gdpr' ) );
 		}
 
-		$type          = trim( strtolower( sanitize_text_field( wp_unslash( $_POST['type'] ) ) ) ); // WPCS: Input var ok, CSRF ok.
+		$type          = trim( strtolower( sanitize_text_field( wp_unslash( $_POST['type'] ) ) ) );
 		$allowed_types = parent::get_allowed_types();
 
 		if ( ! in_array( $type, $allowed_types, true ) ) {
@@ -194,7 +194,7 @@ class GDPR_Requests_Admin extends GDPR_Requests {
 			wp_die( esc_html__( 'We could not verify the type of request you want to cancel.', 'gdpr' ) );
 		}
 
-		$type          = isset( $_POST['type'] ) ? trim( strtolower( sanitize_text_field( wp_unslash( $_POST['type'] ) ) ) ) : ''; // WPCS: Input var ok, CSRF ok.
+		$type          = isset( $_POST['type'] ) ? trim( strtolower( sanitize_text_field( wp_unslash( $_POST['type'] ) ) ) ) : '';
 		$allowed_types = parent::get_allowed_types();
 
 		if ( ! in_array( $type, $allowed_types, true ) ) {
@@ -253,8 +253,17 @@ class GDPR_Requests_Admin extends GDPR_Requests {
 		GDPR_Email::send( $user->user_email, 'delete-resolved', array( 'token' => $token ) );
 
 		GDPR_Audit_Log::log( $user->ID, esc_html__( 'User was removed from the site.', 'gdpr' ) );
-		GDPR_Audit_Log::export_log( $user->ID, $token );
-		wp_delete_user( $user->ID );
+		try {
+			GDPR_Audit_Log::export_log($user->ID, $token);
+		} catch (DomainException $e) {
+			// Swallow any domain exceptions.
+		}
+
+		if ( is_multisite() ) {
+			wpmu_delete_user( $user->ID );
+		} else {
+			wp_delete_user($user->ID);
+		}
 
 		/* translators: User email */
 		add_settings_error( 'gdpr-requests', 'new-request', sprintf( esc_html__( 'User %s was deleted from the site.', 'gdpr' ), $email ), 'updated' );

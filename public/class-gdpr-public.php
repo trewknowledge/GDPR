@@ -179,10 +179,12 @@ class GDPR_Public {
 		// Approved usage by VIP support.
 		// phpcs:disable WordPress.VIP.RestrictedVariables.cache_constraints___COOKIE
 		// phpcs:disable WordPressVIPMinimum.Variables.RestrictedVariables.cache_constraints___COOKIE
-		$approved_cookies       = isset( $_COOKIE['gdpr']['allowed_cookies'] ) ? json_decode( wp_unslash( $_COOKIE['gdpr']['allowed_cookies'] ) ) : array(); // WPCS: Input var ok, sanitization ok..
-		$user_consents          = isset( $_COOKIE['gdpr']['consent_types'] ) ? json_decode( wp_unslash( $_COOKIE['gdpr']['consent_types'] ) ) : array(); // WPCS: Input var ok, sanitization ok.
+		// phpcs:disable WordPress.Security.ValidatedSanitizedInput.InputNotSanitized
+		$approved_cookies       = isset( $_COOKIE['gdpr']['allowed_cookies'] ) ? json_decode( wp_unslash( $_COOKIE['gdpr']['allowed_cookies'] ) ) : array();
+		$user_consents          = isset( $_COOKIE['gdpr']['consent_types'] ) ? json_decode( wp_unslash( $_COOKIE['gdpr']['consent_types'] ) ) : array();
 		// phpcs:enable WordPressVIPMinimum.Variables.RestrictedVariables.cache_constraints___COOKIE
 		// phpcs:enable WordPress.VIP.RestrictedVariables.cache_constraints___COOKIE
+		// phpcs:enable WordPress.Security.ValidatedSanitizedInput.InputNotSanitized
 		$tabs                   = get_option( 'gdpr_cookie_popup_content', array() );
 		$hide_from_bots         = get_option( 'gdpr_hide_from_bots', true );
 		// phpcs:enable WordPressVIPMinimum.Variables.VariableAnalysis.UnusedVariable
@@ -228,9 +230,11 @@ class GDPR_Public {
 				)
 			);
 		}
-		$consents    = isset( $_POST['user_consents'] ) ? array_map( 'sanitize_text_field', (array) wp_unslash( $_POST['user_consents'] ) ) : array(); // WPCS: Input var ok.
-		$cookies     = isset( $_POST['approved_cookies'] ) ? array_map( 'sanitize_text_field', (array) wp_unslash( $_POST['approved_cookies'] ) ) : array(); // WPCS: Input var ok.
-		$all_cookies = isset( $_POST['all_cookies'] ) ? array_map( 'sanitize_text_field', (array) json_decode( wp_unslash( $_POST['all_cookies'] ) ) ) : array(); // WPCS: Input var ok, sanitization ok.
+		$consents    = isset( $_POST['user_consents'] ) ? array_map( 'sanitize_text_field', (array) wp_unslash( $_POST['user_consents'] ) ) : array();
+		$cookies     = isset( $_POST['approved_cookies'] ) ? array_map( 'sanitize_text_field', (array) wp_unslash( $_POST['approved_cookies'] ) ) : array();
+		// phpcs:disable WordPress.Security.ValidatedSanitizedInput.InputNotSanitized
+		$all_cookies = isset( $_POST['all_cookies'] ) ? array_map( 'sanitize_text_field', (array) json_decode( wp_unslash( $_POST['all_cookies'] ) ) ) : array();
+		// phpcs:enable WordPress.Security.ValidatedSanitizedInput.InputNotSanitized
 
 		$approved_cookies = array();
 		if ( ! empty( $cookies ) ) {
@@ -358,6 +362,7 @@ class GDPR_Public {
 		// Approved usage by VIP support.
 		// phpcs:disable WordPress.VIP.RestrictedVariables.cache_constraints___COOKIE
 		// phpcs:disable WordPressVIPMinimum.Variables.RestrictedVariables.cache_constraints___COOKIE
+		// phpcs:disable WordPress.Security.ValidatedSanitizedInput.InputNotSanitized
 		if ( ! isset( $_COOKIE['gdpr']['consent_types'] ) ) { // WPCS: Input var ok.
 			if ( ! $user_id ) {
 				(new Gdpr_Cookie_Setting_Js())
@@ -370,7 +375,7 @@ class GDPR_Public {
 		} else {
 			if ( $user_id ) {
 				$user_consents   = (array) get_user_meta( $user_id, 'gdpr_consents' );
-				$cookie_consents = (array) json_decode( wp_unslash( $_COOKIE['gdpr']['consent_types'] ) ); // WPCS: Input var ok, sanitization ok.
+				$cookie_consents = (array) json_decode( wp_unslash( $_COOKIE['gdpr']['consent_types'] ) );
 
 				$intersect = array_intersect( $user_consents, $cookie_consents );
 				$diff      = array_merge( array_diff( $user_consents, $intersect ), array_diff( $cookie_consents, $intersect ) );
@@ -385,6 +390,7 @@ class GDPR_Public {
 		if ( ! isset( $_COOKIE['gdpr']['allowed_cookies'] ) ) { // WPCS: Input var ok.
 			// phpcs:enable WordPressVIPMinimum.Variables.RestrictedVariables.cache_constraints___COOKIE
 			// phpcs:enable WordPress.VIP.RestrictedVariables.cache_constraints___COOKIE
+			// phpcs:enable WordPress.Security.ValidatedSanitizedInput.InputNotSanitized
 			$registered_cookies = get_option( 'gdpr_cookie_popup_content', array() );
 			$cookies            = array();
 			if ( ! empty( $registered_cookies ) ) {
