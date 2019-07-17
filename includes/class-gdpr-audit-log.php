@@ -111,6 +111,8 @@ class GDPR_Audit_Log {
 			} else {
 				$log = file_get_contents($path . $filename);
 			}
+
+			return self::decrypt( $email, $log );
 		}
 
 		return $log;
