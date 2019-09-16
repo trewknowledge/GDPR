@@ -12,7 +12,10 @@
 	<!-- Check all files in this directory and the directories below it. -->
 	<file>.</file>
 
-	<rule ref="WordPress-VIP"></rule>
+	<!-- Include the VIP GO standard. -->
+	<!-- <rule ref="WordPressVIPMinimum" /> -->
+	<rule ref="WordPress-VIP-Go" />
+	<!-- <rule ref="WordPress-VIP" /> -->
 
 	<arg value="ps"/>
 
