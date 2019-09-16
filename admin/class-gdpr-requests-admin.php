@@ -216,9 +216,10 @@ class GDPR_Requests_Admin extends GDPR_Requests {
 		GDPR_Email::send( $email, $type . '-resolved' );
 
 		$user = get_user_by( 'email', $email );
-		/* translators: User email */
+		/* translators: User email. */
 		GDPR_Audit_Log::log( $user->ID, sprintf( esc_html__( 'User %s request was marked as resolved by admin.', 'gdpr' ), $user->user_email ) );
 
+		/* translators: User email. */
 		add_settings_error( 'gdpr-requests', 'resolved', sprintf( esc_html__( 'Request was resolved. User %s has been notified.', 'gdpr' ), $email ), 'updated' );
 		set_transient( 'settings_errors', get_settings_errors(), 30 );
 		wp_safe_redirect(
@@ -354,15 +355,17 @@ class GDPR_Requests_Admin extends GDPR_Requests {
 
 		$posts = new WP_Query( $args );
 
-		if ( ! empty( $posts ) ) {
-			foreach ( $posts as $post ) {
+		if ( $posts->have_posts() ) {
+			while ( $posts->have_posts() ) {
+				$posts->the_post();
 				wp_update_post(
 					array(
-						'ID'          => $post->ID,
+						'ID'          => get_the_ID(),
 						'post_author' => $reassign_to,
 					)
 				);
 			}
+			wp_reset_postdata();
 
 			$reassign_to_user = get_user_by( 'ID', $reassign_to );
 			/* translators: 1: The post type, 2: The user the posts were reassigned to */

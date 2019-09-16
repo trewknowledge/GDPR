@@ -30,8 +30,7 @@ To confirm this request, click here: %6$s
 ---------------------------------------------------------------------------------
 If that is not intended, have the person who requested it change their password.
 ---------------------------------------------------------------------------------
-',
-		'gdpr'
+', 'gdpr'
 	),
 	esc_html( $args['requester'] ),
 	esc_html( $args['nature'] ),

@@ -19,8 +19,7 @@ To confirm this request, click here: %2$s
 
 ---------------------------------------------------------------------------------
 If that wasn\'t you, reset your password: %3$s
-',
-		'gdpr'
+', 'gdpr'
 	),
 	esc_html( $args['data'] ),
 	esc_url_raw( $args['confirm_url'] ),

@@ -89,7 +89,11 @@ class GDPR_Audit_Log {
 		// Try getting an existing user
 		$user = get_user_by( 'email', $email );
 		if ( $user instanceof WP_User ) {
-			$user_log = get_user_meta( $user->ID, 'gdpr_audit_log', false );
+			if ( defined( 'WPCOM_IS_VIP_ENV' ) && WPCOM_IS_VIP_ENV ) {
+				$user_log = get_user_attribute( $user->ID, 'gdpr_audit_log', false );
+			} else {
+				$user_log = get_user_meta( $user->ID, 'gdpr_audit_log', false );
+			}
 			ob_start();
 			foreach ( $user_log as $log ) {
 				echo esc_html( self::decrypt( $email, $log ) ) . "\n";

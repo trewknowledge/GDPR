@@ -15,8 +15,7 @@ To confirm this request, click here: %1$s
 
 ---------------------------------------------------------------------------------
 If that wasn\'t you, reset your password: %2$s
-',
-		'gdpr'
+', 'gdpr'
 	),
 	esc_url_raw( $args['confirm_url'] ),
 	esc_url_raw( $args['forgot_password_url'] )
