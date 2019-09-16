@@ -241,7 +241,7 @@ class GDPR_Public {
 	 * @author Fernando Claussen <fernandoclaussen@gmail.com>
 	 */
 	public function update_privacy_preferences() {
-		if ( ! isset( $_POST['update-privacy-preferences-nonce'] ) || ! wp_verify_nonce( sanitize_key( $_POST['update-privacy-preferences-nonce'] ), 'gdpr-update-privacy-preferences' ) ) { // WPCS: Input var ok.
+		if ( ! isset( $_POST['update-privacy-preferences-nonce'] ) || ! wp_verify_nonce( sanitize_key( $_POST['update-privacy-preferences-nonce'] ), 'gdpr-update-privacy-preferences' ) ) {
 			wp_send_json_error(
 				array(
 					'title'   => esc_html__( 'Error!', 'gdpr' ),
@@ -282,10 +282,10 @@ class GDPR_Public {
 			// Approved usage by VIP support.
 			// phpcs:disable WordPress.VIP.RestrictedVariables.cache_constraints___COOKIE
 			// phpcs:disable WordPressVIPMinimum.Variables.RestrictedVariables.cache_constraints___COOKIE
-			if ( GDPR::similar_in_array( $cookie, array_keys( $_COOKIE ) ) ) { // WPCS: Input var ok.
+			if ( GDPR::similar_in_array( $cookie, array_keys( $_COOKIE ) ) ) {
 				$domain = get_site_url();
 				$domain = wp_parse_url( $domain, PHP_URL_HOST );
-				unset( $_COOKIE[ $cookie ] ); // WPCS: Input var ok.
+				unset( $_COOKIE[ $cookie ] );
 				// phpcs:enable WordPressVIPMinimum.Variables.RestrictedVariables.cache_constraints___COOKIE
 				// phpcs:enable WordPress.VIP.RestrictedVariables.cache_constraints___COOKIE
 
@@ -398,7 +398,7 @@ class GDPR_Public {
 		// phpcs:disable WordPress.VIP.RestrictedVariables.cache_constraints___COOKIE
 		// phpcs:disable WordPressVIPMinimum.Variables.RestrictedVariables.cache_constraints___COOKIE
 		// phpcs:disable WordPress.Security.ValidatedSanitizedInput.InputNotSanitized
-		if ( ! isset( $_COOKIE['gdpr']['consent_types'] ) ) { // WPCS: Input var ok.
+		if ( ! isset( $_COOKIE['gdpr']['consent_types'] ) ) {
 			if ( ! $user_id ) {
 				(new Gdpr_Cookie_Setting_Js())
 					->js_setcookie( 'gdpr[consent_types]', '[]', time() + YEAR_IN_SECONDS, '/' );
@@ -410,7 +410,7 @@ class GDPR_Public {
 		} else {
 			if ( $user_id ) {
 				$user_consents = (array) get_user_attribute( $user_id, 'gdpr_consents' );
-				$cookie_consents = (array) json_decode( wp_unslash( $_COOKIE['gdpr']['consent_types'] ) ); // WPCS: Input var ok, sanitization ok.
+				$cookie_consents = (array) json_decode( wp_unslash( $_COOKIE['gdpr']['consent_types'] ) );
 
 				$intersect = array_intersect( $user_consents, $cookie_consents );
 				$diff      = array_merge( array_diff( $user_consents, $intersect ), array_diff( $cookie_consents, $intersect ) );
@@ -422,7 +422,7 @@ class GDPR_Public {
 			}
 		}
 
-		if ( ! isset( $_COOKIE['gdpr']['allowed_cookies'] ) ) { // WPCS: Input var ok.
+		if ( ! isset( $_COOKIE['gdpr']['allowed_cookies'] ) ) {
 			// phpcs:enable WordPressVIPMinimum.Variables.RestrictedVariables.cache_constraints___COOKIE
 			// phpcs:enable WordPress.VIP.RestrictedVariables.cache_constraints___COOKIE
 			// phpcs:enable WordPress.Security.ValidatedSanitizedInput.InputNotSanitized
@@ -455,7 +455,7 @@ class GDPR_Public {
 	}
 
 	public function agree_with_new_policies() {
-		if ( ! isset( $_POST['nonce'] ) || ! wp_verify_nonce( sanitize_key( $_POST['nonce'] ), 'gdpr-agree-with-new-policies' ) ) { // WPCS: Input var ok.
+		if ( ! isset( $_POST['nonce'] ) || ! wp_verify_nonce( sanitize_key( $_POST['nonce'] ), 'gdpr-agree-with-new-policies' ) ) {
 			wp_send_json_error(
 				array(
 					'title'   => esc_html__( 'Error!', 'gdpr' ),
@@ -463,7 +463,7 @@ class GDPR_Public {
 				)
 			);
 		}
-		$consents = isset( $_POST['consents'] ) ? array_map( 'sanitize_text_field', (array) wp_unslash( $_POST['consents'] ) ) : array(); // WPCS: Input var ok.
+		$consents = isset( $_POST['consents'] ) ? array_map( 'sanitize_text_field', (array) wp_unslash( $_POST['consents'] ) ) : array();
 		$user_id  = get_current_user_id();
 
 		foreach ( $consents as $consent ) {

@@ -139,8 +139,8 @@ function has_consent( $consent ) {
 		// phpcs:disable WordPress.VIP.RestrictedVariables.cache_constraints___COOKIE
 		// phpcs:disable WordPressVIPMinimum.Variables.RestrictedVariables.cache_constraints___COOKIE
 		// phpcs:disable WordPress.Security.ValidatedSanitizedInput.InputNotSanitized
-	} elseif ( isset( $_COOKIE['gdpr']['consent_types'] ) && ! empty( $_COOKIE['gdpr']['consent_types'] ) ) { // WPCS: Input var ok.
-		$consents = array_map( 'sanitize_text_field', (array) json_decode( wp_unslash( $_COOKIE['gdpr']['consent_types'] ) ) ); // WPCS: Input var ok, sanitization ok.
+	} elseif ( isset( $_COOKIE['gdpr']['consent_types'] ) && ! empty( $_COOKIE['gdpr']['consent_types'] ) ) { 
+		$consents = array_map( 'sanitize_text_field', (array) json_decode( wp_unslash( $_COOKIE['gdpr']['consent_types'] ) ) );
 		// phpcs:enable WordPressVIPMinimum.Variables.RestrictedVariables.cache_constraints___COOKIE
 		// phpcs:enable WordPress.VIP.RestrictedVariables.cache_constraints___COOKIE
 		// phpcs:enable WordPress.Security.ValidatedSanitizedInput.InputNotSanitized
@@ -156,5 +156,5 @@ function has_consent( $consent ) {
 }
 
 function is_dnt() {
-	return ( isset( $_SERVER['HTTP_DNT'] ) && '1' === $_SERVER['HTTP_DNT'] ); // WPCS: Input var ok.
+	return ( isset( $_SERVER['HTTP_DNT'] ) && '1' === $_SERVER['HTTP_DNT'] );
 }

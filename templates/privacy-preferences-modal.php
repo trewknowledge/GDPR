@@ -107,7 +107,7 @@
 											$site_cookies             = array();
 											$enabled                  = ( 'off' === $modal_tab['status'] ) ? false : true;
 											$cookies_used             = explode( ',', $modal_tab['cookies_used'] );
-											$args['approved_cookies'] = isset( $gdpr_cookies_array['allowed_cookies'] ) ? json_decode( sanitize_text_field( wp_unslash( $gdpr_cookies_array['allowed_cookies'] ) ) ) : array(); // WPCS: input var ok.
+											$args['approved_cookies'] = isset( $gdpr_cookies_array['allowed_cookies'] ) ? json_decode( sanitize_text_field( wp_unslash( $gdpr_cookies_array['allowed_cookies'] ) ) ) : array();
 											foreach ( $cookies_used as $cookie ) {
 												$site_cookies[] = trim( $cookie );
 												$all_cookies[]  = trim( $cookie );
