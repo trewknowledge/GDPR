@@ -135,11 +135,7 @@ class GDPR_Public {
 					'cancel'                => esc_html__( 'Cancel', 'gdpr' ),
 					'ok'                    => esc_html__( 'OK', 'gdpr' ),
 					'close_account'         => esc_html__( 'Close your account?', 'gdpr' ),
-<<<<<<< HEAD
 					'close_account_warning' => esc_html__( 'Please note it will take up to 30 days to process this request, and we\'ll confirm by email once it is done. Click OK to continue.', 'gdpr' ),
-=======
-					'close_account_warning' => esc_html__( 'Your account will be closed and all data will be permanently deleted and cannot be recovered. Are you sure?', 'gdpr' ),
->>>>>>> upstream/develop
 					'are_you_sure'          => esc_html__( 'Are you sure?', 'gdpr' ),
 					'policy_disagree'       => esc_html__( 'By disagreeing you will no longer have access to our site and will be logged out.', 'gdpr' ),
 				),
@@ -375,11 +371,6 @@ class GDPR_Public {
 		$reconsent_template = get_option( 'gdpr_reconsent_template', 'modal' );
 
 		if ( 'bar' === $reconsent_template ) {
-<<<<<<< HEAD
-			include plugin_dir_path( __FILE__ ) . 'partials/reconsent-bar.php';
-		} else {
-			include plugin_dir_path( __FILE__ ) . 'partials/reconsent-modal.php';
-=======
 			GDPR_Templates::get_template(
 				'reconsent-bar.php', array(
 					'updated_consents' => $updated_consents,
@@ -391,18 +382,13 @@ class GDPR_Public {
 					'updated_consents' => $updated_consents,
 				)
 			);
->>>>>>> upstream/develop
 		}
 
 	}
 
 	protected function is_crawler() {
-<<<<<<< HEAD
 		$user_agent = filter_input( INPUT_SERVER, 'HTTP_USER_AGENT', FILTER_SANITIZE_STRING );
 		return ( isset( $user_agent ) && preg_match( '/bot|crawl|slurp|spider|mediapartners/i', $user_agent ) );
-=======
-		return ( isset( $_SERVER['HTTP_USER_AGENT'] ) && preg_match( '/bot|crawl|slurp|spider|mediapartners/i', sanitize_text_field( wp_unslash( $_SERVER['HTTP_USER_AGENT'] ) ) ) );
->>>>>>> upstream/develop
 	}
 
 	public function set_plugin_cookies() {
@@ -417,43 +403,21 @@ class GDPR_Public {
 				(new Gdpr_Cookie_Setting_Js())
 					->js_setcookie( 'gdpr[consent_types]', '[]', time() + YEAR_IN_SECONDS, '/' );
 			} else {
-<<<<<<< HEAD
-				$user_consents = get_user_meta( $user_id, 'gdpr_consents' );
+				$user_consents = get_user_attribute( $user_id, 'gdpr_consents' );
 				(new Gdpr_Cookie_Setting_Js())
 					->js_setcookie( 'gdpr[consent_types]', wp_json_encode( $user_consents ), time() + YEAR_IN_SECONDS, '/' );
 			}
 		} else {
 			if ( $user_id ) {
-				$user_consents   = (array) get_user_meta( $user_id, 'gdpr_consents' );
-				$cookie_consents = (array) json_decode( wp_unslash( $_COOKIE['gdpr']['consent_types'] ) );
-=======
-				if ( defined( 'WPCOM_IS_VIP_ENV' ) && WPCOM_IS_VIP_ENV ) {
-					$user_consents = get_user_attribute( $user_id, 'gdpr_consents' );
-				} else {
-					$user_consents = get_user_meta( $user_id, 'gdpr_consents' );
-				}
-				setcookie( 'gdpr[consent_types]', wp_json_encode( $user_consents ), time() + YEAR_IN_SECONDS, '/' );
-			}
-		} else {
-			if ( $user_id ) {
-				if ( defined( 'WPCOM_IS_VIP_ENV' ) && WPCOM_IS_VIP_ENV ) {
-					$user_consents = (array) get_user_attribute( $user_id, 'gdpr_consents' );
-				} else {
-					$user_consents = (array) get_user_meta( $user_id, 'gdpr_consents' );
-				}
+				$user_consents = (array) get_user_attribute( $user_id, 'gdpr_consents' );
 				$cookie_consents = (array) json_decode( wp_unslash( $_COOKIE['gdpr']['consent_types'] ) ); // WPCS: Input var ok, sanitization ok.
->>>>>>> upstream/develop
 
 				$intersect = array_intersect( $user_consents, $cookie_consents );
 				$diff      = array_merge( array_diff( $user_consents, $intersect ), array_diff( $cookie_consents, $intersect ) );
 
 				if ( ! empty( $diff ) ) {
-<<<<<<< HEAD
 					(new Gdpr_Cookie_Setting_Js())
 						->js_setcookie( 'gdpr[consent_types]', wp_json_encode( $user_consents ), time() + YEAR_IN_SECONDS, '/' );
-=======
-					setcookie( 'gdpr[consent_types]', wp_json_encode( $user_consents ), time() + YEAR_IN_SECONDS, '/' );
->>>>>>> upstream/develop
 				}
 			}
 		}
@@ -466,12 +430,7 @@ class GDPR_Public {
 			$cookies            = array();
 			if ( ! empty( $registered_cookies ) ) {
 				$required_cookies = array_filter(
-<<<<<<< HEAD
-					$registered_cookies,
-					function( $item ) {
-=======
 					$registered_cookies, function( $item ) {
->>>>>>> upstream/develop
 						return 'required' === $item['status'] || 'soft' === $item['status'];
 					}
 				);
@@ -486,12 +445,8 @@ class GDPR_Public {
 			}
 
 			if ( ! empty( $cookies ) ) {
-<<<<<<< HEAD
 				(new Gdpr_Cookie_Setting_Js())
 					->js_setcookie( 'gdpr[allowed_cookies]', wp_json_encode( $cookies ), time() + YEAR_IN_SECONDS, '/' );
-=======
-				setcookie( 'gdpr[allowed_cookies]', wp_json_encode( $cookies ), time() + YEAR_IN_SECONDS, '/' );
->>>>>>> upstream/develop
 			} else {
 				(new Gdpr_Cookie_Setting_Js())
 					->js_setcookie( 'gdpr[allowed_cookies]', '[]', time() + YEAR_IN_SECONDS, '/' );

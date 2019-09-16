@@ -35,11 +35,11 @@
 							<li><button type="button" class="gdpr-tab-button gdpr-cookie-settings" data-target="<?php echo esc_attr( key( $args['tabs'] ) ); ?>"><?php esc_html_e( 'Cookie Settings', 'gdpr' ); ?></button>
 								<ul class="gdpr-subtabs">
 									<?php
-									foreach ( $args['tabs'] as $key => $tab ) {
-										if ( ( isset( $tab['cookies_used'] ) && empty( $tab['cookies_used'] ) ) && ( isset( $tab['hosts'] ) && empty( $tab['hosts'] ) ) ) {
+									foreach ( $args['tabs'] as $key => $modal_tab ) {
+										if ( ( isset( $modal_tab['cookies_used'] ) && empty( $modal_tab['cookies_used'] ) ) && ( isset( $modal_tab['hosts'] ) && empty( $modal_tab['hosts'] ) ) ) {
 											continue;
 										}
-										echo '<li><button type="button" data-target="' . esc_attr( $key ) . '" ' . '>' . esc_html( $tab['name'] ) . '</button></li>';
+										echo '<li><button type="button" data-target="' . esc_attr( $key ) . '" ' . '>' . esc_html( $modal_tab['name'] ) . '</button></li>';
 									}
 									?>
 								</ul>
@@ -92,26 +92,26 @@
 						</div>
 					</div>
 					<?php $all_cookies = array(); ?>
-					<?php foreach ( $args['tabs'] as $key => $tab ) : ?>
+					<?php foreach ( $args['tabs'] as $key => $modal_tab ) : ?>
 						<div class="<?php echo esc_attr( $key ); ?>">
 							<header>
-								<h4><?php echo esc_html( $tab['name'] ); ?></h4>
+								<h4><?php echo esc_html( $modal_tab['name'] ); ?></h4>
 							</header><!-- /header -->
 							<div class="gdpr-info">
-								<p><?php echo nl2br( wp_kses_post( $tab['how_we_use'] ) ); ?></p>
-								<?php if ( isset( $tab['cookies_used'] ) && $tab['cookies_used'] ) : ?>
+								<p><?php echo nl2br( wp_kses_post( $modal_tab['how_we_use'] ) ); ?></p>
+								<?php if ( isset( $modal_tab['cookies_used'] ) && $modal_tab['cookies_used'] ) : ?>
 									<div class="gdpr-cookies-used">
 										<div class="gdpr-cookie-title">
 											<p><?php esc_html_e( 'Cookies Used', 'gdpr' ); ?></p>
 											<?php
 											$site_cookies             = array();
-											$enabled                  = ( 'off' === $tab['status'] ) ? false : true;
-											$cookies_used             = explode( ',', $tab['cookies_used'] );
-											$args['approved_cookies'] = isset( $_COOKIE['gdpr']['allowed_cookies'] ) ? json_decode( sanitize_text_field( wp_unslash( $_COOKIE['gdpr']['allowed_cookies'] ) ) ) : array(); // WPCS: input var ok.
+											$enabled                  = ( 'off' === $modal_tab['status'] ) ? false : true;
+											$cookies_used             = explode( ',', $modal_tab['cookies_used'] );
+											$args['approved_cookies'] = isset( $gdpr_cookies_array['allowed_cookies'] ) ? json_decode( sanitize_text_field( wp_unslash( $gdpr_cookies_array['allowed_cookies'] ) ) ) : array(); // WPCS: input var ok.
 											foreach ( $cookies_used as $cookie ) {
 												$site_cookies[] = trim( $cookie );
 												$all_cookies[]  = trim( $cookie );
-												if ( ! empty( $args['approved_cookies'] ) && isset( $_COOKIE['gdpr']['privacy_bar'] ) ) {
+												if ( ! empty( $args['approved_cookies'] ) && isset( $gdpr_cookies_array['gdpr']['privacy_bar'] ) ) {
 													if ( in_array( trim( $cookie ), $args['approved_cookies'], true ) ) {
 														$enabled = true;
 													} else {
@@ -120,7 +120,7 @@
 												}
 											}
 											?>
-											<?php if ( 'required' === $tab['status'] ) : ?>
+											<?php if ( 'required' === $modal_tab['status'] ) : ?>
 												<span class="gdpr-always-active"><?php esc_html_e( 'Required', 'gdpr' ); ?></span>
 												<input type="hidden" name="approved_cookies[]" value="<?php echo esc_attr( wp_json_encode( $site_cookies ) ); ?>">
 											<?php else : ?>
@@ -133,12 +133,12 @@
 											<?php endif; ?>
 										</div>
 										<div class="gdpr-cookies">
-											<span><?php echo wp_kses_post( $tab['cookies_used'] ); ?></span>
+											<span><?php echo wp_kses_post( $modal_tab['cookies_used'] ); ?></span>
 										</div>
 									</div>
 								<?php endif ?>
-								<?php if ( isset( $tab['hosts'] ) && ! empty( $tab['hosts'] ) ) : ?>
-									<?php foreach ( $tab['hosts'] as $host_key => $host ) : ?>
+								<?php if ( isset( $modal_tab['hosts'] ) && ! empty( $modal_tab['hosts'] ) ) : ?>
+									<?php foreach ( $modal_tab['hosts'] as $host_key => $host ) : ?>
 										<div class="gdpr-cookies-used">
 											<div class="gdpr-cookie-title">
 												<p><?php echo esc_html( $host_key ); ?></p>

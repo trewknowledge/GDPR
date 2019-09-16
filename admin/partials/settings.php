@@ -226,14 +226,14 @@
 		<input type="text" id="cookie-tabs" class="regular-text" placeholder="<?php esc_attr_e( 'Category name', 'gdpr' ); ?>">
 		<button class="button button-primary add-tab"><?php esc_html_e( 'Add cookie category', 'gdpr' ); ?></button>
 		<div id="gdpr-cookie-categories">
-			<?php foreach ( $registered_cookies as $cat_id => $cookie_cat ) : ?>
-				<div class="postbox" id="cookie-tab-content-<?php echo esc_attr( $cat_id ); ?>">
-					<h2 class="hndle"><?php echo esc_html( $cookie_cat['name'] ); ?> <span>(id: <?php echo esc_html( $cat_id ); ?>)</span><button class="notice-dismiss" type="button"><span class="screen-reader-text"><?php esc_html_e( 'Remove this tab.', 'gdpr' ); ?></span></button></h2>
+			<?php foreach ( $registered_cookies as $category_id => $cookie_cat ) : ?>
+				<div class="postbox" id="cookie-tab-content-<?php echo esc_attr( $category_id ); ?>">
+					<h2 class="hndle"><?php echo esc_html( $cookie_cat['name'] ); ?> <span>(id: <?php echo esc_html( $category_id ); ?>)</span><button class="notice-dismiss" type="button"><span class="screen-reader-text"><?php esc_html_e( 'Remove this tab.', 'gdpr' ); ?></span></button></h2>
 					<div class="inside">
 						<table class="form-table">
 							<tr>
 								<th>
-									<label for="rename-<?php echo esc_attr( $cat_id ); ?>">
+									<label for="rename-<?php echo esc_attr( $category_id ); ?>">
 										<?php esc_html_e( 'Category Name', 'gdpr' ); ?>:<span class="gdpr-required">*</span>
 										<span class="screen-reader-text"><?php esc_attr_e( 'Change this value if you want to name it something different.', 'gdpr' ); ?></span>
 										<span data-gdprtooltip="<?php esc_attr_e( 'Change this value if you want to name it something different.', 'gdpr' ); ?>">
@@ -242,12 +242,12 @@
 									</label>
 								</th>
 								<td>
-									<input type="text" name="gdpr_cookie_popup_content[<?php echo esc_attr( $cat_id ); ?>][name]" value="<?php echo esc_attr( $cookie_cat['name'] ); ?>" required>
+									<input type="text" name="gdpr_cookie_popup_content[<?php echo esc_attr( $category_id ); ?>][name]" value="<?php echo esc_attr( $cookie_cat['name'] ); ?>" required>
 								</td>
 							</tr>
 							<tr>
 								<th>
-									<label for="status-<?php echo esc_attr( $cat_id ); ?>">
+									<label for="status-<?php echo esc_attr( $category_id ); ?>">
 										<?php esc_html_e( 'Status', 'gdpr' ); ?>:<span class="gdpr-required">*</span>
 										<span class="screen-reader-text"><?php esc_attr_e( 'Required cookies are cookies that cannot be opted out of and are needed for the site to function properly. Soft opt-in will allow cookies on first landing but can be opted-out of. Checked means that the cookie category will be checked by default and will be set after the user agrees to them. Unchecked means the user needs to manually toggle the category on to allow these cookies.', 'gdpr' ); ?></span>
 										<span data-gdprtooltip="<?php esc_attr_e( 'Required cookies are cookies that cannot be opted out of and are needed for the site to function properly. Soft opt-in will allow cookies on first landing but can be opted-out of. Checked means that the cookie category will be checked by default and will be set after the user agrees to them. Unchecked means the user needs to manually toggle the category on to allow these cookies.', 'gdpr' ); ?>">
@@ -256,18 +256,18 @@
 									</label>
 								</th>
 								<td>
-									<select name="gdpr_cookie_popup_content[<?php echo esc_attr( $cat_id ); ?>][status]" id="status-<?php echo esc_attr( $cat_id ); ?>" required>
+									<select name="gdpr_cookie_popup_content[<?php echo esc_attr( $category_id ); ?>][status]" id="status-<?php echo esc_attr( $category_id ); ?>" required>
 										<option value=""></option>
-										<option value="required" <?php selected( isset( $registered_cookies[ $cat_id ]['status'] ) ? $registered_cookies[ $cat_id ]['status'] : '', 'required' ); ?>><?php esc_html_e( 'Required', 'gdpr' ); ?></option>
-										<option value="soft" <?php selected( isset( $registered_cookies[ $cat_id ]['status'] ) ? $registered_cookies[ $cat_id ]['status'] : '', 'soft' ); ?>><?php esc_html_e( 'Soft Opt-in', 'gdpr' ); ?></option>
-										<option value="on" <?php selected( isset( $registered_cookies[ $cat_id ]['status'] ) ? $registered_cookies[ $cat_id ]['status'] : '', 'on' ); ?>><?php esc_html_e( 'Checked', 'gdpr' ); ?></option>
-										<option value="off" <?php selected( isset( $registered_cookies[ $cat_id ]['status'] ) ? $registered_cookies[ $cat_id ]['status'] : '', 'off' ); ?>><?php esc_html_e( 'Unchecked', 'gdpr' ); ?></option>
+										<option value="required" <?php selected( isset( $registered_cookies[ $category_id ]['status'] ) ? $registered_cookies[ $category_id ]['status'] : '', 'required' ); ?>><?php esc_html_e( 'Required', 'gdpr' ); ?></option>
+										<option value="soft" <?php selected( isset( $registered_cookies[ $category_id ]['status'] ) ? $registered_cookies[ $category_id ]['status'] : '', 'soft' ); ?>><?php esc_html_e( 'Soft Opt-in', 'gdpr' ); ?></option>
+										<option value="on" <?php selected( isset( $registered_cookies[ $category_id ]['status'] ) ? $registered_cookies[ $category_id ]['status'] : '', 'on' ); ?>><?php esc_html_e( 'Checked', 'gdpr' ); ?></option>
+										<option value="off" <?php selected( isset( $registered_cookies[ $category_id ]['status'] ) ? $registered_cookies[ $category_id ]['status'] : '', 'off' ); ?>><?php esc_html_e( 'Unchecked', 'gdpr' ); ?></option>
 									</select>
 								</td>
 							</tr>
 							<tr>
 								<th>
-									<label for="cookies-used-<?php echo esc_attr( $cat_id ); ?>">
+									<label for="cookies-used-<?php echo esc_attr( $category_id ); ?>">
 										<?php esc_html_e( 'Cookies used', 'gdpr' ); ?>:
 										<span class="screen-reader-text"><?php esc_attr_e( 'A comma-separated list of cookies that your site is using that fit this category.', 'gdpr' ); ?></span>
 										<span data-gdprtooltip="<?php esc_attr_e( 'A comma-separated list of cookies that your site is using that fit this category.', 'gdpr' ); ?>">
@@ -276,14 +276,14 @@
 									</label>
 								</th>
 								<td>
-									<textarea cols="53" rows="3" name="gdpr_cookie_popup_content[<?php echo esc_attr( $cat_id ); ?>][cookies_used]" id="cookies-used-<?php echo esc_attr( $cat_id ); ?>"><?php echo esc_attr( $registered_cookies[ $cat_id ]['cookies_used'] ); ?></textarea>
+									<textarea cols="53" rows="3" name="gdpr_cookie_popup_content[<?php echo esc_attr( $category_id ); ?>][cookies_used]" id="cookies-used-<?php echo esc_attr( $category_id ); ?>"><?php echo esc_attr( $registered_cookies[ $category_id ]['cookies_used'] ); ?></textarea>
 									<br>
 									<span class="description"><?php esc_html_e( 'Comma separated list.', 'gdpr' ); ?></span>
 								</td>
 							</tr>
 							<tr>
 								<th>
-									<label for="tab-how-we-use-<?php echo esc_attr( $cat_id ); ?>">
+									<label for="tab-how-we-use-<?php echo esc_attr( $category_id ); ?>">
 										<?php esc_html_e( 'How are these used', 'gdpr' ); ?>:
 										<span class="screen-reader-text"><?php esc_attr_e( 'A brief explanation of why you are requesting to use these cookies, what they are for, and how you process them.', 'gdpr' ); ?></span>
 										<span data-gdprtooltip="<?php esc_attr_e( 'A brief explanation of why you are requesting to use these cookies, what they are for, and how you process them.', 'gdpr' ); ?>">
@@ -291,11 +291,11 @@
 										</span>
 									</label>
 								</th>
-								<td><textarea name="gdpr_cookie_popup_content[<?php echo esc_attr( $cat_id ); ?>][how_we_use]" id="tab-how-we-use-<?php echo esc_attr( $cat_id ); ?>" cols="53" rows="3"><?php echo esc_html( $registered_cookies[ $cat_id ]['how_we_use'] ); ?></textarea></td>
+								<td><textarea name="gdpr_cookie_popup_content[<?php echo esc_attr( $category_id ); ?>][how_we_use]" id="tab-how-we-use-<?php echo esc_attr( $category_id ); ?>" cols="53" rows="3"><?php echo esc_html( $registered_cookies[ $category_id ]['how_we_use'] ); ?></textarea></td>
 							</tr>
 							<tr>
 				<th>
-					<label for="hosts-<?php echo esc_attr( $cat_id ); ?>">
+					<label for="hosts-<?php echo esc_attr( $category_id ); ?>">
 						<?php esc_html_e( 'Third party domain', 'gdpr' ); ?>:
 						<span class="screen-reader-text"><?php esc_attr_e( 'E.g. facebook.com', 'gdpr' ); ?></span>
 						<span data-gdprtooltip="<?php esc_attr_e( 'E.g. facebook.com', 'gdpr' ); ?>">
@@ -304,14 +304,14 @@
 					</label>
 				</th>
 				<td>
-					<input type="text" id="hosts-<?php echo esc_attr( $cat_id ); ?>" class="regular-text" placeholder="<?php esc_attr_e( 'domain.com', 'gdpr' ); ?>" />
-					<button class="button button-primary add-host" data-tabid="<?php echo esc_attr( $cat_id ); ?>"><?php esc_html_e( 'Add', 'gdpr' ); ?></button>
+					<input type="text" id="hosts-<?php echo esc_attr( $category_id ); ?>" class="regular-text" placeholder="<?php esc_attr_e( 'domain.com', 'gdpr' ); ?>" />
+					<button class="button button-primary add-host" data-tabid="<?php echo esc_attr( $category_id ); ?>"><?php esc_html_e( 'Add', 'gdpr' ); ?></button>
 					<br>
 					<span class="description"><?php esc_html_e( 'Cookies that are set by a third party, like facebook.com.', 'gdpr' ); ?></span>
 				</td>
 				</tr>
 						</table>
-						<div class="tab-hosts" data-tabid="<?php echo esc_attr( $cat_id ); ?>">
+						<div class="tab-hosts" data-tabid="<?php echo esc_attr( $category_id ); ?>">
 				<?php if ( isset( $cookie_cat['hosts'] ) && $cookie_cat['hosts'] ) : ?>
 					<?php foreach ( $cookie_cat['hosts'] as $domain_id => $domain_data ) : ?>
 					<div class="postbox">
