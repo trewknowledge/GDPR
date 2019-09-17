@@ -56,7 +56,10 @@ class GDPR_Templates {
 		if ( ! file_exists( $template_file ) ) {
 			return;
 		}
+		// Include the template file
+		// phpcs:disable WordPressVIPMinimum.Files.IncludingFile.UsingVariable
 		include $template_file;
+		// phpcs:enable WordPressVIPMinimum.Files.IncludingFile.UsingVariable
 	}
 
 }
