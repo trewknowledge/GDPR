@@ -10,6 +10,8 @@
  * @author     Fernando Claussen <fernandoclaussen@gmail.com>
  */
 
+require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/class-gdpr-templates.php';
+
 /**
  * Handles emailing users.
  *
@@ -91,7 +93,7 @@ class GDPR_Email {
 	 */
 	public static function get_email_content( $template_name, $args = array() ) {
 		ob_start();
-		self::get_template( $template_name, $args );
+		GDPR_Templates::get_template( $template_name, $args );
 		return ob_get_clean();
 	}
 
@@ -104,7 +106,7 @@ class GDPR_Email {
 	 * @return string The noreply email address
 	 */
 	private static function get_do_not_reply_address() {
-		$sitename = isset( $_SERVER['SERVER_NAME'] ) ? strtolower( sanitize_text_field( wp_unslash( $_SERVER['SERVER_NAME'] ) ) ) : ''; // WPCS: input var ok.
+		$sitename = isset( $_SERVER['SERVER_NAME'] ) ? strtolower( sanitize_text_field( wp_unslash( $_SERVER['SERVER_NAME'] ) ) ) : '';
 		if ( substr( $sitename, 0, 4 ) === 'www.' ) {
 			$sitename = substr( $sitename, 4 );
 		}
@@ -231,7 +233,7 @@ class GDPR_Email {
 			$headers[] = 'Bcc: ' . sanitize_email( $email );
 		}
 
-		$content = self::get_email_content( $type . '.php', $args );
+		$content = self::get_email_content( 'email/' . $type . '.php', $args );
 
 		// All `wp_mail` calls are handled by Mandrill.
 		// phpcs:disable WordPressVIPMinimum.VIP.RestrictedFunctions.wp_mail_wp_mail

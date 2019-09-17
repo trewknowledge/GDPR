@@ -1,5 +1,5 @@
 /* Add this attribute to the element that needs a tooltip */
-[data-tooltip] {
+[data-gdprtooltip] {
   position: relative;
   z-index: 9999;
   cursor: pointer;
@@ -22,7 +22,7 @@
     background-color: #000;
     background-color: hsla(0, 0%, 20%, 0.9);
     color: #fff;
-    content: attr(data-tooltip);
+    content: attr(data-gdprtooltip);
     text-align: center;
     font-size: 14px;
     line-height: 1.2;

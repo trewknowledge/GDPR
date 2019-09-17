@@ -89,7 +89,11 @@ class GDPR_Audit_Log {
 		// Try getting an existing user
 		$user = get_user_by( 'email', $email );
 		if ( $user instanceof WP_User ) {
-			$user_log = get_user_meta( $user->ID, 'gdpr_audit_log', false );
+			if ( defined( 'WPCOM_IS_VIP_ENV' ) && WPCOM_IS_VIP_ENV ) {
+				$user_log = get_user_attribute( $user->ID, 'gdpr_audit_log', false );
+			} else {
+				$user_log = get_user_meta( $user->ID, 'gdpr_audit_log', false );
+			}
 			ob_start();
 			foreach ( $user_log as $log ) {
 				echo esc_html( self::decrypt( $email, $log ) ) . "\n";
@@ -106,11 +110,7 @@ class GDPR_Audit_Log {
 				return false;
 			}
 
-			if (defined('VIP_GO_ENV') & false !== VIP_GO_ENV) {
-				$log = wpcom_vip_file_get_contents($path . $filename);
-			} else {
-				$log = file_get_contents($path . $filename);
-			}
+			$log = wpcom_vip_file_get_contents($path . $filename);
 
 			return self::decrypt( $email, $log );
 		}
@@ -167,12 +167,12 @@ class GDPR_Audit_Log {
 		$path        = $basedir . '/gdpr_logs/';
 		if ( wp_mkdir_p( $path ) ) {
 			if ( ! file_exists( $path . 'index.php' ) ) {
-				file_put_contents( $path . 'index.php', '' );
+				wpcom_vip_file_put_contents( $path . 'index.php', '' );
 			}
 			$log      = self::get_log( $user->user_email );
 			$filename = self::email_mask( $user->user_email . $token );
 			$filename = base64_encode( $filename );
-			file_put_contents( $path . $filename, self::crypt( $user->user_email, $log ) );
+			wpcom_vip_file_put_contents( $path . $filename, self::crypt( $user->user_email, $log ) );
 		}
 	}
 }

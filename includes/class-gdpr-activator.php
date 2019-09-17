@@ -25,15 +25,18 @@ class GDPR_Activator {
 
 	/**
 	 * Runs when the user first activates the plugin.
-	 * Sets a CRON jo to clean up the telemetry post type every 12 hours.
 	 *
 	 * @since  1.0.0
 	 * @static
 	 * @author Fernando Claussen <fernandoclaussen@gmail.com>
 	 */
 	public static function activate() {
+		if ( -1 === version_compare( phpversion(), GDPR_REQUIRED_PHP_VERSION ) ) {
+			/* translators: 1: Current PHP version 2: Required PHP version. */
+			die( sprintf( esc_html__( 'Your current PHP version (%1$s) is below the plugin required version of %2$s.', 'gdpr' ), esc_html( phpversion() ), esc_html( GDPR_REQUIRED_PHP_VERSION ) ) );
+		}
+
 		add_option( 'gdpr_disable_css', false );
-		add_option( 'gdpr_enable_telemetry_tracker', false );
 		add_option( 'gdpr_use_recaptcha', false );
 		add_option( 'gdpr_recaptcha_site_key', '' );
 		add_option( 'gdpr_recaptcha_secret_key', '' );

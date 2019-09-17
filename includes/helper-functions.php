@@ -26,9 +26,7 @@ function gdpr_preferences_shortcode( $atts ) {
 		array(
 			'text' => esc_html__( 'Privacy Preferences', 'gdpr' ),
 			'tab'  => 'gdpr-consent-management',
-		),
-		$atts,
-		'gdpr_preferences'
+		), $atts, 'gdpr_preferences'
 	);
 
 	ob_start();
@@ -135,13 +133,13 @@ function have_consent( $consent ) {
 function has_consent( $consent ) {
 
 	if ( is_user_logged_in() ) {
-		$user     = wp_get_current_user();
+		$user = wp_get_current_user();
 		$consents = (array) get_user_meta( $user->ID, 'gdpr_consents' );
 		// Approved usage by VIP support.
 		// phpcs:disable WordPress.VIP.RestrictedVariables.cache_constraints___COOKIE
 		// phpcs:disable WordPressVIPMinimum.Variables.RestrictedVariables.cache_constraints___COOKIE
 		// phpcs:disable WordPress.Security.ValidatedSanitizedInput.InputNotSanitized
-	} elseif ( isset( $_COOKIE['gdpr']['consent_types'] ) && ! empty( $_COOKIE['gdpr']['consent_types'] ) ) {
+	} elseif ( isset( $_COOKIE['gdpr']['consent_types'] ) && ! empty( $_COOKIE['gdpr']['consent_types'] ) ) { 
 		$consents = array_map( 'sanitize_text_field', (array) json_decode( wp_unslash( $_COOKIE['gdpr']['consent_types'] ) ) );
 		// phpcs:enable WordPressVIPMinimum.Variables.RestrictedVariables.cache_constraints___COOKIE
 		// phpcs:enable WordPress.VIP.RestrictedVariables.cache_constraints___COOKIE
@@ -158,5 +156,5 @@ function has_consent( $consent ) {
 }
 
 function is_dnt() {
-	return ( isset( $_SERVER['HTTP_DNT'] ) && '1' === $_SERVER['HTTP_DNT'] ); // WPCS: Input var ok.
+	return ( isset( $_SERVER['HTTP_DNT'] ) && '1' === $_SERVER['HTTP_DNT'] );
 }

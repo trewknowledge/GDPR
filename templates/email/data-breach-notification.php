@@ -23,8 +23,7 @@ Likely consequences of the personal data breach:
 Measures taken or proposed to be taken:
 --------------------------------------------------------
 %5$s
-',
-		'gdpr'
+', 'gdpr'
 	),
 	esc_html( $args['content'] ),
 	esc_html( $args['nature'] ),
