@@ -403,13 +403,21 @@ class GDPR_Public {
 				(new Gdpr_Cookie_Setting_Js())
 					->js_setcookie( 'gdpr[consent_types]', '[]', time() + YEAR_IN_SECONDS, '/' );
 			} else {
-				$user_consents = get_user_attribute( $user_id, 'gdpr_consents' );
+				if ( defined( 'WPCOM_IS_VIP_ENV' ) && WPCOM_IS_VIP_ENV ) {
+					$user_consents = get_user_attribute( $user_id, 'gdpr_consents' );
+				} else {
+					$user_consents = get_user_meta( $user_id, 'gdpr_consents' );
+				}
 				(new Gdpr_Cookie_Setting_Js())
 					->js_setcookie( 'gdpr[consent_types]', wp_json_encode( $user_consents ), time() + YEAR_IN_SECONDS, '/' );
 			}
 		} else {
 			if ( $user_id ) {
-				$user_consents = (array) get_user_attribute( $user_id, 'gdpr_consents' );
+				if ( defined( 'WPCOM_IS_VIP_ENV' ) && WPCOM_IS_VIP_ENV ) {
+					$user_consents = (array) get_user_attribute( $user_id, 'gdpr_consents' );
+				} else {
+					$user_consents = (array) get_user_meta( $user_id, 'gdpr_consents' );
+				}
 				$cookie_consents = (array) json_decode( wp_unslash( $_COOKIE['gdpr']['consent_types'] ) );
 
 				$intersect = array_intersect( $user_consents, $cookie_consents );
