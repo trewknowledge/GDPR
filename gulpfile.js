@@ -4,7 +4,7 @@ var	$ = require('gulp-load-plugins')();
 
 var paths = {
 	src: {
-		php: './**/*.php',
+		php: ['./**/*.php', '!./vendor/**/*.php'],
 		admin: {
 			js: './src/js/admin/*.js',
 			css: './src/css/admin/*.scss'
@@ -26,15 +26,15 @@ function errorLog(error) {
     this.emit('end');
 }
 
-gulp.task('pot', function() {
+function pot() {
 	return gulp.src( paths.src.php )
 		.pipe( $.wpPot( {
 			domain: 'gdpr'
 		} ) )
 		.pipe( gulp.dest( paths.dest.pot + 'gdpr.pot' ) );
-});
+}
 
-gulp.task('admin-css', function() {
+function admincss() {
 	return gulp.src( paths.src.admin.css )
 		.pipe( $.sass( {
 			outputStyle: 'compressed'
@@ -47,9 +47,9 @@ gulp.task('admin-css', function() {
 		.pipe( $.notify( {
 			message: 'Admin SASS style task complete'
 		} ) );
-});
+}
 
-gulp.task('public-css', function() {
+function publiccss() {
 	return gulp.src( paths.src.public.css )
 		.pipe( $.sass( {
 			outputStyle: 'compressed'
@@ -62,9 +62,9 @@ gulp.task('public-css', function() {
 		.pipe( $.notify( {
 			message: 'Admin SASS style task complete'
 		} ) );
-});
+}
 
-gulp.task('admin-js', function() {
+function adminjs() {
 	return gulp.src( paths.src.admin.js )
 		.pipe( $.concat( 'gdpr-admin.js' ) )
 		.pipe( uglify() )
@@ -74,9 +74,9 @@ gulp.task('admin-js', function() {
 		.pipe( $.notify( {
 			message: 'Admin JS script task complete'
 		} ) );
-});
+}
 
-gulp.task('public-js', function() {
+function publicjs() {
 	return gulp.src( paths.src.public.js )
 		.pipe( $.concat( 'gdpr-public.js' ) )
 		.pipe( uglify() )
@@ -86,15 +86,24 @@ gulp.task('public-js', function() {
 		.pipe( $.notify( {
 			message: 'Public JS script task complete'
 		} ) );
-});
+}
 
-gulp.task('watch', function(){
+function watch() {
 	$.livereload.listen();
 	gulp.watch( paths.src.php, $.livereload.reload);
-	gulp.watch( paths.src.admin.css, ['admin-css']);
-	gulp.watch( paths.src.public.css, ['public-css']);
-	gulp.watch( paths.src.admin.js, ['admin-js']);
-	gulp.watch( paths.src.public.js, ['public-js']);
-});
+	gulp.watch( paths.src.admin.css, admincss);
+	gulp.watch( paths.src.public.css, publiccss);
+	gulp.watch( paths.src.admin.js, adminjs);
+	gulp.watch( paths.src.public.js, publicjs);
+}
 
-gulp.task('default', ['admin-css', 'public-css', 'admin-js', 'public-js', 'pot', 'watch']);
+exports.pot = pot;
+exports.admincss = admincss;
+exports.publiccss = publiccss;
+exports.adminjs = adminjs;
+exports.publicjs = publicjs;
+exports.watch = watch;
+
+var build = gulp.series(admincss, publiccss, adminjs, publicjs, pot, watch);
+
+exports.default = build;
