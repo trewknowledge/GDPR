@@ -55,7 +55,9 @@ if ( isset( $notify ) && absint( $notify ) ) :
     <div class="gdpr-wrapper">
         <header>
             <div class="gdpr-box-title">
-                <h3><?php echo esc_attr( $modal_title ); ?></h3>
+				<?php if ( $modal_title ) : ?>
+					<h3><?php echo esc_attr( $modal_title ); ?></h3>
+				<?php endif; ?>
                 <span class="gdpr-close"></span>
             </div>
         </header>
