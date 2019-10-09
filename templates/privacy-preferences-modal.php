@@ -48,7 +48,7 @@
 					</ul>
 					<ul class="gdpr-policies">
 						<?php if ( ! empty( $args['consent_types'] ) ) : ?>
-							<?php foreach ( $args['consent_types'] as $consent_key => $content_type ) : ?>
+							<?php foreach ( $args['consent_types'] as $consent_key => $consent_type ) : ?>
 								<?php
 								if ( ! $consent_type['policy-page'] ) {
 									continue;
