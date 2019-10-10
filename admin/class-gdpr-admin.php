@@ -1027,7 +1027,7 @@ class GDPR_Admin {
 			} else {
 				$user_consents = get_user_meta( $user_id, 'gdpr_consents' );
 			}
-			if ( $user_consents ) {
+			if ( count ( $user_consents ) > 0 ) {
 				return implode( ', ', $user_consents );
 			} else {
 				return $val;
