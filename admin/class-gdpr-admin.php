@@ -888,6 +888,12 @@ class GDPR_Admin {
 		} else {
 			$user_consents = get_user_meta( $user->ID, 'gdpr_consents' );
 		}
+		/**
+		 * in_array() on line 914 expects $user_consents to be an array.
+		 */
+		if ( ! is_array( $user_consents ) ) {
+			$user_consents = [ $user_consents ];
+		}
 		if ( empty( $consent_types ) ) {
 			return;
 		}
