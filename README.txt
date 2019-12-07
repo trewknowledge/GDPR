@@ -4,8 +4,8 @@ Donate link: http://gdpr-wp.com/donate/
 Tags: gdpr, compliance, privacy, law, general data protection regulation
 Requires at least: 4.7
 Requires PHP: 5.6
-Tested up to: 4.9
-Stable tag: 2.1.0
+Tested up to: 5.3
+Stable tag: 2.1.1
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -205,6 +205,9 @@ Activating this plugin does not guarantee that an organisation is successfully m
 9. Audit Log sample.
 
 == Changelog ==
+
+= 2.1.1 =
+* Tested with latest WordPress
 
 = 2.1.0 =
 * Wrapping checkboxes in labels so they stay in the same line.

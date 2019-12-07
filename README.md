@@ -167,6 +167,9 @@ Activating this plugin does not guarantee that an organisation is successfully m
 
 ## Changelog
 
+##### 2.1.1
+* Tested with latest WordPress
+
 ##### 2.1.0
 * Wrapping checkboxes in labels so they stay in the same line.
 * Adding initial WPML and Polylang translation config file.
