@@ -219,7 +219,7 @@ class GDPR_Email {
 		}
 
 		$no_reply = self::get_do_not_reply_address();
-		$headers  = array( 'From: ' . get_bloginfo( 'name' ) . ' <' . $no_reply . '>' );
+		$headers  = array();
 		foreach ( (array) $emails as $email ) {
 			$headers[] = 'Bcc: ' . sanitize_email( $email );
 		}

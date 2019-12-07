@@ -71,14 +71,30 @@
 				<tr>
 					<th scope="row">
 						<label for="gdpr_hide_from_bots"><?php esc_html_e( 'Hide plugin content from bots', 'gdpr' ); ?>:</label>
-						<span class="screen-reader-text"><?php esc_attr_e( 'We detect if the user agent is a bot like GoogleBot and hide our added content from it. Displaying this can be harmful for SEO but for some reason you might want to do that.', 'gdpr' ); ?></span>
-						<span data-tooltip="<?php esc_attr_e( 'We detect if the user agent is a bot like GoogleBot and hide our added content from it. Displaying this can be harmful for SEO but for some reason you might want to do that.', 'gdpr' ); ?>">
+						<span class="screen-reader-text"><?php esc_attr_e( 'We detect if the user agent is a bot like Googlebot and hide our added content from it. Displaying this content might be harmful for SEO.', 'gdpr' ); ?></span>
+						<span data-tooltip="<?php esc_attr_e( 'We detect if the user agent is a bot like Googlebot and hide our added content from it. Displaying this content might be harmful for SEO.', 'gdpr' ); ?>">
 							<span class="dashicons dashicons-info"></span>
 						</span>
 					</th>
 					<td>
 						<?php $hide_from_bots = get_option( 'gdpr_hide_from_bots', true ); ?>
 						<input type="checkbox" name="gdpr_hide_from_bots" id="gdpr_hide_from_bots" value="1"  <?php checked( $hide_from_bots, true ); ?>>
+					</td>
+				</tr>
+				<tr>
+					<th scope="row">
+						<label for="gdpr_reconsent_template"><?php esc_html_e( 'Template to use when asking for re-consent', 'gdpr' ); ?>:</label>
+						<span class="screen-reader-text"><?php esc_attr_e( 'Users can choose between a bar similar to the privacy bar that does not prevent navigation and a modal that displays the new policy content and prevents navigation until accepted.', 'gdpr' ); ?></span>
+						<span data-tooltip="<?php esc_attr_e( 'Users can choose between a bar similar to the privacy bar that does not prevent navigation and a modal that displays the new policy content and prevents navigation until accepted.', 'gdpr' ); ?>">
+							<span class="dashicons dashicons-info"></span>
+						</span>
+					</th>
+					<td>
+						<?php $reconsent_template = get_option( 'gdpr_reconsent_template', 'modal' ); ?>
+						<select name="gdpr_reconsent_template" id="gdpr_reconsent_template">
+							<option value="bar" <?php selected( 'bar', $reconsent_template ) ?>><?php esc_html_e( 'Bar', 'gdpr' ); ?></option>
+							<option value="modal" <?php selected( 'modal', $reconsent_template ) ?>><?php esc_html_e( 'Modal', 'gdpr' ); ?></option>
+						</select>
 					</td>
 				</tr>
 			</tbody>
@@ -110,8 +126,8 @@
 				<tr>
 					<th scope="row">
 						<label for="gdpr_cookie_banner_content"><?php esc_html_e( 'Privacy Bar Content', 'gdpr' ); ?>:</label>
-						<span class="screen-reader-text"><?php esc_attr_e( 'Try to add an brief explanation of how you use your user data in a few lines. This will show up in the privacy bar.', 'gdpr' ); ?></span>
-						<span data-tooltip="<?php esc_attr_e( 'Try to add an brief explanation of how you use your user data in a few lines. This will show up in the privacy bar.', 'gdpr' ); ?>">
+						<span class="screen-reader-text"><?php esc_attr_e( 'Add a brief explanation of how your site collects user data. This will show up in the privacy bar.', 'gdpr' ); ?></span>
+						<span data-tooltip="<?php esc_attr_e( 'Add a brief explanation of how your site collects user data. This will show up in the privacy bar.', 'gdpr' ); ?>">
 							<span class="dashicons dashicons-info"></span>
 						</span>
 					</th>
@@ -123,8 +139,8 @@
 				<tr>
 					<th scope="row">
 						<label for="gdpr_cookie_privacy_excerpt"><?php esc_html_e( 'Privacy Excerpt', 'gdpr' ); ?>:</label>
-						<span class="screen-reader-text"><?php esc_attr_e( 'This show up in the privacy preferences window.', 'gdpr' ); ?></span>
-						<span data-tooltip="<?php esc_attr_e( 'This show up in the privacy preferences window.', 'gdpr' ); ?>">
+						<span class="screen-reader-text"><?php esc_attr_e( 'This will show up in the privacy preferences window.', 'gdpr' ); ?></span>
+						<span data-tooltip="<?php esc_attr_e( 'This will show up in the privacy preferences window.', 'gdpr' ); ?>">
 							<span class="dashicons dashicons-info"></span>
 						</span>
 					</th>
@@ -138,7 +154,7 @@
 		</table>
 		<hr>
 		<h2 class="title"><?php esc_html_e( 'Request Forms reCAPTCHA', 'gdpr' ); ?></h2>
-		<p><?php esc_html_e( 'To prevent spam attacks, you have the option to enable reCAPTCHA. Configure below your keys to make it work with our request forms.', 'gdpr' ); ?></p>
+		<p><?php esc_html_e( 'To prevent spam attacks, you have the option to enable reCAPTCHA. Configure your keys below to make it work with our request forms.', 'gdpr' ); ?></p>
 		<p>
 			<?php
 			echo sprintf(
@@ -213,7 +229,7 @@
 		<div id="gdpr-cookie-categories">
 			<?php foreach ( $registered_cookies as $cat_id => $cookie_cat ) : ?>
 				<div class="postbox" id="cookie-tab-content-<?php echo esc_attr( $cat_id ); ?>">
-					<h2 class="hndle"><?php echo esc_html( $cookie_cat['name'] ); ?><button class="notice-dismiss" type="button"><span class="screen-reader-text"><?php esc_html_e( 'Remove this tab.', 'gdpr' ); ?></span></button></h2>
+					<h2 class="hndle"><?php echo esc_html( $cookie_cat['name'] ); ?> <span>(id: <?php echo esc_html( $cat_id ); ?>)</span><button class="notice-dismiss" type="button"><span class="screen-reader-text"><?php esc_html_e( 'Remove this tab.', 'gdpr' ); ?></span></button></h2>
 					<div class="inside">
 						<table class="form-table">
 							<tr>
@@ -234,8 +250,8 @@
 								<th>
 									<label for="status-<?php echo esc_attr( $cat_id ); ?>">
 										<?php esc_html_e( 'Status', 'gdpr' ); ?>:<span class="gdpr-required">*</span>
-										<span class="screen-reader-text"><?php esc_attr_e( 'Required cookies are cookies that cannot be opted out of and need to be created for the site to function properly. The ON status means that the cookie preference for this category will be enabled by default. The OFF status means the user needs to manually turn these cookies on to opt into these cookies.', 'gdpr' ); ?></span>
-										<span data-tooltip="<?php esc_attr_e( 'Required cookies are cookies that cannot be opted out of and need to be created for the site to function properly. The ON status means that the cookie preference for this category will be enabled by default. The OFF status means the user needs to manually turn these cookies on to opt into these cookies.', 'gdpr' ); ?>">
+										<span class="screen-reader-text"><?php esc_attr_e( 'Required cookies are cookies that cannot be opted out of and are needed for the site to function properly. Soft opt-in will allow cookies on first landing but can be opted-out of. Checked means that the cookie category will be checked by default and will be set after the user agrees to them. Unchecked means the user needs to manually toggle the category on to allow these cookies.', 'gdpr' ); ?></span>
+										<span data-tooltip="<?php esc_attr_e( 'Required cookies are cookies that cannot be opted out of and are needed for the site to function properly. Soft opt-in will allow cookies on first landing but can be opted-out of. Checked means that the cookie category will be checked by default and will be set after the user agrees to them. Unchecked means the user needs to manually toggle the category on to allow these cookies.', 'gdpr' ); ?>">
 											<span class="dashicons dashicons-info"></span>
 										</span>
 									</label>
@@ -244,8 +260,9 @@
 									<select name="gdpr_cookie_popup_content[<?php echo esc_attr( $cat_id ); ?>][status]" id="status-<?php echo esc_attr( $cat_id ); ?>" required>
 										<option value=""></option>
 										<option value="required" <?php selected( isset( $registered_cookies[ $cat_id ]['status'] ) ? $registered_cookies[ $cat_id ]['status'] : '', 'required' ); ?>><?php esc_html_e( 'Required', 'gdpr' ); ?></option>
-										<option value="on" <?php selected( isset( $registered_cookies[ $cat_id ]['status'] ) ? $registered_cookies[ $cat_id ]['status'] : '', 'on' ); ?>><?php esc_html_e( 'ON', 'gdpr' ); ?></option>
-										<option value="off" <?php selected( isset( $registered_cookies[ $cat_id ]['status'] ) ? $registered_cookies[ $cat_id ]['status'] : '', 'off' ); ?>><?php esc_html_e( 'OFF', 'gdpr' ); ?></option>
+										<option value="soft" <?php selected( isset( $registered_cookies[ $cat_id ]['status'] ) ? $registered_cookies[ $cat_id ]['status'] : '', 'soft' ); ?>><?php esc_html_e( 'Soft Opt-in', 'gdpr' ); ?></option>
+										<option value="on" <?php selected( isset( $registered_cookies[ $cat_id ]['status'] ) ? $registered_cookies[ $cat_id ]['status'] : '', 'on' ); ?>><?php esc_html_e( 'Checked', 'gdpr' ); ?></option>
+										<option value="off" <?php selected( isset( $registered_cookies[ $cat_id ]['status'] ) ? $registered_cookies[ $cat_id ]['status'] : '', 'off' ); ?>><?php esc_html_e( 'Unchecked', 'gdpr' ); ?></option>
 									</select>
 								</td>
 							</tr>

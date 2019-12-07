@@ -122,11 +122,17 @@ class GDPR_Public {
 		wp_localize_script(
 			$this->plugin_name, 'GDPR', array(
 				'ajaxurl'           => admin_url( 'admin-ajax.php' ),
+				'logouturl'         => is_user_logged_in() ? esc_url( wp_logout_url( home_url() ) ) : '',
 				'i18n'              => array(
-					'aborting' => esc_html__( 'Aborting', 'gdpr' ),
-					'continue' => esc_html__( 'Continue', 'gdpr' ),
-					'cancel'   => esc_html__( 'Cancel', 'gdpr' ),
-					'ok'       => esc_html__( 'OK', 'gdpr' ),
+					'aborting'              => esc_html__( 'Aborting', 'gdpr' ),
+					'logging_out'           => esc_html__( 'You are being logged out.', 'gdpr' ),
+					'continue'              => esc_html__( 'Continue', 'gdpr' ),
+					'cancel'                => esc_html__( 'Cancel', 'gdpr' ),
+					'ok'                    => esc_html__( 'OK', 'gdpr' ),
+					'close_account'         => esc_html__( 'Close your account?', 'gdpr' ),
+					'close_account_warning' => esc_html__( 'Your account will be closed and all data will be permanently deleted and cannot be recovered. Are you sure?', 'gdpr' ),
+					'are_you_sure'          => esc_html__( 'Are you sure?', 'gdpr' ),
+					'policy_disagree'       => esc_html__( 'By disagreeing you will no longer have access to our site and will be logged out.', 'gdpr' ),
 				),
 				'is_user_logged_in' => is_user_logged_in(),
 				'refresh'           => get_option( 'gdpr_refresh_after_preferences_update', true ),
@@ -181,7 +187,7 @@ class GDPR_Public {
 	 * @author Fernando Claussen <fernandoclaussen@gmail.com>
 	 */
 	public function overlay() {
-		echo '<div class="gdpr-overlay"></div>';
+		echo '<div class="gdpr gdpr-overlay"></div>';
 	}
 
 	/**
@@ -301,25 +307,18 @@ class GDPR_Public {
 			return;
 		}
 
-		include plugin_dir_path( __FILE__ ) . 'partials/reconsent-bar.php';
+		$reconsent_template = get_option( 'gdpr_reconsent_template', 'modal' );
+
+		if ( 'bar' === $reconsent_template ) {
+			include plugin_dir_path( __FILE__ ) . 'partials/reconsent-bar.php';
+		} else {
+			include plugin_dir_path( __FILE__ ) . 'partials/reconsent-modal.php';
+		}
+
 	}
 
 	protected function is_crawler() {
 	  return ( isset( $_SERVER['HTTP_USER_AGENT'] ) && preg_match('/bot|crawl|slurp|spider|mediapartners/i', $_SERVER['HTTP_USER_AGENT'] ) );
-	}
-
-	/**
-	 * Log the user out if they does not agree with the privacy policy terms when prompted.
-	 * @since  1.0.0
-	 * @author Fernando Claussen <fernandoclaussen@gmail.com>
-	 */
-	public function logout() {
-		if ( ! isset( $_POST['nonce'] ) || ! wp_verify_nonce( sanitize_text_field( wp_unslash( $_POST['nonce'] ) ), 'gdpr-user_disagree_with_terms' ) ) { // WPCS: Input var ok.
-			wp_send_json_error( esc_html__( 'We could not verify the the security token. Please try again.', 'gdpr' ) );
-		}
-
-		wp_logout();
-		wp_send_json_success();
 	}
 
 	public function set_plugin_cookies() {
@@ -352,7 +351,7 @@ class GDPR_Public {
 			if ( ! empty( $registered_cookies ) ) {
 				$required_cookies = array_filter(
 					$registered_cookies, function( $item ) {
-						return 'required' === $item['status'];
+						return 'required' === $item['status'] || 'soft' === $item['status'];
 					}
 				);
 				if ( ! empty( $required_cookies ) ) {
