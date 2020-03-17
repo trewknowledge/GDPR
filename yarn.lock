@@ -1297,10 +1297,10 @@ gulp-livereload@^4.0.2:
     tiny-lr "^1.1.1"
     vinyl "^2.2.0"
 
-gulp-load-plugins@^2.0.1:
-  version "2.0.1"
-  resolved "https://registry.yarnpkg.com/gulp-load-plugins/-/gulp-load-plugins-2.0.1.tgz#8fbff22095301a08c0f73f53f3e2a895a7258bd8"
-  integrity sha512-WTYIvfEg3j9dRUUkLSE0+MIliU2Jvvc3J7f7fb66ifqSEPS/Ki2xwGfcl68dJN8b+ZGl+9CE3sOl4hfiLmcUIQ==
+gulp-load-plugins@^2.0.2:
+  version "2.0.2"
+  resolved "https://registry.yarnpkg.com/gulp-load-plugins/-/gulp-load-plugins-2.0.2.tgz#15add68fe83b2cde36f1fb9266795a09fc67a596"
+  integrity sha512-nG1qSZZpuMIoGZSaBLutL/m7qYIGSHneprOZVdp1UNDuxp2kniXYNIxvDiPxUiFfjhcNaJ66sUGJAyK+MlhE1w==
   dependencies:
     array-unique "^0.3.2"
     fancy-log "^1.2.0"
@@ -1308,7 +1308,7 @@ gulp-load-plugins@^2.0.1:
     gulplog "^1.0.0"
     has-gulplog "^0.1.0"
     micromatch "^4.0.2"
-    resolve "^1.12.0"
+    resolve "^1.14.1"
 
 gulp-notify@^3.2.0:
   version "3.2.0"
@@ -1328,7 +1328,7 @@ gulp-rename@^1.2.2:
   resolved "https://registry.yarnpkg.com/gulp-rename/-/gulp-rename-1.4.0.tgz#de1c718e7c4095ae861f7296ef4f3248648240bd"
   integrity sha512-swzbIGb/arEoFK89tPY58vg3Ok1bw+d35PfUNwWqdo7KM4jkmuGA78JiDNqR+JeZFaeeHnRg9N7aihX3YPmsyg==
 
-gulp-sass@^4.0.1:
+gulp-sass@^4.0.2:
   version "4.0.2"
   resolved "https://registry.yarnpkg.com/gulp-sass/-/gulp-sass-4.0.2.tgz#cfb1e3eff2bd9852431c7ce87f43880807d8d505"
   integrity sha512-q8psj4+aDrblJMMtRxihNBdovfzGrXJp1l4JU0Sz4b/Mhsi2DPrKFYCGDwjIWRENs04ELVHxdOJQ7Vs98OFohg==
@@ -1353,10 +1353,10 @@ gulp-uglify-es@^1.0.1:
     vinyl "^2.1.0"
     vinyl-sourcemaps-apply "^0.2.1"
 
-gulp-wp-pot@^2.2.0:
-  version "2.3.5"
-  resolved "https://registry.yarnpkg.com/gulp-wp-pot/-/gulp-wp-pot-2.3.5.tgz#e44639798bd2517c9dd0bea7f52d5f8a1ff51ce1"
-  integrity sha512-lRZZkuEBrYTPj3j9iOWK3YdtcRH857gxMMLKoboVjtY8G5l7iOxsyza50rsA8XvmPQ8hlSuMNA0zd17oT/ybqQ==
+gulp-wp-pot@^2.3.6:
+  version "2.3.6"
+  resolved "https://registry.yarnpkg.com/gulp-wp-pot/-/gulp-wp-pot-2.3.6.tgz#01f47f309abcf547240bcc6714d389640e447d89"
+  integrity sha512-RaS7MiT8w9HdfmH8c6l7QKeeZeWDMDoyWUb//vFXGH05XY1t2w4iv22k0AIWyZ9w2ceX6W2ia3jC5hH+5wn2rA==
   dependencies:
     plugin-error "^1.0.1"
     through2 "^3.0.1"
@@ -2822,10 +2822,17 @@ resolve-url@^0.2.1:
   resolved "https://registry.yarnpkg.com/resolve-url/-/resolve-url-0.2.1.tgz#2c637fe77c893afd2a663fe21aa9080068e2052a"
   integrity sha1-LGN/53yJOv0qZj/iGqkIAGjiBSo=
 
-resolve@^1.1.6, resolve@^1.1.7, resolve@^1.10.0, resolve@^1.12.0, resolve@^1.4.0:
+resolve@^1.1.6, resolve@^1.1.7, resolve@^1.10.0, resolve@^1.4.0:
   version "1.12.0"
   resolved "https://registry.yarnpkg.com/resolve/-/resolve-1.12.0.tgz#3fc644a35c84a48554609ff26ec52b66fa577df6"
   integrity sha512-B/dOmuoAik5bKcD6s6nXDCjzUKnaDvdkRyAk6rsmsKLipWj4797iothd7jmmUhWTfinVMU+wc56rYKsit2Qy4w==
+  dependencies:
+    path-parse "^1.0.6"
+
+resolve@^1.14.1:
+  version "1.15.1"
+  resolved "https://registry.yarnpkg.com/resolve/-/resolve-1.15.1.tgz#27bdcdeffeaf2d6244b95bb0f9f4b4653451f3e8"
+  integrity sha512-84oo6ZTtoTUpjgNEr5SJyzQhzL72gaRodsSfyxC/AXRvwu0Yse9H8eF9IpGo7b8YetZhlI6v7ZQ6bKBFV/6S7w==
   dependencies:
     path-parse "^1.0.6"
 
