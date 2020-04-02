@@ -9,6 +9,8 @@ Stable tag: 2.1.0
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
+**WARNING: This is a fork of the [plugin](https://github.com/trewknowledge/GDPR) referenced throughout this README and codebase. This is forked for the specific needs of [Box UK](https://boxuk.com), so although it may be of benefit to others it is not maintained as to be relied upon.**
+
 This plugin is meant to assist with the GDPR obligations of a Data processor and Controller.
 
 == Description ==
