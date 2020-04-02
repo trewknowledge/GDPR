@@ -1,3 +1,6 @@
+| :warning: | This is a fork of the [plugin](https://github.com/trewknowledge/GDPR) referenced throughout this README and codebase. This is forked for the specific needs of [Box UK](https://boxuk.com), so although it may be of benefit to others it is not maintained as to be relied upon. |
+|----|---|
+
 # GDPR
 
 [![Build Status](https://travis-ci.com/trewknowledge/GDPR.svg?branch=master)](https://travis-ci.com/trewknowledge/GDPR)
