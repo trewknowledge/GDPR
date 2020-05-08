@@ -11,8 +11,8 @@
 	    str = str.toLowerCase();
 
 	    // remove accents, swap ñ for n, etc
-	    var from = "àáäâèéëêìíïîòóöôùúüûñňçčľĺšťžýď·/_,:;";
-	    var to   = "aaaaeeeeiiiioooouuuunnccllstzyd------";
+	    var from = "àáäâèéëêìíïîòóöôùúüûñňçčľĺšťžýďąćęłńóśźż·/_,:;";
+	    var to   = "aaaaeeeeiiiioooouuuunnccllstzydacelnoszz------";
 	    for (var i=0, l=from.length ; i<l ; i++) {
         str = str.replace(new RegExp(from.charAt(i), 'g'), to.charAt(i));
 	    }
