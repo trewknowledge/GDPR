@@ -1,0 +1,40 @@
+name: CI
+
+on: [push]
+
+jobs:
+  PHPCompatibility:
+    runs-on: ${{ matrix.operating-system }}
+    strategy:
+      matrix:
+        operating-system: [ubuntu-latest, windows-latest, macos-latest]
+        php-versions: ['5.6', '7.0', '7.1', '7.2', '7.3', '7.4']
+    name: PHP ${{ matrix.php-versions }} Test on ${{ matrix.operating-system }}
+    steps:
+    - uses: actions/checkout@v1
+      
+    - name: 'Install Composer dependencies'
+      run: composer install
+    
+    - name: 'Setup PHP' 
+      uses: shivammathur/setup-php@v1
+      with:
+        php-version: ${{ matrix.php-versions }}
+    
+    - name: 'Run PHPCS'
+      run: |
+        vendor/bin/phpcs --config-set ignore_warnings_on_exit 1
+        vendor/bin/phpcs --standard=PHPCompatibility -sp --basepath=. --ignore=vendor --extensions=php .
+  VIP Code Standard:
+    runs-on: ubuntu-latest
+    name: Checking against VIP Code Standards
+    steps:
+    - uses: actions/checkout@v1
+      
+    - name: 'Install Composer dependencies'
+      run: composer install
+      
+    - name: 'Run PHPCS'
+      run: |
+        vendor/bin/phpcs --config-set ignore_warnings_on_exit 1
+        vendor/bin/phpcs --standard=WordPress-VIP-Go -sp --basepath=. --ignore=vendor --extensions=php .
