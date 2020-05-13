@@ -42,14 +42,6 @@ class GDPR_Admin {
 	private $version;
 
 	/**
-	 * Allowed HTML for wp_kses.
-	 * @since  1.0.5
-	 * @access private
-	 * @var    array   $allowed_html   The allowed HTML for wp_kses.
-	 */
-	private $allowed_html;
-
-	/**
 	 * Initialize the class and set its properties.
 	 *
 	 * @since  1.0.0
@@ -60,13 +52,6 @@ class GDPR_Admin {
 	public function __construct( $plugin_name, $version ) {
 		$this->plugin_name  = $plugin_name;
 		$this->version      = $version;
-		$this->allowed_html = array(
-			'a' => array(
-				'href'   => true,
-				'title'  => true,
-				'target' => true,
-			),
-		);
 	}
 
 	/**
@@ -184,8 +169,8 @@ class GDPR_Admin {
 	 */
 	public function register_settings() {
 		$settings = array(
-			'gdpr_cookie_banner_content'               => array( $this, 'sanitize_with_links' ),
-			'gdpr_cookie_privacy_excerpt'              => 'sanitize_textarea_field',
+			'gdpr_cookie_banner_content'               => 'wp_kses_post',
+			'gdpr_cookie_privacy_excerpt'              => 'wp_kses_post',
 			'gdpr_cookie_popup_content'                => array( $this, 'sanitize_cookie_categories' ),
 			'gdpr_email_limit'                         => 'intval',
 			'gdpr_consent_types'                       => array( $this, 'sanitize_consents' ),
@@ -205,17 +190,6 @@ class GDPR_Admin {
 		foreach ( $settings as $option_name => $sanitize_callback ) {
 			register_setting( 'gdpr', $option_name, array( 'sanitize_callback' => $sanitize_callback ) );
 		}
-	}
-
-	/**
-	 * Sanitize content but allow links.
-	 * @param  string $string The string that will be sanitized.
-	 * @return string         Sanitized string.
-	 * @since  1.4.0
-	 * @author Fernando Claussen <fernandoclaussen@gmail.com>
-	 */
-	public function sanitize_with_links( $string ) {
-		return wp_kses( $string, $this->allowed_html );
 	}
 
 	/**
@@ -239,8 +213,8 @@ class GDPR_Admin {
 			$output[ $key ] = array(
 				'name'         => sanitize_text_field( wp_unslash( $props['name'] ) ),
 				'policy-page'  => isset( $props['policy-page'] ) ? absint( $props['policy-page'] ) : 0,
-				'description'  => isset( $props['description'] ) ? wp_kses( wp_unslash( $props['description'] ), $this->allowed_html ) : '',
-				'registration' => isset( $props['registration'] ) ? wp_kses( wp_unslash( $props['registration'] ), $this->allowed_html ) : '',
+				'description'  => isset( $props['description'] ) ? wp_kses_post( wp_unslash( $props['description'] ) ) : '',
+				'registration' => isset( $props['registration'] ) ? wp_kses_post( wp_unslash( $props['registration'] ) ) : '',
 			);
 		}
 		return $output;
@@ -871,7 +845,7 @@ class GDPR_Admin {
 				<?php else : ?>
 					<input type="checkbox" name="user_consents[]" value="<?php echo esc_attr( $consent_key ); ?>" <?php echo ! empty( $user_consents ) ? checked( in_array( $consent_key, $user_consents, true ), 1, false ) : ''; ?>>
 				<?php endif ?>
-				<span class="description"><?php echo wp_kses( $consent['description'], $this->allowed_html ); ?></span>
+				<span class="description"><?php echo wp_kses_post( $consent['description'] ); ?></span>
 			</td>
 			</tr>
 		<?php endforeach ?>
@@ -932,7 +906,7 @@ class GDPR_Admin {
 
 			$fields['account'][ 'user_consents_' . esc_attr( $key ) ] = array(
 				'type'     => 'checkbox',
-				'label'    => wp_kses( $consent['registration'], $this->allowed_html ),
+				'label'    => wp_kses_post( $consent['registration'] ),
 				'required' => $required,
 			);
 		}

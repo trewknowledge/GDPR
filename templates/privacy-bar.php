@@ -15,7 +15,7 @@
 <div class="gdpr gdpr-privacy-bar" style="display:none;">
 	<div class="gdpr-wrapper">
 		<div class="gdpr-content">
-			<p><?php echo nl2br( wp_kses_post( $args['content'] ) ); ?></p>
+			<p><?php echo wp_kses_post( $args['content'] ); ?></p>
 		</div>
 		<div class="gdpr-right">
 			<?php if ( $args['show_cookie_cat_checkboxes'] ) : ?>

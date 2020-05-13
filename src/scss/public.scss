@@ -126,6 +126,9 @@
 					color: #ffffff;
 					font-size: 14px;
 				}
+				strong, a, span, em {
+					color: inherit;
+				}
 				@include breakpoint(medium-small) {
 					padding-right: 0;
 					padding-bottom: 20px;

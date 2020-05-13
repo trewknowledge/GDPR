@@ -46,14 +46,6 @@ class GDPR_Public {
 	private $version;
 
 	/**
-	 * Allowed HTML for wp_kses.
-	 * @since  1.1.0
-	 * @access private
-	 * @var    array   $allowed_html   The allowed HTML for wp_kses.
-	 */
-	private $allowed_html;
-
-	/**
 	 * Initialize the class and set its properties.
 	 *
 	 * @since  1.0.0
@@ -64,13 +56,6 @@ class GDPR_Public {
 	public function __construct( $plugin_name, $version ) {
 		$this->plugin_name  = $plugin_name;
 		$this->version      = $version;
-		$this->allowed_html = array(
-			'a' => array(
-				'href'   => true,
-				'title'  => true,
-				'target' => true,
-			),
-		);
 	}
 
 	/**
@@ -195,7 +180,6 @@ class GDPR_Public {
 				'approved_cookies'       => $approved_cookies,
 				'user_consents'          => $user_consents,
 				'tabs'                   => $tabs,
-				'allowed_html'           => $this->allowed_html,
 			)
 		);
 	}

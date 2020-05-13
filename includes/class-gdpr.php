@@ -324,14 +324,6 @@ class GDPR {
 		}
 		$sent_extras = ( isset( $_POST['user_consents'] ) ) ? array_map( 'sanitize_text_field', wp_unslash( $_POST['user_consents'] ) ) : array(); // phpcs:ignore
 
-		$allowed_html = array(
-			'a' => array(
-				'href'   => true,
-				'title'  => true,
-				'target' => true,
-			),
-		);
-
 		if ( $consent_key ) {
 			$consent_types = array_filter(
 				$consent_types, function( $key ) use ( $consent_key ) {
@@ -347,7 +339,7 @@ class GDPR {
 			echo '<p>' .
 				'<label class="gdpr-label">' .
 				'<input type="checkbox" name="user_consents[' . esc_attr( $key ) . ']" id="' . esc_attr( $key ) . '-consent" value="1" ' . esc_html( $required ) . ' ' . esc_html( $checked ) . '>' .
-					wp_kses( $consent['registration'], $allowed_html ) . '</label>' .
+					wp_kses_post( $consent['registration'] ) . '</label>' .
 			'</p>';
 		}
 

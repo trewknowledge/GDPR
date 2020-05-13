@@ -131,8 +131,17 @@
 						</span>
 					</th>
 					<td>
-						<?php $privacy_bar_content = get_option( 'gdpr_cookie_banner_content', '' ); ?>
-						<textarea name="gdpr_cookie_banner_content" id="gdpr_cookie_banner_content" cols="80" rows="6"><?php echo esc_html( $privacy_bar_content ); ?></textarea>
+						<?php
+							$privacy_bar_content = get_option( 'gdpr_cookie_banner_content', '' );
+							wp_editor( $privacy_bar_content, 'gdpr_cookie_banner_content',
+								array(
+									'textarea_name' => 'gdpr_cookie_banner_content',
+									'textarea_rows' => 6,
+									'media_buttons' => false,
+									'teeny' => true
+								)
+							);
+						?>
 					</td>
 				</tr>
 				<tr>
@@ -144,8 +153,15 @@
 						</span>
 					</th>
 					<td>
-						<?php $privacy_excerpt = get_option( 'gdpr_cookie_privacy_excerpt', '' ); ?>
-						<textarea name="gdpr_cookie_privacy_excerpt" id="gdpr_cookie_privacy_excerpt" cols="80" rows="6"><?php echo esc_html( $privacy_excerpt ); ?></textarea>
+						<?php
+							$privacy_excerpt = get_option( 'gdpr_cookie_privacy_excerpt', '' );
+							wp_editor( $privacy_excerpt, 'gdpr_cookie_privacy_excerpt', array(
+								'textarea_name' => 'gdpr_cookie_privacy_excerpt',
+								'textarea_rows' => 6,
+								'media_buttons' => false,
+								'teeny' => true
+							) );
+						?>
 						<p class="description"><?php esc_html_e( 'This will appear in the consent section of the privacy preference window.', 'gdpr' ); ?></p>
 					</td>
 				</tr>
@@ -291,7 +307,18 @@
 										</span>
 									</label>
 								</th>
-								<td><textarea name="gdpr_cookie_popup_content[<?php echo esc_attr( $cookie_cat_id ); ?>][how_we_use]" id="tab-how-we-use-<?php echo esc_attr( $cookie_cat_id ); ?>" cols="53" rows="3"><?php echo esc_html( $registered_cookies[ $cookie_cat_id ]['how_we_use'] ); ?></textarea></td>
+								<td>
+									<?php
+										wp_editor( $registered_cookies[ $cookie_cat_id ]['how_we_use'], 'tab-how-we-use-' . esc_attr( $cookie_cat_id ),
+											array(
+												'textarea_name' => 'gdpr_cookie_popup_content[' . esc_attr( $cookie_cat_id ) . '][how_we_use]',
+												'textarea_rows' => 3,
+												'media_buttons' => false,
+												'teeny' => true
+											)
+										);
+									?>
+								</td>
 							</tr>
 							<tr>
 				<th>
@@ -329,7 +356,7 @@
 								</label>
 							</th>
 							<td>
-							<textarea cols="53" rows="3" name="gdpr_cookie_popup_content[<?php echo esc_attr( $cookie_cat_id ); ?>][hosts][<?php echo esc_attr( $domain_id ); ?>][cookies_used]" id="hosts-cookies-used-<?php echo esc_attr( $domain_id ); ?>"><?php echo esc_attr( $domain_arr['cookies_used'] ); ?></textarea>
+								<textarea cols="53" rows="3" name="gdpr_cookie_popup_content[<?php echo esc_attr( $cookie_cat_id ); ?>][hosts][<?php echo esc_attr( $domain_id ); ?>][cookies_used]" id="hosts-cookies-used-<?php echo esc_attr( $domain_id ); ?>"><?php echo esc_attr( $domain_arr['cookies_used'] ); ?></textarea>
 							</td>
 						</tr>
 						<tr>
@@ -400,7 +427,18 @@
 											</span>
 										</label>
 									</th>
-									<td><textarea name="gdpr_consent_types[<?php echo esc_attr( $consent_id ); ?>][description]" id="consent-description-<?php echo esc_attr( $consent_id ); ?>" cols="53" rows="3" required><?php echo esc_html( $consent['description'] ); ?></textarea></td>
+									<td>
+										<?php
+											wp_editor( $consent['description'], 'consent-description-' . esc_attr( $consent_id ),
+												array(
+													'textarea_name' => 'gdpr_consent_types[' . esc_attr( $consent_id ) . '][description]',
+													'textarea_rows' => 6,
+													'media_buttons' => false,
+													'teeny' => true
+												)
+											);
+										?>
+									</td>
 								</tr>
 								<tr>
 									<th>
@@ -412,7 +450,18 @@
 											</span>
 										</label>
 									</th>
-									<td><textarea name="gdpr_consent_types[<?php echo esc_attr( $consent_id ); ?>][registration]" id="consent-registration-<?php echo esc_attr( $consent_id ); ?>" cols="53" rows="3" required><?php echo esc_html( $consent['registration'] ); ?></textarea></td>
+									<td>
+										<?php
+											wp_editor( $consent['registration'], 'consent-registration-' . esc_attr( $consent_id ),
+												array(
+													'textarea_name' => 'gdpr_consent_types[' . esc_attr( $consent_id ) . '][registration]',
+													'textarea_rows' => 6,
+													'media_buttons' => false,
+													'teeny' => true
+												)
+											);
+										?>
+									</td>
 								</tr>
 							</table>
 						</div><!-- .inside -->
