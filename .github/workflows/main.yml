@@ -7,7 +7,7 @@ jobs:
     runs-on: ubuntu-latest
     name: Checking against VIP Code Standards
     steps:
-    - uses: actions/checkout@v1
+    - uses: actions/checkout@master
       
     - name: 'Install Composer dependencies'
       run: |
