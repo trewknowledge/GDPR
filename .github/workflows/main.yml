@@ -1,0 +1,20 @@
+name: CI
+
+on: [push]
+
+jobs:
+  VIP_Code_Standard:
+    runs-on: ubuntu-latest
+    name: Checking against VIP Code Standards
+    steps:
+    - uses: actions/checkout@v1
+      
+    - name: 'Install Composer dependencies'
+      run: |
+        composer require automattic/vipwpcs --dev
+        composer require dealerdirect/phpcodesniffer-composer-installer --dev
+      
+    - name: 'Run PHPCS'
+      run: |
+        ./vendor/bin/phpcs --config-set ignore_warnings_on_exit 1
+        ./vendor/bin/phpcs --standard=WordPress-VIP-Go -sp --basepath=. --ignore=vendor --extensions=php .
