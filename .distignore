@@ -1,0 +1,15 @@
+/.wordpress-org
+/.git
+/.github
+/node_modules
+/src
+
+.distignore
+.gitignore
+.stylelintrc
+.estlintrc.json
+.eslintignore
+.editorconfig
+phpcs.xml.dist
+phpdoc.dist.xml
+webpack.config.js
