@@ -1,5 +1,5 @@
-@import '../../utils';
-@import 'tooltips';
+@import 'helpers/breakpoints';
+@import 'components/tooltips';
 
 .gdpr-required {
 	color: #f00;
@@ -10,9 +10,9 @@
 		margin-top: 20px;
 		.hndle{
 			font-size: 16px;
-	    padding: 8px 12px;
-	    margin: 0;
-	    line-height: 1.4;
+			padding: 8px 12px;
+			margin: 0;
+			line-height: 1.4;
 			span{
 				font-size: 12px;
 			}
@@ -39,17 +39,17 @@
 
 .gdpr-pending-requests-badge {
 	display: inline-block;
-  vertical-align: text-bottom;
-  margin: 1px 0 0 2px;
-  padding: 0 5px;
-  min-width: 7px;
-  height: 17px;
-  border-radius: 11px;
-  background-color: #ca4a1f;
-  color: #fff;
-  font-size: 9px;
-  line-height: 17px;
-  text-align: center;
+	vertical-align: text-bottom;
+	margin: 1px 0 0 2px;
+	padding: 0 5px;
+	min-width: 7px;
+	height: 17px;
+	border-radius: 11px;
+	background-color: #ca4a1f;
+	color: #fff;
+	font-size: 9px;
+	line-height: 17px;
+	text-align: center;
 }
 .gdpr-request-table, .gdpr-manual-email-lookup {
 	.spinner{
@@ -86,23 +86,23 @@
 
 /* The switch - the box around the slider */
 .gdpr-switch {
-  position: relative;
-  display: inline-block;
-  width: 45px;
+	position: relative;
+	display: inline-block;
+	width: 45px;
 	height: 24px;
 	input{
 		display: none;
 	}
 	.gdpr-slider {
-	  position: absolute;
-	  cursor: pointer;
-	  top: 0;
-	  left: 0;
-	  right: 0;
-	  bottom: 0;
-	  background-color: #ccc;
-		transition: .4s;
-		&:before{
+		position: absolute;
+		cursor: pointer;
+		top: 0;
+		left: 0;
+		right: 0;
+		bottom: 0;
+		background-color: #ccc;
+		transition: 0.4s;
+		&::before{
 			position: absolute;
 			content: "";
 			height: 16px;
@@ -110,26 +110,26 @@
 			left: 4px;
 			bottom: 4px;
 			background-color: white;
-			transition: .4s;
+			transition: 0.4s;
 		}
 		&.round {
 			border-radius: 34px;
-			&:before {
+			&::before {
 				border-radius: 50%;
 			}
 		}
 	}
 	input {
 		&:checked {
-			+.gdpr-slider {
+			+ .gdpr-slider {
 				background-color: #00b9eb;
-				&:before {
+				&::before {
 					transform: translateX(21px);
 				}
 			}
 		}
 		&:focus {
-			+.gdpr-slider {
+			+ .gdpr-slider {
 				box-shadow: 0 0 1px #00b9eb;
 			}
 		}
@@ -220,5 +220,3 @@
 		}
 	}
 }
-
-
