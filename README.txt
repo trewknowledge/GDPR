@@ -219,7 +219,6 @@ Activating this plugin does not guarantee that an organisation is successfully m
 * Moved partials to templates so they can be overwritten by themes.
 * Fix issue where some modals would not close.
 * Fix issue where tapping the X on modals would jump.
-* Enabling use of some html tags in some of the textareas like privacy excerpt and so on.
 
 
 = 2.1.0 =
