@@ -358,7 +358,7 @@ class GDPR_Public {
 
 	public function set_plugin_cookies() {
 
-		if (isset($_SERVER['SCRIPT_NAME']) && preg_match('|/wp-cron\.php$|',$_SERVER['SCRIPT_NAME'])) return;
+		if ( wp_doing_cron() ) return;
 
 		$user_id = get_current_user_id();
 
