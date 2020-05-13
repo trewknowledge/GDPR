@@ -26,11 +26,11 @@ class GDPR_Requests_Admin extends GDPR_Requests {
 	 * @author Fernando Claussen <fernandoclaussen@gmail.com>
 	 */
 	public function add_to_deletion_requests() {
-		if ( ! isset( $_POST['gdpr_deletion_requests_nonce'] ) || ! wp_verify_nonce( sanitize_key( $_POST['gdpr_deletion_requests_nonce'] ), 'gdpr-add-to-deletion-requests' ) ) { // WPCS: Input var ok.
+		if ( ! isset( $_POST['gdpr_deletion_requests_nonce'] ) || ! wp_verify_nonce( sanitize_key( $_POST['gdpr_deletion_requests_nonce'] ), 'gdpr-add-to-deletion-requests' ) ) { // phpcs:ignore
 			wp_die( esc_html__( 'We could not verify the user email or the security token. Please try again.', 'gdpr' ) );
 		}
 
-		$email = isset( $_POST['user_email'] ) ? sanitize_email( wp_unslash( $_POST['user_email'] ) ) : ''; // WPCS: Input var ok.
+		$email = isset( $_POST['user_email'] ) ? sanitize_email( wp_unslash( $_POST['user_email'] ) ) : ''; // phpcs:ignore
 		$user  = get_user_by( 'email', $email );
 
 		if ( ! $user instanceof WP_User ) {
@@ -141,11 +141,11 @@ class GDPR_Requests_Admin extends GDPR_Requests {
 	 * @author Fernando Claussen <fernandoclaussen@gmail.com>
 	 */
 	public function cancel_request() {
-		if ( ! isset( $_POST['type'] ) ) { // WPCS: Input var ok.
+		if ( ! isset( $_POST['type'] ) ) { // phpcs:ignore
 			wp_die( esc_html__( 'We could not verify the type of request you want to cancel.', 'gdpr' ) );
 		}
 
-		$type          = trim( strtolower( sanitize_text_field( wp_unslash( $_POST['type'] ) ) ) ); // WPCS: Input var ok, CSRF ok.
+		$type          = trim( strtolower( sanitize_text_field( wp_unslash( $_POST['type'] ) ) ) ); // phpcs:ignore
 		$allowed_types = parent::get_allowed_types();
 
 		if ( ! in_array( $type, $allowed_types, true ) ) {
@@ -155,12 +155,12 @@ class GDPR_Requests_Admin extends GDPR_Requests {
 
 		$nonce_field = 'gdpr_cancel_' . $type . '_nonce';
 
-		if ( ! isset( $_POST[ $nonce_field ], $_POST['user_email'], $_POST['index'] ) || ! wp_verify_nonce( sanitize_key( $_POST[ $nonce_field ] ), 'gdpr-request-nonce' ) ) { // WPCS: Input var ok.
+		if ( ! isset( $_POST[ $nonce_field ], $_POST['user_email'], $_POST['index'] ) || ! wp_verify_nonce( sanitize_key( $_POST[ $nonce_field ] ), 'gdpr-request-nonce' ) ) { // phpcs:ignore
 			wp_die( esc_html__( 'We could not verify the user email or the security token. Please try again.', 'gdpr' ) );
 		}
 
-		$email = sanitize_email( wp_unslash( $_POST['user_email'] ) ); // WPCS: Input var ok.
-		$index = sanitize_text_field( wp_unslash( $_POST['index'] ) ); // WPCS: Input var ok.
+		$email = sanitize_email( wp_unslash( $_POST['user_email'] ) ); // phpcs:ignore
+		$index = sanitize_text_field( wp_unslash( $_POST['index'] ) ); // phpcs:ignore
 
 		parent::remove_from_requests( $index );
 		$user = get_user_by( 'email', $email );
@@ -189,11 +189,11 @@ class GDPR_Requests_Admin extends GDPR_Requests {
 	 * @author Fernando Claussen <fernandoclaussen@gmail.com>
 	 */
 	public function mark_resolved() {
-		if ( ! isset( $_POST['type'] ) ) { // WPCS: Input var ok.
+		if ( ! isset( $_POST['type'] ) ) { // phpcs:ignore
 			wp_die( esc_html__( 'We could not verify the type of request you want to cancel.', 'gdpr' ) );
 		}
 
-		$type          = isset( $_POST['type'] ) ? trim( strtolower( sanitize_text_field( wp_unslash( $_POST['type'] ) ) ) ) : ''; // WPCS: Input var ok, CSRF ok.
+		$type          = isset( $_POST['type'] ) ? trim( strtolower( sanitize_text_field( wp_unslash( $_POST['type'] ) ) ) ) : ''; // phpcs:ignore
 		$allowed_types = parent::get_allowed_types();
 
 		if ( ! in_array( $type, $allowed_types, true ) ) {
@@ -203,12 +203,12 @@ class GDPR_Requests_Admin extends GDPR_Requests {
 
 		$nonce_field = 'gdpr_' . $type . '_mark_resolved_nonce';
 
-		if ( ! isset( $_POST[ $nonce_field ], $_POST['user_email'], $_POST['index'] ) || ! wp_verify_nonce( sanitize_key( $_POST[ $nonce_field ] ), 'gdpr-mark-as-resolved' ) ) { // WPCS: Input var ok.
+		if ( ! isset( $_POST[ $nonce_field ], $_POST['user_email'], $_POST['index'] ) || ! wp_verify_nonce( sanitize_key( $_POST[ $nonce_field ] ), 'gdpr-mark-as-resolved' ) ) { // phpcs:ignore
 			wp_die( esc_html__( 'We could not verify the user email or the security token. Please try again.', 'gdpr' ) );
 		}
 
-		$email = sanitize_email( wp_unslash( $_POST['user_email'] ) ); // WPCS: Input var ok.
-		$index = sanitize_text_field( wp_unslash( $_POST['index'] ) ); // WPCS: Input var ok.
+		$email = sanitize_email( wp_unslash( $_POST['user_email'] ) ); // phpcs:ignore
+		$index = sanitize_text_field( wp_unslash( $_POST['index'] ) ); // phpcs:ignore
 
 		parent::remove_from_requests( $index );
 
@@ -240,13 +240,13 @@ class GDPR_Requests_Admin extends GDPR_Requests {
 	 * @author Fernando Claussen <fernandoclaussen@gmail.com>
 	 */
 	public function delete_user() {
-		if ( ! isset( $_POST['gdpr_delete_user'], $_POST['user_email'], $_POST['index'] ) || ! wp_verify_nonce( sanitize_key( $_POST['gdpr_delete_user'] ), 'gdpr-request-delete-user' ) ) { // WPCS: Input var ok.
+		if ( ! isset( $_POST['gdpr_delete_user'], $_POST['user_email'], $_POST['index'] ) || ! wp_verify_nonce( sanitize_key( $_POST['gdpr_delete_user'] ), 'gdpr-request-delete-user' ) ) { // phpcs:ignore
 			wp_die( esc_html__( 'We could not verify the user email or the security token. Please try again.', 'gdpr' ) );
 		}
 
-		$email = sanitize_email( wp_unslash( $_POST['user_email'] ) ); // WPCS: Input var ok.
+		$email = sanitize_email( wp_unslash( $_POST['user_email'] ) ); // phpcs:ignore
 		$user  = get_user_by( 'email', $email );
-		$index = sanitize_text_field( wp_unslash( $_POST['index'] ) ); // WPCS: Input var ok.
+		$index = sanitize_text_field( wp_unslash( $_POST['index'] ) ); // phpcs:ignore
 		parent::remove_from_requests( $index );
 
 		$token = GDPR::generate_pin();
@@ -278,12 +278,12 @@ class GDPR_Requests_Admin extends GDPR_Requests {
 	 * @author Fernando Claussen <fernandoclaussen@gmail.com>
 	 */
 	public function anonymize_comments() {
-		if ( ! isset( $_POST['nonce'] ) || ! wp_verify_nonce( sanitize_key( wp_unslash( $_POST['nonce'] ) ), 'gdpr-anonymize-comments-action' ) ) { // WPCS: Input var ok.
+		if ( ! isset( $_POST['nonce'] ) || ! wp_verify_nonce( sanitize_key( wp_unslash( $_POST['nonce'] ) ), 'gdpr-anonymize-comments-action' ) ) { // phpcs:ignore
 			wp_send_json_error( esc_html__( 'We could not verify the security token. Please try again.', 'gdpr' ) );
 		}
 
-		$email         = isset( $_POST['user_email'] ) ? sanitize_email( wp_unslash( $_POST['user_email'] ) ) : ''; // WPCS: Input var ok.
-		$comment_count = isset( $_POST['comment_count'] ) ? (int) $_POST['comment_count'] : 0; // WPCS: Input var ok.
+		$email         = isset( $_POST['userEmail'] ) ? sanitize_email( wp_unslash( $_POST['userEmail'] ) ) : ''; // phpcs:ignore
+		$comment_count = isset( $_POST['commentCount'] ) ? (int) $_POST['commentCount'] : 0; // phpcs:ignore
 
 		$user = get_user_by( 'email', $email );
 		if ( ! $user instanceof WP_User ) {
@@ -319,18 +319,18 @@ class GDPR_Requests_Admin extends GDPR_Requests {
 	 * @author Fernando Claussen <fernandoclaussen@gmail.com>
 	 */
 	public function reassign_content() {
-		if ( ! isset( $_POST['nonce'] ) || ! wp_verify_nonce( sanitize_key( wp_unslash( $_POST['nonce'] ) ), 'gdpr-reassign-content-action' ) ) { // WPCS: Input var ok.
+		if ( ! isset( $_POST['nonce'] ) || ! wp_verify_nonce( sanitize_key( wp_unslash( $_POST['nonce'] ) ), 'gdpr-reassign-content-action' ) ) { // phpcs:ignore
 			wp_send_json_error( esc_html__( 'We could not verify the security token. Please try again.', 'gdpr' ) );
 		}
 
-		if ( ! isset( $_POST['user_email'], $_POST['reassign_to'], $_POST['post_type'], $_POST['post_count'] ) ) { // WPCS: Input var ok.
+		if ( ! isset( $_POST['userEmail'], $_POST['reassignTo'], $_POST['postType'], $_POST['postCount'] ) ) { // phpcs:ignore
 			wp_send_json_error( esc_html__( 'Essential data missing. Please try again.', 'gdpr' ) );
 		}
 
-		$email       = sanitize_email( wp_unslash( $_POST['user_email'] ) ); // WPCS: Input var ok.
-		$reassign_to = (int) $_POST['reassign_to']; // WPCS: Input var ok.
-		$post_type   = sanitize_text_field( wp_unslash( $_POST['post_type'] ) ); // WPCS: Input var ok.
-		$post_count  = (int) $_POST['post_count']; // WPCS: Input var ok.
+		$email       = sanitize_email( wp_unslash( $_POST['userEmail'] ) ); // phpcs:ignore
+		$reassign_to = (int) $_POST['reassignTo']; // phpcs:ignore
+		$post_type   = sanitize_text_field( wp_unslash( $_POST['postType'] ) ); // phpcs:ignore
+		$post_count  = (int) $_POST['postCount']; // phpcs:ignore
 
 		$user = get_user_by( 'email', $email );
 		if ( ! $user instanceof WP_User ) {

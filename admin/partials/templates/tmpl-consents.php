@@ -1,7 +1,7 @@
 <script type="text/html" id="tmpl-consents">
 	<div class="postbox" id="consent-type-content-{{data.key}}">
 		<h2 class="hndle">{{data.name}} <span>(id: {{data.key}})</span><button class="notice-dismiss" type="button"><span class="screen-reader-text"><?php esc_html_e( 'Unregister this consent.', 'gdpr' ); ?></span></button></h2>
-		<input type="hidden" name="{{data.option_name}}[{{data.key}}][name]" value="{{data.name}}" />
+		<input type="hidden" name="{{data.optionName}}[{{data.key}}][name]" value="{{data.name}}" />
 		<div class="inside">
 			<table class="form-table">
 				<tr>
@@ -17,8 +17,8 @@
 					<td>
 						<select name="gdpr_consent_types[{{data.key}}][policy-page]" id="consent-policy-page-{{data.key}}">
 							<option value=""></option>
-							<?php foreach ( $pages as $page ) : ?>
-								<option value="<?php echo esc_attr( $page->ID ); ?>"><?php echo esc_html( $page->post_title ); ?></option>
+							<?php foreach ( $pages as $cpage ) : ?>
+								<option value="<?php echo esc_attr( $cpage->ID ); ?>"><?php echo esc_html( $cpage->post_title ); ?></option>
 							<?php endforeach ?>
 						</select>
 					</td>
