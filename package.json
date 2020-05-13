@@ -15,7 +15,7 @@
 				"lint-css-fix": "stylelint 'src/scss/**/*.scss' --syntax scss --fix; exit 0",
 				"lint-js": "eslint src/js/; exit 0",
 				"lint-js-fix": "eslint src/js/ --fix; exit 0",
-				"pot": "wp-pot --src '**/*.php' --dest-file 'languages/<%= theme_slug %>.pot' --domain '<%= theme_slug %>' --package '<%= theme_name %>' ",
+				"pot": "wp-pot --src '**/*.php' --dest-file 'languages/gdpr.pot' --domain 'gdpr' --package 'GDPR' ",
 				"precommit": "npm run lint-css && npm run lint-js && npm run pot",
 				"update-deps": "rm -rf node_modules && rm package-lock.json && npm install"
 		},
