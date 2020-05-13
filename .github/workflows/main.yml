@@ -10,13 +10,13 @@ jobs:
         php-versions: ['5.6', '7.0', '7.1', '7.2', '7.3', '7.4']
     name: PHP ${{ matrix.php-versions }} Test
     steps:
-    - uses: actions/checkout@v1
+    - uses: actions/checkout@v2
       
     - name: 'Install Composer dependencies'
       run: composer install
     
     - name: 'Setup PHP' 
-      uses: shivammathur/setup-php@v1
+      uses: shivammathur/setup-php@v2
       with:
         php-version: ${{ matrix.php-versions }}
     
