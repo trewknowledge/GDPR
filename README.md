@@ -13,15 +13,15 @@
 This plugin is meant to assist a Controller, Data Processor, and Data Protection Officer (DPO) with efforts to meet the obligations and rights enacted under the GDPR.
 
 ## Documentation
-[http://gdpr-wp.com/knowledge-base/](http://gdpr-wp.com/knowledge-base/)
+[https://github.com/trewknowledge/GDPR/wiki/](https://github.com/trewknowledge/GDPR/wiki/)
 
 ## Installation
-1.  Upload the plugin to the `/wp-content/plugins/` directory or install directly from the [http://wordpress.org/plugins/gdpr](WordPress Plugin Repository).
+1.  Upload the plugin to the `/wp-content/plugins/` directory or install directly from the [https://wordpress.org/plugins/gdpr](WordPress Plugin Repository).
 1.  Activate the plugin through the 'Plugins' menu in WordPress
 1.  Fill out all sections of the settings page.
 
 ## Shortcodes & helper functions
-[http://gdpr-wp.com/knowledge-base/functions-shortcodes/](http://gdpr-wp.com/knowledge-base/functions-shortcodes/)
+[https://github.com/trewknowledge/GDPR/wiki/Functions-&-Shortcodes](https://github.com/trewknowledge/GDPR/wiki/Functions-&-Shortcodes)
 
 ## Features
 
@@ -259,8 +259,8 @@ Activating this plugin does not guarantee that an organisation is successfully m
 * Delete cookies when users change their preferences and disable some cookies.
 * Changed cookies used field to textarea for easier reading when lots of cookies are set.
 * Added a text to the settings page explaining that even if cookies are registered, if the user does not input some text for the privacy banner, it won't show up.
-* Adding filters for the admin notification email. [https://gdpr-wp.com/knowledge-base/actions-filters/](https://gdpr-wp.com/knowledge-base/actions-filters/)
-* Adding filters for the request forms button label. [https://gdpr-wp.com/knowledge-base/actions-filters/](https://gdpr-wp.com/knowledge-base/actions-filters/)
+* Adding filters for the admin notification email. [https://github.com/trewknowledge/GDPR/wiki/Actions-&-Filters](https://github.com/trewknowledge/GDPR/wiki/Actions-&-Filters)
+* Adding filters for the request forms button label. [https://github.com/trewknowledge/GDPR/wiki/Actions-&-Filters](https://github.com/trewknowledge/GDPR/wiki/Actions-&-Filters)
 
 ##### 1.4.2
 * Fix privacy bar reapearing. Cookie was not set to expire in a year.
