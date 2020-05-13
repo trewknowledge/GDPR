@@ -293,12 +293,12 @@ class GDPR {
 	 * @author Fernando Claussen <fernandoclaussen@gmail.com>
 	 * @param  int $user_id The user ID.
 	 */
-	public static function save_user_consent_on_registration( $user_id ) {
+	public static function save_user_consent_on_registration( $user_id ) { // phpcs:ignore
 		GDPR_Audit_Log::log( $user_id, esc_html__( 'User registered to the site.', 'gdpr' ) );
 
 		if ( isset( $_POST['user_consents'] ) && is_array( $_POST['user_consents'] ) ) {
 
-			$consents = array_map( 'sanitize_text_field', array_keys( wp_unslash( $_POST['user_consents'] ) ) );  // WPCS: Input var ok, CSRF ok, XSS ok, sanitization ok.
+			$consents = array_map( 'sanitize_text_field', array_keys( wp_unslash( $_POST['user_consents'] ) ) );  // phpcs:ignore
 			foreach ( $consents as $consent ) {
 				/* translators: Name of consent */
 				GDPR_Audit_Log::log( $user_id, sprintf( esc_html__( 'User gave explicit consent to %s', 'gdpr' ), $consent ) );
@@ -322,7 +322,7 @@ class GDPR {
 		if ( empty( $consent_types ) ) {
 			return;
 		}
-		$sent_extras = ( isset( $_POST['user_consents'] ) ) ? array_map( 'sanitize_text_field', wp_unslash( $_POST['user_consents'] ) ) : array(); // WPCS: Input var ok, CSRF ok.
+		$sent_extras = ( isset( $_POST['user_consents'] ) ) ? array_map( 'sanitize_text_field', wp_unslash( $_POST['user_consents'] ) ) : array(); // phpcs:ignore
 
 		$allowed_html = array(
 			'a' => array(
@@ -360,7 +360,7 @@ class GDPR {
 	 * @author Fernando Claussen <fernandoclaussen@gmail.com>
 	 */
 	public static function consent_checkboxes( $consent_key = false ) {
-		echo self::get_consent_checkboxes( $consent_key );  // WPCS: XSS ok.
+		echo self::get_consent_checkboxes( $consent_key );  // phpcs:ignore
 	}
 
 	/**
@@ -569,12 +569,12 @@ class GDPR {
 	 * @author Fernando Claussen <fernandoclaussen@gmail.com>
 	 */
 	function export_data() {
-		if ( ! isset( $_POST['nonce'], $_POST['email'], $_POST['type'] ) || ! wp_verify_nonce( sanitize_key( wp_unslash( $_POST['nonce'] ) ), 'gdpr-export-data' ) ) { // WPCS: Input var ok.
+		if ( ! isset( $_POST['nonce'], $_POST['email'], $_POST['type'] ) || ! wp_verify_nonce( sanitize_key( wp_unslash( $_POST['nonce'] ) ), 'gdpr-export-data' ) ) { // phpcs:ignore
 			wp_send_json_error();
 		}
 
-		$type  = sanitize_text_field( wp_unslash( $_POST['type'] ) ); // WPCS: Input var ok.
-		$email = sanitize_email( wp_unslash( $_POST['email'] ) ); // WPCS: Input var ok.
+		$type  = sanitize_text_field( wp_unslash( $_POST['type'] ) ); // phpcs:ignore
+		$email = sanitize_email( wp_unslash( $_POST['email'] ) ); // phpcs:ignore
 		$user  = get_user_by( 'email', $email );
 
 		if ( ! $user instanceof WP_User ) {

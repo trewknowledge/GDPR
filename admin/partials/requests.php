@@ -19,7 +19,7 @@
 	<?php settings_errors(); ?>
 	<div class="nav-tab-wrapper">
 		<?php foreach ( $tabs as $key => $value ) : ?>
-			<a href="<?php echo esc_html( '#' . $key ); ?>" class="nav-tab">
+			<a href="<?php echo esc_url( '#' . $key ); ?>" class="nav-tab">
 				<?php echo esc_html( $value['name'] ); ?>
 				<?php if ( $value['count'] ) : ?>
 					<span class="gdpr-pending-requests-badge"><?php echo esc_html( $value['count'] ); ?></span>

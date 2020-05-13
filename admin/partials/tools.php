@@ -14,10 +14,10 @@
 
 include_once plugin_dir_path( __FILE__ ) . 'templates/tmpl-tools.php';
 
-if ( isset( $_GET['type'], $_GET['key'] ) ) { // WPCS: CSRF ok.
+if ( isset( $_GET['type'], $_GET['key'] ) ) { // phpcs:ignore
 
-	if ( 'data-breach-confirmed' === $_GET['type'] ) { // WPCS: CSRF ok.
-		$key = sanitize_text_field( wp_unslash( $_GET['key'] ) ); // WPCS: Input var ok, CSRF ok.
+	if ( 'data-breach-confirmed' === $_GET['type'] ) { // phpcs:ignore
+		$key = sanitize_text_field( wp_unslash( $_GET['key'] ) ); // phpcs:ignore
 
 		$data_breach = get_option( 'gdpr_data_breach_initiated', array( 'key' => '' ) );
 		if ( ! empty( $data_breach ) ) {
@@ -43,7 +43,7 @@ if ( isset( $_GET['type'], $_GET['key'] ) ) { // WPCS: CSRF ok.
 	<?php settings_errors(); ?>
 	<div class="nav-tab-wrapper">
 		<?php foreach ( $tabs as $key => $value ) : ?>
-			<a href="<?php echo esc_html( '#' . $key ); ?>" class="nav-tab">
+			<a href="<?php echo esc_url( '#' . $key ); ?>" class="nav-tab">
 				<?php echo esc_html( $value ); ?>
 			</a>
 		<?php endforeach; ?>
