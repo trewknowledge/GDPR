@@ -1,7 +1,7 @@
 <script type="text/html" id="tmpl-consents">
 	<div class="postbox" id="consent-type-content-{{data.key}}">
 		<h2 class="hndle">{{data.name}} <span>(id: {{data.key}})</span><button class="notice-dismiss" type="button"><span class="screen-reader-text"><?php esc_html_e( 'Unregister this consent.', 'gdpr' ); ?></span></button></h2>
-		<input type="hidden" name="{{data.option_name}}[{{data.key}}][name]" value="{{data.name}}" />
+		<input type="hidden" name="{{data.optionName}}[{{data.key}}][name]" value="{{data.name}}" />
 		<div class="inside">
 			<table class="form-table">
 				<tr>

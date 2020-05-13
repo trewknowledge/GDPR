@@ -24,7 +24,7 @@
 		<p>
 		<form method="post" class="frm-export-data">
 			<?php wp_nonce_field( 'gdpr-export-data', 'gdpr_export_data_nonce' ); ?>
-			<input type="hidden" name="user_email" value="{{data.user_email}}">
+			<input type="hidden" name="user_email" value="{{data.userEmail}}">
 			<?php submit_button( 'XML', 'primary', 'download-data-xml', false ); ?>
 			<?php submit_button( 'JSON', 'primary', 'download-data-json', false ); ?>
 		</form>

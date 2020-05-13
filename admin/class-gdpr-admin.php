@@ -77,7 +77,7 @@ class GDPR_Admin {
 	 */
 	public function enqueue_styles() {
 		add_thickbox();
-		wp_enqueue_style( $this->plugin_name, plugin_dir_url( dirname( __FILE__ ) ) . 'assets/css/gdpr-admin.css', array(), $this->version, 'all' );
+		wp_enqueue_style( $this->plugin_name, plugin_dir_url( dirname( __FILE__ ) ) . 'dist/css/admin.css', array(), $this->version, 'all' );
 	}
 
 	/**
@@ -87,7 +87,7 @@ class GDPR_Admin {
 	 * @author Fernando Claussen <fernandoclaussen@gmail.com>
 	 */
 	public function enqueue_scripts() {
-		wp_enqueue_script( $this->plugin_name, plugin_dir_url( dirname( __FILE__ ) ) . 'assets/js/gdpr-admin.js', array( 'jquery', 'wp-util', 'jquery-ui-sortable' ), $this->version, false );
+		wp_enqueue_script( $this->plugin_name, plugin_dir_url( dirname( __FILE__ ) ) . 'dist/js/admin.js', array( 'jquery', 'wp-util', 'jquery-ui-sortable' ), $this->version, false );
 	}
 
 	/**
@@ -748,8 +748,8 @@ class GDPR_Admin {
 			wp_send_json_error( esc_html__( 'We could not verify the security token. Please try again.', 'gdpr' ) );
 		}
 
-		$policy_id        = isset( $_POST['policy_id'] ) ? sanitize_text_field( wp_unslash( $_POST['policy_id'] ) ) : ''; // WPCS: Input var ok.
-		$policy_name      = isset( $_POST['policy_name'] ) ? sanitize_text_field( wp_unslash( $_POST['policy_name'] ) ) : ''; // WPCS: Input var ok.
+		$policy_id        = isset( $_POST['policyId'] ) ? sanitize_text_field( wp_unslash( $_POST['policyId'] ) ) : ''; // WPCS: Input var ok.
+		$policy_name      = isset( $_POST['policyName'] ) ? sanitize_text_field( wp_unslash( $_POST['policyName'] ) ) : ''; // WPCS: Input var ok.
 		$policies_updated = get_option( 'gdpr_policies_updated', array() );
 
 		unset( $policies_updated[ $policy_id ] );
@@ -832,7 +832,7 @@ class GDPR_Admin {
 			wp_send_json_error( esc_html__( 'We could not verify the security token. Please try again.', 'gdpr' ) );
 		}
 
-		$policy           = isset( $_POST['policy_id'] ) ? sanitize_text_field( wp_unslash( $_POST['policy_id'] ) ) : ''; // WPCS: Input var ok.
+		$policy           = isset( $_POST['policyId'] ) ? sanitize_text_field( wp_unslash( $_POST['policyId'] ) ) : ''; // WPCS: Input var ok.
 		$policies_updated = get_option( 'gdpr_policies_updated', array() );
 		unset( $policies_updated[ $policy ] );
 		update_option( 'gdpr_policies_updated', $policies_updated );
