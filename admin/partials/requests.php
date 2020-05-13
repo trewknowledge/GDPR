@@ -19,7 +19,7 @@
 	<?php settings_errors(); ?>
 	<div class="nav-tab-wrapper">
 		<?php foreach ( $tabs as $key => $value ) : ?>
-			<a href="<?php echo esc_html( '#' . $key ); ?>" class="nav-tab">
+			<a href="<?php echo esc_url( '#' . $key ); ?>" class="nav-tab">
 				<?php echo esc_html( $value['name'] ); ?>
 				<?php if ( $value['count'] ) : ?>
 					<span class="gdpr-pending-requests-badge"><?php echo esc_html( $value['count'] ); ?></span>
@@ -235,7 +235,11 @@
 													if ( $uid && $uid instanceof WP_User ) {
 														$uid = $uid->ID;
 													}
+													if ( defined( 'WPCOM_IS_VIP_ENV' ) && WPCOM_IS_VIP_ENV ) {
+														$count = wpcom_vip_count_user_posts( $uid, $pt->name );
+													} else {
 														$count = count_user_posts( $uid, $pt->name );
+													}
 													if ( '0' === $count ) {
 														continue;
 													}

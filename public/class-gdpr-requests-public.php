@@ -11,6 +11,8 @@
  * @author     Fernando Claussen <fernandoclaussen@gmail.com>
  */
 
+require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/class-gdpr-templates.php';
+
 /**
  * The public facing requests functionality of the plugin.
  *
@@ -64,7 +66,7 @@ class GDPR_Requests_Public extends GDPR_Requests {
 		}
 
 		ob_start();
-		include plugin_dir_path( dirname( __FILE__ ) ) . 'public/partials/' . $type . '-form.php';
+		GDPR_Templates::get_template( 'forms/' . $type . '-form.php', array( 'submit_button_text' => $submit_button_text ) );
 		return ob_get_clean();
 	}
 
@@ -75,7 +77,7 @@ class GDPR_Requests_Public extends GDPR_Requests {
 	 * @author Fernando Claussen <fernandoclaussen@gmail.com>
 	 */
 	public function send_request_email() {
-		if ( ! isset( $_POST['gdpr_request_nonce'] ) || ! wp_verify_nonce( sanitize_key( $_POST['gdpr_request_nonce'] ), 'gdpr-add-to-requests' ) ) { // WPCS: Input var ok.
+		if ( ! isset( $_POST['gdpr_request_nonce'] ) || ! wp_verify_nonce( sanitize_key( $_POST['gdpr_request_nonce'] ), 'gdpr-add-to-requests' ) ) { // phpcs:ignore
 			wp_send_json_error(
 				array(
 					'title'   => esc_html__( 'Error!', 'gdpr' ),
@@ -84,7 +86,7 @@ class GDPR_Requests_Public extends GDPR_Requests {
 			);
 		}
 
-		if ( ! isset( $_POST['type'] ) || ! in_array( sanitize_text_field( wp_unslash( $_POST['type'] ) ), parent::$allowed_types, true ) ) { // WPCS: Input var ok.
+		if ( ! isset( $_POST['type'] ) || ! in_array( sanitize_text_field( wp_unslash( $_POST['type'] ) ), parent::$allowed_types, true ) ) { // phpcs:ignore
 			wp_send_json_error(
 				array(
 					'title'   => esc_html__( 'Error!', 'gdpr' ),
@@ -99,7 +101,7 @@ class GDPR_Requests_Public extends GDPR_Requests {
 			$secret_key = get_option( 'gdpr_recaptcha_secret_key', '' );
 
 			if ( $site_key && $secret_key ) {
-				if ( ! isset( $_POST['g-recaptcha-response'] ) || ! sanitize_text_field( wp_unslash( $_POST['g-recaptcha-response'] ) ) ) { // WPCS: Input var ok.
+				if ( ! isset( $_POST['g-recaptcha-response'] ) || ! sanitize_text_field( wp_unslash( $_POST['g-recaptcha-response'] ) ) ) { // phpcs:ignore
 					wp_send_json_error(
 						array(
 							'title'   => esc_html__( 'Error!', 'gdpr' ),
@@ -112,7 +114,7 @@ class GDPR_Requests_Public extends GDPR_Requests {
 					'https://www.google.com/recaptcha/api/siteverify', array(
 						'body' => array(
 							'secret'   => $secret_key,
-							'response' => sanitize_text_field( wp_unslash( $_POST['g-recaptcha-response'] ) ), // WPCS: Input var ok.
+							'response' => sanitize_text_field( wp_unslash( $_POST['g-recaptcha-response'] ) ), // phpcs:ignore
 						),
 					)
 				);
@@ -130,13 +132,13 @@ class GDPR_Requests_Public extends GDPR_Requests {
 			}
 		}
 
-		$type = sanitize_text_field( wp_unslash( $_POST['type'] ) ); // WPCS: Input var ok.
-		$data = isset( $_POST['data'] ) ? sanitize_textarea_field( wp_unslash( $_POST['data'] ) ) : ''; // WPCS: Input var ok.
+		$type = sanitize_text_field( wp_unslash( $_POST['type'] ) ); // phpcs:ignore
+		$data = isset( $_POST['data'] ) ? sanitize_textarea_field( wp_unslash( $_POST['data'] ) ) : ''; // phpcs:ignore
 
 		if ( is_user_logged_in() ) {
 			$user = wp_get_current_user();
 		} else {
-			$user = isset( $_POST['user_email'] ) ? get_user_by( 'email', sanitize_email( wp_unslash( $_POST['user_email'] ) ) ) : null; // WPCS: Input var ok.
+			$user = isset( $_POST['user_email'] ) ? get_user_by( 'email', sanitize_email( wp_unslash( $_POST['user_email'] ) ) ) : null; // phpcs:ignore
 		}
 
 		if ( ! $user instanceof WP_User ) {
@@ -254,13 +256,13 @@ class GDPR_Requests_Public extends GDPR_Requests {
 	 * @author Fernando Claussen <fernandoclaussen@gmail.com>
 	 */
 	public function request_confirmed() {
-		if ( is_admin() || ! isset( $_GET['type'], $_GET['key'], $_GET['email'] ) ) { // WPCS: Input var ok CSRF ok.
+		if ( is_admin() || ! isset( $_GET['type'], $_GET['key'], $_GET['email'] ) ) { // phpcs:ignore
 			return;
 		}
 
-		$type               = sanitize_text_field( wp_unslash( $_GET['type'] ) ); // WPCS: Input var ok, CSRF ok.
-		$key                = sanitize_text_field( wp_unslash( $_GET['key'] ) ); // WPCS: Input var ok, CSRF ok.
-		$email              = sanitize_email( wp_unslash( $_GET['email'] ) ); // WPCS: Input var ok, CSRF ok.
+		$type               = sanitize_text_field( wp_unslash( $_GET['type'] ) ); // phpcs:ignore
+		$key                = sanitize_text_field( wp_unslash( $_GET['key'] ) ); // phpcs:ignore
+		$email              = sanitize_email( wp_unslash( $_GET['email'] ) ); // phpcs:ignore
 		$notification_email = sanitize_email( apply_filters( 'gdpr_admin_notification_email', get_option( 'admin_email' ) ) );
 
 		$user = get_user_by( 'email', $email );
@@ -279,7 +281,11 @@ class GDPR_Requests_Public extends GDPR_Requests {
 			exit;
 		}
 
-		$meta_key = get_user_meta( $user->ID, self::$plugin_name . "_{$type}_key", true );
+		if ( defined( 'WPCOM_IS_VIP_ENV' ) && WPCOM_IS_VIP_ENV ) {
+			$meta_key = get_user_attribute( $user->ID, self::$plugin_name . "_{$type}_key", true );
+		} else {
+			$meta_key = get_user_meta( $user->ID, self::$plugin_name . "_{$type}_key", true );
+		}
 		if ( empty( $meta_key ) ) {
 			wp_safe_redirect(
 				esc_url_raw(
@@ -373,7 +379,7 @@ class GDPR_Requests_Public extends GDPR_Requests {
 					exit;
 					break;
 				case 'export-data':
-					$format = isset( $_GET['format'] ) ? sanitize_text_field( wp_unslash( $_GET['format'] ) ) : 'xml'; // WPCS: Input var ok, CSRF ok.
+					$format = isset( $_GET['format'] ) ? sanitize_text_field( wp_unslash( $_GET['format'] ) ) : 'xml'; // phpcs:ignore
 					/* translators: File format. Can be XML or JSON */
 					GDPR_Audit_Log::log( $user->ID, sprintf( esc_html__( 'User downloaded all their data in %s format.', 'gdpr' ), $format ) );
 					$this->file_export_data( $user->user_email, $format, $key );
@@ -400,7 +406,7 @@ class GDPR_Requests_Public extends GDPR_Requests {
 			header( 'Content-Type: application/octet-stream' );
 			header( 'Content-Description: File Transfer' );
 			header( 'Content-Disposition: attachment; filename=' . $email . '.' . $format );
-			echo $export; // WPCS: XSS ok.
+			echo $export; // phpcs:ignore
 		}
 		die();
 	}

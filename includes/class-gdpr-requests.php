@@ -96,7 +96,11 @@ class GDPR_Requests {
 
 		$post_types = get_post_types( array( 'public' => true ) );
 		foreach ( $post_types as $pt ) {
-			$post_count = count_user_posts( $user->ID, $pt );
+			if ( defined( 'WPCOM_IS_VIP_ENV' ) && WPCOM_IS_VIP_ENV ) {
+				$post_count = wpcom_vip_count_user_posts( $user->ID, $pt );
+			} else {
+				$post_count = count_user_posts( $user->ID, $pt );
+			}
 			if ( $post_count > 0 ) {
 				return true;
 			}
@@ -167,7 +171,11 @@ class GDPR_Requests {
 		if ( $user instanceof WP_User ) {
 			$meta_key = self::$plugin_name . "_{$type}_key";
 			update_option( 'gdpr_requests', $requests );
-			delete_user_meta( $user->ID, $meta_key );
+			if ( defined( 'WPCOM_IS_VIP_ENV' ) && WPCOM_IS_VIP_ENV ) {
+				delete_user_attribute( $user->ID, $meta_key );
+			} else {
+				delete_user_meta( $user->ID, $meta_key );
+			}
 			$time = wp_next_scheduled(
 				'clean_gdpr_user_request_key', array(
 					'user_id'  => $user->ID,
@@ -217,10 +225,18 @@ class GDPR_Requests {
 		$user_id  = (int) $user_id;
 		$meta_key = sanitize_text_field( $meta_key );
 
-		$meta = get_user_meta( $user_id, $meta_key, true );
+		if ( defined( 'WPCOM_IS_VIP_ENV' ) && WPCOM_IS_VIP_ENV ) {
+			$meta = get_user_attribute( $user_id, $meta_key, true );
+		} else {
+			$meta = get_user_meta( $user_id, $meta_key, true );
+		}
 
 		if ( $meta ) {
-			delete_user_meta( $user_id, $meta_key );
+			if ( defined( 'WPCOM_IS_VIP_ENV' ) && WPCOM_IS_VIP_ENV ) {
+				delete_user_attribute( $user_id, $meta_key );
+			} else {
+				delete_user_meta( $user_id, $meta_key );
+			}
 		}
 
 		/* translators: Name of the usermeta */
@@ -263,7 +279,11 @@ class GDPR_Requests {
 		$user = get_user_by( 'email', $email );
 		if ( $user instanceof WP_User ) {
 			$meta_key = self::$plugin_name . '_' . $type . '_key';
-			update_user_meta( $user->ID, $meta_key, $key );
+			if ( defined( 'WPCOM_IS_VIP_ENV' ) && WPCOM_IS_VIP_ENV ) {
+				update_user_attribute( $user->ID, $meta_key, $key );
+			} else {
+				update_user_meta( $user->ID, $meta_key, $key );
+			}
 			$time = wp_next_scheduled(
 				'clean_gdpr_user_request_key', array(
 					'user_id'  => $user->ID,

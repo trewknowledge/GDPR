@@ -2,13 +2,15 @@
 /**
  * This file handle emailing users.
  *
- * @link       http://trewknowledge.com
+ * @link       https://trewknowledge.com
  * @since      1.0.0
  *
  * @package    GDPR
  * @subpackage includes
  * @author     Fernando Claussen <fernandoclaussen@gmail.com>
  */
+
+require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/class-gdpr-templates.php';
 
 /**
  * Handles emailing users.
@@ -20,63 +22,6 @@
  */
 class GDPR_Email {
 	/**
-	 * Locate template.
-	 *
-	 * Locate the called template.
-	 * Search Order:
-	 * 1. /themes/theme/gdpr/templates/email/$template_name
-	 * 2. /plugins/gdpr/templates/$template_name.
-	 *
-	 * @since  1.0.0
-	 * @author Fernando Claussen <fernandoclaussen@gmail.com>
-	 * @access private
-	 * @static
-	 * @param  string  $template_name    Template to load.
-	 * @return string                    Path to the template file.
-	 */
-	private static function locate_template( $template_name ) {
-		// Set variable to search in gdpr folder of theme.
-		$theme_path = 'gdpr/email/';
-
-		// Set default plugin templates path.
-		$plugin_path = plugin_dir_path( dirname( __FILE__ ) ) . 'templates/email/'; // Path to the template folder
-
-		// Search template file in theme folder.
-		$template = locate_template(
-			array(
-				$theme_path . $template_name,
-			)
-		);
-
-		// Get plugins template file.
-		if ( ! $template ) {
-			$template = $plugin_path . $template_name;
-		}
-		return $template;
-	}
-
-	/**
-	 * Get template.
-	 *
-	 * Search for the template and include the file.
-	 *
-	 * @since  1.0.0
-	 * @author Fernando Claussen <fernandoclaussen@gmail.com>
-	 * @access private
-	 * @static
-	 * @param  string  $template_name    Template to load.
-	 * @param  array   $args             Arguments passed to the template file.
-	 */
-	private static function get_template( $template_name, $args = array() ) {
-		$template_file = self::locate_template( $template_name );
-
-		if ( ! file_exists( $template_file ) ) {
-			return;
-		}
-		include $template_file;
-	}
-
-	/**
 	 * Get the email content from the correct file.
 	 * @since  1.0.0
 	 * @author Fernando Claussen <fernandoclaussen@gmail.com>
@@ -87,7 +32,7 @@ class GDPR_Email {
 	 */
 	public static function get_email_content( $template_name, $args = array() ) {
 		ob_start();
-		self::get_template( $template_name, $args );
+		GDPR_Templates::get_template( $template_name, $args );
 		return ob_get_clean();
 	}
 
@@ -224,7 +169,7 @@ class GDPR_Email {
 			$headers[] = 'Bcc: ' . sanitize_email( $email );
 		}
 
-		$content = self::get_email_content( $type . '.php', $args );
+		$content = self::get_email_content( 'email/' . $type . '.php', $args );
 
 		return wp_mail(
 			$no_reply,

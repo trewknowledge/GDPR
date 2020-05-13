@@ -44,7 +44,7 @@ add_shortcode( 'gdpr_preferences', 'gdpr_preferences_shortcode' );
  * @param  string $button_text The submit button text.
  */
 function gdpr_request_form( $type, $button_text = '' ) {
-	echo GDPR_Requests_Public::request_form( $type, $button_text ); // WPCS: XSS ok.
+	echo GDPR_Requests_Public::request_form( $type, $button_text ); // phpcs:ignore
 }
 
 /**
@@ -85,7 +85,7 @@ function gdpr_get_consent_checkboxes( $atts ) {
  */
 function is_allowed_cookie( $cookie_name ) {
 	if ( isset( $_COOKIE['gdpr']['allowed_cookies'] ) ) {
-		$allowed_cookies = array_map( 'sanitize_text_field', json_decode( wp_unslash( $_COOKIE['gdpr']['allowed_cookies'] ), true ) );  // WPCS: Input var ok, sanitization ok.
+		$allowed_cookies = array_map( 'sanitize_text_field', json_decode( wp_unslash( $_COOKIE['gdpr']['allowed_cookies'] ), true ) );  // phpcs:ignore
 		$name            = preg_quote( $cookie_name, '~' );
 		$result          = preg_grep( '~' . $name . '~', $allowed_cookies );
 		if ( in_array( $cookie_name, $allowed_cookies, true ) || ! empty( $result ) ) {
@@ -121,10 +121,14 @@ function have_consent( $consent ) {
 function has_consent( $consent ) {
 
 	if ( is_user_logged_in() ) {
-		$user     = wp_get_current_user();
-		$consents = (array) get_user_meta( $user->ID, 'gdpr_consents' );
-	} elseif ( isset( $_COOKIE['gdpr']['consent_types'] ) && ! empty( $_COOKIE['gdpr']['consent_types'] ) ) { // WPCS: Input var ok.
-		$consents = array_map( 'sanitize_text_field', (array) json_decode( wp_unslash( $_COOKIE['gdpr']['consent_types'] ) ) ); // WPCS: Input var ok, sanitization ok.
+		$user = wp_get_current_user();
+		if ( defined( 'WPCOM_IS_VIP_ENV' ) && WPCOM_IS_VIP_ENV ) {
+			$consents = (array) get_user_attribute( $user->ID, 'gdpr_consents' );
+		} else {
+			$consents = (array) get_user_meta( $user->ID, 'gdpr_consents' );
+		}
+	} elseif ( isset( $_COOKIE['gdpr']['consent_types'] ) && ! empty( $_COOKIE['gdpr']['consent_types'] ) ) { // phpcs:ignore
+		$consents = array_map( 'sanitize_text_field', (array) json_decode( wp_unslash( $_COOKIE['gdpr']['consent_types'] ) ) ); // phpcs:ignore
 	}
 
 	if ( isset( $consents ) && ! empty( $consents ) ) {
@@ -137,5 +141,5 @@ function has_consent( $consent ) {
 }
 
 function is_dnt() {
-	return ( isset( $_SERVER['HTTP_DNT'] ) && '1' === $_SERVER['HTTP_DNT'] ); // WPCS: Input var ok.
+	return ( isset( $_SERVER['HTTP_DNT'] ) && '1' === $_SERVER['HTTP_DNT'] ); // phpcs:ignore
 }

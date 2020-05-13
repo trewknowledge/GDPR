@@ -77,7 +77,7 @@ class GDPR_Admin {
 	 */
 	public function enqueue_styles() {
 		add_thickbox();
-		wp_enqueue_style( $this->plugin_name, plugin_dir_url( dirname( __FILE__ ) ) . 'assets/css/gdpr-admin.css', array(), $this->version, 'all' );
+		wp_enqueue_style( $this->plugin_name, plugin_dir_url( dirname( __FILE__ ) ) . 'dist/css/admin.css', array(), $this->version, 'all' );
 	}
 
 	/**
@@ -87,7 +87,7 @@ class GDPR_Admin {
 	 * @author Fernando Claussen <fernandoclaussen@gmail.com>
 	 */
 	public function enqueue_scripts() {
-		wp_enqueue_script( $this->plugin_name, plugin_dir_url( dirname( __FILE__ ) ) . 'assets/js/gdpr-admin.js', array( 'jquery', 'wp-util', 'jquery-ui-sortable' ), $this->version, false );
+		wp_enqueue_script( $this->plugin_name, plugin_dir_url( dirname( __FILE__ ) ) . 'dist/js/admin.js', array( 'jquery', 'wp-util', 'jquery-ui-sortable' ), $this->version, false );
 	}
 
 	/**
@@ -135,19 +135,9 @@ class GDPR_Admin {
 
 		$settings_hook = add_submenu_page( $parent_slug, $menu_title, $menu_title, $capability, $menu_slug, $function );
 
-		$menu_slug = 'edit.php?post_type=telemetry';
-
-		$cpt     = 'telemetry';
-		$cpt_obj = get_post_type_object( $cpt );
-
-		if ( $cpt_obj ) {
-			add_submenu_page( $parent_slug, $cpt_obj->labels->name, $cpt_obj->labels->menu_name, $capability, $menu_slug );
-		}
-
 		add_action( "load-{$requests_hook}", array( 'GDPR_Help', 'add_requests_help' ) );
 		add_action( "load-{$tools_hook}", array( 'GDPR_Help', 'add_tools_help' ) );
 		add_action( "load-{$settings_hook}", array( 'GDPR_Help', 'add_settings_help' ) );
-		add_action( 'load-edit.php', array( 'GDPR_Help', 'add_telemetry_help' ) );
 	}
 
 	/**
@@ -201,7 +191,6 @@ class GDPR_Admin {
 			'gdpr_consent_types'                       => array( $this, 'sanitize_consents' ),
 			'gdpr_deletion_needs_review'               => 'boolval',
 			'gdpr_disable_css'                         => 'boolval',
-			'gdpr_enable_telemetry_tracker'            => 'boolval',
 			'gdpr_use_recaptcha'                       => 'boolval',
 			'gdpr_recaptcha_site_key'                  => 'sanitize_text_field',
 			'gdpr_recaptcha_secret_key'                => 'sanitize_text_field',
@@ -325,6 +314,8 @@ class GDPR_Admin {
 			'audit-log'   => esc_html__( 'Audit Log', 'gdpr' ),
 		);
 
+		$tabs = apply_filters( 'gdpr_tools_tabs', $tabs );
+
 		include plugin_dir_path( __FILE__ ) . 'partials/tools.php';
 	}
 
@@ -334,25 +325,29 @@ class GDPR_Admin {
 	 * @author Fernando Claussen <fernandoclaussen@gmail.com>
 	 */
 	public function access_data() {
-		if ( ! isset( $_POST['nonce'], $_POST['email'] ) || ! wp_verify_nonce( sanitize_key( wp_unslash( $_POST['nonce'] ) ), 'gdpr-access-data' ) ) { // WPCS: Input var ok.
+		if ( ! isset( $_POST['nonce'], $_POST['email'] ) || ! wp_verify_nonce( sanitize_key( wp_unslash( $_POST['nonce'] ) ), 'gdpr-access-data' ) ) { // phpcs:ignore
 			wp_send_json_error();
 		}
 
-		$email = sanitize_email( wp_unslash( $_POST['email'] ) ); // WPCS: Input var ok.
+		$email = sanitize_email( wp_unslash( $_POST['email'] ) ); // phpcs:ignore
 		$user  = get_user_by( 'email', $email );
 
 		if ( ! $user instanceof WP_User ) {
 			wp_send_json_error();
 		}
 
-		$usermeta      = GDPR::get_user_meta( $user->ID );
-		$comments      = get_comments(
+		$usermeta = GDPR::get_user_meta( $user->ID );
+		$comments = get_comments(
 			array(
 				'author_email'       => $user->user_email,
 				'include_unapproved' => true,
 			)
 		);
-		$user_consents = get_user_meta( $user->ID, 'gdpr_consents' );
+		if ( defined( 'WPCOM_IS_VIP_ENV' ) && WPCOM_IS_VIP_ENV ) {
+			$user_consents = get_user_attribute( $user->ID, 'gdpr_consents' );
+		} else {
+			$user_consents = get_user_meta( $user->ID, 'gdpr_consents' );
+		}
 
 		ob_start();
 		echo '<h2>' . esc_html( $user->display_name ) . '<span>( ' . esc_html( $email ) . ' )</span></h2>';
@@ -499,15 +494,15 @@ class GDPR_Admin {
 	 * @author Fernando Claussen <fernandoclaussen@gmail.com>
 	 */
 	public function audit_log() {
-		if ( ! isset( $_POST['nonce'], $_POST['email'] ) || ! wp_verify_nonce( sanitize_key( wp_unslash( $_POST['nonce'] ) ), 'gdpr-audit-log' ) ) { // WPCS: Input var ok.
+		if ( ! isset( $_POST['nonce'], $_POST['email'] ) || ! wp_verify_nonce( sanitize_key( wp_unslash( $_POST['nonce'] ) ), 'gdpr-audit-log' ) ) { // phpcs:ignore
 			wp_send_json_error();
 		}
 
-		$email = sanitize_email( wp_unslash( $_POST['email'] ) ); // WPCS: Input var ok.
+		$email = sanitize_email( wp_unslash( $_POST['email'] ) ); // phpcs:ignore
 		$token = null;
 
-		if ( isset( $_POST['token'] ) ) { // WPCS: Input var ok.
-			$token = sanitize_text_field( wp_unslash( $_POST['token'] ) ); // WPCS: Input var ok.
+		if ( isset( $_POST['token'] ) ) { // phpcs:ignore
+			$token = sanitize_text_field( wp_unslash( $_POST['token'] ) ); // phpcs:ignore
 		}
 
 		$log = GDPR_Audit_log::get_log( $email, $token );
@@ -563,11 +558,12 @@ class GDPR_Admin {
 	}
 
 	public function version_check_notice() {
-		if( -1 === version_compare( phpversion(), GDPR_REQUIRED_PHP_VERSION ) ) {
+		if ( -1 === version_compare( phpversion(), GDPR_REQUIRED_PHP_VERSION ) ) {
 			?>
 			<div class="notice notice-error">
 				<p><strong><?php esc_html_e( 'GDPR', 'gdpr' ); ?></strong></p>
-				<p><?php echo sprintf( esc_html__( 'Your current PHP version (%1$s) is below the plugin required version of %2$s.', 'gdpr' ), phpversion(), GDPR_REQUIRED_PHP_VERSION ) ?></p>
+				<?php /* translators: 1: Current PHP version 2: Required PHP version. */ ?>
+				<p><?php echo sprintf( esc_html__( 'Your current PHP version (%1$s) is below the plugin required version of %2$s.', 'gdpr' ), esc_html( phpversion() ), esc_html( GDPR_REQUIRED_PHP_VERSION ) ); ?></p>
 			</div>
 			<?php
 			deactivate_plugins( 'gdpr/gdpr.php' );
@@ -623,17 +619,17 @@ class GDPR_Admin {
 	 * @author Fernando Claussen <fernandoclaussen@gmail.com>
 	 */
 	public function send_data_breach_confirmation_email() {
-		if ( ! isset( $_POST['gdpr_data_breach_nonce'] ) || ! wp_verify_nonce( sanitize_key( $_POST['gdpr_data_breach_nonce'] ), 'gdpr-data-breach' ) ) { // WPCS: Input var ok.
-			wp_die( esc_html__( 'We could not verify the the security token. Please try again.', 'gdpr' ) );
+		if ( ! isset( $_POST['gdpr_data_breach_nonce'] ) || ! wp_verify_nonce( sanitize_key( $_POST['gdpr_data_breach_nonce'] ), 'gdpr-data-breach' ) ) { // phpcs:ignore
+			wp_die( esc_html__( 'We could not verify the security token. Please try again.', 'gdpr' ) );
 		}
 
 		if (
 			! isset(
-				$_POST['gdpr-data-breach-email-content'], // WPCS: Input var ok.
-				$_POST['gdpr-data-breach-nature'], // WPCS: Input var ok.
-				$_POST['gdpr-name-contact-details-protection-officer'], // WPCS: Input var ok.
-				$_POST['gdpr-likely-consequences'], // WPCS: Input var ok.
-				$_POST['gdpr-measures-taken'] // WPCS: Input var ok.
+				$_POST['gdpr-data-breach-email-content'], // phpcs:ignore
+				$_POST['gdpr-data-breach-nature'], // phpcs:ignore
+				$_POST['gdpr-name-contact-details-protection-officer'], // phpcs:ignore
+				$_POST['gdpr-likely-consequences'], // phpcs:ignore
+				$_POST['gdpr-measures-taken'] // phpcs:ignore
 			)
 		) {
 			wp_die( esc_html__( 'One or more required fields are missing. Please try again.', 'gdpr' ) );
@@ -641,11 +637,11 @@ class GDPR_Admin {
 
 		$email          = get_bloginfo( 'admin_email' );
 		$user           = wp_get_current_user();
-		$content        = sanitize_textarea_field( wp_unslash( $_POST['gdpr-data-breach-email-content'] ) ); // WPCS: Input var ok.
-		$nature         = sanitize_textarea_field( wp_unslash( $_POST['gdpr-data-breach-nature'] ) ); // WPCS: Input var ok.
-		$office_contact = sanitize_textarea_field( wp_unslash( $_POST['gdpr-name-contact-details-protection-officer'] ) ); // WPCS: Input var ok.
-		$consequences   = sanitize_textarea_field( wp_unslash( $_POST['gdpr-likely-consequences'] ) ); // WPCS: Input var ok.
-		$measures       = sanitize_textarea_field( wp_unslash( $_POST['gdpr-measures-taken'] ) ); // WPCS: Input var ok.
+		$content        = sanitize_textarea_field( wp_unslash( $_POST['gdpr-data-breach-email-content'] ) ); // phpcs:ignore
+		$nature         = sanitize_textarea_field( wp_unslash( $_POST['gdpr-data-breach-nature'] ) ); // phpcs:ignore
+		$office_contact = sanitize_textarea_field( wp_unslash( $_POST['gdpr-name-contact-details-protection-officer'] ) ); // phpcs:ignore
+		$consequences   = sanitize_textarea_field( wp_unslash( $_POST['gdpr-likely-consequences'] ) ); // phpcs:ignore
+		$measures       = sanitize_textarea_field( wp_unslash( $_POST['gdpr-measures-taken'] ) ); // phpcs:ignore
 
 		$key = wp_generate_password( 20, false );
 		update_option(
@@ -711,25 +707,6 @@ class GDPR_Admin {
 	}
 
 	/**
-	 * CRON job runs this to clean up the telemetry post type every 12 hours.
-	 * @since  1.0.0
-	 * @author Fernando Claussen <fernandoclaussen@gmail.com>
-	 */
-	public function telemetry_cleanup() {
-		$args = array(
-			'post_type'      => 'telemetry',
-			'posts_per_page' => -1,
-			'fields'         => 'ids',
-		);
-
-		$telemetry_posts = get_posts( $args );
-
-		foreach ( $telemetry_posts as $post ) {
-			wp_delete_post( $post, true );
-		}
-	}
-
-	/**
 	 * Sanitizes the consents during WordPress registration.
 	 * @since  1.0.0
 	 * @author Fernando Claussen <fernandoclaussen@gmail.com>
@@ -746,7 +723,7 @@ class GDPR_Admin {
 
 		foreach ( $consent_types as $key => $consent ) {
 			if ( $consent['policy-page'] ) {
-				if ( ! isset( $_POST['user_consents'][ $key ] ) ) { // WPCS: Input var ok, CSRF ok.
+				if ( ! isset( $_POST['user_consents'][ $key ] ) ) { // phpcs:ignore
 					$errors->add(
 						'missing_required_consents', sprintf(
 							'<strong>%s</strong>: %s %s.',
@@ -767,12 +744,12 @@ class GDPR_Admin {
 	 * @author Fernando Claussen <fernandoclaussen@gmail.com>
 	 */
 	public function seek_consent() {
-		if ( ! isset( $_POST['nonce'] ) || ! wp_verify_nonce( sanitize_key( $_POST['nonce'] ), 'gdpr-seek-consent' ) ) { // WPCS: Input var ok.
-			wp_send_json_error( esc_html__( 'We could not verify the the security token. Please try again.', 'gdpr' ) );
+		if ( ! isset( $_POST['nonce'] ) || ! wp_verify_nonce( sanitize_key( $_POST['nonce'] ), 'gdpr-seek-consent' ) ) { // phpcs:ignore
+			wp_send_json_error( esc_html__( 'We could not verify the security token. Please try again.', 'gdpr' ) );
 		}
 
-		$policy_id        = isset( $_POST['policy_id'] ) ? sanitize_text_field( wp_unslash( $_POST['policy_id'] ) ) : ''; // WPCS: Input var ok.
-		$policy_name      = isset( $_POST['policy_name'] ) ? sanitize_text_field( wp_unslash( $_POST['policy_name'] ) ) : ''; // WPCS: Input var ok.
+		$policy_id        = isset( $_POST['policyId'] ) ? sanitize_text_field( wp_unslash( $_POST['policyId'] ) ) : ''; // phpcs:ignore
+		$policy_name      = isset( $_POST['policyName'] ) ? sanitize_text_field( wp_unslash( $_POST['policyName'] ) ) : ''; // phpcs:ignore
 		$policies_updated = get_option( 'gdpr_policies_updated', array() );
 
 		unset( $policies_updated[ $policy_id ] );
@@ -785,11 +762,19 @@ class GDPR_Admin {
 		);
 
 		foreach ( $users as $user ) {
-			$usermeta = get_user_meta( $user->ID, 'gdpr_consents' );
-			if ( in_array( $policy_id, $usermeta ) ) {
+			if ( defined( 'WPCOM_IS_VIP_ENV' ) && WPCOM_IS_VIP_ENV ) {
+				$usermeta = get_user_attribute( $user->ID, 'gdpr_consents' );
+			} else {
+				$usermeta = get_user_meta( $user->ID, 'gdpr_consents' );
+			}
+			if ( in_array( $policy_id, $usermeta, true ) ) {
 				/* translators: 1: The name of the policy that was updated. */
 				GDPR_Audit_Log::log( $user->ID, sprintf( esc_html__( '%1$s has been updated. Removing the %1$s consent and requesting new consent.', 'gdpr' ), esc_html( $policy_name ) ) );
-				delete_user_meta( $user->ID, 'gdpr_consents', $policy_id );
+				if ( defined( 'WPCOM_IS_VIP_ENV' ) && WPCOM_IS_VIP_ENV ) {
+					delete_user_attribute( $user->ID, 'gdpr_consents', $policy_id );
+				} else {
+					delete_user_meta( $user->ID, 'gdpr_consents', $policy_id );
+				}
 			}
 		}
 
@@ -804,8 +789,8 @@ class GDPR_Admin {
 	 * @param  WP_Post $post The post object.
 	 */
 	public function policy_updated( $id, $post ) {
-		$policies_updated  = get_option( 'gdpr_policies_updated', array() );
-		$consents          = get_option( 'gdpr_consent_types', array() );
+		$policies_updated = get_option( 'gdpr_policies_updated', array() );
+		$consents         = get_option( 'gdpr_consent_types', array() );
 
 		if ( empty( $consents ) ) {
 			return;
@@ -843,11 +828,11 @@ class GDPR_Admin {
 	 * @author Fernando Claussen <fernandoclaussen@gmail.com>
 	 */
 	public function ignore_policy_update() {
-		if ( ! isset( $_POST['nonce'] ) || ! wp_verify_nonce( sanitize_key( $_POST['nonce'] ), 'gdpr-ignore-update' ) ) { // WPCS: Input var ok.
-			wp_send_json_error( esc_html__( 'We could not verify the the security token. Please try again.', 'gdpr' ) );
+		if ( ! isset( $_POST['nonce'] ) || ! wp_verify_nonce( sanitize_key( $_POST['nonce'] ), 'gdpr-ignore-update' ) ) { // phpcs:ignore
+			wp_send_json_error( esc_html__( 'We could not verify the security token. Please try again.', 'gdpr' ) );
 		}
 
-		$policy           = isset( $_POST['policy_id'] ) ? sanitize_text_field( wp_unslash( $_POST['policy_id'] ) ) : ''; // WPCS: Input var ok.
+		$policy           = isset( $_POST['policyId'] ) ? sanitize_text_field( wp_unslash( $_POST['policyId'] ) ) : ''; // phpcs:ignore
 		$policies_updated = get_option( 'gdpr_policies_updated', array() );
 		unset( $policies_updated[ $policy ] );
 		update_option( 'gdpr_policies_updated', $policies_updated );
@@ -862,7 +847,11 @@ class GDPR_Admin {
 	 */
 	public function edit_user_profile( $user ) {
 		$consent_types = get_option( 'gdpr_consent_types', array() );
-		$user_consents = get_user_meta( $user->ID, 'gdpr_consents' );
+		if ( defined( 'WPCOM_IS_VIP_ENV' ) && WPCOM_IS_VIP_ENV ) {
+			$user_consents = get_user_attribute( $user->ID, 'gdpr_consents' );
+		} else {
+			$user_consents = get_user_meta( $user->ID, 'gdpr_consents' );
+		}
 		if ( empty( $consent_types ) ) {
 			return;
 		}
@@ -898,23 +887,31 @@ class GDPR_Admin {
 	 * @param  int $user_id The user ID.
 	 */
 	public function user_profile_update( $user_id ) {
-		if ( ! isset( $_POST['user_consents'] ) ) { // WPCS: Input var ok, CSRF ok.
+		if ( ! isset( $_POST['user_consents'] ) ) { // phpcs:ignore
 			return;
 		}
 
-		$consents = array_map( 'sanitize_text_field', (array) wp_unslash( $_POST['user_consents'] ) ); // WPCS: Input var ok, CSRF ok.
+		$consents = array_map( 'sanitize_text_field', (array) wp_unslash( $_POST['user_consents'] ) ); // phpcs:ignore
 
 		GDPR_Audit_Log::log( $user_id, esc_html__( 'Profile Updated. These are the user consents after the save:', 'gdpr' ) );
 
-		delete_user_meta( $user_id, 'gdpr_consents' );
+		if ( defined( 'WPCOM_IS_VIP_ENV' ) && WPCOM_IS_VIP_ENV ) {
+			delete_user_attribute( $user_id, 'gdpr_consents' );
+		} else {
+			delete_user_meta( $user_id, 'gdpr_consents' );
+		}
 
 		foreach ( (array) $consents as $consent ) {
 			$consent = sanitize_text_field( wp_unslash( $consent ) );
-			add_user_meta( $user_id, 'gdpr_consents', $consent );
+			if ( defined( 'WPCOM_IS_VIP_ENV' ) && WPCOM_IS_VIP_ENV ) {
+				add_user_attribute( $user_id, 'gdpr_consents', $consent );
+			} else {
+				add_user_meta( $user_id, 'gdpr_consents', $consent );
+			}
 			GDPR_Audit_Log::log( $user_id, $consent );
 		}
 
-		setcookie( 'gdpr[consent_types]', json_encode( $consents ), time() + YEAR_IN_SECONDS, '/' );
+		setcookie( 'gdpr[consent_types]', wp_json_encode( $consents ), time() + YEAR_IN_SECONDS, '/' );
 	}
 
 	/**
@@ -959,7 +956,11 @@ class GDPR_Admin {
 
 		foreach ( $consent_arr as $key => $value ) {
 			$consent = str_replace( 'user_consents_', '', $value );
-			add_user_meta( $customer_id, 'gdpr_consents', $consent );
+			if ( defined( 'WPCOM_IS_VIP_ENV' ) && WPCOM_IS_VIP_ENV ) {
+				add_user_attribute( $customer_id, 'gdpr_consents', $consent );
+			} else {
+				add_user_meta( $customer_id, 'gdpr_consents', $consent );
+			}
 		}
 	}
 
@@ -975,7 +976,11 @@ class GDPR_Admin {
 	 */
 	public function add_consents_to_consents_column( $val, $column_name, $user_id ) {
 		if ( 'consents' === $column_name ) {
-			$user_consents = get_user_meta( $user_id, 'gdpr_consents' );
+			if ( defined( 'WPCOM_IS_VIP_ENV' ) && WPCOM_IS_VIP_ENV ) {
+				$user_consents = get_user_attribute( $user_id, 'gdpr_consents' );
+			} else {
+				$user_consents = get_user_meta( $user_id, 'gdpr_consents' );
+			}
 			return implode( ', ', $user_consents );
 		}
 
@@ -985,6 +990,24 @@ class GDPR_Admin {
 	public function add_consents_column_to_user_table( $column_headers ) {
 		$column_headers['consents'] = esc_html__( 'Consents', 'gdpr' );
 		return $column_headers;
+	}
+
+	public function sort_consents_column_from_user_table( $columns ) {
+		$columns['consents'] = 'consent';
+		return $columns;
+	}
+
+	public function sort_logic_for_consents_from_user_table( $query ) {
+		if ( ! is_admin() ) {
+			return;
+		}
+
+		$orderby = $query->get( 'orderby' );
+
+		if ( 'consent' === $orderby ) {
+			$query->set( 'meta_key', 'gdpr_consents' );
+			$query->set( 'orderby', 'meta_value' );
+		}
 	}
 
 }

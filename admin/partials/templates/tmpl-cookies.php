@@ -8,7 +8,7 @@
 						<label for="rename-{{data.key}}">
 							<?php esc_html_e( 'Category Name', 'gdpr' ); ?>:<span class="gdpr-required">*</span>
 							<span class="screen-reader-text"><?php esc_attr_e( 'Change this value if you want to rename this category something different.', 'gdpr' ); ?></span>
-							<span data-tooltip="<?php esc_attr_e( 'Change this value if you want to rename this category something different.', 'gdpr' ); ?>">
+							<span data-gdprtooltip="<?php esc_attr_e( 'Change this value if you want to rename this category something different.', 'gdpr' ); ?>">
 								<span class="dashicons dashicons-info"></span>
 							</span>
 						</label>
@@ -22,7 +22,7 @@
 						<label for="status-{{data.key}}">
 							<?php esc_html_e( 'Status', 'gdpr' ); ?>:<span class="gdpr-required">*</span>
 							<span class="screen-reader-text"><?php esc_attr_e( 'Required cookies are cookies that cannot be opted out of and are needed for the site to function properly. Soft opt-in will allow cookies on first landing but can be opted-out of. Checked means that the cookie category will be checked by default and will be set after the user agrees to them. Unchecked means the user needs to manually toggle the category on to allow these cookies.', 'gdpr' ); ?></span>
-							<span data-tooltip="<?php esc_attr_e( 'Required cookies are cookies that cannot be opted out of and are needed for the site to function properly. Soft opt-in will allow cookies on first landing but can be opted-out of. Checked means that the cookie category will be checked by default and will be set after the user agrees to them. Unchecked means the user needs to manually toggle the category on to allow these cookies.', 'gdpr' ); ?>">
+							<span data-gdprtooltip="<?php esc_attr_e( 'Required cookies are cookies that cannot be opted out of and are needed for the site to function properly. Soft opt-in will allow cookies on first landing but can be opted-out of. Checked means that the cookie category will be checked by default and will be set after the user agrees to them. Unchecked means the user needs to manually toggle the category on to allow these cookies.', 'gdpr' ); ?>">
 								<span class="dashicons dashicons-info"></span>
 							</span>
 						</label>
@@ -42,7 +42,7 @@
 						<label for="cookies-used-{{data.key}}">
 							<?php esc_html_e( 'Cookies used', 'gdpr' ); ?>:
 							<span class="screen-reader-text"><?php esc_attr_e( 'A comma-separated list of cookies that your site is using that fit this category.', 'gdpr' ); ?></span>
-							<span data-tooltip="<?php esc_attr_e( 'A comma-separated list of cookies that your site is using that fit this category.', 'gdpr' ); ?>">
+							<span data-gdprtooltip="<?php esc_attr_e( 'A comma-separated list of cookies that your site is using that fit this category.', 'gdpr' ); ?>">
 								<span class="dashicons dashicons-info"></span>
 							</span>
 						</label>
@@ -58,7 +58,7 @@
 						<label for="tab-how-we-use-{{data.key}}">
 							<?php esc_html_e( 'How are these used', 'gdpr' ); ?>:
 							<span class="screen-reader-text"><?php esc_attr_e( 'A brief explanation on why you are requesting to use these cookies, what they are for and how you process them.', 'gdpr' ); ?></span>
-							<span data-tooltip="<?php esc_attr_e( 'A brief explanation on why you are requesting to use these cookies, what they are for and how you process them.', 'gdpr' ); ?>">
+							<span data-gdprtooltip="<?php esc_attr_e( 'A brief explanation on why you are requesting to use these cookies, what they are for and how you process them.', 'gdpr' ); ?>">
 								<span class="dashicons dashicons-info"></span>
 							</span>
 						</label>
@@ -70,7 +70,7 @@
 				<label for="hosts-{{data.key}}">
 					<?php esc_html_e( 'Third party domain', 'gdpr' ); ?>:
 					<span class="screen-reader-text"><?php esc_attr_e( 'E.g. youtube.com', 'gdpr' ); ?></span>
-					<span data-tooltip="<?php esc_attr_e( 'E.g. youtube.com', 'gdpr' ); ?>">
+					<span data-gdprtooltip="<?php esc_attr_e( 'E.g. youtube.com', 'gdpr' ); ?>">
 						<span class="dashicons dashicons-info"></span>
 					</span>
 				</label>
@@ -92,22 +92,22 @@
 
 <script type="text/html" id="tmpl-cookie-tabs-hosts">
 	<div class="postbox">
-		<h2 class="hndle">{{data.host_key}}<button class="notice-dismiss" type="button"><span class="screen-reader-text"><?php esc_html_e( 'Remove this domain.', 'gdpr' ); ?></span></button></h2>
-		<input type="hidden" name="{{data.option_name}}[{{data.tab_key}}][hosts][{{data.host_key}}][name]" value="{{data.host_key}}" />
+		<h2 class="hndle">{{data.hostKey}}<button class="notice-dismiss" type="button"><span class="screen-reader-text"><?php esc_html_e( 'Remove this domain.', 'gdpr' ); ?></span></button></h2>
+		<input type="hidden" name="{{data.optionName}}[{{data.tabKey}}][hosts][{{data.hostKey}}][name]" value="{{data.hostKey}}" />
 		<div class="inside">
 			<table class="form-table">
 				<tr>
-					<th><label for="hosts-cookies-used-{{data.host_key}}"><?php esc_html_e( 'Cookies used', 'gdpr' ); ?></label></th>
+					<th><label for="hosts-cookies-used-{{data.hostKey}}"><?php esc_html_e( 'Cookies used', 'gdpr' ); ?></label></th>
 					<td>
-						<textarea cols="53" rows="3" name="{{data.option_name}}[{{data.tab_key}}][hosts][{{data.host_key}}][cookies_used]" id="hosts-cookies-used-{{data.host_key}}" required></textarea>
+						<textarea cols="53" rows="3" name="{{data.optionName}}[{{data.tabKey}}][hosts][{{data.hostKey}}][cookies_used]" id="hosts-cookies-used-{{data.hostKey}}" required></textarea>
 						<br>
 						<span class="description"><?php esc_html_e( 'Comma separated list.', 'gdpr' ); ?></span>
 					</td>
 				</tr>
 				<tr>
-					<th><label for="hosts-cookies-optout-{{data.host_key}}"><?php esc_html_e( 'How to Opt Out', 'gdpr' ); ?></label></th>
+					<th><label for="hosts-cookies-optout-{{data.hostKey}}"><?php esc_html_e( 'How to Opt Out', 'gdpr' ); ?></label></th>
 					<td>
-						<input type="text" name="{{data.option_name}}[{{data.tab_key}}][hosts][{{data.host_key}}][optout]" id="hosts-cookies-optout-{{data.host_key}}" class="regular-text" required />
+						<input type="text" name="{{data.optionName}}[{{data.tabKey}}][hosts][{{data.hostKey}}][optout]" id="hosts-cookies-optout-{{data.hostKey}}" class="regular-text" required />
 						<br>
 						<span class="description"><?php esc_html_e( 'Url with instructions on how to opt out.', 'gdpr' ); ?></span>
 					</td>
