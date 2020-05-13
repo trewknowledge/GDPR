@@ -2,7 +2,7 @@
 /**
  * This file handle emailing users.
  *
- * @link       http://trewknowledge.com
+ * @link       https://trewknowledge.com
  * @since      1.0.0
  *
  * @package    GDPR

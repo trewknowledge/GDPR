@@ -55,7 +55,7 @@ if ( isset( $_GET['notify'] ) && absint( $_GET['notify'] ) ) : // phpcs:ignore
 			<p><?php echo esc_html( $text ); ?></p>
 		</div>
 		<footer>
-			<button class="gdpr-ok"><?php esc_html_e( 'OK', 'gdpr' ); ?></button>
+			<button class="gdpr-ok" data-callback="closeNotification"><?php esc_html_e( 'OK', 'gdpr' ); ?></button>
 		</footer>
 	</div>
 </div>

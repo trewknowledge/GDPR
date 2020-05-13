@@ -3,9 +3,9 @@
 		"version": "1.0.0",
 		"description": "",
 		"themeName": "gigya",
-		"themeURI": "http://trewknowledge.com",
+		"themeURI": "https://trewknowledge.com",
 		"author": "Trew Knowledge",
-		"authorURI": "http://trewknowledge.com",
+		"authorURI": "https://trewknowledge.com",
 		"textDomain": "gdpr",
 		"scripts": {
 				"prod": "cross-env NODE_ENV=production webpack --mode production --progress",

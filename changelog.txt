@@ -1,3 +1,15 @@
+= 2.0.7 =
+* Changing some texts to be consistent.
+* Cleaned up code with VIP Code Standard.
+* Improved security.
+* Fix internet explorer bug.
+* Fix JS function with wrong variable name when an AJAX error happened.
+* Fix Warning on woocommerce consent checkboxes.
+* Renaming buttons and translating placeholders.
+* Added another parameter to the request forms function and shortcode to allow users to customize the button text.
+* Fix a bug in the privacy preferences center when you moved to a different page without accepting cookies it would uncheck fields that should continue being checked.
+* Fix settings tooltips z-index to sit on top of other elements.
+
 = 2.0.6 =
 * Fix XML export error.
 
@@ -48,8 +60,8 @@
 * Delete cookies when users change their preferences and disable some cookies.
 * Changed cookies used field to textarea for easier reading when lots of cookies are set.
 * Added a text to the settings page explaining that even if cookies are registered, if the user does not input some text for the privacy banner, it won't show up.
-* Adding filters for the admin notification email. [https://gdpr-wp.com/knowledge-base/actions-filters/](https://gdpr-wp.com/knowledge-base/actions-filters/)
-* Adding filters for the request forms button label. [https://gdpr-wp.com/knowledge-base/actions-filters/](https://gdpr-wp.com/knowledge-base/actions-filters/)
+* Adding filters for the admin notification email. [https://github.com/trewknowledge/GDPR/wiki/Actions-&-Filters](https://github.com/trewknowledge/GDPR/wiki/Actions-&-Filters)
+* Adding filters for the request forms button label. [https://github.com/trewknowledge/GDPR/wiki/Actions-&-Filters](https://github.com/trewknowledge/GDPR/wiki/Actions-&-Filters)
 
 = 1.4.2 =
 * Fix privacy bar reapearing. Cookie was not set to expire in a year.

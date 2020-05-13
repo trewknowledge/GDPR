@@ -1,13 +1,13 @@
 === GDPR ===
 Contributors: fclaussen, matthewfarlymn, trewknowledge
-Donate link: http://gdpr-wp.com/donate/
+Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=S3P8NHLF4DLZN&source=url
 Tags: gdpr, compliance, privacy, law, general data protection regulation
 Requires at least: 4.7
 Requires PHP: 5.6
 Tested up to: 5.4
-Stable tag: 2.1.0
+Stable tag: 2.1.1
 License: GPLv2 or later
-License URI: http://www.gnu.org/licenses/gpl-2.0.html
+License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
 This plugin is meant to assist with the GDPR obligations of a Data processor and Controller.
 
@@ -16,14 +16,14 @@ This plugin is meant to assist with the GDPR obligations of a Data processor and
 This plugin is meant to assist a Controller, Data Processor, and Data Protection Officer (DPO) with efforts to meet the obligations and rights enacted under the GDPR.
 
 == Documentation ==
-[http://gdpr-wp.com/knowledge-base/](http://gdpr-wp.com/knowledge-base/)
+[https://github.com/trewknowledge/GDPR/wiki](https://github.com/trewknowledge/GDPR/wiki)
 
 == Collaboration ==
 
 You can send your pull request at [https://github.com/trewknowledge/gdpr](https://github.com/trewknowledge/gdpr)
 
 == Shortcodes & helper functions ==
-[http://gdpr-wp.com/knowledge-base/functions-shortcodes/](http://gdpr-wp.com/knowledge-base/functions-shortcodes/)
+[https://github.com/trewknowledge/GDPR/wiki/Functions-&-Shortcodes](https://github.com/trewknowledge/GDPR/wiki/Functions-&-Shortcodes)
 
 == Features ==
 
@@ -206,6 +206,21 @@ Activating this plugin does not guarantee that an organisation is successfully m
 
 == Changelog ==
 
+= 2.1.1 =
+* Updating dependencies.
+* Fixing some code standards errors.
+* Fix tooltip styles affecting other parts of the admin panel.
+* Fixed a W3C validation error.
+* Fixed a "Headers Already Sent" error while doing cron jobs.
+* Added more accents to the array of replacements
+* Made possible to sort by consent in the admin users page.
+* Added "move up" and "move down" buttons for each cookies category.
+* Detect current language code and load correct recaptcha based on it.
+* Moved partials to templates so they can be overwritten by themes.
+* Fix issue where some modals would not close.
+* Fix issue where tapping the X on modals would jump.
+
+
 = 2.1.0 =
 * Wrapping checkboxes in labels so they stay in the same line.
 * Adding initial WPML and Polylang translation config file.
@@ -235,19 +250,6 @@ Activating this plugin does not guarantee that an organisation is successfully m
 * Fix warnings when no consent is registered.
 * Small style and markup enhancement.
 * A little cleanup to reduce WP server stress.
-
-
-= 2.0.7 =
-* Changing some texts to be consistent.
-* Cleaned up code with VIP Code Standard.
-* Improved security.
-* Fix internet explorer bug.
-* Fix JS function with wrong variable name when an AJAX error happened.
-* Fix Warning on woocommerce consent checkboxes.
-* Renaming buttons and translating placeholders.
-* Added another parameter to the request forms function and shortcode to allow users to customize the button text.
-* Fix a bug in the privacy preferences center when you moved to a different page without accepting cookies it would uncheck fields that should continue being checked.
-* Fix settings tooltips z-index to sit on top of other elements.
 
 == Upgrade Notice ==
 
