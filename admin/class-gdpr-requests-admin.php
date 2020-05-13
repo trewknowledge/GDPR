@@ -282,8 +282,8 @@ class GDPR_Requests_Admin extends GDPR_Requests {
 			wp_send_json_error( esc_html__( 'We could not verify the security token. Please try again.', 'gdpr' ) );
 		}
 
-		$email         = isset( $_POST['user_email'] ) ? sanitize_email( wp_unslash( $_POST['user_email'] ) ) : ''; // WPCS: Input var ok.
-		$comment_count = isset( $_POST['comment_count'] ) ? (int) $_POST['comment_count'] : 0; // WPCS: Input var ok.
+		$email         = isset( $_POST['userEmail'] ) ? sanitize_email( wp_unslash( $_POST['userEmail'] ) ) : ''; // WPCS: Input var ok.
+		$comment_count = isset( $_POST['commentCount'] ) ? (int) $_POST['commentCount'] : 0; // WPCS: Input var ok.
 
 		$user = get_user_by( 'email', $email );
 		if ( ! $user instanceof WP_User ) {
@@ -323,14 +323,14 @@ class GDPR_Requests_Admin extends GDPR_Requests {
 			wp_send_json_error( esc_html__( 'We could not verify the security token. Please try again.', 'gdpr' ) );
 		}
 
-		if ( ! isset( $_POST['user_email'], $_POST['reassign_to'], $_POST['post_type'], $_POST['post_count'] ) ) { // WPCS: Input var ok.
+		if ( ! isset( $_POST['userEmail'], $_POST['reassignTo'], $_POST['postType'], $_POST['postCount'] ) ) { // WPCS: Input var ok.
 			wp_send_json_error( esc_html__( 'Essential data missing. Please try again.', 'gdpr' ) );
 		}
 
-		$email       = sanitize_email( wp_unslash( $_POST['user_email'] ) ); // WPCS: Input var ok.
-		$reassign_to = (int) $_POST['reassign_to']; // WPCS: Input var ok.
-		$post_type   = sanitize_text_field( wp_unslash( $_POST['post_type'] ) ); // WPCS: Input var ok.
-		$post_count  = (int) $_POST['post_count']; // WPCS: Input var ok.
+		$email       = sanitize_email( wp_unslash( $_POST['userEmail'] ) ); // WPCS: Input var ok.
+		$reassign_to = (int) $_POST['reassignTo']; // WPCS: Input var ok.
+		$post_type   = sanitize_text_field( wp_unslash( $_POST['postType'] ) ); // WPCS: Input var ok.
+		$post_count  = (int) $_POST['postCount']; // WPCS: Input var ok.
 
 		$user = get_user_by( 'email', $email );
 		if ( ! $user instanceof WP_User ) {

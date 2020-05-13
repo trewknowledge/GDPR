@@ -100,7 +100,7 @@ class GDPR_Public {
 	public function enqueue_styles() {
 		$disable_css = get_option( 'gdpr_disable_css', false );
 		if ( ! $disable_css ) {
-			wp_enqueue_style( $this->plugin_name, plugin_dir_url( dirname( __FILE__ ) ) . 'assets/css/gdpr-public.css', array(), $this->version, 'all' );
+			wp_enqueue_style( $this->plugin_name, plugin_dir_url( dirname( __FILE__ ) ) . 'dist/css/public.css', array(), $this->version, 'all' );
 		}
 	}
 
@@ -121,7 +121,7 @@ class GDPR_Public {
 				wp_enqueue_script( $this->plugin_name . '-recaptcha', 'https://www.google.com/recaptcha/api.js?hl=' . $lang );
 			}
 		}
-		wp_enqueue_script( $this->plugin_name, plugin_dir_url( dirname( __FILE__ ) ) . 'assets/js/gdpr-public.js', array( 'jquery' ), $this->version, false );
+		wp_enqueue_script( $this->plugin_name, plugin_dir_url( dirname( __FILE__ ) ) . 'dist/js/public.js', array( 'jquery' ), $this->version, false );
 		wp_localize_script(
 			$this->plugin_name, 'GDPR', array(
 				'ajaxurl'           => admin_url( 'admin-ajax.php' ),
