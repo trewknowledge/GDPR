@@ -2,7 +2,7 @@
 /**
  * This file is responsible for adding help sections to the plugin pages.
  *
- * @link       http://trewknowledge.com
+ * @link       https://trewknowledge.com
  * @since      0.1.0
  *
  * @package    GDPR
