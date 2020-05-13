@@ -2,7 +2,6 @@
     "require-dev": {
 				"phpdocumentor/phpdocumentor": "2.*",
         "automattic/vipwpcs": "^2.0",
-				"phpcompatibility/php-compatibility": "*",
 				"dealerdirect/phpcodesniffer-composer-installer": "^0.6.2"
     }
 }
