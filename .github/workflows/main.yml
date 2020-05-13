@@ -18,7 +18,9 @@ jobs:
         php-version: ${{ matrix.php-versions }}
         
     - name: 'Install Composer dependencies'
-      run: composer install
+      run: |
+        composer require phpcompatibility/php-compatibility --dev
+        composer require dealerdirect/phpcodesniffer-composer-installer --dev
     
     - name: 'Run PHPCS'
       run: |
@@ -31,7 +33,9 @@ jobs:
     - uses: actions/checkout@v1
       
     - name: 'Install Composer dependencies'
-      run: composer install
+      run: |
+        composer require automattic/vipwpcs --dev
+        composer require dealerdirect/phpcodesniffer-composer-installer --dev
       
     - name: 'Run PHPCS'
       run: |
