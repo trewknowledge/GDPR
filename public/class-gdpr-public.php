@@ -357,6 +357,9 @@ class GDPR_Public {
 	}
 
 	public function set_plugin_cookies() {
+
+		if ( wp_doing_cron() ) return;
+
 		$user_id = get_current_user_id();
 
 		if ( ! isset( $_COOKIE['gdpr']['consent_types'] ) ) { // phpcs:ignore
