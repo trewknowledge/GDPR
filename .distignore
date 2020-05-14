@@ -7,7 +7,7 @@
 .distignore
 .gitignore
 .stylelintrc
-.estlintrc.json
+.eslintrc.json
 .eslintignore
 .editorconfig
 phpcs.xml.dist

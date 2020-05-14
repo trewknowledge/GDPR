@@ -84,7 +84,7 @@
 											<?php endif; ?>
 										</div>
 										<div class="gdpr-cookies">
-											<span><?php echo wp_kses( $type['description'], $args['allowed_html'] ); ?></span>
+											<span><?php echo wp_kses( $gdpr_type['description'], $args['allowed_html'] ); ?></span>
 										</div>
 									</div>
 								<?php endforeach; ?>
