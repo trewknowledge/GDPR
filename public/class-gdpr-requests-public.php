@@ -203,7 +203,7 @@ class GDPR_Requests_Public extends GDPR_Requests {
 				array(
 					'type'  => $type,
 					'key'   => $key,
-					'email' => $user->user_email,
+					'email' => $this->escape_email_address( $user->user_email ),
 				),
 				home_url()
 			);
