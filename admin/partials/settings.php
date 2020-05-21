@@ -422,7 +422,7 @@
 		</div>
 
 		<hr>
-		<h2><?php esc_html_e( 'Reset Plugig Data', 'gdpr' ); ?></h2>
+		<h2><?php esc_html_e( 'Reset Data', 'gdpr' ); ?></h2>
 		<p>
 			<?php
 			echo sprintf(
