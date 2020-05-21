@@ -366,4 +366,63 @@ class GDPR_Requests_Admin extends GDPR_Requests {
 		wp_send_json_error( esc_html__( 'Something went wrong. Please try again.', 'gdpr' ) );
 	}
 
+	/**
+	 * Reset all plugin data
+	 * @since  1.0.0
+	 * @author Moutushi Mandal <moutushi82@gmail.com>
+	 */
+	public function reset_plugin_data() {
+		if ( ! isset( $_POST['nonce'] ) || ! wp_verify_nonce( sanitize_key( wp_unslash( $_POST['nonce'] ) ), 'gdpr_reset_data' ) ) { // phpcs:ignore
+			wp_send_json_error( esc_html__( 'We could not verify the security token. Please try again.', 'gdpr' ) );
+		}
+
+		// Add new options
+		update_option( 'gdpr_disable_css', false );
+		update_option( 'gdpr_use_recaptcha', false );
+		update_option( 'gdpr_recaptcha_site_key', '' );
+		update_option( 'gdpr_recaptcha_secret_key', '' );
+		update_option( 'gdpr_add_consent_checkboxes_registration', true );
+		update_option( 'gdpr_add_consent_checkboxes_checkout', true );
+		update_option(
+			'gdpr_cookie_popup_content', array(
+				'necessary'   => array(
+					'name'         => 'Necessary',
+					'status'       => 'required',
+					'cookies_used' => '',
+					'how_we_use'   => '',
+				),
+				'advertising' => array(
+					'name'         => 'Advertising',
+					'status'       => 'on',
+					'cookies_used' => '',
+					'how_we_use'   => '',
+				),
+				'analytics'   => array(
+					'name'         => 'Analytics',
+					'status'       => 'on',
+					'cookies_used' => '',
+					'how_we_use'   => '',
+				),
+				'other'       => array(
+					'name'         => 'Other',
+					'status'       => 'on',
+					'cookies_used' => '',
+					'how_we_use'   => '',
+				),
+			)
+		);
+		update_option( 'gdpr_refresh_after_preferences_update', true );
+		update_option( 'gdpr_enable_privacy_bar', true );
+		update_option( 'gdpr_display_cookie_categories_in_bar', false );
+		update_option( 'gdpr_hide_from_bots', true );
+		update_option( 'gdpr_reconsent_template', 'modal' );
+		update_option( 'gdpr_cookie_banner_content', '' );
+		update_option( 'gdpr_cookie_privacy_excerpt', '' );
+		update_option( 'gdpr_consent_types', '' );
+		
+		GDPR_Audit_Log::log( $user->ID, sprintf( esc_html__( 'Plugin data reset on %1$s.', 'gdpr' ), date( 'm/d/Y' ) ) );
+		wp_send_json_success();
+
+	}
+
 }
