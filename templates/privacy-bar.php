@@ -10,9 +10,16 @@
  * @package    GDPR
  * @subpackage public/partials
  */
+
+$privacy_bar_style = 'display:none;';
+if ( 'top' === $args['bar_position'] ) {
+	$privacy_bar_style .= 'top:0;';
+} else {
+	$privacy_bar_style .= 'bottom:0;';
+}
 ?>
 
-<div class="gdpr gdpr-privacy-bar" style="display:none;">
+<div class="gdpr gdpr-privacy-bar" style="<?php echo esc_attr( $privacy_bar_style ); ?>">
 	<div class="gdpr-wrapper">
 		<div class="gdpr-content">
 			<p><?php echo nl2br( wp_kses_post( $args['content'] ) ); ?></p>
