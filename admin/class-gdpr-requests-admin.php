@@ -419,6 +419,7 @@ class GDPR_Requests_Admin extends GDPR_Requests {
 		update_option( 'gdpr_cookie_banner_content', '' );
 		update_option( 'gdpr_cookie_privacy_excerpt', '' );
 		update_option( 'gdpr_consent_types', '' );
+		update_option( 'gdpr_privacy_bar_position', 'bottom' );
 		
 		GDPR_Audit_Log::log( $user->ID, sprintf( esc_html__( 'Plugin data reset on %1$s.', 'gdpr' ), date( 'm/d/Y' ) ) );
 		wp_send_json_success();
