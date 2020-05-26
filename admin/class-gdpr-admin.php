@@ -104,6 +104,7 @@ class GDPR_Admin {
 		$icon_url    = 'dashicons-id';
 
 		$requests           = get_option( 'gdpr_requests', array() );
+		
 		$confirmed_requests = array_filter(
 			$requests, function( $item ) {
 				return true === $item['confirmed'];
@@ -135,9 +136,16 @@ class GDPR_Admin {
 
 		$settings_hook = add_submenu_page( $parent_slug, $menu_title, $menu_title, $capability, $menu_slug, $function );
 
+		$menu_title = esc_html__( 'Export/Import', 'gdpr' );
+		$menu_slug  = 'gdpr-export';
+		$function   = array( $this, 'export_page_template' );
+
+		$export_hook = add_submenu_page( $parent_slug, $menu_title, $menu_title, $capability, $menu_slug, $function );
+		
 		add_action( "load-{$requests_hook}", array( 'GDPR_Help', 'add_requests_help' ) );
 		add_action( "load-{$tools_hook}", array( 'GDPR_Help', 'add_tools_help' ) );
 		add_action( "load-{$settings_hook}", array( 'GDPR_Help', 'add_settings_help' ) );
+		add_action( "load-{$export_hook}", array( 'GDPR_Help', 'add_export_help' ) );
 	}
 
 	/**
@@ -512,6 +520,35 @@ class GDPR_Admin {
 		}
 
 		wp_send_json_success( $log );
+	}
+
+	/**
+	 * Export/Import Pluging Settings Page Template
+	 *
+	 * @since  1.0.0
+	 * @author Moutushi Mandal <moutushi82@gmail.com>
+	 */
+	public function export_page_template() {
+		global $wpdb;
+		$setting_data = $wpdb->get_results( "SELECT * FROM  {$wpdb->prefix}options WHERE option_name like 'gdpr_%'", ARRAY_A );
+		$plugin_settings_json = array();
+		$option_data = array();
+
+		if ( ! empty ( $setting_data ) ) {
+			foreach ( $setting_data as $value ) {
+				$temp_arr = array();
+				$temp_arr['option_name'] = $value['option_name'];
+				$temp_arr['option_value'] = $value['option_value'];
+				$temp_arr['autoload']     = $value['autoload'];
+
+				$option_data[] = $temp_arr;
+			}
+		}
+		$encrypt_key                    = 'TrewK123456789';
+		$iv                             = openssl_random_pseudo_bytes( openssl_cipher_iv_length( 'aes-256-cbc' ) );
+		$encrypted_plugin_settings_data = openssl_encrypt( json_encode( $option_data ), 'aes-256-cbc', $encrypt_key, 0, $iv );
+		$gdpr_settings_data             = base64_encode( $encrypted_plugin_settings_data . '::' . $iv );
+		include plugin_dir_path( __FILE__ ) . 'partials/import_export_settings.php';
 	}
 
 	public function review_settings_after_v2_notice() {
@@ -1008,6 +1045,51 @@ class GDPR_Admin {
 			$query->set( 'meta_key', 'gdpr_consents' );
 			$query->set( 'orderby', 'meta_value' );
 		}
+	}
+
+	/**
+	 * Import plugin settings
+	 * @since  1.0.0
+	 * @author Moutushi Mandal <moutushi82@gmail.com>
+	 */
+	public function gdpr_import_plugin_settings() {
+		if ( ! isset( $_POST['gdpr_settings_import_nonce'] ) || ! wp_verify_nonce( sanitize_key( $_POST['gdpr_settings_import_nonce'] ), 'gdpr-import-settings' ) )  { // phpcs:ignore
+			wp_send_json_error( esc_html__( 'We could not verify the security token. Please try again.', 'gdpr' ) );
+		}
+		$settings_data = sanitize_text_field( wp_unslash( $_POST['import_settings'] ) );
+		if ( ! empty ( $settings_data ) ) {
+			list( $encrypted_data, $iv ) = explode( '::', base64_decode( $settings_data ), 2 );
+			$decrypted_plugin_settings   = openssl_decrypt( $encrypted_data, 'aes-256-cbc', 'TrewK123456789', 0, $iv );
+			$plugin_settings_data        = json_decode( $decrypted_plugin_settings );
+			
+			if ( ! empty ( $plugin_settings_data ) ) {
+				foreach( $plugin_settings_data as $option_data ) {
+					$option_name  = sanitize_text_field( wp_unslash( $option_data->option_name ) );
+					
+					if ( is_serialized( $option_data->option_value ) ) {
+						$option_value =  maybe_unserialize( $option_data->option_value );
+					} else {
+						$option_value = wp_filter_post_kses( $option_data->option_value );
+					}
+					
+					$autoload         = sanitize_text_field( wp_unslash( $option_data->autoload ) );
+					update_option( $option_name, $option_value, $autoload );
+				}
+			}
+
+		}
+		GDPR_Audit_Log::log( $user->ID, sprintf( esc_html__( 'Plugin settings imported on %1$s.', 'gdpr' ), date( 'm/d/Y' ) ) );
+		wp_safe_redirect(
+			esc_url_raw(
+				add_query_arg(
+					array(
+						'settings-imported' => true,
+					),
+					wp_get_referer() . '#import'
+				)
+			)
+		);
+		exit;
 	}
 
 }
