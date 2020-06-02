@@ -382,12 +382,15 @@
 										</label>
 									</th>
 									<td>
+										<input type="text" placeholder="Policy Page URL" name="gdpr_consent_types[<?php echo esc_attr( $consent_id ); ?>][policy-page-url]" id="consent-policy-page-url-<?php echo esc_attr( $consent_id ); ?>" value="<?php echo esc_attr( $consent['policy-page-url'] ); ?>" /> 
+										OR
 										<select name="gdpr_consent_types[<?php echo esc_attr( $consent_id ); ?>][policy-page]" id="consent-policy-page-<?php echo esc_attr( $consent_id ); ?>">
 											<option value=""></option>
 											<?php foreach ( $pages as $page ) : ?>
 												<option value="<?php echo esc_attr( $page->ID ); ?>" <?php selected( $consent['policy-page'], $page->ID ); ?>><?php echo esc_html( $page->post_title ); ?></option>
 											<?php endforeach ?>
 										</select>
+										
 									</td>
 								</tr>
 								<tr>
