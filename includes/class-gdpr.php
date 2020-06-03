@@ -222,6 +222,10 @@ class GDPR {
 		add_action( 'clean_gdpr_user_request_key', array( $requests, 'clean_user_request_key' ), 10, 2 );
 
 		add_action( 'send_data_breach_emails', array( $plugin_emails, 'send_data_breach_emails' ), 10, 2 );
+
+		// Version Control
+		add_filter( 'pre_update_option_gdpr_cookie_popup_content', array( $plugin_admin, 'gdpr_update_cookie_version'), 10, 3 );
+		add_filter( 'pre_update_option_gdpr_consent_types', array( $plugin_admin, 'gdpr_update_consent_version'), 10, 3 );
 	}
 
 	/**

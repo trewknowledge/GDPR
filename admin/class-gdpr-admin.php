@@ -1010,4 +1010,66 @@ class GDPR_Admin {
 		}
 	}
 
-}
+	/**
+	 * This function update cookie version
+	 * @since  1.0.0
+	 * @author Moutushi Mandal <moutushi82@gmail.com>
+	 * @param  string $key The request key.
+	 */
+	public function gdpr_update_cookie_version( $new_value, $old_value, $option ) {
+		$cookie_version = get_option( 'gdpr_cookie_version', 'V1' );
+		$new_cookies = array_keys( $new_value );
+		$old_cookies = array_keys( $new_value );
+		
+		$is_updated = false;
+		if ( count( $new_cookies ) !== count( $old_cookies ) ) {
+			$is_updated = true;
+		} else if ( ! empty ( $old_value ) ) {
+			foreach( $new_cookies as $key ) {
+				if ( ( $new_value[ $key ]['cookies_used'] !== $old_value[ $key ]['cookies_used'] ) || ( $new_value[ $key ]['hosts'] !== $old_value[ $key ]['hosts'] ) ) {
+					$is_updated = true;
+				}
+				
+				if ( ! empty ( $new_value[ $key ]['optout'] ) ) {
+					if ( $new_value[ $key ]['optout'] !== $old_value[ $key ]['optout'] ) {
+						$is_updated = true;
+					}
+				}
+			}
+			
+			if ( $is_updated ) { 
+				$cookie_version_no = ( ! empty ( substr( $cookie_version, -1 ) ) ) ? absint( substr( $cookie_version, -1 ) ) : 1;
+				$cookie_version_no += 1;
+				$new_version = 'V' . $cookie_version_no;
+				update_option( 'gdpr_cookie_version', $new_version );
+			}
+		} else {
+			update_option( 'gdpr_cookie_version', 'V1' );
+		}
+		
+		return $new_value;
+	}
+
+	/**
+	 * This function update consent version
+	 * @since  1.0.0
+	 * @author Moutushi Mandal <moutushi82@gmail.com>
+	 * @param  string $key The request key.
+	 */
+	public function gdpr_update_consent_version( $new_value, $old_value, $option ) {
+		$consent_version = get_option( 'gdpr_consent_version', 'V1' );
+	
+		if ( ! empty ( $old_value ) ) {
+			if ( $new_value !== $old_value ) { 
+				$consent_version_no = ( ! empty ( substr( $consent_version, -1 ) ) ) ? absint( substr( $consent_version, -1 ) ) : 1;
+				$consent_version_no += 1;
+				$new_version = 'V' . $consent_version_no;
+				update_option( 'gdpr_consent_version', $new_version );
+			}
+		} else {
+			update_option( 'gdpr_consent_version', 'V1' );
+		}
+		return $new_value;
+	}
+
+} 

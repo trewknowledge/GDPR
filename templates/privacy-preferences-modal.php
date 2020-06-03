@@ -16,6 +16,8 @@
 	<div class="gdpr-wrapper">
 		<form method="post" class="gdpr-privacy-preferences-frm">
 			<input type="hidden" name="action" value="gdpr_update_privacy_preferences">
+			<input type="hidden" name="gdpr_consent_version" value="<?php echo esc_attr( $args['consent_version'] ); ?>">
+			<input type="hidden" name="gdpr_cookie_version" value="<?php echo esc_attr( $args['cookie_version'] ); ?>">
 			<?php wp_nonce_field( 'gdpr-update-privacy-preferences', 'update-privacy-preferences-nonce' ); ?>
 			<header>
 				<div class="gdpr-box-title">
