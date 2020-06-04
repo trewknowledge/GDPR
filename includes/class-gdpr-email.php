@@ -50,7 +50,9 @@ class GDPR_Email {
 			$sitename = substr( $sitename, 4 );
 		}
 
-		return apply_filters( 'gdpr_do_not_reply_address', 'noreply@' . $sitename );
+		$reply_email = get_option( 'admin_email', 'noreply@' . $sitename );
+
+		return apply_filters( 'gdpr_do_not_reply_address', $reply_email );
 	}
 
 	/**
