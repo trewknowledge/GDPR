@@ -10,7 +10,7 @@ const baseUrl    = location.protocol + '//' + location.host + location.pathname;
 window.has_consent = function( consent ) {
 	if ( Cookies.get( 'gdpr[consent_types]' ) ) {
 		const consentArray = JSON.parse( Cookies.get( 'gdpr[consent_types]' ) );
-		if ( -1 < consentArray.indexOf( consent ) ) {
+		if ( -1 < consentArray.indexOf( consent ) ) { 
 			return true;
 		}
 	}
@@ -90,12 +90,18 @@ $( function() {
 		const checked = $( this ).prop( 'checked' );
 		$( '[data-category="' + target + '"]' ).prop( 'checked', checked );
 	} );
-
-	if ( ! Cookies.get( 'gdpr[privacy_bar]' ) ) {
-		if ( 0 == $( '.gdpr-reconsent-bar, .gdpr-reconsent' ).length ) {
+	
+	if ( ! Cookies.get( 'gdpr[privacy_bar]' ) ) { 
+		if ( 0 == $( '.gdpr-reconsent-bar, .gdpr-reconsent' ).length ) { 
 			$( '.gdpr.gdpr-privacy-bar' ).delay( 1000 ).slideDown( 600 );
 		}
 	};
+
+	if ( Cookies.get( 'gdpr[cookie_version]' ) !== GDPR.cookie_version || Cookies.get( 'gdpr[consent_version]' ) !== GDPR.consent_version  ) {
+		if ( 0 == $( '.gdpr-reconsent-bar, .gdpr-reconsent' ).length ) { 
+			$( '.gdpr.gdpr-privacy-bar' ).delay( 1000 ).slideDown( 600 );
+		}
+	}
 
 	if ( 0 < $( '.gdpr-reconsent-bar' ).length ) {
 		$( '.gdpr.gdpr-reconsent-bar' ).delay( 1000 ).slideDown( 600 );

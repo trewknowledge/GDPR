@@ -122,6 +122,10 @@ class GDPR_Public {
 			}
 		}
 		wp_enqueue_script( $this->plugin_name, plugin_dir_url( dirname( __FILE__ ) ) . 'dist/js/public.js', array( 'jquery' ), $this->version, false );
+
+		$cookie_version         = get_option( 'gdpr_cookie_version', 'V1' );
+		$consent_version        = get_option( 'gdpr_consent_version', 'V1' );
+
 		wp_localize_script(
 			$this->plugin_name, 'GDPR', array(
 				'ajaxurl'           => admin_url( 'admin-ajax.php' ),
@@ -139,6 +143,8 @@ class GDPR_Public {
 				),
 				'is_user_logged_in' => is_user_logged_in(),
 				'refresh'           => get_option( 'gdpr_refresh_after_preferences_update', true ),
+				'cookie_version'    => $cookie_version,
+				'consent_version'   => $consent_version,
 			)
 		);
 	}
@@ -368,7 +374,7 @@ class GDPR_Public {
 		return ( isset( $_SERVER['HTTP_USER_AGENT'] ) && preg_match( '/bot|crawl|slurp|spider|mediapartners/i', sanitize_text_field( wp_unslash( $_SERVER['HTTP_USER_AGENT'] ) ) ) );
 	}
 
-	public function set_plugin_cookies() {
+	public function set_plugin_cookies() {  
 
 		if ( wp_doing_cron() ) return;
 
@@ -385,12 +391,12 @@ class GDPR_Public {
 				}
 				setcookie( 'gdpr[consent_types]', wp_json_encode( $user_consents ), time() + YEAR_IN_SECONDS, '/' );
 			}
-		} else {
+		} else { 
 			if ( $user_id ) {
 				if ( defined( 'WPCOM_IS_VIP_ENV' ) && WPCOM_IS_VIP_ENV ) {
-					$user_consents = (array) get_user_attribute( $user_id, 'gdpr_consents' );
+					$user_consents         = (array) get_user_attribute( $user_id, 'gdpr_consents' );
 				} else {
-					$user_consents = (array) get_user_meta( $user_id, 'gdpr_consents' );
+					$user_consents         = (array) get_user_meta( $user_id, 'gdpr_consents' );
 				}
 				$cookie_consents = (array) json_decode( wp_unslash( $_COOKIE['gdpr']['consent_types'] ) ); // phpcs:ignore
 
@@ -402,7 +408,7 @@ class GDPR_Public {
 				}
 			}
 		}
-
+		
 		if ( ! isset( $_COOKIE['gdpr']['allowed_cookies'] ) ) { // phpcs:ignore
 			$registered_cookies = get_option( 'gdpr_cookie_popup_content', array() );
 			$cookies            = array();
