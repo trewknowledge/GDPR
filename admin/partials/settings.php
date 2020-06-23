@@ -11,6 +11,25 @@
 			<tbody>
 				<tr>
 					<th scope="row">
+						<label for="gdpr_no_reply_email"><?php esc_html_e( 'No-Reply email', 'gdpr' ); ?>:</label>
+						<span class="screen-reader-text"><?php esc_attr_e( 'This is the do not reply email address.', 'gdpr' ); ?></span>
+						<span data-gdprtooltip="<?php esc_attr_e( 'This is the do not reply email address.', 'gdpr' ); ?>">
+							<span class="dashicons dashicons-info"></span>
+						</span>
+					</th>
+					<td>
+						<?php 
+							$sitename = isset( $_SERVER['SERVER_NAME'] ) ? strtolower( sanitize_text_field( wp_unslash( $_SERVER['SERVER_NAME'] ) ) ) : ''; // WPCS: input var ok.
+							if ( substr( $sitename, 0, 4 ) === 'www.' ) {
+								$sitename = substr( $sitename, 4 );
+							}
+							$no_reply_email = get_option( 'gdpr_no_reply_email', 'noreply@' . $sitename ); 
+						?>
+						<input type="text" name="gdpr_no_reply_email" id="gdpr_no_reply_email" value="<?php echo esc_attr( $no_reply_email ); ?>">
+					</td>
+				</tr>
+				<tr>
+					<th scope="row">
 						<label for="gdpr_email_limit"><?php esc_html_e( 'Outgoing email limit', 'gdpr' ); ?>:</label>
 						<span class="screen-reader-text"><?php esc_attr_e( 'This is the hourly outgoing email limit set by your server.', 'gdpr' ); ?></span>
 						<span data-gdprtooltip="<?php esc_attr_e( 'This is the hourly outgoing email limit set by your server.', 'gdpr' ); ?>">
