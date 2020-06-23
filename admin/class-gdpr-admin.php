@@ -201,6 +201,7 @@ class GDPR_Admin {
 			'gdpr_display_cookie_categories_in_bar'    => 'boolval',
 			'gdpr_hide_from_bots'                      => 'boolval',
 			'gdpr_reconsent_template'                  => 'sanitize_text_field',
+			'gdpr_no_reply_email'                      => 'sanitize_text_field',
 		);
 		foreach ( $settings as $option_name => $sanitize_callback ) {
 			register_setting( 'gdpr', $option_name, array( 'sanitize_callback' => $sanitize_callback ) );
