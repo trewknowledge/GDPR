@@ -222,6 +222,8 @@ class GDPR {
 		add_action( 'clean_gdpr_user_request_key', array( $requests, 'clean_user_request_key' ), 10, 2 );
 
 		add_action( 'send_data_breach_emails', array( $plugin_emails, 'send_data_breach_emails' ), 10, 2 );
+
+		add_action( 'wp_ajax_gdpr_manage_email_settings', array( $plugin_admin, 'manage_email_settings' ) );
 	}
 
 	/**

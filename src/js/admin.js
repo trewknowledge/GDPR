@@ -314,5 +314,38 @@ $( function() {
 			}
 		);
 	} );
+	
+	$( '.color_pick' ).wpColorPicker();
+
+	$( document ).on( 'click', '.show-settings', function( e ) {
+		e.preventDefault();
+		const nextTr = $( this ).parents( 'tr' ).next( 'tr' );
+		console.log( nextTr );
+		nextTr.toggleClass( 'hide' );
+	});
+
+	$( document ).on( 'submit', '.gdpr-email-settings', function( e ) {
+		e.preventDefault();
+		const formData = new FormData( this );
+		console.log( formData );
+
+		$.ajax( {
+			url: ajaxurl,
+			type: 'post',
+			data: formData,
+			contentType: false,
+			cache: false,
+			processData: false,
+			xhrFields: {
+				withCredentials: true
+			},
+			success: ( response ) => {
+				let successDiv = '<div id="message" class="updated inline"><p><strong>' + response.data + '</strong></p></div>';
+				
+				$( '#gdpr_heading' ).after( successDiv );
+			}
+		} );
+
+	});
 
 } );
