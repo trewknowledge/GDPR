@@ -317,13 +317,6 @@ $( function() {
 	
 	$( '.color_pick' ).wpColorPicker();
 
-	$( document ).on( 'click', '.show-settings', function( e ) {
-		e.preventDefault();
-		const nextTr = $( this ).parents( 'tr' ).next( 'tr' );
-		console.log( nextTr );
-		nextTr.toggleClass( 'hide' );
-	});
-
 	$( document ).on( 'submit', '.gdpr-email-settings', function( e ) {
 		e.preventDefault();
 		const formData = new FormData( this );

@@ -21,6 +21,35 @@ require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/class-gdpr-templ
  * @author     Fernando Claussen <fernandoclaussen@gmail.com>
  */
 class GDPR_Email {
+
+	public $emails = array();	
+	
+	/**
+	 * Initialize the class and set its properties.
+	 *
+	 * @since  1.0.0
+	 * @param  string    $plugin_name       The name of this plugin.
+	 * @param  string    $version    The version of this plugin.
+	 * @author Moutushi <mmandal@trewknowlegde.com>
+	 */
+	public function __construct() {
+		
+		// Email Header, Footer hooks.
+		add_action( 'gdpr_email_header', array( $this, 'email_header' ) );
+		add_action( 'gdpr_email_footer', array( $this, 'email_footer' ) );
+
+	}
+
+	
+	/**
+	 * Return the email classes - used in admin to load settings.
+	 *
+	 * @return GDPR_Email[]
+	 */
+	public function get_emails() {
+		return $this->emails;
+	}
+
 	/**
 	 * Get the email content from the correct file.
 	 * @since  1.0.0
@@ -32,6 +61,7 @@ class GDPR_Email {
 	 */
 	public static function get_email_content( $template_name, $args = array() ) {
 		ob_start();
+
 		GDPR_Templates::get_template( $template_name, $args );
 		return ob_get_clean();
 	}
@@ -165,18 +195,106 @@ class GDPR_Email {
 
 		$no_reply = self::get_do_not_reply_address();
 		$headers  = array();
+
 		foreach ( (array) $emails as $email ) {
 			$headers[] = 'Bcc: ' . sanitize_email( $email );
 		}
+		$headers[] = 'Content-Type: ' . self::get_content_type( $type );
+
+		$email_subject_field = 'gdpr_' . str_replace( '-', '_', $type ) . '_email_subject';
+		$subject             = get_option( $email_subject_field );
+
+		$email_heading_field = 'gdpr_' . str_replace( '-', '_', $type ) . '_email_heading';
+		$email_heading       = get_option( $email_heading_field );
+
+		$args['email_heading'] = $email_heading;
+
+		$email_content_field = 'gdpr_' . str_replace( '-', '_', $type ) . '_email_content';
+		$email_content       = get_option( $email_content_field );
+
+		$args['email_content'] = $email_content;
 
 		$content = self::get_email_content( 'email/' . $type . '.php', $args );
 
 		return wp_mail(
 			$no_reply,
-			$possible_types[ $type ],
+			$subject,
 			html_entity_decode( $content, ENT_QUOTES, 'UTF-8' ),
 			$headers,
 			( ! empty( $attachments ) ) ? $attachments : array()
 		);
+	}
+
+	public static function get_content_type( $type ) {
+		$email_content_type_field = 'gdpr_' . str_replace( '-', '_', $type ) . '_email_content_type';
+		$email_content_type       = get_option( $email_content_type_field );
+
+		switch ( $email_content_type ) {
+			case 'html':
+				$content_type = 'text/html';
+				break;
+			default:
+				$content_type = 'text/plain';
+				break;
+		}
+
+		return apply_filters( 'gdpr_email_content_type', $content_type );
+	}
+
+		/**
+	 * Get from name for email.
+	 *
+	 * @return string
+	 */
+	public function get_from_name() {
+		return wp_specialchars_decode( get_option( 'gdpr_email_form_name' ), ENT_QUOTES );
+	}
+
+	/**
+	 * Get from email address.
+	 *
+	 * @return string
+	 */
+	public function get_from_address() {
+		return sanitize_email( get_option( 'gdpr_email_from_address' ) );
+	}
+
+	/**
+	 * Get the email header.
+	 *
+	 * @param mixed $email_heading Heading for the email.
+	 */
+	public function email_header( $email_heading ) {
+		GDPR_Templates::get_template( 'email/email-header.php', array( 'email_heading' => $email_heading ) );
+	}
+
+	/**
+	 * Get the email footer.
+	 */
+	public function email_footer() {
+		GDPR_Templates::get_template( 'email/email-footer.php' );
+	}
+
+	/**
+	 * Get email content place holders
+	 */
+	public static function get_email_content_placeholders( $type ) {
+		$email_content_place_holders = apply_filters(
+																	'gdpr_email_content_place_holder', array(
+																		'new_request'              => array( '{type}', '{review_url}' ),
+																		'delete_request'           => array( '{confirm_url}', '{forgot_password_url}' ),
+																		'delete_resolved'          => array( '{token}' ),
+																		'rectify_request'          => array( '{data}', '{confirm_url}', '{forgot_password_url}' ),
+																		'rectify_resolved'         => array(),
+																		'complaint_request'        => array( '{data}', '{confirm_url}', '{forgot_password_url}' ),
+																		'complaint_resolved'       => array(),
+																		'export_data_request'      => array( '{confirm_url_xml}', '{confirm_url_json}', '{forgot_password_url}' ),
+																		'export_data_resolved'     => array(),
+																		'data_breach_request'      => array( '{requester}', '{nature}', '{office_contact}', '{consequences}', '{measures}', '{confirm_url}' ),
+																		'data_breach_notification' => array( '{content}', '{nature}', '{office_contact}', '{consequences}', '{measures}', '{confirm_url}' ),
+																	)
+		);
+		
+		return $email_content_place_holders[$type];
 	}
 }

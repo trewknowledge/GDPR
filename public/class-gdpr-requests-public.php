@@ -227,7 +227,7 @@ class GDPR_Requests_Public extends GDPR_Requests {
 				home_url()
 			);
 		}
-
+		
 		if ( GDPR_Email::send(
 			$user->user_email,
 			"{$type}-request",

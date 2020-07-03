@@ -6,6 +6,12 @@
 	<?php
 		if ( ! empty ( $_GET[ 'type' ] ) ) { 
 			$email_type = sanitize_text_field( wp_unslash( $_GET[ 'type' ] ) );
+			$available_place_holders_arr = GDPR_Email::get_email_content_placeholders( $email_type );
+			
+			$available_place_holders = '';
+			if ( ! empty ( $available_place_holders_arr ) ) {
+				$available_place_holders = implode( ', ', $available_place_holders_arr );
+			}
 		?>
 		<h2 id="gdpr_heading"><?php echo ucfirst( str_replace( '_', ' ', $email_type ) ); ?>
 			<small class="wc-admin-breadcrumb"><a href="<?php echo admin_url( 'admin.php?page=gdpr-email-templates' ); ?>" aria-label="<?php esc_html_e( 'Return to Email Notifications' ); ?>">⤴</a></small>
@@ -23,7 +29,8 @@
 						</span>
 					</th>
 					<td class="forminp">
-						<input class="input-text regular-input " type="text" name="<?php echo $email_type; ?>_email_subject" id="<?php echo $email_type; ?>_email_subject" style="width:400px" value="" placeholder="">
+						<?php $email_subject = get_option( "gdpr_{$email_type}_email_subject", '' ); ?>
+						<input class="input-text regular-input " type="text" name="<?php echo $email_type; ?>_email_subject" id="<?php echo $email_type; ?>_email_subject" style="width:400px" value="<?php echo esc_html( $email_subject ); ?>" placeholder="">
 					</td>
 				</tr>
 				<tr valign="top">
@@ -34,18 +41,8 @@
 						</span>
 					</th>
 					<td class="forminp">
-						<input class="input-text regular-input " type="text" name="<?php echo $email_type; ?>_email_heading" id="<?php echo $email_type; ?>_email_heading" style="width:400px" value="" placeholder="">
-					</td>
-				</tr>
-				<tr valign="top">
-					<th scope="row" class="titledesc">
-						<label for="gdpr_<?php echo $email_type; ?>_additional_content"><?php esc_html_e( 'Additional Content', 'gdpr' ); ?> </label>
-						<span data-gdprtooltip="<?php esc_attr_e( 'Text to appear below the main email content.', 'gdpr' ); ?>">
-							<span class="dashicons dashicons-info"></span>
-						</span>
-					</th>
-					<td class="forminp">
-						<textarea class="input-text regular-input " name="<?php echo $email_type; ?>_additional_content" id="<?php echo $email_type; ?>_additional_content" style="width:400px; height:75px;" value="" placeholder=""></textarea>
+						<?php $email_heading = get_option( "gdpr_{$email_type}_email_heading", '' ); ?>
+						<input class="input-text regular-input " type="text" name="<?php echo $email_type; ?>_email_heading" id="<?php echo $email_type; ?>_email_heading" style="width:400px" value="<?php echo esc_html( $email_heading ); ?>" placeholder="">
 					</td>
 				</tr>
 				<tr valign="top">
@@ -56,10 +53,37 @@
 						</span>
 					</th>
 					<td class="forminp">
+						<?php $email_content_type = get_option( "gdpr_{$email_type}_email_content_type", '' ); ?>
 						<select name="<?php echo $email_type; ?>_email_content_type">
-							<option value="plain"><?php esc_html_e( 'Plain text', 'gdpr' ); ?></option>
-							<option value="text/html" selected="selected"><?php esc_html_e( 'HTML', 'gdpr' ); ?></option>
+							<option value="plain" <?php selected( $email_content_type, 'plain' ); ?> ><?php esc_html_e( 'Plain text', 'gdpr' ); ?></option>
+							<option value="html" <?php selected( $email_content_type, 'html' ); ?>><?php esc_html_e( 'HTML', 'gdpr' ); ?></option>
 						</select>
+					</td>
+				</tr>
+				<tr>
+					<th scope="row" class="titledesc">
+						<label for="gdpr_<?php echo $email_type; ?>_email_content"><?php esc_html_e( 'Email Content', 'gdpr' ); ?> </label>
+						<?php if ( ! empty ( $available_place_holders ) ) { ?>
+							<span data-gdprtooltip="<?php esc_attr_e( "Available place holders {$available_place_holders}.", 'gdpr' ); ?>">
+								<span class="dashicons dashicons-info"></span>
+							</span>
+						<?php } else { ?>
+							<span data-gdprtooltip="<?php esc_attr_e( "There is no place holder for this email", 'gdpr' ); ?>">
+								<span class="dashicons dashicons-info"></span>
+							</span>
+						<?php	} ?>
+					</th>
+					<td class="forminp">
+					<?php 
+						$email_content = get_option( "gdpr_{$email_type}_email_content", '' );
+						wp_editor( $email_content , "{$email_type}_email_content", array(
+								'wpautop'       => true,
+								'media_buttons' => false,
+								'textarea_name' => "{$email_type}_email_content",
+								'editor_class'  => 'my_custom_class',
+								'textarea_rows' => 10
+						) );
+					?>
 					</td>
 				</tr>
 			</table>
@@ -86,16 +110,24 @@
 						<td class="gdpr-email-settings-table-name">
 							<a href="<?php echo esc_url( add_query_arg( 'type', 'new_request', admin_url( 'admin.php?page=gdpr-email-templates' ) ) ); ?>" ><?php esc_html_e( 'New Request', 'gdpr' ); ?></a>
 						</td>
-						<td>text/html</td>
+						<td><?php 
+								$content_type = ( get_option( 'gdpr_new_request_email_content_type' ) === 'html' ) ? 'text/html' : 'plain';
+								echo esc_html( $content_type );
+							?></td>
 						<td>
-							<a class="button alignright show-settings" href="<?php echo esc_url( add_query_arg( 'type', 'new_request', admin_url( 'admin.php?page=gdpr-email-templates' ) ) ); ?>"><?php esc_html_e( 'Manage', 'gdpr'); ?></a>
+							<a class="button alignright" href="<?php echo esc_url( add_query_arg( 'type', 'new_request', admin_url( 'admin.php?page=gdpr-email-templates' ) ) ); ?>"><?php esc_html_e( 'Manage', 'gdpr'); ?></a>
 						</td>
 					</tr>
 					<tr>
 						<td class="gdpr-email-settings-table-name">
 							<a href="<?php echo esc_url( add_query_arg( 'type', 'delete_request', admin_url( 'admin.php?page=gdpr-email-templates' ) ) ); ?>" ><?php esc_html_e( 'Delete Request', 'gdpr' ); ?></a>
 						</td>
-						<td>text/html</td>
+						<td>
+							<?php 
+								$content_type = ( get_option( 'gdpr_delete_request_email_content_type' ) === 'html' ) ? 'text/html' : 'plain';
+								echo esc_html( $content_type );
+							?>
+						</td>
 						<td><a class="button alignright" href="<?php echo esc_url( add_query_arg( 'type', 'delete_request', admin_url( 'admin.php?page=gdpr-email-templates' ) ) ); ?>"><?php esc_html_e( 'Manage', 'gdpr' ); ?></a></td>
 					</tr>
 					<tr>
@@ -103,7 +135,12 @@
 							<a href="<?php echo esc_url( add_query_arg( 'type', 'delete_resolved', admin_url( 'admin.php?page=gdpr-email-templates' ) ) ); ?>" >
 								<?php esc_html_e( 'Delete Resolved', 'gdpr' ); ?></a>
 							</td>
-						<td>text/html</td>
+						<td>
+							<?php 
+								$content_type = ( get_option( 'gdpr_delete_resolved_email_content_type' ) === 'html' ) ? 'text/html' : 'plain';
+								echo esc_html( $content_type );
+							?>
+						</td>
 						<td>
 							<a class="button alignright" href="<?php echo esc_url( add_query_arg( 'type', 'delete_resolved', admin_url( 'admin.php?page=gdpr-email-templates' ) ) ); ?>"><?php esc_html_e( 'Manage', 'gdpr' ); ?></a>
 						</td>
@@ -112,7 +149,10 @@
 						<td class="gdpr-email-settings-table-name">
 							<a href="<?php echo esc_url( add_query_arg( 'type', 'rectify_request', admin_url( 'admin.php?page=gdpr-email-templates' ) ) ); ?>" ><?php esc_html_e( 'Rectify Request', 'gdpr' ); ?></a>
 						</td>
-						<td>text/html</td>
+						<td><?php 
+								$content_type = ( get_option( 'gdpr_rectify_request_email_content_type' ) === 'html' ) ? 'text/html' : 'plain';
+								echo esc_html( $content_type );
+							?></td>
 						<td>
 							<a class="button alignright" href="<?php echo esc_url( add_query_arg( 'type', 'rectify_request', admin_url( 'admin.php?page=gdpr-email-templates' ) ) ); ?>"><?php esc_html_e( 'Manage', 'gdpr' ); ?></a>
 						</td>
@@ -121,7 +161,10 @@
 						<td class="gdpr-email-settings-table-name">
 							<a href="<?php echo esc_url( add_query_arg( 'type', 'rectify_resolved', admin_url( 'admin.php?page=gdpr-email-templates' ) ) ); ?>"><?php esc_html_e( 'Rectify Resolved', 'gdpr' ); ?></a>
 						</td>
-						<td>text/html</td>
+						<td><?php 
+								$content_type = ( get_option( 'gdpr_rectify_resolved_email_content_type' ) === 'html' ) ? 'text/html' : 'plain';
+								echo esc_html( $content_type );
+							?></td>
 						<td>
 							<a class="button alignright" href="<?php echo esc_url( add_query_arg( 'type', 'rectify_resolved', admin_url( 'admin.php?page=gdpr-email-templates' ) ) ); ?>"><?php esc_html_e( 'Manage', 'gdpr' ); ?></a>
 						</td>
@@ -130,7 +173,10 @@
 						<td class="gdpr-email-settings-table-name">
 							<a href="<?php echo esc_url( add_query_arg( 'type', 'complaint_request', admin_url( 'admin.php?page=gdpr-email-templates' ) ) ); ?>"><?php esc_html_e( 'Complaint Request', 'gdpr' ); ?></a>
 						</td>
-						<td>text/html</td>
+						<td><?php 
+								$content_type = ( get_option( 'gdpr_complaint_request_email_content_type' ) === 'html' ) ? 'text/html' : 'plain';
+								echo esc_html( $content_type );
+							?></td>
 						<td>
 							<a class="button alignright" href="<?php echo esc_url( add_query_arg( 'type', 'complaint_request', admin_url( 'admin.php?page=gdpr-email-templates' ) ) ); ?>"><?php esc_html_e( 'Manage', 'gdpr' ); ?></a>
 						</td>
@@ -139,7 +185,10 @@
 						<td class="gdpr-email-settings-table-name">
 							<a href="<?php echo esc_url( add_query_arg( 'type', 'complaint_resolved', admin_url( 'admin.php?page=gdpr-email-templates' ) ) ); ?>"> <?php esc_html_e( 'Complaint Resolved', 'gdpr' ); ?></a>
 						</td>
-						<td>text/html</td>
+						<td><?php 
+								$content_type = ( get_option( 'gdpr_complaint_resolved_email_content_type' ) === 'html' ) ? 'text/html' : 'plain';
+								echo esc_html( $content_type );
+							?></td>
 						<td>
 							<a class="button alignright" href="<?php echo esc_url( add_query_arg( 'type', 'complaint_resolved', admin_url( 'admin.php?page=gdpr-email-templates' ) ) ); ?>"><?php esc_html_e( 'Manage', 'gdpr' ); ?></a>
 						</td>
@@ -148,7 +197,10 @@
 						<td class="gdpr-email-settings-table-name">
 							<a href="<?php echo esc_url( add_query_arg( 'type', 'export_data_request', admin_url( 'admin.php?page=gdpr-email-templates' ) ) ); ?>"> <?php esc_html_e( 'Export Data Request', 'gdpr' ); ?></a>
 						</td>
-						<td>text/html</td>
+						<td><?php 
+								$content_type = ( get_option( 'gdpr_export_data_request_email_content_type' ) === 'html' ) ? 'text/html' : 'plain';
+								echo esc_html( $content_type );
+							?></td>
 						<td>
 							<a class="button alignright" href="<?php echo esc_url( add_query_arg( 'type', 'export_data_request', admin_url( 'admin.php?page=gdpr-email-templates' ) ) ); ?>"><?php esc_html_e( 'Manage', 'gdpr' ); ?></a>
 						</td>
@@ -157,7 +209,10 @@
 						<td class="gdpr-email-settings-table-name">
 							<a href="<?php echo esc_url( add_query_arg( 'type', 'export_data_resolved', admin_url( 'admin.php?page=gdpr-email-templates' ) ) ); ?>"> <?php esc_html_e( 'Export Data Resolved', 'gdpr' ); ?></a>
 						</td>
-						<td>text/html</td>
+						<td><?php 
+								$content_type = ( get_option( 'gdpr_export_data_resolved_email_content_type' ) === 'html' ) ? 'text/html' : 'plain';
+								echo esc_html( $content_type );
+							?></td>
 						<td>
 							<a class="button alignright" href="<?php echo esc_url( add_query_arg( 'type', 'export_data_resolved', admin_url( 'admin.php?page=gdpr-email-templates' ) ) ); ?>"><?php esc_html_e( 'Manage', 'gdpr' ); ?></a>
 						</td>
@@ -166,14 +221,20 @@
 						<td class="gdpr-email-settings-table-name">
 							<a href="<?php echo esc_url( add_query_arg( 'type', 'data_breach_resolved', admin_url( 'admin.php?page=gdpr-email-templates' ) ) ); ?>" ><?php esc_html_e( 'Data Breach Resolved', 'gdpr' ); ?></a>
 						</td>
-						<td>text/html</td>
+						<td><?php 
+								$content_type = ( get_option( 'gdpr_data_breach_resolved_email_content_type' ) === 'html' ) ? 'text/html' : 'plain';
+								echo esc_html( $content_type );
+							?></td>
 						<td>
 							<a class="button alignright" href="<?php echo esc_url( add_query_arg( 'type', 'data_breach_resolved', admin_url( 'admin.php?page=gdpr-email-templates' ) ) ); ?>"><?php esc_html_e( 'Manage', 'gdpr' ); ?></a></td>
 					</tr>
 					<tr>
 						<td class="gdpr-email-settings-table-name">
 							<a href ="<?php echo esc_url( add_query_arg( 'type', 'data_breach_notification', admin_url( 'admin.php?page=gdpr-email-templates' ) ) ); ?>"> <?php esc_html_e( 'Data Breach Notification', 'gdpr' ); ?></a></td>
-						<td>text/html</td>
+						<td><?php 
+								$content_type = ( get_option( 'gdpr_data_breach_notification_email_content_type' ) === 'html' ) ? 'text/html' : 'plain';
+								echo esc_html( $content_type );
+							?></td>
 						<td>
 							<a class="button alignright" href="<?php echo esc_url( add_query_arg( 'type', 'data_breach_notification', admin_url( 'admin.php?page=gdpr-email-templates' ) ) ); ?>"><?php esc_html_e( 'Manage', 'gdpr' ); ?></a>
 						</td>
@@ -198,13 +259,30 @@
 					<tr>
 						<th scope="row">
 							<label for="gdpr_email_from_address"><?php esc_html_e( '"From" address', 'gdpr' ); ?>:</label>
-							<span data-gdprtooltip="<?php esc_attr_e( 'URL to an image you want to show in the email header. Upload image using media uploader ( Admin > Media )', 'gdpr' ); ?>">
+							<span data-gdprtooltip="<?php esc_attr_e( 'How the sender email appears in outgoing GDPR emails', 'gdpr' ); ?>">
 								<span class="dashicons dashicons-info"></span>
 							</span>
 						</th>
 						<td>
 							<?php $email_from_address = get_option( 'gdpr_email_from_address', '' ); ?>
-							<input type="text" name="gdpr_email_from_address" value="<?php echo esc_url( $email_from_address ); ?>" placeholder="" style="min-width:400px;" >
+							<input type="text" name="gdpr_email_from_address" value="<?php echo esc_html( $email_from_address ); ?>" placeholder="" style="min-width:400px;" >
+						</td>
+					</tr>
+				</tbody>
+			</table>
+			<h2 class="title"><?php esc_html_e( 'Email recipient(s) options', 'gdpr' ); ?></h2>
+			<table class="form-table">
+				<tbody>
+					<tr>
+						<th scope="row">
+							<label for="gdpr_email_from_address"><?php esc_html_e( '"To" address', 'gdpr' ); ?>:</label>
+							<span data-gdprtooltip="<?php esc_attr_e( 'Enter recipients ( comma separated ) for GDPR email. Default to admin email.', 'gdpr' ); ?>">
+								<span class="dashicons dashicons-info"></span>
+							</span>
+						</th>
+						<td>
+							<?php $email_recipient_address = get_option( 'gdpr_email_recipient_address', '' ); ?>
+							<input type="text" name="gdpr_email_recipient_address" value="<?php echo esc_html( $email_recipient_address ); ?>" placeholder="" style="min-width:400px;" >
 						</td>
 					</tr>
 				</tbody>

@@ -215,10 +215,7 @@ class GDPR_Admin {
 			'gdpr_email_body_text_color'               => 'sanitize_text_field',
 			'gdpr_email_from_address'                  => 'sanitize_text_field',
 			'gdpr_email_form_name'                     => 'sanitize_text_field',
-			'gdpr_new_request_email_subject'           => 'sanitize_text_field',
-			'gdpr_new_request_email_heading'           => 'sanitize_text_field',
-			'gdpr_new_request_additional_content'      => 'sanitize_text_field',
-			'gdpr_new_request_email_content_type'      => 'sanitize_text_field',
+			'gdpr_email_recipient_address'             => 'sanitize_text_field',
 		);
 		foreach ( $settings as $option_name => $sanitize_callback ) {
 			register_setting( 'gdpr', $option_name, array( 'sanitize_callback' => $sanitize_callback ) );
@@ -1070,10 +1067,15 @@ class GDPR_Admin {
 		$email_content_type_db_field   = 'gdpr_' . $email_type . '_email_content_type';
 		$email_content_type            = sanitize_text_field( wp_unslash( $_POST[ $email_content_type_post_field ] ) );
 
+		$email_content_post_field = $email_type . '_email_content';
+		$email_content_db_field   = 'gdpr_' . $email_type . '_email_content';
+		$email_content            = wp_kses_post( $_POST[ $email_content_post_field ] );
+
 		update_option( $email_subject_db_field, $email_subject );
 		update_option( $email_heading_db_field, $email_heading );
 		update_option( $email_additional_content_db_field, $email_additional_content );
 		update_option( $email_content_type_db_field, $email_content_type );
+		update_option( $email_content_db_field, $email_content );
 
 		$success_msg = esc_html( 'Your settings have been saved.', 'gdpr' );
 
