@@ -77,6 +77,7 @@ class GDPR_Admin {
 	 */
 	public function enqueue_styles() {
 		add_thickbox();
+		wp_enqueue_style( 'wp-color-picker' ); 
 		wp_enqueue_style( $this->plugin_name, plugin_dir_url( dirname( __FILE__ ) ) . 'dist/css/admin.css', array(), $this->version, 'all' );
 	}
 
@@ -87,7 +88,7 @@ class GDPR_Admin {
 	 * @author Fernando Claussen <fernandoclaussen@gmail.com>
 	 */
 	public function enqueue_scripts() {
-		wp_enqueue_script( $this->plugin_name, plugin_dir_url( dirname( __FILE__ ) ) . 'dist/js/admin.js', array( 'jquery', 'wp-util', 'jquery-ui-sortable' ), $this->version, false );
+		wp_enqueue_script( $this->plugin_name, plugin_dir_url( dirname( __FILE__ ) ) . 'dist/js/admin.js', array( 'jquery', 'wp-util', 'jquery-ui-sortable', 'wp-color-picker' ), $this->version, false );
 	}
 
 	/**
@@ -134,6 +135,12 @@ class GDPR_Admin {
 		$function   = array( $this, 'settings_page_template' );
 
 		$settings_hook = add_submenu_page( $parent_slug, $menu_title, $menu_title, $capability, $menu_slug, $function );
+
+		$menu_title = esc_html__( 'Email Templates', 'gdpr' );
+		$menu_slug  = 'gdpr-email-templates';
+		$function   = array( $this, 'email_template_page_template' );
+
+		$email_template_hook = add_submenu_page( $parent_slug, $menu_title, $menu_title, $capability, $menu_slug, $function );
 
 		add_action( "load-{$requests_hook}", array( 'GDPR_Help', 'add_requests_help' ) );
 		add_action( "load-{$tools_hook}", array( 'GDPR_Help', 'add_tools_help' ) );
@@ -200,7 +207,15 @@ class GDPR_Admin {
 			'gdpr_enable_privacy_bar'                  => 'boolval',
 			'gdpr_display_cookie_categories_in_bar'    => 'boolval',
 			'gdpr_hide_from_bots'                      => 'boolval',
-			'gdpr_reconsent_template'                  => 'sanitize_text_field',
+			'gdpr_email_header_image_url'              => 'sanitize_text_field',
+			'gdpr_email_footer_text'                   => 'sanitize_text_field',
+			'gdpr_email_base_color'                    => 'sanitize_text_field',
+			'gdpr_email_background_color'              => 'sanitize_text_field',
+			'gdpr_email_body_background_color'         => 'sanitize_text_field',
+			'gdpr_email_body_text_color'               => 'sanitize_text_field',
+			'gdpr_email_from_address'                  => 'sanitize_text_field',
+			'gdpr_email_form_name'                     => 'sanitize_text_field',
+			'gdpr_email_recipient_address'             => 'sanitize_text_field',
 		);
 		foreach ( $settings as $option_name => $sanitize_callback ) {
 			register_setting( 'gdpr', $option_name, array( 'sanitize_callback' => $sanitize_callback ) );
@@ -317,6 +332,19 @@ class GDPR_Admin {
 		$tabs = apply_filters( 'gdpr_tools_tabs', $tabs );
 
 		include plugin_dir_path( __FILE__ ) . 'partials/tools.php';
+	}
+
+	/**
+	 * Settings Page Template
+	 *
+	 * @since  2.1.0
+	 * @author Fernando Claussen <fernandoclaussen@gmail.com>
+	 */
+	public function email_template_page_template() {
+		
+		$pages = get_pages();
+
+		include plugin_dir_path( __FILE__ ) . 'partials/emial_templates.php';
 	}
 
 	/**
@@ -1010,4 +1038,47 @@ class GDPR_Admin {
 		}
 	}
 
+	/**
+	 * Save email settings
+	 * @since 2.0.0
+	 * @author Moutushi Mandal <moutushi82@gmail.com>
+	 */
+	public function manage_email_settings() {
+
+		if ( empty( $_POST['gdpr_email_settings_nonce'] ) || ! wp_verify_nonce( sanitize_key( wp_unslash( $_POST['gdpr_email_settings_nonce'] ) ), 'gdpr_email_settings_action' ) ) {
+			wp_send_json_error( esc_html__( 'Invalid Security Token. Refresh the page and try again.', 'gdpr' ) );
+		}
+
+		$email_type = sanitize_text_field( wp_unslash( $_POST[ 'email_type' ] ) );
+
+		$email_subject_post_field = $email_type . '_email_subject';
+		$email_subject_db_field   = 'gdpr_' . $email_type . '_email_subject';
+		$email_subject            = sanitize_text_field( wp_unslash( $_POST[ $email_subject_post_field ] ) );
+
+		$email_heading_post_field = $email_type . '_email_heading';
+		$email_heading_db_field   = 'gdpr_' . $email_type . '_email_heading';
+		$email_heading            = sanitize_text_field( wp_unslash( $_POST[ $email_heading_post_field ] ) );
+
+		$email_additional_content_post_field = $email_type . '_additional_content';
+		$email_additional_content_db_field   = 'gdpr_' . $email_type . '_additional_content';
+		$email_additional_content            = sanitize_text_field( wp_unslash( $_POST[ $email_additional_content_post_field ] ) );
+
+		$email_content_type_post_field = $email_type . '_email_content_type';
+		$email_content_type_db_field   = 'gdpr_' . $email_type . '_email_content_type';
+		$email_content_type            = sanitize_text_field( wp_unslash( $_POST[ $email_content_type_post_field ] ) );
+
+		$email_content_post_field = $email_type . '_email_content';
+		$email_content_db_field   = 'gdpr_' . $email_type . '_email_content';
+		$email_content            = wp_kses_post( $_POST[ $email_content_post_field ] );
+
+		update_option( $email_subject_db_field, $email_subject );
+		update_option( $email_heading_db_field, $email_heading );
+		update_option( $email_additional_content_db_field, $email_additional_content );
+		update_option( $email_content_type_db_field, $email_content_type );
+		update_option( $email_content_db_field, $email_content );
+
+		$success_msg = esc_html( 'Your settings have been saved.', 'gdpr' );
+
+		wp_send_json_success( $success_msg );
+	}
 }

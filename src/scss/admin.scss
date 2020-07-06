@@ -220,3 +220,33 @@
 		}
 	}
 }
+.hide {
+	display: none;
+}
+.gdpr-emails {
+	background-color: #fff;
+	border: 1px solid #ccd0d4;
+  box-shadow: 0 1px 1px rgba(0,0,0,.04);
+
+	thead th {
+		border-bottom: 1px solid #ccd0d4;
+		display: table-cell!important;
+    padding: 1em!important;
+    vertical-align: top;
+    line-height: 1.75em;
+		font-weight: 600;
+	}
+	tr:nth-child(odd) td {
+		background: #f9f9f9;
+	}
+	a {
+		text-decoration: none;
+		color: #0073aa;
+    transition-property: border,background,color;
+    transition-duration: .05s;
+    transition-timing-function: ease-in-out;
+	}
+	.gdpr-email-settings-table-name {
+		font-weight: 700;
+	}
+}
