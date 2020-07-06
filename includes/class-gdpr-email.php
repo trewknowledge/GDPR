@@ -79,8 +79,11 @@ class GDPR_Email {
 		if ( substr( $sitename, 0, 4 ) === 'www.' ) {
 			$sitename = substr( $sitename, 4 );
 		}
+		$no_reply = 'noreply@' . $sitename;
 
-		return apply_filters( 'gdpr_do_not_reply_address', 'noreply@' . $sitename );
+		$no_reply_email = ( ! empty ( get_option( 'gdpr_email_recipient_address' ) )  ) ? get_option( 'gdpr_email_recipient_address' ) : $no_reply;
+
+		return apply_filters( 'gdpr_do_not_reply_address', $no_reply_email );
 	}
 
 	/**
@@ -196,10 +199,15 @@ class GDPR_Email {
 		$no_reply = self::get_do_not_reply_address();
 		$headers  = array();
 
+		$email_from_name    = get_option( 'gdpr_email_form_name' );
+		$email_from_address = get_option( 'gdpr_email_from_address' );
+
+		$headers[] = 'From: ' . $email_from_name . ' <' . $email_from_address . '>';
 		foreach ( (array) $emails as $email ) {
 			$headers[] = 'Bcc: ' . sanitize_email( $email );
 		}
-		$headers[] = 'Content-Type: ' . self::get_content_type( $type );
+		$email_content_type = self::get_content_type( $type );
+		$headers[] = 'Content-Type: ' . $email_content_type;
 
 		$email_subject_field = 'gdpr_' . str_replace( '-', '_', $type ) . '_email_subject';
 		$subject             = get_option( $email_subject_field );
@@ -213,6 +221,7 @@ class GDPR_Email {
 		$email_content       = get_option( $email_content_field );
 
 		$args['email_content'] = $email_content;
+		$args['email_content_type'] = ( strpos( $email_content_type, 'html' ) !== FALSE ) ? 'html' : 'plain';
 
 		$content = self::get_email_content( 'email/' . $type . '.php', $args );
 

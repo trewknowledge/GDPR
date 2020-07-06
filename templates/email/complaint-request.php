@@ -1,6 +1,8 @@
 <?php
 defined( 'ABSPATH' ) || exit;
-do_action( 'gdpr_email_header', esc_html( $args['email_heading'] ) ); 
+if ( 'html' === $args['email_content_type'] ) :
+	do_action( 'gdpr_email_header', esc_html( $args['email_heading'] ) ); 
+endif;
 
 if ( ! empty ( $args['email_content'] ) ) {
 	$replace_to_arr = array( '{data}', '{confirm_url}', '{forgot_password_url}' );
@@ -38,6 +40,6 @@ if ( ! empty ( $args['email_content'] ) ) {
 		);
 }
 
-
-
-do_action( 'gdpr_email_footer' );
+if ( 'html' === $args['email_content_type'] ) :
+	do_action( 'gdpr_email_footer' );
+endif;
