@@ -156,6 +156,7 @@ class GDPR_Public {
 		$button_text                = apply_filters( 'gdpr_privacy_bar_button_text', esc_html__( 'I Agree', 'gdpr' ) );
 		$privacy_bar_enabled        = apply_filters( 'gdpr_privacy_bar_display', $privacy_bar_enabled );
 		$hide_from_bots             = get_option( 'gdpr_hide_from_bots', true );
+		$privacy_bar_position       = get_option( 'gdpr_privacy_bar_position', 'bottom' );
 
 		if ( ! $privacy_bar_enabled || ( $hide_from_bots && $this->is_crawler() ) ) {
 			return;
@@ -167,6 +168,7 @@ class GDPR_Public {
 				'registered_cookies'         => $registered_cookies,
 				'show_cookie_cat_checkboxes' => $show_cookie_cat_checkboxes,
 				'button_text'                => $button_text,
+				'bar_position'               => $privacy_bar_position,
 			)
 		);
 	}

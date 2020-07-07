@@ -75,6 +75,7 @@ class GDPR_Activator {
 		add_option( 'gdpr_display_cookie_categories_in_bar', false );
 		add_option( 'gdpr_hide_from_bots', true );
 		add_option( 'gdpr_reconsent_template', 'modal' );
+		add_option( 'gdpr_privacy_bar_position', 'bottom' );
 	}
 
 }

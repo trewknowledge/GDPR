@@ -149,6 +149,18 @@
 						<p class="description"><?php esc_html_e( 'This will appear in the consent section of the privacy preference window.', 'gdpr' ); ?></p>
 					</td>
 				</tr>
+				<tr>
+					<th scope="row">
+						<label for="gdpr_privacy_bar_position"><?php esc_html_e( 'Privacy Bar Position', 'gdpr' ); ?>:</label>
+					</th>
+					<td>
+						<?php $privacy_bar_position = get_option( 'gdpr_privacy_bar_position', 'bottom' ); ?>
+						<select name="gdpr_privacy_bar_position" id="gdpr_privacy_bar_position">
+							<option value='top' <?php selected( 'top', $privacy_bar_position ); ?>  ><?php esc_html_e( 'Top', 'gdpr' ); ?></option>
+							<option value='bottom' <?php selected( 'bottom', $privacy_bar_position ); ?>  ><?php esc_html_e( 'Bottom', 'gdpr' ); ?></option>
+						</select>
+					</td>
+				</tr>
 			</tbody>
 		</table>
 		<hr>
