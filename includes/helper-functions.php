@@ -83,13 +83,22 @@ function gdpr_get_consent_checkboxes( $atts ) {
  * @param  string  $cookie_name The cookie name.
  * @return bool                 Whether the cookie is allowed or not.
  */
-function is_allowed_cookie( $cookie_name ) {
+function is_allowed_cookie( $cookie_name, $exactMatch = false ) {
 	if ( isset( $_COOKIE['gdpr']['allowed_cookies'] ) ) {
-		$allowed_cookies = array_map( 'sanitize_text_field', json_decode( wp_unslash( $_COOKIE['gdpr']['allowed_cookies'] ), true ) );  // phpcs:ignore
-		$name            = preg_quote( $cookie_name, '~' );
-		$result          = preg_grep( '~' . $name . '~', $allowed_cookies );
-		if ( in_array( $cookie_name, $allowed_cookies, true ) || ! empty( $result ) ) {
+		$allowed_cookies = array_map( 
+			'sanitize_text_field',
+			json_decode(
+				wp_unslash( $_COOKIE['gdpr']['allowed_cookies'] ),
+				true
+			)
+		);
+		if ( in_array( $cookie_name, $allowed_cookies, true ) ) {
 			return true;
+		}
+		if ( ! $exactMatch ) {
+			$name = preg_quote( $cookie_name, '~' );
+			$result = preg_grep( '~' . $name . '~', $allowed_cookies );
+			return ! empty( $result );
 		}
 	}
 
