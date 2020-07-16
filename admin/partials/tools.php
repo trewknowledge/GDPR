@@ -129,5 +129,9 @@ if ( isset( $_GET['type'], $_GET['key'] ) ) { // phpcs:ignore
 		</div>
 	</div>
 
+	<?php 
+	do_action( 'gdpr_extra_tools_content' );
+	?>
+
 <!-- #poststuff -->
 </div>
