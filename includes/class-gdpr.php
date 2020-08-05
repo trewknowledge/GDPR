@@ -311,7 +311,6 @@ class GDPR {
 					add_user_meta( $user_id, 'gdpr_consents', $consent );
 				}
 			}
-			setcookie( 'gdpr[consent_types]', wp_json_encode( $consents ), time() + YEAR_IN_SECONDS, '/' );
 		}
 	}
 
