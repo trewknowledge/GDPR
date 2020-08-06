@@ -97,8 +97,20 @@ $( function() {
 			function( response ) {
 				if ( response.success ) {
 					Cookies.set( 'gdpr[privacy_bar]', 1, { expires: 365 } );
-					Cookies.set( 'gdpr_allowed_cookies', JSON.stringify( response.data.cookies ), { expires: 365 } );
-					Cookies.set( 'gdpr_consent_types', JSON.stringify( response.data.consent ), { expires: 365 } );
+
+					if ( response.data.cookies ) {
+						Cookies.set( 'gdpr_allowed_cookies', JSON.stringify( response.data.cookies ), { expires: 365 } );
+					}
+					if ( response.data.consents ) {
+						Cookies.set( 'gdpr_consent_types', JSON.stringify( response.data.consents ), { expires: 365 } );
+					}
+					
+					if ( response.data.removed_cookies ) {
+						for ( let i = 0, l = response.data.removed_cookies.length; i < l; i++ ) {
+							let cookie_name = response.data.removed_cookies[ i ];
+							Cookies.remove( cookie_name, { path: '' } );
+						}
+					}
 					if ( GDPR.refresh ) {
 						window.location.reload();
 					} else {
