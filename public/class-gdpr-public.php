@@ -291,7 +291,12 @@ class GDPR_Public {
 			}
 		}
 
-		wp_send_json_success();
+		$success_data = array(
+			'cookies' => $approved_cookies,
+			'consent' => $consent 
+		);
+
+		wp_send_json_success( $success_data );
 	}
 
 	/**
