@@ -8,13 +8,16 @@ const queryArgs  = location.search;
 const baseUrl    = location.protocol + '//' + location.host + location.pathname;
 
 window.has_consent = function( consent ) {
-	if ( Cookies.get( 'gdpr[consent_types]' ) ) {
-		const consentArray = JSON.parse( Cookies.get( 'gdpr[consent_types]' ) );
-		if ( -1 < consentArray.indexOf( consent ) ) {
-			return true;
-		}
+	let consentArray = [];
+	if ( Cookies.get( 'gdpr_consent_types]' ) ) {
+		consentArray = JSON.parse( Cookies.get( 'gdpr_consent_types]' ) );
+	} else if ( Cookies.get( 'gdpr[consent_types]' ) ) {
+		consentArray = JSON.parse( Cookies.get( 'gdpr[consent_types]' ) );
 	}
 
+	if ( -1 < consentArray.indexOf( consent ) ) {
+		return true;
+	}
 	return false;
 };
 
@@ -28,6 +31,45 @@ window.is_allowed_cookie = function ( cookie ) {
 
 	return false;
 };
+
+function save_consent ( userid, consent ) {
+	
+	$.post(
+		GDPR.ajaxurl,
+		{
+			action: 'save_user_content',
+			userid: userid,
+			consent: consent
+		},
+		function( response ) {
+			console.log( response.data );
+			if ( response.success ) {
+				Cookies.set( 'gdpr_consent_types', JSON.stringify( response.data ), { expires: 365 } );
+			} else {
+				displayNotification( response.data.title, response.data.content );
+			}
+		}
+	);
+};
+
+function remove_consent( userid, consent ) {
+	$.post(
+		GDPR.ajaxurl,
+		{
+			action: 'remove_user_content',
+			userid: userid,
+			consent: consent
+		},
+		function( response ) {
+			console.log( response.data );
+			if ( response.success ) {
+				Cookies.set( 'gdpr_consent_types', JSON.stringify( response.data ), { expires: 365 } );
+			} else {
+				displayNotification( response.data.title, response.data.content );
+			}
+		}
+	);
+}
 
 $( function() {
 

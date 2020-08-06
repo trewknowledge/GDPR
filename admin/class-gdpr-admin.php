@@ -858,26 +858,26 @@ class GDPR_Admin {
 			return;
 		}
 		?>
-	<h3><?php esc_html_e( 'Consent Management', 'gdpr' ); ?></h3>
+		<h3><?php esc_html_e( 'Consent Management', 'gdpr' ); ?></h3>
 
-	<table class="form-table">
-		<?php foreach ( $consent_types as $consent_key => $consent ) : ?>
-			<tr>
-			<th>
-				<label><?php echo esc_html( $consent['name'] ); ?></label>
-			</th>
-			<td>
-				<?php if ( $consent['required'] ) : ?>
-					<input type="checkbox" name="user_consents[]" value="<?php echo esc_attr( $consent_key ); ?>" disabled checked>
-					<input type="hidden" name="user_consents[]" value="<?php echo esc_attr( $consent_key ); ?>">
-				<?php else : ?>
-					<input type="checkbox" name="user_consents[]" value="<?php echo esc_attr( $consent_key ); ?>" <?php echo ! empty( $user_consents ) ? checked( in_array( $consent_key, $user_consents, true ), 1, false ) : ''; ?>>
-				<?php endif ?>
-				<span class="description"><?php echo wp_kses( $consent['description'], $this->allowed_html ); ?></span>
-			</td>
-			</tr>
-		<?php endforeach ?>
-	</table>
+		<table class="form-table">
+			<?php foreach ( $consent_types as $consent_key => $consent ) : ?>
+				<tr>
+				<th>
+					<label><?php echo esc_html( $consent['name'] ); ?></label>
+				</th>
+				<td>
+					<?php if ( $consent['required'] ) : ?>
+						<input type="checkbox" name="user_consents[]" value="<?php echo esc_attr( $consent_key ); ?>" disabled checked>
+						<input type="hidden" name="user_consents[]" value="<?php echo esc_attr( $consent_key ); ?>">
+					<?php else : ?>
+						<input type="checkbox" name="user_consents[]" value="<?php echo esc_attr( $consent_key ); ?>" <?php echo ! empty( $user_consents ) ? checked( in_array( $consent_key, $user_consents, true ), 1, false ) : ''; ?>>
+					<?php endif ?>
+					<span class="description"><?php echo wp_kses( $consent['description'], $this->allowed_html ); ?></span>
+				</td>
+				</tr>
+			<?php endforeach ?>
+		</table>
 
 		<?php
 	}
@@ -912,6 +912,7 @@ class GDPR_Admin {
 			}
 			GDPR_Audit_Log::log( $user_id, $consent );
 		}
+		setcookie( 'gdpr[consent_types]', wp_json_encode( $consents ), time() + YEAR_IN_SECONDS, '/' );
 	}
 
 	/**

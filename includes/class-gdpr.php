@@ -269,6 +269,13 @@ class GDPR {
 		add_action( 'wp', array( $requests_public, 'request_confirmed' ) );
 		add_action( 'wp_ajax_gdpr_send_request_email', array( $requests_public, 'send_request_email' ) );
 		add_action( 'wp_ajax_nopriv_gdpr_send_request_email', array( $requests_public, 'send_request_email' ) );
+
+		add_action( 'wp_ajax_save_user_content', array( $plugin_public, 'save_user_content' ) );
+		add_action( 'wp_ajax_nopriv_save_user_content', array( $plugin_public, 'save_user_content' ) );
+
+		add_action( 'wp_ajax_remove_user_content', array( $plugin_public, 'remove_user_content' ) );
+		add_action( 'wp_ajax_nopriv_remove_user_content', array( $plugin_public, 'remove_user_content' ) );
+		
 	}
 
 	/**
@@ -312,6 +319,7 @@ class GDPR {
 				}
 			}
 		}
+		setcookie( 'gdpr[consent_types]', wp_json_encode( $consents ), time() + YEAR_IN_SECONDS, '/' );
 	}
 
 	/**
@@ -621,6 +629,7 @@ class GDPR {
 					add_user_meta( $user_id, 'gdpr_consents', $consent );
 				}
 				$user_consent[] = $consent;
+			
 				setcookie( 'gdpr[consent_types]', wp_json_encode( $user_consent ), time() + YEAR_IN_SECONDS, '/' );
 				return true;
 			}

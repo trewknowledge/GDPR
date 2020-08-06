@@ -445,4 +445,77 @@ class GDPR_Public {
 		wp_send_json_success();
 	}
 
+	public function save_user_content() { 
+		$user_id = absint( $_POST['userid'] );
+		$consent = esc_html( $_POST['consent'] );
+
+		$registered_consent = get_option( 'gdpr_consent_types', array() );
+		
+		if ( empty( $registered_consent ) ) {
+			wp_send_json_error(
+				array(
+					'title'   => esc_html__( 'Error!', 'gdpr' ),
+					'content' => esc_html__( 'We could not find any consent.', 'gdpr' ),
+				)
+			);
+		}
+		$consent_ids = array_keys( $registered_consent );
+		$user        = get_user_by( 'ID', $user_id );
+		
+		if ( $user ) {
+			if ( defined( 'WPCOM_IS_VIP_ENV' ) && WPCOM_IS_VIP_ENV ) {
+				$user_consent = ( ! empty ( get_user_attribute( $user_id, 'gdpr_consents' ) ) ) ? get_user_attribute( $user_id, 'gdpr_consents' ) : array();
+			} else {
+				$user_consent = ( ! empty ( get_user_meta( $user_id, 'gdpr_consents' ) ) ) ? get_user_meta( $user_id, 'gdpr_consents' ) : array();
+			}
+			if ( in_array( $consent, $consent_ids, true ) && ! in_array( $consent, $user_consent, true ) ) {
+				if ( defined( 'WPCOM_IS_VIP_ENV' ) && WPCOM_IS_VIP_ENV ) {
+					add_user_attribute( $user_id, 'gdpr_consents', $consent );
+				} else {
+					add_user_meta( $user_id, 'gdpr_consents', $consent );
+				}
+				$user_consent[] = $consent;
+			}
+			wp_send_json_success( $user_consent ); 
+		} else {
+			wp_send_json_error(
+				array(
+					'title'   => esc_html__( 'Error!', 'gdpr' ),
+					'content' => esc_html__( 'We could not find user.', 'gdpr' ),
+				)
+			);
+		}
+	}
+
+	public function remove_user_content() {
+		$user_id = absint( $_POST['userid'] );
+		$consent = esc_html( $_POST['consent'] );
+
+		$user = get_user_by( 'ID', $user_id );
+		if ( $user ) {
+			if ( defined( 'WPCOM_IS_VIP_ENV' ) && WPCOM_IS_VIP_ENV ) {
+				$user_consent = get_user_attribute( $user_id, 'gdpr_consents' );
+			} else {
+				$user_consent = get_user_meta( $user_id, 'gdpr_consents' );
+			}
+
+			$key = array_search( $consent, $user_consent, true );
+			if ( false !== $key ) {
+				if ( defined( 'WPCOM_IS_VIP_ENV' ) && WPCOM_IS_VIP_ENV ) {
+					delete_user_attribute( $user_id, 'gdpr_consents', $consent );
+				} else {
+					delete_user_meta( $user_id, 'gdpr_consents', $consent );
+				}
+				unset( $user_consent[ $key ] );
+				wp_send_json_success( $user_consent ); 
+			}
+		} else {
+			wp_send_json_error(
+				array(
+					'title'   => esc_html__( 'Error!', 'gdpr' ),
+					'content' => esc_html__( 'We could not find user.', 'gdpr' ),
+				)
+			);
+		}
+	}
 }
