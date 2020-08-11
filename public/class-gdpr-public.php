@@ -121,12 +121,24 @@ class GDPR_Public {
 				wp_enqueue_script( $this->plugin_name . '-recaptcha', 'https://www.google.com/recaptcha/api.js?hl=' . $lang );
 			}
 		}
+
+		// User consent
+		$user_id      = get_current_user_id();
+		$user_consent = array();
+		if ( $user_id ) {
+			if ( defined( 'WPCOM_IS_VIP_ENV' ) && WPCOM_IS_VIP_ENV ) {
+				$user_consents = (array) get_user_attribute( $user_id, 'gdpr_consents' );
+			} else {
+				$user_consents = (array) get_user_meta( $user_id, 'gdpr_consents' );
+			}
+		}
+
 		wp_enqueue_script( $this->plugin_name, plugin_dir_url( dirname( __FILE__ ) ) . 'dist/js/public.js', array( 'jquery' ), $this->version, false );
 		wp_localize_script(
 			$this->plugin_name, 'GDPR', array(
-				'ajaxurl'           => admin_url( 'admin-ajax.php' ),
-				'logouturl'         => is_user_logged_in() ? esc_url( wp_logout_url( home_url() ) ) : '',
-				'i18n'              => array(
+				'ajaxurl'            => admin_url( 'admin-ajax.php' ),
+				'logouturl'          => is_user_logged_in() ? esc_url( wp_logout_url( home_url() ) ) : '',
+				'i18n'               => array(
 					'aborting'              => esc_html__( 'Aborting', 'gdpr' ),
 					'logging_out'           => esc_html__( 'You are being logged out.', 'gdpr' ),
 					'continue'              => esc_html__( 'Continue', 'gdpr' ),
@@ -137,8 +149,10 @@ class GDPR_Public {
 					'are_you_sure'          => esc_html__( 'Are you sure?', 'gdpr' ),
 					'policy_disagree'       => esc_html__( 'By disagreeing you will no longer have access to our site and will be logged out.', 'gdpr' ),
 				),
-				'is_user_logged_in' => is_user_logged_in(),
-				'refresh'           => get_option( 'gdpr_refresh_after_preferences_update', true ),
+				'is_user_logged_in'  => is_user_logged_in(),
+				'refresh'            => get_option( 'gdpr_refresh_after_preferences_update', true ),
+				'registered_cookies' => get_option( 'gdpr_cookie_popup_content', array() ),
+				'user_consent'       => $user_consent,
 			)
 		);
 	}

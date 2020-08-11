@@ -76,11 +76,65 @@ function remove_consent( userid, consent ) {
 
 function set_script_type() {
 	const scriptsTags = document.getElementsByTagName( 'script' );
-	for ( let i = 0; i < scriptsTags.length; i++ ) {
-		if ( scripts[i].data( 'gdpr' ) && 'performance' == scripts[i].data( 'gdpr' ) ) {
-			scripts[i].attr( { type: 'text/javascript' } );
+	$.each( scriptsTags, function( key, value ) {
+		$(this).attr( 'type', 'text/javascript' );
+	} );
+}
+
+function set_plugin_cookies() {
+
+	//consent
+
+	let consentArray = [];
+	if ( Cookies.get( 'gdpr_consent_types]' ) ) {
+		consentArray = JSON.parse( Cookies.get( 'gdpr_consent_types]' ) );
+	} else if ( Cookies.get( 'gdpr[consent_types]' ) ) {
+		consentArray = JSON.parse( Cookies.get( 'gdpr[consent_types]' ) );
+	}
+
+	if ( 0 < consentArray.length ) {
+		let difference = $( GDPR.user_consent ).not( consentArray ).get();
+		if ( ! difference ) {
+			difference = $( consentArray ).not( GDPR.user_consent ).get();
+		}
+
+		if ( difference ) {
+			Cookies.set( 'gdpr_consent_types', JSON.stringify( GDPR.user_consent ), { expires: 365 } );
+		}
+	} else {
+		if ( 0 < GDPR.user_consent.length ) {
+			Cookies.set( 'gdpr_consent_types', JSON.stringify( GDPR.user_consent ), { expires: 365 } );
+		} else {
+			Cookies.set( 'gdpr_consent_types', '[]', { expires: 365 } );
 		}
 	}
+
+	// Cookie
+	let allowed_cookies = [];
+	let cookies         = [];
+	if ( Cookies.get( 'gdpr_allowed_cookies' ) ) {
+		allowed_cookies = JSON.parse( Cookies.get( 'gdpr_allowed_cookies' ) );
+	} else if ( Cookies.get( 'gdpr[allowed_cookies]' ) ) {
+		allowed_cookies = JSON.parse( Cookies.get( 'gdpr[allowed_cookies]' ) );
+	}
+
+	if ( GDPR.registered_cookies ) {
+		$.each( GDPR.registered_cookies, function( key, value ) {
+			if ( 'required' === value.status || 'soft' === value.status ) {
+				let used_cookie = value.cookies_used.split( ',' );
+				$.each( used_cookie, function( cookie_key, cookie_value ) {
+					cookies.push( cookie_value );
+				});
+			}
+		});
+	}
+
+	if ( 0 < cookies.length ) {
+		Cookies.set( 'gdpr_allowed_cookies', JSON.stringify( cookies ), { expires: 365 } );
+	} else {
+		Cookies.set( 'gdpr_allowed_cookies', '[]', { expires: 365 } );
+	}
+
 }
 
 $( function() {
