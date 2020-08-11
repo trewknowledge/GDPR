@@ -74,6 +74,15 @@ function remove_consent( userid, consent ) {
 	);
 }
 
+function set_script_type() {
+	const scriptsTags = document.getElementsByTagName( 'script' );
+	for ( let i = 0; i < scriptsTags.length; i++ ) {
+		if ( scripts[i].data( 'gdpr' ) && 'performance' == scripts[i].data( 'gdpr' ) ) {
+			scripts[i].attr( { type: 'text/javascript' } );
+		}
+	}
+}
+
 $( function() {
 
 	if ( -1 !== queryArgs.indexOf( 'notify=1' ) ) {
@@ -374,4 +383,10 @@ $( function() {
 		];
 		displayNotification( GDPR.i18n.are_you_sure, GDPR.i18n.policy_disagree, actions, true );
 	} );
+
+	// set plugin cookie & consent
+	$( document ).ready( function() {
+		set_script_type();
+		set_plugin_cookies();
+	});
 } );
