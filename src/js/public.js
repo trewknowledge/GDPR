@@ -40,7 +40,7 @@ function save_consent ( userid, consent ) {
 	$.post(
 		GDPR.ajaxurl,
 		{
-			action: 'save_user_content',
+			action: 'save_user_consent',
 			userid: userid,
 			consent: consent
 		},
@@ -59,7 +59,7 @@ function remove_consent( userid, consent ) {
 	$.post(
 		GDPR.ajaxurl,
 		{
-			action: 'remove_user_content',
+			action: 'remove_user_consent',
 			userid: userid,
 			consent: consent
 		},
