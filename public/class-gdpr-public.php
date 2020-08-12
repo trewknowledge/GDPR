@@ -266,22 +266,6 @@ class GDPR_Public {
 
 		$cookies_to_remove = array_diff( $all_cookies, $approved_cookies );
 
-		$cookies_as_json  = wp_json_encode( $approved_cookies );
-		$consents_as_json = wp_json_encode( $consents );
-
-		setcookie( 'gdpr[allowed_cookies]', $cookies_as_json, time() + YEAR_IN_SECONDS, '/' );
-		setcookie( 'gdpr[consent_types]', $consents_as_json, time() + YEAR_IN_SECONDS, '/' );
-
-		foreach ( $cookies_to_remove as $cookie ) {
-			if ( GDPR::similar_in_array( $cookie, array_keys( $_COOKIE ) ) ) { // phpcs:ignore
-				$domain = get_site_url();
-				$domain = wp_parse_url( $domain, PHP_URL_HOST );
-				unset( $_COOKIE[ $cookie ] ); // phpcs:ignore
-				setcookie( $cookie, null, -1, '/', $domain );
-				setcookie( $cookie, null, -1, '/', '.' . $domain );
-			}
-		}
-
 		if ( is_user_logged_in() ) {
 			$user = wp_get_current_user();
 			GDPR_Audit_Log::log( $user->ID, esc_html__( 'User updated their privacy preferences. These are the new approved cookies and consent preferences:', 'gdpr' ) );
