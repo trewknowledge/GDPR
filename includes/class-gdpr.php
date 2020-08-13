@@ -269,12 +269,6 @@ class GDPR {
 		add_action( 'wp_ajax_gdpr_send_request_email', array( $requests_public, 'send_request_email' ) );
 		add_action( 'wp_ajax_nopriv_gdpr_send_request_email', array( $requests_public, 'send_request_email' ) );
 
-		add_action( 'wp_ajax_save_user_consent', array( $plugin_public, 'save_consent' ) );
-		add_action( 'wp_ajax_nopriv_save_user_consent', array( $plugin_public, 'save_consent' ) );
-
-		add_action( 'wp_ajax_remove_user_consent', array( $plugin_public, 'remove_consent' ) );
-		add_action( 'wp_ajax_nopriv_remove_user_consent', array( $plugin_public, 'remove_consent' ) );
-
 	}
 
 	/**
