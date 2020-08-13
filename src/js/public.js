@@ -77,7 +77,9 @@ function remove_consent( userid, consent ) {
 function set_script_type() {
 	const scriptsTags = document.getElementsByTagName( 'script' );
 	$.each( scriptsTags, function( key, value ) {
-		$(this).attr( 'type', 'text/javascript' );
+		if ( 'performance' === $( this ).attr( 'data-gdpr' ) ) {
+			$(this).attr( 'type', 'text/javascript' );
+		}
 	} );
 }
 
