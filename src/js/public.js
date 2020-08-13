@@ -9,8 +9,8 @@ const baseUrl    = location.protocol + '//' + location.host + location.pathname;
 
 window.has_consent = function( consent ) {
 	let consentArray = [];
-	if ( Cookies.get( 'gdpr_consent_types]' ) ) {
-		consentArray = JSON.parse( Cookies.get( 'gdpr_consent_types]' ) );
+	if ( Cookies.get( 'gdpr_consent_types' ) ) {
+		consentArray = JSON.parse( Cookies.get( 'gdpr_consent_types' ) );
 	} else if ( Cookies.get( 'gdpr[consent_types]' ) ) {
 		consentArray = JSON.parse( Cookies.get( 'gdpr[consent_types]' ) );
 	}
@@ -35,45 +35,6 @@ window.is_allowed_cookie = function ( cookie ) {
 	return false;
 };
 
-function save_consent ( userid, consent ) {
-	
-	$.post(
-		GDPR.ajaxurl,
-		{
-			action: 'save_user_consent',
-			userid: userid,
-			consent: consent
-		},
-		function( response ) {
-			console.log( response.data );
-			if ( response.success ) {
-				Cookies.set( 'gdpr_consent_types', JSON.stringify( response.data ), { expires: 365 } );
-			} else {
-				displayNotification( response.data.title, response.data.content );
-			}
-		}
-	);
-};
-
-function remove_consent( userid, consent ) {
-	$.post(
-		GDPR.ajaxurl,
-		{
-			action: 'remove_user_consent',
-			userid: userid,
-			consent: consent
-		},
-		function( response ) {
-			console.log( response.data );
-			if ( response.success ) {
-				Cookies.set( 'gdpr_consent_types', JSON.stringify( response.data ), { expires: 365 } );
-			} else {
-				displayNotification( response.data.title, response.data.content );
-			}
-		}
-	);
-}
-
 function set_script_type() {
 	const scriptsTags = document.getElementsByTagName( 'script' );
 	$.each( scriptsTags, function( key, value ) {
@@ -86,8 +47,8 @@ function set_plugin_cookies() {
 	//consent
 
 	let consentArray = [];
-	if ( Cookies.get( 'gdpr_consent_types]' ) ) {
-		consentArray = JSON.parse( Cookies.get( 'gdpr_consent_types]' ) );
+	if ( Cookies.get( 'gdpr_consent_types' ) ) {
+		consentArray = JSON.parse( Cookies.get( 'gdpr_consent_types' ) );
 	} else if ( Cookies.get( 'gdpr[consent_types]' ) ) {
 		consentArray = JSON.parse( Cookies.get( 'gdpr[consent_types]' ) );
 	}
@@ -108,7 +69,7 @@ function set_plugin_cookies() {
 			} else {
 				$( '#' + consent_key ).attr( 'checked', false );
 			}
-		});	
+		});
 	} else {
 		if ( 0 < GDPR.user_consent.length ) {
 			Cookies.set( 'gdpr_consent_types', JSON.stringify( GDPR.user_consent ), { expires: 365 } );
@@ -117,7 +78,7 @@ function set_plugin_cookies() {
 		}
 		$.each( GDPR.consent_types, function( consent_key, consent_data ) {
 			$( '#' + consent_key ).attr( 'checked', true );
-		});	
+		});
 	}
 
 	// Cookie
@@ -150,7 +111,7 @@ function set_plugin_cookies() {
 			}
 		});
 	}
-	
+
 	if ( 0 < cookies.length ) {
 		Cookies.set( 'gdpr_allowed_cookies', JSON.stringify( cookies ), { expires: 365 } );
 	} else {
@@ -188,7 +149,7 @@ $( function() {
 					if ( response.data.consents ) {
 						Cookies.set( 'gdpr_consent_types', JSON.stringify( response.data.consents ), { expires: 365 } );
 					}
-					
+
 					if ( response.data.removed_cookies ) {
 						for ( let i = 0, l = response.data.removed_cookies.length; i < l; i++ ) {
 							let cookie_name = response.data.removed_cookies[ i ];
