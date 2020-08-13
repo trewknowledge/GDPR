@@ -28,8 +28,8 @@ window.is_allowed_cookie = function ( cookie ) {
 	} else if ( Cookies.get( 'gdpr[allowed_cookies]' ) ) {
 		cookiesArray = JSON.parse( Cookies.get( 'gdpr[allowed_cookies]' ) );
 	}
-
-	if ( -1 < cookiesArray.indexOf( cookie ) ) {
+	
+	if ( -1 < cookiesArray.indexOf( cookie ) || $.inArray( cookie, cookiesArray ) ) {
 		return true;
 	}
 	return false;
@@ -37,8 +37,10 @@ window.is_allowed_cookie = function ( cookie ) {
 
 function set_script_type() {
 	const scriptsTags = document.getElementsByTagName( 'script' );
+	
 	$.each( scriptsTags, function( key, value ) {
-		if ( 'performance' === $( this ).attr( 'data-gdpr' ) ) {
+		let cookie_category = $( this ).attr( 'data-gdpr' );
+		if ( is_allowed_cookie( cookie_category ) ) {
 			$(this).attr( 'type', 'text/javascript' );
 		}
 	} );
