@@ -606,6 +606,8 @@ class GDPR {
 	 * @return void
 	 */
 	public static function save_consent( $user_id, $consent ) {
+		gdpr_deprecated_function( 'save_consent', '2.1.2' );
+
 		if ( wp_doing_ajax() ) {
 			save_consent_ajax();
 		} else {
@@ -695,6 +697,8 @@ class GDPR {
 	 * @return void
 	 */
 	public static function remove_consent( $user_id, $consent ) {
+		gdpr_deprecated_function( 'save_consent', '2.1.2' );
+		
 		if ( wp_doing_ajax() ) {
 			remove_consent_ajax();
 		} else {

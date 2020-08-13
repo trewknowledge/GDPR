@@ -84,6 +84,9 @@ function gdpr_get_consent_checkboxes( $atts ) {
  * @return bool                 Whether the cookie is allowed or not.
  */
 function is_allowed_cookie( $cookie_name, $exactMatch = false ) {
+
+	gdpr_deprecated_function( 'is_allowed_cookie', '2.1.2' );
+
 	if ( isset( $_COOKIE['gdpr']['allowed_cookies'] ) ) {
 		$allowed_cookies = array_map( 
 			'sanitize_text_field',
@@ -128,7 +131,7 @@ function have_consent( $consent ) {
 }
 
 function has_consent( $consent ) {
-
+	gdpr_deprecated_function( 'has_consent', '2.1.2' );
 	if ( is_user_logged_in() ) {
 		$user = wp_get_current_user();
 		if ( defined( 'WPCOM_IS_VIP_ENV' ) && WPCOM_IS_VIP_ENV ) {
