@@ -132,6 +132,7 @@ class GDPR_Public {
 				$user_consents = (array) get_user_meta( $user_id, 'gdpr_consents' );
 			}
 		}
+		$consent_types = get_option( 'gdpr_consent_types', array() );
 
 		wp_enqueue_script( $this->plugin_name, plugin_dir_url( dirname( __FILE__ ) ) . 'dist/js/public.js', array( 'jquery' ), $this->version, false );
 		wp_localize_script(
@@ -153,6 +154,7 @@ class GDPR_Public {
 				'refresh'            => get_option( 'gdpr_refresh_after_preferences_update', true ),
 				'registered_cookies' => get_option( 'gdpr_cookie_popup_content', array() ),
 				'user_consent'       => $user_consent,
+				'consent_types'      => $consent_types,
 			)
 		);
 	}
@@ -195,8 +197,6 @@ class GDPR_Public {
 	public function privacy_preferences_modal() {
 		$cookie_privacy_excerpt = get_option( 'gdpr_cookie_privacy_excerpt', '' );
 		$consent_types          = get_option( 'gdpr_consent_types', array() );
-		$approved_cookies       = isset( $_COOKIE['gdpr']['allowed_cookies'] ) ? json_decode( wp_unslash( $_COOKIE['gdpr']['allowed_cookies'] ) ) : array(); // phpcs:ignore
-		$user_consents          = isset( $_COOKIE['gdpr']['consent_types'] ) ? json_decode( wp_unslash( $_COOKIE['gdpr']['consent_types'] ) ) : array(); // phpcs:ignore
 		$tabs                   = get_option( 'gdpr_cookie_popup_content', array() );
 		$hide_from_bots         = get_option( 'gdpr_hide_from_bots', true );
 
@@ -208,8 +208,6 @@ class GDPR_Public {
 			'privacy-preferences-modal.php', array(
 				'cookie_privacy_excerpt' => $cookie_privacy_excerpt,
 				'consent_types'          => $consent_types,
-				'approved_cookies'       => $approved_cookies,
-				'user_consents'          => $user_consents,
 				'tabs'                   => $tabs,
 				'allowed_html'           => $this->allowed_html,
 			)
