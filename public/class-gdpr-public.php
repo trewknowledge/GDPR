@@ -288,9 +288,9 @@ class GDPR_Public {
 		}
 
 		$success_data = array(
-			'remove_cookies' => $cookies_to_remove,
+			'removed_cookies' => $cookies_to_remove,
 			'cookies'        => $approved_cookies,
-			'consents'        => $consents 
+			'consents'        => $consents
 		);
 
 		wp_send_json_success( $success_data );
