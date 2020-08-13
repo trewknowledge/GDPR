@@ -268,7 +268,6 @@ class GDPR {
 		add_action( 'wp', array( $requests_public, 'request_confirmed' ) );
 		add_action( 'wp_ajax_gdpr_send_request_email', array( $requests_public, 'send_request_email' ) );
 		add_action( 'wp_ajax_nopriv_gdpr_send_request_email', array( $requests_public, 'send_request_email' ) );
-
 	}
 
 	/**
@@ -295,10 +294,6 @@ class GDPR {
 	 */
 	public static function save_user_consent_on_registration( $user_id ) { // phpcs:ignore
 		GDPR_Audit_Log::log( $user_id, esc_html__( 'User registered to the site.', 'gdpr' ) );
-
-		if ( ! wp_verify_nonce( sanitize_text_field( wp_unslash( $_REQUEST['_wpnonce_create-user'] ) ), 'create-user' ) ) {
-			GDPR_Audit_Log::log( $user_id, esc_html__( 'Invalid Security Token.', 'gdpr' ) );
-		}
 
 		if ( isset( $_POST['user_consents'] ) && is_array( $_POST['user_consents'] ) ) {
 			$consents = array_map( 'sanitize_text_field', array_keys( wp_unslash( $_POST['user_consents'] ) ) );  // phpcs:ignore
