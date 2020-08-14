@@ -40,6 +40,7 @@ function init_plugin_js() {
 	//consent
 
 	let consentArray = [];
+	let difference = [];
 	if ( Cookies.get( 'gdpr_consent_types' ) ) {
 		consentArray = JSON.parse( Cookies.get( 'gdpr_consent_types' ) );
 	} else if ( Cookies.get( 'gdpr[consent_types]' ) ) {
@@ -47,17 +48,16 @@ function init_plugin_js() {
 	}
 
 	if ( 0 < consentArray.length ) {
-		let difference = $( GDPR.user_consent ).not( consentArray ).get();
-		if ( ! difference ) {
+		difference = $( GDPR.user_consent ).not( consentArray ).get();
+		
+		if ( 0 === difference.length ) {
 			difference = $( consentArray ).not( GDPR.user_consent ).get();
-		}
-
-		if ( difference ) {
+		} else if ( difference ) {
 			Cookies.set( 'gdpr_consent_types', JSON.stringify( GDPR.user_consent ), { expires: 365 } );
 		}
 
 		$.each( GDPR.consent_types, function( consent_key, consent_data ) {
-			if ( $.inArray( consent_key, consentArray ) ) {
+			if ( -1 < consentArray.indexOf( consent_key ) ) {
 				$( '#' + consent_key ).attr( 'checked', true );
 			} else {
 				$( '#' + consent_key ).attr( 'checked', false );
@@ -97,10 +97,10 @@ function init_plugin_js() {
 				});
 			}
 
-			if ( $.inArray( key, allowed_cookies ) && privacy_bar || ( 0 === allowed_cookies.length ) ) {
-				$( '#' + key ).attr( 'checked', true );
+			if ( -1 < allowed_cookies.indexOf( key ) && privacy_bar || ( 0 === allowed_cookies.length ) ) {
+				$( '[data-category=' + key + ']' ).attr( 'checked', true );
 			} else {
-				$( '#' + key ).attr( 'checked', false );
+				$( '[data-category=' + key + ']' ).attr( 'checked', false );
 			}
 		});
 	}
