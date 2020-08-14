@@ -101,13 +101,21 @@ function init_plugin_js() {
 			} 
 
 			registered_used_cookies = value.cookies_used.split( ',' );
-			$.each( registered_used_cookies, function ( used_cookies_key, used_cookies_val ) {
-				if ( -1 < allowed_cookies.indexOf( $.trim( used_cookies_val ) ) || ( 0 === allowed_cookies.length ) ) {
+			if ( 0 < allowed_cookies.length ) {
+				$.each( registered_used_cookies, function ( used_cookies_key, used_cookies_val ) {
+					if ( -1 < allowed_cookies.indexOf( $.trim( used_cookies_val ) ) || ( 0 === allowed_cookies.length ) || 'checked' === value.status ) {
+						$( '[data-category=' + key + ']' ).attr( 'checked', true );
+					} else {
+						$( '[data-category=' + key + ']' ).attr( 'checked', false );
+					}
+				});
+			} else {
+				if ( 'required' === value.status || 'soft' === value.status || 'on' === value.status ) {
 					$( '[data-category=' + key + ']' ).attr( 'checked', true );
 				} else {
 					$( '[data-category=' + key + ']' ).attr( 'checked', false );
 				}
-			});
+			}
 		});
 	}
 
