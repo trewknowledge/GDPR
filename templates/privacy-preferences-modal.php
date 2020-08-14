@@ -107,6 +107,10 @@
 											$site_cookies             = array();
 											$enabled                  = ( 'off' === $gdpr_tab['status'] ) ? false : true;
 											$cookies_used             = explode( ',', $gdpr_tab['cookies_used'] );
+											foreach ( $cookies_used as $cookie ) {
+												$site_cookies[] = trim( $cookie );
+												$all_cookies[]  = trim( $cookie );
+											}
 											?>
 											<?php if ( 'required' === $gdpr_tab['status'] ) : ?>
 												<span class="gdpr-always-active"><?php esc_html_e( 'Required', 'gdpr' ); ?></span>
