@@ -119,7 +119,7 @@ function init_plugin_js() {
 		});
 	}
 
-	if ( ! allowed_cookies ) {
+	if ( 0 === allowed_cookies.length ) {
 		if ( 0 < cookies.length ) {
 			Cookies.set( 'gdpr_allowed_cookies', JSON.stringify( cookies ), { expires: 365 } );
 		} else {
