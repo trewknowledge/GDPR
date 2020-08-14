@@ -216,7 +216,7 @@ $( function() {
 		$( '[data-category="' + target + '"]' ).prop( 'checked', checked );
 	} );
 
-	if ( ! Cookies.get( 'gdpr[privacy_bar]' ) || ! Cookies.get( 'gdpr_privacy_bar' ) ) {
+	if ( ! Cookies.get( 'gdpr[privacy_bar]' ) && ! Cookies.get( 'gdpr_privacy_bar' ) ) { 
 		if ( 0 == $( '.gdpr-reconsent-bar, .gdpr-reconsent' ).length ) {
 			$( '.gdpr.gdpr-privacy-bar' ).delay( 1000 ).slideDown( 600 );
 		}
