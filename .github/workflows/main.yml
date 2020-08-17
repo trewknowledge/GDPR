@@ -11,8 +11,7 @@ jobs:
       
     - name: 'Install Composer dependencies'
       run: |
-        composer require automattic/vipwpcs --dev
-        composer require dealerdirect/phpcodesniffer-composer-installer --dev
+        composer install
       
     - name: 'Run PHPCS'
       run: |
