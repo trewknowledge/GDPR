@@ -434,4 +434,28 @@ class GDPR_Requests_Public extends GDPR_Requests {
 		}
 		die();
 	}
+
+	/**
+	 * Provides escaping for uncommon, yet valid email address characters.
+	 *
+	 * @param string $email_in The starting email address.
+	 *
+	 * @return mixed|string
+	 */
+	private function escape_email_address( $email_in = '' ) {
+		$email_out = '';
+		$email_string_length = \strlen( $email_in );
+
+		for ( $i = 0; $i < $email_string_length; $i++ ) {
+			$hex = dechex( ord( $email_in[ $i ] ) );
+			if ('' === $hex) {
+				$email_out .= rawurlencode( $email_in[ $i ] );
+			} else {
+				$email_out = $email_out . '%' . ( ( 1 === strlen( $hex ) ) ? ( '0' . strtoupper( $hex ) ) : strtoupper( $hex ) );
+			}
+		}
+		$email_out = str_replace( array( '+', '_', '.', '-' ), array( '%20', '%5F', '%2E', '%2D' ), $email_out );
+
+		return $email_out;
+	}
 }
