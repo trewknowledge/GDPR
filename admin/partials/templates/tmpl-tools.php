@@ -32,7 +32,7 @@
 		<div class="postbox">
 			<div class="inside">
 				<div class="result">
-					{{{data.result}}}
+					{{{data.result}}} <?php // phpcs:ignore ?>
 				</div>
 			</div>
 		</div>
