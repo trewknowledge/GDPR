@@ -267,7 +267,7 @@ class GDPR_Requests {
 		$key              = wp_generate_password( 20, false );
 		$requests[ $key ] = array(
 			'email'     => $email,
-			'date'      => date( 'F j, Y' ),
+			'date'      => current_time( 'F j, Y' ),
 			'type'      => $type,
 			'data'      => $data,
 			'confirmed' => $confirmed,

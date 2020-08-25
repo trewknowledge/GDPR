@@ -132,7 +132,7 @@ function init_plugin_js() {
 	$.each( scriptsTags, function( key, value ) {
 		let cookieCategory = $( this ).attr( 'data-gdpr' );
 		if ( is_allowed_cookie( cookieCategory ) ) {
-			$( this ).replaceWith( eval( $( this ).text() ) );
+			$( this ).replaceWith( eval( $( this ).text() ) ); // phpcs:ignore
 		}
 	} );
 

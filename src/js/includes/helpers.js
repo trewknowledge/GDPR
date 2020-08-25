@@ -29,8 +29,8 @@ export const displayNotification = function( title, text, actions, hideCloseButt
 	];
 	const scrollDistance = $( window ).scrollTop();
 
-	$( '.gdpr-general-confirmation .gdpr-box-title h3' ).html( title );
-	$( '.gdpr-general-confirmation .gdpr-content p' ).html( text );
+	$( '.gdpr-general-confirmation .gdpr-box-title h3' ).text( title );
+	$( '.gdpr-general-confirmation .gdpr-content p' ).text( text );
 	$( '.gdpr-general-confirmation .gdpr-close' ).show();
 	if ( hideCloseButton ) {
 		$( '.gdpr-general-confirmation .gdpr-close' ).hide();
@@ -38,10 +38,16 @@ export const displayNotification = function( title, text, actions, hideCloseButt
 
 	let html = '';
 	actions.forEach( function( index ) {
-		html += '<button class="' + index.buttonClass + '" data-callback="' + index.callback + '">' + index.title + '</button>';
+		let button = $( '<button />' );
+		button.attr( {
+			'class': index.buttonClass,
+			'data-callback': index.callback
+		} );
+		button.text( index.title );
+		html += button;
 	} );
 
-	$( '.gdpr-general-confirmation footer' ).html( html );
+	$( '.gdpr-general-confirmation footer' ).html( html ); // phpcs:ignore
 
 	$( '.gdpr-overlay' ).fadeIn( 400, function() {
 		$( '.gdpr.gdpr-general-confirmation .gdpr-wrapper' ).css( {
@@ -65,10 +71,10 @@ export const gdprFunctions = {
 		gdprFunctions.closeNotification();
 	},
 	policyDisagreeOk: function() {
-		$( '.gdpr.gdpr-general-confirmation .gdpr-wrapper header .gdpr-box-title h3' ).html( GDPR.i18n.aborting );
-		$( '.gdpr.gdpr-general-confirmation .gdpr-wrapper .gdpr-content p' ).html( GDPR.i18n.logging_out );
+		$( '.gdpr.gdpr-general-confirmation .gdpr-wrapper header .gdpr-box-title h3' ).text( GDPR.i18n.aborting );
+		$( '.gdpr.gdpr-general-confirmation .gdpr-wrapper .gdpr-content p' ).text( GDPR.i18n.logging_out );
 		$( '.gdpr.gdpr-general-confirmation .gdpr-wrapper footer button' ).hide();
-		window.location.href = GDPR.logouturl;
+		window.location.href = GDPR.logouturl; //phpcs:ignore
 	},
 	policyDisagreeCancel: function() {
 		$( '.gdpr.gdpr-general-confirmation .gdpr-wrapper' ).fadeOut();

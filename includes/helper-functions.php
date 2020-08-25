@@ -87,11 +87,11 @@ function is_allowed_cookie( $cookie_name, $exactMatch = false ) {
 
 	gdpr_deprecated_function( 'is_allowed_cookie', '2.1.2' );
 
-	if ( isset( $_COOKIE['gdpr']['allowed_cookies'] ) ) {
-		$allowed_cookies = array_map( 
+	if ( isset( $_COOKIE['gdpr']['allowed_cookies'] ) ) { // phpcs:ignore
+		$allowed_cookies = array_map(
 			'sanitize_text_field',
 			json_decode(
-				wp_unslash( $_COOKIE['gdpr']['allowed_cookies'] ),
+				wp_unslash( $_COOKIE['gdpr']['allowed_cookies'] ), // phpcs:ignore
 				true
 			)
 		);

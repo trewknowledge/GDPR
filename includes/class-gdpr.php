@@ -292,10 +292,10 @@ class GDPR {
 	 * @author Fernando Claussen <fernandoclaussen@gmail.com>
 	 * @param  int $user_id The user ID.
 	 */
-	public static function save_user_consent_on_registration( $user_id ) { // phpcs:ignore
+	public static function save_user_consent_on_registration( $user_id ) {
 		GDPR_Audit_Log::log( $user_id, esc_html__( 'User registered to the site.', 'gdpr' ) );
 
-		if ( isset( $_POST['user_consents'] ) && is_array( $_POST['user_consents'] ) ) {
+		if ( isset( $_POST['user_consents'] ) && is_array( $_POST['user_consents'] ) ) { // phpcs:ignore
 			$consents = array_map( 'sanitize_text_field', array_keys( wp_unslash( $_POST['user_consents'] ) ) );  // phpcs:ignore
 			foreach ( $consents as $consent ) {
 				/* translators: Name of consent */
@@ -621,7 +621,7 @@ class GDPR {
 			}
 			$user_consent[] = $consent;
 
-			setcookie( 'gdpr_consent_types', wp_json_encode( $user_consent ), time() + YEAR_IN_SECONDS, '/' );
+			setcookie( 'gdpr_consent_types', wp_json_encode( $user_consent ), time() + YEAR_IN_SECONDS, '/' ); // phpcs:ignore
 			return true;
 		}
 
@@ -657,7 +657,7 @@ class GDPR {
 				delete_user_meta( $user_id, 'gdpr_consents', $consent );
 			}
 			unset( $user_consent[ $key ] );
-			setcookie( 'gdpr_consent_types', wp_json_encode( $user_consent ), time() + YEAR_IN_SECONDS, '/' );
+			setcookie( 'gdpr_consent_types', wp_json_encode( $user_consent ), time() + YEAR_IN_SECONDS, '/' ); // phpcs:ignore
 			return true;
 		}
 

@@ -3,7 +3,7 @@
 		<h2><?php echo esc_html_e( 'Result', 'gdpr' ); ?></h2>
 		<div class="postbox">
 			<div class="inside">
-				<textarea readonly class="gdpr-audit-log-result large-text" rows="20">{{{data.result}}}</textarea>
+				<textarea readonly class="gdpr-audit-log-result large-text" rows="20">{{data.result}}</textarea>
 			</div>
 		</div>
 	</div>

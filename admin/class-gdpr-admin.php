@@ -254,10 +254,10 @@ class GDPR_Admin {
 	 * @author Fernando Claussen <fernandoclaussen@gmail.com>
 	 */
 	public function settings_page_template() {
-		$registered_cookies = get_option( 'gdpr_cookie_popup_content', array() );
-		$consent_types      = get_option( 'gdpr_consent_types', array() );
+		$registered_cookies = get_option( 'gdpr_cookie_popup_content', array() ); // phpcs:ignore
+		$consent_types      = get_option( 'gdpr_consent_types', array() ); // phpcs:ignore
 
-		$pages = get_pages();
+		$pages = get_pages(); // phpcs:ignore
 
 		include_once plugin_dir_path( __FILE__ ) . 'partials/templates/tmpl-cookies.php';
 		include_once plugin_dir_path( __FILE__ ) . 'partials/templates/tmpl-consents.php';
@@ -283,18 +283,18 @@ class GDPR_Admin {
 			}
 		}
 
-		$tabs = array(
+		$tabs = array( // phpcs:ignore
 			'rectify'   => array(
 				'name'  => __( 'Rectify Data', 'gdpr' ),
-				'count' => isset( $rectify ) ? count( $rectify ) : 0,
+				'count' => isset( $rectify ) ? count( $rectify ) : 0, // phpcs:ignore
 			),
 			'complaint' => array(
 				'name'  => __( 'Complaint', 'gdpr' ),
-				'count' => isset( $complaint ) ? count( $complaint ) : 0,
+				'count' => isset( $complaint ) ? count( $complaint ) : 0, // phpcs:ignore
 			),
 			'delete'    => array(
 				'name'  => __( 'Erasure', 'gdpr' ),
-				'count' => isset( $delete ) ? count( $delete ) : 0,
+				'count' => isset( $delete ) ? count( $delete ) : 0, // phpcs:ignore
 			),
 		);
 
@@ -465,9 +465,9 @@ class GDPR_Admin {
 				foreach ( $v as $value ) {
 					if ( is_serialized( $value ) ) {
 
-						echo '<pre>' . esc_html( print_r( maybe_unserialize( $value ), true ) ) . '</pre><br />';
+						echo '<pre>' . esc_html( print_r( maybe_unserialize( $value ), true ) ) . '</pre><br />'; // phpcs:ignore
 					} else {
-						echo esc_html( print_r( $value, true ) ) . '<br />';
+						echo esc_html( print_r( $value, true ) ) . '<br />'; // phpcs:ignore
 					}
 				}
 				echo '</td>';
@@ -954,7 +954,7 @@ class GDPR_Admin {
 			}
 		);
 
-		foreach ( $consent_arr as $key => $value ) {
+		foreach ( $consent_arr as $key => $value ) { // phpcs:ignore
 			$consent = str_replace( 'user_consents_', '', $value );
 			if ( defined( 'WPCOM_IS_VIP_ENV' ) && WPCOM_IS_VIP_ENV ) {
 				add_user_attribute( $customer_id, 'gdpr_consents', $consent );

@@ -18,7 +18,7 @@ $( function() {
 		const consentID = stringToSlug( field.val() );
 		const consentName = field.val();
 		const template = wp.template( 'consents' );
-		$( '#consent-tabs' ).append( template( {
+		$( '#consent-tabs' ).append( template( { // phpcs:ignore
 			key: consentID,
 			name: consentName,
 			optionName: 'gdpr_consent_types'
@@ -37,7 +37,7 @@ $( function() {
 		const tabID = stringToSlug( field.val() );
 		const tabName = field.val();
 		const template = wp.template( 'cookie-tabs' );
-		$( '#gdpr-cookie-categories' ).append( template( {
+		$( '#gdpr-cookie-categories' ).append( template( { // phpcs:ignore
 			key: tabID,
 			name: tabName
 		} ) );
@@ -53,7 +53,7 @@ $( function() {
 		const tabID = $( this ).data( 'tabid' );
 		const hostID = field.val().toLowerCase().replace( ' ', '-' );
 		const template = wp.template( 'cookie-tabs-hosts' );
-		$( '.tab-hosts[data-tabid="' + tabID + '"]' ).append( template( {
+		$( '.tab-hosts[data-tabid="' + tabID + '"]' ).append( template( { // phpcs:ignore
 			hostKey: hostID,
 			tabKey: tabID,
 			optionName: 'gdpr_cookie_popup_content'
@@ -87,7 +87,7 @@ $( function() {
 		}
 	} );
 
-	const hash = window.location.hash;
+	const hash = window.location.hash; // phpcs:ignore
 	if ( hash ) {
 		$( '.gdpr .nav-tab-wrapper a[href="' + hash + '"]' ).addClass( 'nav-tab-active' );
 		$( '.gdpr .gdpr-tab[data-id="' + hash.replace( '#', '' ) + '"]' ).removeClass( 'hidden' );
@@ -207,13 +207,13 @@ $( function() {
 				spinner.hide();
 				if ( response.success ) {
 					const template = wp.template( 'access-data-result-success' );
-					$( '.gdpr div[data-id="access"]' ).append( template( {
+					$( '.gdpr div[data-id="access"]' ).append( template( { // phpcs:ignore
 						result: response.data.result,
 						userEmail: response.data.user_email
 					} ) );
 				} else {
 					const template = wp.template( 'access-data-result-error' );
-					$( '.gdpr div[data-id="access"]' ).append( template() );
+					$( '.gdpr div[data-id="access"]' ).append( template() ); // phpcs:ignore
 				}
 			}
 		);
@@ -249,12 +249,12 @@ $( function() {
 				spinner.hide();
 				if ( response.success ) {
 					const template = wp.template( 'audit-log-result-success' );
-					$( '.gdpr div[data-id="audit-log"]' ).append( template( {
+					$( '.gdpr div[data-id="audit-log"]' ).append( template( { // phpcs:ignore
 						result: response.data
 					} ) );
 				} else {
 					const template = wp.template( 'audit-log-result-error' );
-					$( '.gdpr div[data-id="audit-log"]' ).append( template() );
+					$( '.gdpr div[data-id="audit-log"]' ).append( template() ); // phpcs:ignore
 				}
 			}
 		);
