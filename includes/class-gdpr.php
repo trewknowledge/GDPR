@@ -253,7 +253,6 @@ class GDPR {
 
 		add_action( 'wp_enqueue_scripts', array( $plugin_public, 'enqueue_styles' ) );
 		add_action( 'wp_enqueue_scripts', array( $plugin_public, 'enqueue_scripts' ) );
-		add_action( 'init', array( $plugin_public, 'set_plugin_cookies' ) );
 		add_action( 'wp_footer', array( $plugin_public, 'overlay' ) );
 		add_action( 'wp_footer', array( $plugin_public, 'privacy_bar' ) );
 		add_action( 'wp_footer', array( $plugin_public, 'is_consent_needed' ) );
@@ -293,11 +292,10 @@ class GDPR {
 	 * @author Fernando Claussen <fernandoclaussen@gmail.com>
 	 * @param  int $user_id The user ID.
 	 */
-	public static function save_user_consent_on_registration( $user_id ) { // phpcs:ignore
+	public static function save_user_consent_on_registration( $user_id ) {
 		GDPR_Audit_Log::log( $user_id, esc_html__( 'User registered to the site.', 'gdpr' ) );
 
-		if ( isset( $_POST['user_consents'] ) && is_array( $_POST['user_consents'] ) ) {
-
+		if ( isset( $_POST['user_consents'] ) && is_array( $_POST['user_consents'] ) ) { // phpcs:ignore
 			$consents = array_map( 'sanitize_text_field', array_keys( wp_unslash( $_POST['user_consents'] ) ) );  // phpcs:ignore
 			foreach ( $consents as $consent ) {
 				/* translators: Name of consent */
@@ -308,7 +306,6 @@ class GDPR {
 					add_user_meta( $user_id, 'gdpr_consents', $consent );
 				}
 			}
-			setcookie( 'gdpr[consent_types]', wp_json_encode( $consents ), time() + YEAR_IN_SECONDS, '/' );
 		}
 	}
 
@@ -603,25 +600,29 @@ class GDPR {
 			return false;
 		}
 		$consent_ids = array_keys( $registered_consent );
-		$user        = get_user_by( 'ID', $user_id );
 		$consent     = sanitize_text_field( wp_unslash( $consent ) );
+		$user        = get_user_by( 'ID', $user_id );
 
-		if ( $user ) {
+		if ( ! $user ) {
+			return false;
+		}
+
+		if ( defined( 'WPCOM_IS_VIP_ENV' ) && WPCOM_IS_VIP_ENV ) {
+			$user_consent = get_user_attribute( $user_id, 'gdpr_consents' );
+		} else {
+			$user_consent = get_user_meta( $user_id, 'gdpr_consents' );
+		}
+
+		if ( in_array( $consent, $consent_ids, true ) && ! in_array( $consent, $user_consent, true ) ) {
 			if ( defined( 'WPCOM_IS_VIP_ENV' ) && WPCOM_IS_VIP_ENV ) {
-				$user_consent = get_user_attribute( $user_id, 'gdpr_consents' );
+				add_user_attribute( $user_id, 'gdpr_consents', $consent );
 			} else {
-				$user_consent = get_user_meta( $user_id, 'gdpr_consents' );
+				add_user_meta( $user_id, 'gdpr_consents', $consent );
 			}
-			if ( in_array( $consent, $consent_ids, true ) && ! in_array( $consent, $user_consent, true ) ) {
-				if ( defined( 'WPCOM_IS_VIP_ENV' ) && WPCOM_IS_VIP_ENV ) {
-					add_user_attribute( $user_id, 'gdpr_consents', $consent );
-				} else {
-					add_user_meta( $user_id, 'gdpr_consents', $consent );
-				}
-				$user_consent[] = $consent;
-				setcookie( 'gdpr[consent_types]', wp_json_encode( $user_consent ), time() + YEAR_IN_SECONDS, '/' );
-				return true;
-			}
+			$user_consent[] = $consent;
+
+			setcookie( 'gdpr_consent_types', wp_json_encode( $user_consent ), time() + YEAR_IN_SECONDS, '/' ); // phpcs:ignore
+			return true;
 		}
 
 		return false;
@@ -637,31 +638,31 @@ class GDPR {
 	 */
 	public static function remove_consent( $user_id, $consent ) {
 		$user = get_user_by( 'ID', $user_id );
+		if ( ! $user ) {
+			return false;
+		}
 
-		if ( $user ) {
+		if ( defined( 'WPCOM_IS_VIP_ENV' ) && WPCOM_IS_VIP_ENV ) {
+			$user_consent = get_user_attribute( $user_id, 'gdpr_consents' );
+		} else {
+			$user_consent = get_user_meta( $user_id, 'gdpr_consents' );
+		}
+
+		$consent = sanitize_text_field( wp_unslash( $consent ) );
+		$key     = array_search( $consent, $user_consent, true );
+		if ( false !== $key ) {
 			if ( defined( 'WPCOM_IS_VIP_ENV' ) && WPCOM_IS_VIP_ENV ) {
-				$user_consent = get_user_attribute( $user_id, 'gdpr_consents' );
+				delete_user_attribute( $user_id, 'gdpr_consents', $consent );
 			} else {
-				$user_consent = get_user_meta( $user_id, 'gdpr_consents' );
+				delete_user_meta( $user_id, 'gdpr_consents', $consent );
 			}
-
-			$consent = sanitize_text_field( wp_unslash( $consent ) );
-			$key     = array_search( $consent, $user_consent, true );
-			if ( false !== $key ) {
-				if ( defined( 'WPCOM_IS_VIP_ENV' ) && WPCOM_IS_VIP_ENV ) {
-					delete_user_attribute( $user_id, 'gdpr_consents', $consent );
-				} else {
-					delete_user_meta( $user_id, 'gdpr_consents', $consent );
-				}
-				unset( $user_consent[ $key ] );
-				setcookie( 'gdpr[consent_types]', wp_json_encode( $user_consent ), time() + YEAR_IN_SECONDS, '/' );
-				return true;
-			}
+			unset( $user_consent[ $key ] );
+			setcookie( 'gdpr_consent_types', wp_json_encode( $user_consent ), time() + YEAR_IN_SECONDS, '/' ); // phpcs:ignore
+			return true;
 		}
 
 		return false;
 	}
-
 
 	/**
 	 * Generates a random 6 digit pin.

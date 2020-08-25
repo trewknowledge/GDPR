@@ -238,7 +238,7 @@
 													if ( defined( 'WPCOM_IS_VIP_ENV' ) && WPCOM_IS_VIP_ENV ) {
 														$count = wpcom_vip_count_user_posts( $uid, $pt->name );
 													} else {
-														$count = count_user_posts( $uid, $pt->name );
+														$count = count_user_posts( $uid, $pt->name ); // phpcs:ignore
 													}
 													if ( '0' === $count ) {
 														continue;

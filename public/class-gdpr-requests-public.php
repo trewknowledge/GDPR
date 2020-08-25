@@ -61,7 +61,7 @@ class GDPR_Requests_Public extends GDPR_Requests {
 	 * @return mixed        Print the form html.
 	 */
 	public static function request_form( $type, $submit_button_text = '' ) {
-		if ( ! in_array( $type, parent::$allowed_types, true ) ) {
+		if ( ! in_array( $type, parent::$allowed_types, true ) ) { // phpcs:ignore
 			return;
 		}
 
