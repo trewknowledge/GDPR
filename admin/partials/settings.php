@@ -132,7 +132,7 @@
 					</th>
 					<td>
 						<?php $privacy_bar_content = get_option( 'gdpr_cookie_banner_content', '' ); ?>
-						<textarea name="gdpr_cookie_banner_content" id="gdpr_cookie_banner_content" cols="80" rows="6"><?php echo esc_html( $privacy_bar_content ); ?></textarea>
+						<?php esc_html_e('This text is managed by translation. The translation key is ','gdpr')?><strong>[Privacy Text Bar]</strong> 
 					</td>
 				</tr>
 				<tr>
@@ -145,7 +145,7 @@
 					</th>
 					<td>
 						<?php $privacy_excerpt = get_option( 'gdpr_cookie_privacy_excerpt', '' ); ?>
-						<textarea name="gdpr_cookie_privacy_excerpt" id="gdpr_cookie_privacy_excerpt" cols="80" rows="6"><?php echo esc_html( $privacy_excerpt ); ?></textarea>
+						<?php esc_html_e('This text is managed by translation. The translation key is ','gdpr')?><strong>[Privacy Text Consent]</strong> 
 						<p class="description"><?php esc_html_e( 'This will appear in the consent section of the privacy preference window.', 'gdpr' ); ?></p>
 					</td>
 				</tr>

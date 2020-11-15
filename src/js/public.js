@@ -111,7 +111,8 @@ $( function() {
 	/**
 	 * This runs when user clicks on privacy preferences bar agree button.
 	 * It submits the form that is still hidden with the cookies and consent options.
-	 */
+	 *
+	 **/
 	$( document ).on( 'click', '.gdpr.gdpr-privacy-bar .gdpr-agreement', function() {
 		$( '.gdpr-privacy-preferences-frm' ).submit();
 	} );
@@ -184,6 +185,7 @@ $( function() {
 
 	/**
 	 * Close the privacy/reconsent bar.
+	 * If user close the bar means that not accept cookies and you can't show it again
 	 */
 	$( document ).on( 'click', '.gdpr.gdpr-privacy-bar .gdpr-close, .gdpr.gdpr-reconsent-bar .gdpr-close', function() {
 		const scrollDistance = $( 'body' ).css( 'top' );
@@ -191,22 +193,27 @@ $( function() {
 		$( 'body' ).removeClass( 'gdpr-noscroll' );
 		$( window ).scrollTop( Math.abs( parseInt( scrollDistance, 10 ) ) );
 		$( '.gdpr.gdpr-privacy-bar, .gdpr.gdpr-reconsent-bar' ).slideUp( 600 );
+		Cookies.set( 'gdpr[privacy_bar]', 1, { expires: 365 } );
 	} );
 
 	$( document ).on( 'click', '.gdpr.gdpr-general-confirmation .gdpr-close', function() {
 		$( '.gdpr-overlay' ).fadeOut();
 		$( 'body' ).removeClass( 'gdpr-noscroll' );
 		$( '.gdpr.gdpr-general-confirmation .gdpr-wrapper' ).fadeOut();
+		Cookies.set( 'gdpr[privacy_bar]', 1, { expires: 365 } );
 	} );
 
 	/**
 	 * Display the privacy preferences modal.
+	 * By default if check preferences all cookies must be dissabled
 	 */
 	$( document ).on( 'click', '.gdpr-preferences', function( e ) {
 		e.preventDefault();
 		const scrollDistance = $( window ).scrollTop();
 		const tab = $( this ).data( 'tab' );
 		$( '.gdpr-overlay' ).fadeIn();
+		$('.gdpr-cookie-category').prop('checked', false);
+		
 		$( 'body' ).addClass( 'gdpr-noscroll' ).css( 'top', -scrollDistance );
 		$( '.gdpr.gdpr-privacy-preferences .gdpr-wrapper' ).fadeIn();
 		if ( tab ) {

@@ -392,11 +392,15 @@
 					left: 160px;
 					right: 0;
 					display: flex;
-					justify-content: space-between;
+					/*justify-content: space-between;*/
 					align-items: flex-end;
 					@include breakpoint(small-only) {
 						left: 0;
 						bottom: 5px;
+					}
+					.gdrp-cookie-footer-text {
+						font-size:12px!important;
+						max-width: 400px!important;
 					}
 					.gdpr-buttons {
 						display: flex;
@@ -699,7 +703,10 @@
 									span {
 										font-style: italic;
 									}
+									
 								}
+								
+								
 							}
 						}
 					}

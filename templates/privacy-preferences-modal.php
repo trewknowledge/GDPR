@@ -65,7 +65,7 @@
 							<h4><?php esc_html_e( 'Consent Management', 'gdpr' ); ?></h4>
 						</header>
 						<div class="gdpr-info">
-							<p><?php echo nl2br( esc_html( $args['cookie_privacy_excerpt'] ) ); ?></p>
+							<p><?php esc_html_e( 'Privacy Text Consent', 'gdpr' ); ?></p>
 							<?php if ( ! empty( $args['consent_types'] ) ) : ?>
 								<?php foreach ( $args['consent_types'] as $consent_key => $gdpr_type ) : ?>
 									<div class="gdpr-cookies-used">
@@ -158,6 +158,7 @@
 			</div>
 			<footer>
 				<input type="submit" value="<?php esc_attr_e( 'Save Preferences', 'gdpr' ); ?>">
+				<span class="gdrp-cookie-footer-text"><?php esc_html_e( 'If you save your preferences without having selected a cookie, it will be equivalent to the rejection of all cookies', 'gdpr' ); ?></span>
 			</footer>
 		</form>
 	</div>
