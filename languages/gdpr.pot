@@ -448,6 +448,10 @@ msgstr ""
 msgid "Add a brief explanation of how your site collects user data. This will show up in the privacy bar."
 msgstr ""
 
+#: ../admin/partials/settings.php:135, ../admin/partials/settings.php:148
+msgid "This text is managed by translation. The translation key is "
+msgstr ""
+
 #: ../admin/partials/settings.php:140
 msgid "Privacy Excerpt"
 msgstr ""
@@ -1116,12 +1120,20 @@ msgstr ""
 msgid "Disagree"
 msgstr ""
 
+#: ../templates/privacy-bar.php:25
+msgid "Privacy Text Bar"
+msgstr ""
+
 #: ../templates/privacy-preferences-modal.php:22
 msgid "Privacy Preference Center"
 msgstr ""
 
 #: ../templates/privacy-preferences-modal.php:35
 msgid "Cookie Settings"
+msgstr ""
+
+#: ../templates/privacy-preferences-modal.php:68
+msgid "Privacy Text Consent"
 msgstr ""
 
 #: ../templates/privacy-preferences-modal.php:81, ../templates/privacy-preferences-modal.php:130
