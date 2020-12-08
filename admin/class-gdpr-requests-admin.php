@@ -249,6 +249,8 @@ class GDPR_Requests_Admin extends GDPR_Requests {
 		$index = sanitize_text_field( wp_unslash( $_POST['index'] ) ); // phpcs:ignore
 		parent::remove_from_requests( $index );
 
+		do_action( 'gdpr_before_user_delete', $email );
+
 		$token = GDPR::generate_pin();
 		GDPR_Email::send( $user->user_email, 'delete-resolved', array( 'token' => $token ) );
 
