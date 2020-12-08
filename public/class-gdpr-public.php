@@ -239,7 +239,7 @@ class GDPR_Public {
 		$consents    = isset( $_POST['user_consents'] ) ? array_map( 'sanitize_text_field', (array) wp_unslash( $_POST['user_consents'] ) ) : array(); // phpcs:ignore
 		$cookies     = isset( $_POST['approved_cookies'] ) ? array_map( 'sanitize_text_field', (array) wp_unslash( $_POST['approved_cookies'] ) ) : array(); // phpcs:ignore
 		$all_cookies = isset( $_POST['all_cookies'] ) ? array_map( 'sanitize_text_field', (array) json_decode( wp_unslash( $_POST['all_cookies'] ) ) ) : array(); // phpcs:ignore
-
+		
 		$approved_cookies = array();
 		if ( ! empty( $cookies ) ) {
 			foreach ( $cookies as $cookie_array ) {
@@ -290,8 +290,17 @@ class GDPR_Public {
 				}
 			}
 		}
-
-		wp_send_json_success();
+		if ( empty ( $_COOKIE ) ) {
+			wp_send_json_error(
+				array(
+					'title'   => esc_html__( 'Warning!', 'gdpr' ),
+					'content' => esc_html__( 'Your browser is set to block cookies therefore we cannot record your acceptance. Please adjust your browser’s settings and try again.', 'gdpr' ),
+				)
+			);
+		} else {
+			wp_send_json_success();
+		}
+	
 	}
 
 	/**
