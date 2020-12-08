@@ -237,11 +237,13 @@ class GDPR_Admin {
 				unset( $consents[ $key ] );
 				continue;
 			}
+			
 			$output[ $key ] = array(
-				'name'         => sanitize_text_field( wp_unslash( $props['name'] ) ),
-				'policy-page'  => isset( $props['policy-page'] ) ? absint( $props['policy-page'] ) : 0,
-				'description'  => isset( $props['description'] ) ? wp_kses( wp_unslash( $props['description'] ), $this->allowed_html ) : '',
-				'registration' => isset( $props['registration'] ) ? wp_kses( wp_unslash( $props['registration'] ), $this->allowed_html ) : '',
+				'name'            => sanitize_text_field( wp_unslash( $props['name'] ) ),
+				'policy-page'     => isset( $props['policy-page'] ) ? absint( $props['policy-page'] ) : 0,
+				'policy-page-url' => isset( $props['policy-page-url'] ) ? sanitize_text_field( $props['policy-page-url'] ) : '',
+				'description'     => isset( $props['description'] ) ? wp_kses( wp_unslash( $props['description'] ), $this->allowed_html ) : '',
+				'registration'    => isset( $props['registration'] ) ? wp_kses( wp_unslash( $props['registration'] ), $this->allowed_html ) : '',
 			);
 		}
 		return $output;
