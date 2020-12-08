@@ -432,6 +432,18 @@
 				<?php endforeach ?>
 			<?php endif ?>
 		</div>
+
+		<hr>
+		<h2><?php esc_html_e( 'Reset Data', 'gdpr' ); ?></h2>
+		<p>
+			<?php
+			echo sprintf(
+				/* translators: External link with instructions on how to proceed. */
+				esc_html__( 'To reset plugin data please click %s.', 'gdpr' ),
+				'<a href="#" class="gdpr-reset-data" data-nonce="' . esc_attr( wp_create_nonce( 'gdpr_reset_data' ) ) .'">' . esc_html__( 'here', 'gdpr' ) . '</a>'
+			)
+			?>
+			</p>
 		<?php
 		do_action( 'gdpr_extra_settings' );
 		submit_button();
