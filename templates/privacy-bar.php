@@ -22,7 +22,17 @@ if ( 'top' === $args['bar_position'] ) {
 <div class="gdpr gdpr-privacy-bar" style="<?php echo esc_attr( $privacy_bar_style ); ?>">
 	<div class="gdpr-wrapper">
 		<div class="gdpr-content">
-			<p><?php  esc_html_e( 'Privacy Text Bar', 'gdpr' ); ?></p>
+		<p>
+		<?php if (__( 'Privacy Text Bar', 'gdpr' ) != 'Privacy Text Bar') { 
+			
+			esc_html_e( 'Privacy Text Bar', 'gdpr' );
+		} else {
+			echo nl2br( wp_kses_post( $args['content'] ) ); 	
+		}
+			
+			?>
+		
+		</p>
 		</div>
 		<div class="gdpr-right">
 			<?php if ( $args['show_cookie_cat_checkboxes'] ) : ?>

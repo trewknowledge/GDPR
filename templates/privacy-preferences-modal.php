@@ -65,7 +65,13 @@
 							<h4><?php esc_html_e( 'Consent Management', 'gdpr' ); ?></h4>
 						</header>
 						<div class="gdpr-info">
-							<p><?php esc_html_e( 'Privacy Text Consent', 'gdpr' ); ?></p>
+							<p><?php 
+							if (__( 'Privacy Text Consent', 'gdpr' ) != 'Privacy Text Consent') {
+								esc_html_e( 'Privacy Text Consent', 'gdpr' );
+							} else {
+								echo nl2br( esc_html( $args['cookie_privacy_excerpt'] ) ); 
+							}
+							 ?></p>
 							<?php if ( ! empty( $args['consent_types'] ) ) : ?>
 								<?php foreach ( $args['consent_types'] as $consent_key => $gdpr_type ) : ?>
 									<div class="gdpr-cookies-used">
