@@ -164,7 +164,16 @@
 			</div>
 			<footer>
 				<input type="submit" value="<?php esc_attr_e( 'Save Preferences', 'gdpr' ); ?>">
-				<span class="gdrp-cookie-footer-text"><?php esc_html_e( 'If you save your preferences without having selected a cookie, it will be equivalent to the rejection of all cookies', 'gdpr' ); ?></span>
+				<span class="gdrp-cookie-footer-text">
+					
+				<?php 
+							if (__( 'Privacy Text Consent button help', 'gdpr' ) != 'Privacy Text Consent button help') {
+								esc_html_e( 'Privacy Text Consent button help', 'gdpr' );
+							} else {
+								echo nl2br( esc_html( $args['gdpr_cookie_privacy_button_help'] ) ); 
+							}
+							 ?>
+			</span>
 			</footer>
 		</form>
 	</div>

@@ -138,6 +138,7 @@ class GDPR_Public {
 					'policy_disagree'       => esc_html__( 'By disagreeing you will no longer have access to our site and will be logged out.', 'gdpr' ),
 				),
 				'is_user_logged_in' => is_user_logged_in(),
+				'popUpVersion' => get_option( 'gdpr_popUpVersion', 1 ),
 				'refresh'           => get_option( 'gdpr_refresh_after_preferences_update', true ),
 			)
 		);
@@ -180,6 +181,7 @@ class GDPR_Public {
 	 */
 	public function privacy_preferences_modal() {
 		$cookie_privacy_excerpt = get_option( 'gdpr_cookie_privacy_excerpt', '' );
+		$gdpr_cookie_privacy_button_help = get_option('gdpr_cookie_privacy_button_help','');
 		$consent_types          = get_option( 'gdpr_consent_types', array() );
 		$approved_cookies       = isset( $_COOKIE['gdpr']['allowed_cookies'] ) ? json_decode( wp_unslash( $_COOKIE['gdpr']['allowed_cookies'] ) ) : array(); // phpcs:ignore
 		$user_consents          = isset( $_COOKIE['gdpr']['consent_types'] ) ? json_decode( wp_unslash( $_COOKIE['gdpr']['consent_types'] ) ) : array(); // phpcs:ignore
@@ -193,6 +195,7 @@ class GDPR_Public {
 		GDPR_Templates::get_template(
 			'privacy-preferences-modal.php', array(
 				'cookie_privacy_excerpt' => $cookie_privacy_excerpt,
+				'gdpr_cookie_privacy_button_help'=>$gdpr_cookie_privacy_button_help,
 				'consent_types'          => $consent_types,
 				'approved_cookies'       => $approved_cookies,
 				'user_consents'          => $user_consents,
