@@ -138,7 +138,8 @@ class GDPR_Public {
 					'policy_disagree'       => esc_html__( 'By disagreeing you will no longer have access to our site and will be logged out.', 'gdpr' ),
 				),
 				'is_user_logged_in' => is_user_logged_in(),
-				'popUpVersion' => get_option( 'gdpr_popUpVersion', 1 ),
+				'popUpVersion' 		=> get_option( 'gdpr_popUpVersion', 1 ),
+				'closeAccept'		=> get_option( 'gdrp_closeAccept',1 ),
 				'refresh'           => get_option( 'gdpr_refresh_after_preferences_update', true ),
 			)
 		);

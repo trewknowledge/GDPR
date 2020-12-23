@@ -112,6 +112,22 @@ gdpr_popUpVersion
 						</select>
 					</td>
 				</tr>
+
+				<tr>
+					<th scope="row">
+						<label for="gdrp_closeAccept"><?php esc_html_e( 'If close modal means accept', 'gdpr' ); ?>:</label>
+						
+					</th>
+					<td>
+						<?php $close_accept = get_option( 'gdrp_closeAccept', 'modal' ); ?>
+						<select name="gdrp_closeAccept" id="gdrp_closeAccept">
+							<option value="1" <?php selected( '1', $close_accept ); ?>><?php esc_html_e( 'Accept', 'gdpr' ); ?></option>
+							<option value="0" <?php selected( '0', $close_accept ); ?>><?php esc_html_e( 'No Accept', 'gdpr' ); ?></option>
+						</select>
+					</td>
+				</tr>
+
+
 			</tbody>
 		</table>
 		<hr>

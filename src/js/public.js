@@ -183,6 +183,7 @@ $( function() {
 		);
 	} );
 
+	
 	/**
 	 * Close the privacy/reconsent bar.
 	 * If user close the bar means that not accept cookies and you can't show it again
@@ -193,6 +194,12 @@ $( function() {
 		$( 'body' ).removeClass( 'gdpr-noscroll' );
 		$( window ).scrollTop( Math.abs( parseInt( scrollDistance, 10 ) ) );
 		$( '.gdpr.gdpr-privacy-bar, .gdpr.gdpr-reconsent-bar' ).slideUp( 600 );
+
+		// If close means that accept all cookies
+		if ( '1' == GDPR.closeAccept ) {
+			
+			$( '.gdpr-privacy-preferences-frm' ).submit();
+		}
 		Cookies.set( 'gdpr[privacy_bar]', GDPR.popUpVersion, { expires: 365 } );
 	} );
 
@@ -200,6 +207,7 @@ $( function() {
 		$( '.gdpr-overlay' ).fadeOut();
 		$( 'body' ).removeClass( 'gdpr-noscroll' );
 		$( '.gdpr.gdpr-general-confirmation .gdpr-wrapper' ).fadeOut();
+
 		Cookies.set( 'gdpr[privacy_bar]', GDPR.popUpVersion, { expires: 365 } );
 	} );
 

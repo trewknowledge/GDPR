@@ -186,6 +186,7 @@ class GDPR_Admin {
 		$settings = array(
 			
 			'gdpr_popUpVersion' =>'sanitize_text_field',
+			'gdrp_closeAccept' => 'sanitize_text_field',
 			'gdpr_cookie_privacy_button_help' => 'sanitize_text_field',
 			'gdpr_cookie_banner_content'               => array( $this, 'sanitize_with_links' ),
 			'gdpr_cookie_privacy_excerpt'              => 'sanitize_textarea_field',
