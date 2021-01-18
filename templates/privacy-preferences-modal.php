@@ -20,7 +20,7 @@
 			<header>
 				<div class="gdpr-box-title">
 					<h3><?php esc_html_e( 'Privacy Preference Center', 'gdpr' ); ?></h3>
-					<span class="gdpr-close"></span>
+					<!--<span class="gdpr-close"></span> -->
 				</div>
 			</header>
 			<div class="gdpr-mobile-menu">

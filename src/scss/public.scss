@@ -90,7 +90,7 @@
 		color: #fff;
 		z-index: 9999999;
 		.gdpr-wrapper{
-			padding: 20px 60px;
+			padding: 30px;
 			display: flex;
 			justify-content: space-between;
 			align-items: center;
@@ -114,8 +114,13 @@
 				width: 100%;
 				padding: 0 0 20px 0;
 				text-align: center;
+				display: flex;
+				flex: 2;
+				flex-direction: column;
+				flex-basis: 100%;
+				
 				@include breakpoint( xxlarge ) {
-					flex: 1;
+					
 					padding: 0 100px 0 0;
 					text-align: left;
 				}
@@ -144,7 +149,11 @@
 			}
 			.gdpr-right {
 				display: flex;
-				align-items: center;
+				flex: 1;
+				flex-direction: column;
+				flex-basis: 100%;
+			
+				align-items: flex-end;
 				@include breakpoint( medium-small ) {
 					flex-direction: column;
 				}
@@ -251,7 +260,7 @@
 			color: #fff;
 			float: left;
 			&::before {
-				content: '\276F';
+				/*content: '\276F';*/
 				font-size: 1.1em;
 				font-weight: 400;
 				padding-right: 5px;

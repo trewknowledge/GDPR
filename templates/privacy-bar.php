@@ -52,10 +52,10 @@ if ( 'top' === $args['bar_position'] ) {
 				</ul>
 			<?php endif ?>
 			<div class="gdpr-buttons">
-				<button class="gdpr-preferences" type="button"><?php esc_html_e( 'Privacy Preferences', 'gdpr' ); ?></button>
-				<button class="gdpr-agreement" type="button"><?php echo esc_html( $args['button_text'] ); ?></button>
+				<button class="gdpr-preferences" type="button"><?php esc_html_e( 'Configure', 'gdpr' ); ?></button>
+				<button class="gdpr-agreement" type="button"><?php esc_html_e( 'Accept', 'gdpr' ); ?></button>
 			</div>
-			<span class="gdpr-close"></span>
+			<!--<span class="gdpr-close"></span> -->
 		</div>
 	</div>
 </div>

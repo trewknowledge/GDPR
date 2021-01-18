@@ -151,6 +151,7 @@ $( function() {
 		e.preventDefault();
 		let consents = [];
 		const nonce = $( this ).find( '#agree-with-new-policies-nonce' ).val();
+		$( '.gdpr.gdpr-privacy-bar' ).delay( 1000 ).slideDown( 600 );
 		$( this ).find( '[name="gdpr-updated-policy"]' ).each( function() {
 			consents.push( $( this ).val() );
 		} );
