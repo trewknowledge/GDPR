@@ -67,9 +67,10 @@
 						<div class="gdpr-info">
 							<p><?php 
 							if (__( 'Privacy Text Consent', 'gdpr' ) != 'Privacy Text Consent') {
-								esc_html_e( 'Privacy Text Consent', 'gdpr' );
+								nl2br(wp_kses(__( 'Privacy Text Consent', 'gdpr' ), $args['allowed_html'] ));
 							} else {
-								echo nl2br( esc_html( $args['cookie_privacy_excerpt'] ) ); 
+								echo nl2br(wp_kses( $args['cookie_privacy_excerpt'], $args['allowed_html'] ));
+								
 							}
 							 ?></p>
 							<?php if ( ! empty( $args['consent_types'] ) ) : ?>

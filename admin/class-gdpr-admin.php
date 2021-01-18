@@ -189,7 +189,7 @@ class GDPR_Admin {
 			'gdrp_closeAccept' => 'sanitize_text_field',
 			'gdpr_cookie_privacy_button_help' => 'sanitize_text_field',
 			'gdpr_cookie_banner_content'               => array( $this, 'sanitize_with_links' ),
-			'gdpr_cookie_privacy_excerpt'              => 'sanitize_textarea_field',
+			'gdpr_cookie_privacy_excerpt'              => array( $this, 'sanitize_with_links' ),
 			'gdpr_cookie_popup_content'                => array( $this, 'sanitize_cookie_categories' ),
 			'gdpr_email_limit'                         => 'intval',
 			'gdpr_consent_types'                       => array( $this, 'sanitize_consents' ),
@@ -205,7 +205,7 @@ class GDPR_Admin {
 			'gdpr_display_cookie_categories_in_bar'    => 'boolval',
 			'gdpr_hide_from_bots'                      => 'boolval',
 			'gdpr_reconsent_template'                  => 'sanitize_text_field',
-			'gdpr_privacy_bar_position'								 => 'sanitize_text_field',
+			'gdpr_privacy_bar_position'				  => 'sanitize_text_field',
 		);
 		foreach ( $settings as $option_name => $sanitize_callback ) {
 			register_setting( 'gdpr', $option_name, array( 'sanitize_callback' => $sanitize_callback ) );
@@ -220,6 +220,7 @@ class GDPR_Admin {
 	 * @author Fernando Claussen <fernandoclaussen@gmail.com>
 	 */
 	public function sanitize_with_links( $string ) {
+
 		return wp_kses( $string, $this->allowed_html );
 	}
 

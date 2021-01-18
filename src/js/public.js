@@ -46,12 +46,14 @@ $( function() {
 		e.preventDefault();
 		const that = $( this );
 		const formData = $( this ).serialize();
-
+	
+		$( '.gdpr.gdpr-privacy-bar' ).delay( 1000 ).slideDown( 600 );
 		$.post(
 			GDPR.ajaxurl,
 			formData,
 			function( response ) {
 				if ( response.success ) {
+					
 					Cookies.set( 'gdpr[privacy_bar]', GDPR.popUpVersion, { expires: 365 } );
 					if ( GDPR.refresh ) {
 						window.location.reload();
