@@ -5,6 +5,7 @@ import { displayNotification, gdprFunctions } from './includes/helpers';
 import '../scss/public.scss';
 
 const queryArgs  = location.search;
+
 const baseUrl    = location.protocol + '//' + location.host + location.pathname;
 
 window.has_consent = function( consent ) {
@@ -42,16 +43,20 @@ $( function() {
 	} );
 
 	$( document ).on( 'submit', '.gdpr-privacy-preferences-frm', function( e ) {
+		$( '.gdpr.gdpr-privacy-preferences .gdpr-wrapper' ).fadeOut();
+		$( '.gdpr-privacy-bar' ).fadeOut();
 		e.preventDefault();
 		const that = $( this );
 		const formData = $( this ).serialize();
-
+	
+		
 		$.post(
 			GDPR.ajaxurl,
 			formData,
 			function( response ) {
 				if ( response.success ) {
-					Cookies.set( 'gdpr[privacy_bar]', 1, { expires: 365 } );
+					
+					Cookies.set( 'gdpr[privacy_bar]', GDPR.popUpVersion, { expires: 365 } );
 					if ( GDPR.refresh ) {
 						window.location.reload();
 					} else {
@@ -90,8 +95,7 @@ $( function() {
 		const checked = $( this ).prop( 'checked' );
 		$( '[data-category="' + target + '"]' ).prop( 'checked', checked );
 	} );
-
-	if ( ! Cookies.get( 'gdpr[privacy_bar]' ) ) {
+	if ( ! Cookies.get( 'gdpr[privacy_bar]' ) || Cookies.get( 'gdpr[privacy_bar]' ) != GDPR.popUpVersion ) {
 		if ( 0 == $( '.gdpr-reconsent-bar, .gdpr-reconsent' ).length ) {
 			$( '.gdpr.gdpr-privacy-bar' ).delay( 1000 ).slideDown( 600 );
 		}
@@ -111,7 +115,8 @@ $( function() {
 	/**
 	 * This runs when user clicks on privacy preferences bar agree button.
 	 * It submits the form that is still hidden with the cookies and consent options.
-	 */
+	 *
+	 **/
 	$( document ).on( 'click', '.gdpr.gdpr-privacy-bar .gdpr-agreement', function() {
 		$( '.gdpr-privacy-preferences-frm' ).submit();
 	} );
@@ -135,7 +140,7 @@ $( function() {
 						window.location.reload();
 					} else {
 						$( '.gdpr-reconsent-bar' ).slideUp( 600 );
-						if ( ! Cookies.get( 'gdpr[privacy_bar]' ) ) {
+						if ( ! f.get( 'gdpr[privacy_bar]' || f.get( 'gdpr[privacy_bar]' ) != GDPR.popUpVersion  ) ) {
 							$( '.gdpr.gdpr-privacy-bar' ).delay( 1000 ).slideDown( 600 );
 						};
 					}
@@ -150,6 +155,7 @@ $( function() {
 		e.preventDefault();
 		let consents = [];
 		const nonce = $( this ).find( '#agree-with-new-policies-nonce' ).val();
+		$( '.gdpr.gdpr-privacy-bar' ).delay( 1000 ).slideDown( 600 );
 		$( this ).find( '[name="gdpr-updated-policy"]' ).each( function() {
 			consents.push( $( this ).val() );
 		} );
@@ -171,7 +177,7 @@ $( function() {
 						$( 'body' ).removeClass( 'gdpr-noscroll' );
 						$( window ).scrollTop( Math.abs( parseInt( scrollDistance, 10 ) ) );
 						$( '.gdpr.gdpr-reconsent .gdpr-wrapper' ).fadeOut();
-						if ( ! Cookies.get( 'gdpr[privacy_bar]' ) ) {
+						if ( ! Cookies.get( 'gdpr[privacy_bar]' ) || Cookies.get( 'gdpr[privacy_bar]' ) != GDPR.popUpVersion ) {
 							$( '.gdpr.gdpr-privacy-bar' ).delay( 1000 ).slideDown( 600 );
 						};
 					}
@@ -182,8 +188,10 @@ $( function() {
 		);
 	} );
 
+	
 	/**
 	 * Close the privacy/reconsent bar.
+	 * If user close the bar means that not accept cookies and you can't show it again
 	 */
 	$( document ).on( 'click', '.gdpr.gdpr-privacy-bar .gdpr-close, .gdpr.gdpr-reconsent-bar .gdpr-close', function() {
 		const scrollDistance = $( 'body' ).css( 'top' );
@@ -191,22 +199,33 @@ $( function() {
 		$( 'body' ).removeClass( 'gdpr-noscroll' );
 		$( window ).scrollTop( Math.abs( parseInt( scrollDistance, 10 ) ) );
 		$( '.gdpr.gdpr-privacy-bar, .gdpr.gdpr-reconsent-bar' ).slideUp( 600 );
+
+		// If close means that accept all cookies
+		if ( '1' == GDPR.closeAccept ) {
+			
+			$( '.gdpr-privacy-preferences-frm' ).submit();
+		}
+		Cookies.set( 'gdpr[privacy_bar]', GDPR.popUpVersion, { expires: 365 } );
 	} );
 
 	$( document ).on( 'click', '.gdpr.gdpr-general-confirmation .gdpr-close', function() {
 		$( '.gdpr-overlay' ).fadeOut();
 		$( 'body' ).removeClass( 'gdpr-noscroll' );
 		$( '.gdpr.gdpr-general-confirmation .gdpr-wrapper' ).fadeOut();
+
+		Cookies.set( 'gdpr[privacy_bar]', GDPR.popUpVersion, { expires: 365 } );
 	} );
 
 	/**
 	 * Display the privacy preferences modal.
+	 * By default if check preferences all cookies must be dissabled
 	 */
 	$( document ).on( 'click', '.gdpr-preferences', function( e ) {
 		e.preventDefault();
 		const scrollDistance = $( window ).scrollTop();
 		const tab = $( this ).data( 'tab' );
 		$( '.gdpr-overlay' ).fadeIn();
+		$( '.gdpr-cookie-category' ).prop( 'checked', false);
 		$( 'body' ).addClass( 'gdpr-noscroll' ).css( 'top', -scrollDistance );
 		$( '.gdpr.gdpr-privacy-preferences .gdpr-wrapper' ).fadeIn();
 		if ( tab ) {
