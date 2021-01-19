@@ -43,11 +43,13 @@ $( function() {
 	} );
 
 	$( document ).on( 'submit', '.gdpr-privacy-preferences-frm', function( e ) {
+		$( '.gdpr.gdpr-privacy-preferences .gdpr-wrapper' ).fadeOut();
+		$( '.gdpr-privacy-bar' ).fadeOut();
 		e.preventDefault();
 		const that = $( this );
 		const formData = $( this ).serialize();
 	
-		$( '.gdpr.gdpr-privacy-bar' ).delay( 1000 ).slideDown( 600 );
+		
 		$.post(
 			GDPR.ajaxurl,
 			formData,
