@@ -438,5 +438,52 @@
 		?>
 	</form>
 
+	<!-- import - export -->
+	<hr>
+	<h2><?php esc_html_e( 'Settings import/export', 'gdpr' ); ?></h2>
+	<table class="form-table">
+		<tbody>
+			<tr>
+				<th scope="row">
+					<label for="gdpr_export_settings"><?php esc_html_e( 'Export Settings', 'gdpr' ); ?>:</label>
+					<span class="screen-reader-text"><?php esc_attr_e( 'Export the plugin settings for this site as a .json file. This allows you to easily import the configuration into another site.', 'gdpr' ); ?></span>
+					<span data-tooltip="<?php esc_attr_e( 'Export the plugin settings for this site as a .json file. This allows you to easily import the configuration into another site.', 'gdpr' ); ?>">
+						<span class="dashicons dashicons-info"></span>
+					</span>
+				</th>
+				<td>
+					<form method="POST">
+						<p><input type="hidden" name="gdpr_action" value="export_settings" /></p>
+						<p>
+							<?php wp_nonce_field( 'gdpr_export_nonce', 'gdpr_export_nonce' ); ?>
+							<?php submit_button( __( 'Export', 'gdpr' ), 'primary', 'export_settings', false ); ?>
+						</p>
+					</form>
+				</td>
+			</tr>
+			<tr>
+				<th scope="row">
+					<label for="gdpr_import_settings"><?php esc_html_e( 'Import Settings', 'gdpr' ); ?>:</label>
+					<span class="screen-reader-text"><?php esc_attr_e( 'Import the plugin settings from a .json file. This file can be obtained by exporting the settings on another site using the form above.', 'gdpr' ); ?></span>
+					<span data-tooltip="<?php esc_attr_e( 'Import the plugin settings from a .json file. This file can be obtained by exporting the settings on another site using the form above.', 'gdpr' ); ?>">
+						<span class="dashicons dashicons-info"></span>
+					</span>
+				</th>
+				<td>
+					<form method="POST" enctype="multipart/form-data">
+						<p>
+							<input type="file" name="GDPR_settings_file"/>
+						</p>
+						<p>
+							<input type="hidden" name="gdpr_action" value="import_settings" />
+							<?php wp_nonce_field( 'gdpr_import_nonce', 'gdpr_import_nonce' ); ?>
+							<?php submit_button( __( 'Import', 'gdpr' ), 'primary', 'import_settings', false ); ?>
+						</p>
+					</form>
+				</td>
+			</tr>
+		</tbody>
+	</table>
+
 <!-- #poststuff -->
 </div>
