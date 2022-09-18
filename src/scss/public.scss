@@ -51,7 +51,7 @@
 		line-height: 1.5;
 		display: block;
 		min-width: auto;
-		max-width: auto;
+		max-width: inherit;
 		cursor: pointer;
 		&::before, &::after {
 			display: inline-block;
@@ -90,13 +90,12 @@
 		color: #fff;
 		z-index: 9999999;
 		.gdpr-wrapper{
-			padding: 20px 60px;
+			padding: 30px;
 			display: flex;
 			justify-content: space-between;
 			align-items: center;
 			box-sizing: border-box;
 			flex-direction: column;
-			align-items: center;
 			@include breakpoint( xxlarge ) {
 				flex-direction: row;
 			}
@@ -114,8 +113,13 @@
 				width: 100%;
 				padding: 0 0 20px 0;
 				text-align: center;
+				display: flex;
+				flex: 2;
+				flex-direction: column;
+				flex-basis: 100%;
+
 				@include breakpoint( xxlarge ) {
-					flex: 1;
+
 					padding: 0 100px 0 0;
 					text-align: left;
 				}
@@ -144,7 +148,11 @@
 			}
 			.gdpr-right {
 				display: flex;
-				align-items: center;
+				flex: 1;
+				flex-direction: column;
+				flex-basis: 100%;
+
+				align-items: flex-end;
 				@include breakpoint( medium-small ) {
 					flex-direction: column;
 				}
@@ -251,7 +259,7 @@
 			color: #fff;
 			float: left;
 			&::before {
-				content: '\276F';
+				/*content: '\276F';*/
 				font-size: 1.1em;
 				font-weight: 400;
 				padding-right: 5px;
@@ -295,7 +303,7 @@
 			text-decoration: none;
 			text-shadow: 0 -1px 1px #006799, 1px 0 1px #006799, 0 1px 1px #006799, -1px 0 1px #006799;
 			@include breakpoint(small-only) {
-				// padding: 7px 16px;
+				padding: inherit;
 			}
 			&:hover {
 				background: #008ec2;
@@ -392,11 +400,15 @@
 					left: 160px;
 					right: 0;
 					display: flex;
-					justify-content: space-between;
+					/*justify-content: space-between;*/
 					align-items: flex-end;
 					@include breakpoint(small-only) {
 						left: 0;
 						bottom: 5px;
+					}
+					.gdrp-cookie-footer-text {
+						font-size:12px!important;
+						max-width: 400px!important;
 					}
 					.gdpr-buttons {
 						display: flex;
@@ -699,6 +711,7 @@
 									span {
 										font-style: italic;
 									}
+
 								}
 							}
 						}

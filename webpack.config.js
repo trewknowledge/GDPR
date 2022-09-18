@@ -6,12 +6,13 @@ const DEV = 'production' !== process.env.NODE_ENV;
  */
 const path = require( 'path' );
 const MiniCssExtractPlugin = require( 'mini-css-extract-plugin' );
-const OptimizeCssAssetsPlugin = require( 'optimize-css-assets-webpack-plugin' );
+const OptimizeCssAssetsPlugin = require( '@soda/friendly-errors-webpack-plugin' );
 const cssnano = require( 'cssnano' );
-const CleanWebpackPlugin = require( 'clean-webpack-plugin' );
-const TerserPlugin = require('terser-webpack-plugin');
+const { CleanWebpackPlugin } = require( 'clean-webpack-plugin' );
+const ESLintPlugin = require( 'eslint-webpack-plugin' );
+const TerserPlugin = require( 'terser-webpack-plugin' );
 const StyleLintPlugin = require( 'stylelint-webpack-plugin' );
-const FriendlyErrorsPlugin = require( 'friendly-errors-webpack-plugin' );
+const FriendlyErrorsPlugin = require( '@soda/friendly-errors-webpack-plugin' );
 
 // JS Directory path.
 const JSDir = path.resolve( __dirname, 'src/js' );
@@ -21,7 +22,7 @@ const DIST_DIR = path.resolve( __dirname, 'dist' );
 
 const entry = {
 	admin: JSDir + '/admin.js',
-	public: JSDir + '/public.js',
+	public: JSDir + '/public.js'
 };
 
 const output = {
@@ -33,14 +34,17 @@ const output = {
  * Note: argv.mode will return 'development' or 'production'.
  */
 const plugins = ( argv ) => [
-	new CleanWebpackPlugin( [ DIST_DIR ] ),
+	new CleanWebpackPlugin( ),
 
 	new MiniCssExtractPlugin( {
 		filename: 'css/[name].css'
 	} ),
-
+	new ESLintPlugin(  ),
 	new StyleLintPlugin( {
-		'extends': 'stylelint-config-wordpress/scss'
+		'extends': [
+			'stylelint-config-standard-scss',
+			'@wordpress/stylelint-config/scss'
+		]
 	} ),
 
 	new FriendlyErrorsPlugin( {
@@ -49,12 +53,7 @@ const plugins = ( argv ) => [
 ];
 
 const rules = [
-	{
-		enforce: 'pre',
-		test: /\.(js|jsx)$/,
-		exclude: /node_modules/,
-		use: 'eslint-loader'
-	},
+
 	{
 		test: /\.js$/,
 		use: {
@@ -124,15 +123,14 @@ const optimization = [
 	} ),
 
 	new TerserPlugin( {
-		cache: false,
 		parallel: true,
-		sourceMap: false,
-    extractComments: false,
-    terserOptions: {
-      mangle: {
-        reserved: ["__"]
-      }
-    }
+		extractComments: false,
+		terserOptions: {
+			sourceMap: false,
+			mangle: {
+				reserved: [ '__' ]
+			}
+		}
 	} )
 ];
 

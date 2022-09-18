@@ -5,6 +5,7 @@ import { displayNotification, gdprFunctions } from './includes/helpers';
 import '../scss/public.scss';
 
 const queryArgs  = location.search;
+
 const baseUrl    = location.protocol + '//' + location.host + location.pathname;
 
 window.has_consent = function( consent ) {
@@ -30,10 +31,11 @@ window.is_allowed_cookie = function ( cookie ) {
 };
 
 $( function() {
-
+	const body = $( 'body' );
+	const privacyPreferences = $( '.gdpr.gdpr-privacy-preferences .gdpr-tabs, .gdpr.gdpr-reconsent .gdpr-tabs' );
 	if ( -1 !== queryArgs.indexOf( 'notify=1' ) ) {
 		window.history.replaceState( {}, document.title, baseUrl );
-		$( 'body' ).addClass( 'gdpr-notification' );
+		body.addClass( 'gdpr-notification' );
 	}
 
 	$( document ).on( 'click', '.gdpr.gdpr-general-confirmation button', function( e ) {
@@ -42,22 +44,24 @@ $( function() {
 	} );
 
 	$( document ).on( 'submit', '.gdpr-privacy-preferences-frm', function( e ) {
+		$( '.gdpr.gdpr-privacy-preferences .gdpr-wrapper' ).fadeOut();
+		$( '.gdpr-privacy-bar' ).fadeOut();
 		e.preventDefault();
 		const that = $( this );
 		const formData = $( this ).serialize();
-
 		$.post(
 			GDPR.ajaxurl,
 			formData,
 			function( response ) {
 				if ( response.success ) {
-					Cookies.set( 'gdpr[privacy_bar]', 1, { expires: 365 } );
+					Cookies.set( 'gdpr[privacy_bar]', GDPR.popUpVersion, { expires: 365 } );
 					if ( GDPR.refresh ) {
 						window.location.reload();
 					} else {
-						const scrollDistance = $( 'body' ).css( 'top' );
+
+						const scrollDistance = body.css( 'top' );
 						$( '.gdpr-overlay' ).fadeOut();
-						$( 'body' ).removeClass( 'gdpr-noscroll' );
+						body.removeClass( 'gdpr-noscroll' );
 						$( window ).scrollTop( Math.abs( parseInt( scrollDistance, 10 ) ) );
 						$( '.gdpr.gdpr-privacy-preferences .gdpr-wrapper' ).fadeOut();
 						$( '.gdpr-privacy-bar' ).fadeOut();
@@ -90,12 +94,11 @@ $( function() {
 		const checked = $( this ).prop( 'checked' );
 		$( '[data-category="' + target + '"]' ).prop( 'checked', checked );
 	} );
-
-	if ( ! Cookies.get( 'gdpr[privacy_bar]' ) ) {
-		if ( 0 == $( '.gdpr-reconsent-bar, .gdpr-reconsent' ).length ) {
+	if ( ! Cookies.get( 'gdpr[privacy_bar]' ) || Cookies.get( 'gdpr[privacy_bar]' ) !== GDPR.popUpVersion ) {
+		if ( 0 === $( '.gdpr-reconsent-bar, .gdpr-reconsent' ).length ) {
 			$( '.gdpr.gdpr-privacy-bar' ).delay( 1000 ).slideDown( 600 );
 		}
-	};
+	}
 
 	if ( 0 < $( '.gdpr-reconsent-bar' ).length ) {
 		$( '.gdpr.gdpr-reconsent-bar' ).delay( 1000 ).slideDown( 600 );
@@ -104,14 +107,15 @@ $( function() {
 	if ( 0 < $( '.gdpr-reconsent' ).length ) {
 		$( '.gdpr-overlay' ).fadeIn( 400, function() {
 			$( '.gdpr.gdpr-reconsent .gdpr-wrapper' ).fadeIn();
-			$( 'body' ).addClass( 'gdpr-noscroll' ).delay( 1000 );
+			body.addClass( 'gdpr-noscroll' ).delay( 1000 );
 		} );
 	}
 
 	/**
 	 * This runs when user clicks on privacy preferences bar agree button.
 	 * It submits the form that is still hidden with the cookies and consent options.
-	 */
+	 *
+	 **/
 	$( document ).on( 'click', '.gdpr.gdpr-privacy-bar .gdpr-agreement', function() {
 		$( '.gdpr-privacy-preferences-frm' ).submit();
 	} );
@@ -135,9 +139,9 @@ $( function() {
 						window.location.reload();
 					} else {
 						$( '.gdpr-reconsent-bar' ).slideUp( 600 );
-						if ( ! Cookies.get( 'gdpr[privacy_bar]' ) ) {
+						if ( ! f.get( 'gdpr[privacy_bar]' || f.get( 'gdpr[privacy_bar]' ) !== GDPR.popUpVersion  ) ) {
 							$( '.gdpr.gdpr-privacy-bar' ).delay( 1000 ).slideDown( 600 );
-						};
+						}
 					}
 				} else {
 					displayNotification( res.data.title, res.data.content );
@@ -150,6 +154,7 @@ $( function() {
 		e.preventDefault();
 		let consents = [];
 		const nonce = $( this ).find( '#agree-with-new-policies-nonce' ).val();
+		$( '.gdpr.gdpr-privacy-bar' ).delay( 1000 ).slideDown( 600 );
 		$( this ).find( '[name="gdpr-updated-policy"]' ).each( function() {
 			consents.push( $( this ).val() );
 		} );
@@ -166,14 +171,15 @@ $( function() {
 					if ( GDPR.refresh ) {
 						window.location.reload();
 					} else {
-						const scrollDistance = $( 'body' ).css( 'top' );
+
+						const scrollDistance = body.css( 'top' );
 						$( '.gdpr-overlay' ).fadeOut();
-						$( 'body' ).removeClass( 'gdpr-noscroll' );
+						body.removeClass( 'gdpr-noscroll' );
 						$( window ).scrollTop( Math.abs( parseInt( scrollDistance, 10 ) ) );
 						$( '.gdpr.gdpr-reconsent .gdpr-wrapper' ).fadeOut();
-						if ( ! Cookies.get( 'gdpr[privacy_bar]' ) ) {
+						if ( ! Cookies.get( 'gdpr[privacy_bar]' ) || Cookies.get( 'gdpr[privacy_bar]' ) !==  GDPR.popUpVersion ) {
 							$( '.gdpr.gdpr-privacy-bar' ).delay( 1000 ).slideDown( 600 );
-						};
+						}
 					}
 				} else {
 					displayNotification( res.data.title, res.data.content );
@@ -184,30 +190,42 @@ $( function() {
 
 	/**
 	 * Close the privacy/reconsent bar.
+	 * If user close the bar means that not accept cookies and you can't show it again
 	 */
 	$( document ).on( 'click', '.gdpr.gdpr-privacy-bar .gdpr-close, .gdpr.gdpr-reconsent-bar .gdpr-close', function() {
-		const scrollDistance = $( 'body' ).css( 'top' );
+		const scrollDistance = body.css( 'top' );
 		$( '.gdpr-overlay' ).fadeOut();
-		$( 'body' ).removeClass( 'gdpr-noscroll' );
+		body.removeClass( 'gdpr-noscroll' );
 		$( window ).scrollTop( Math.abs( parseInt( scrollDistance, 10 ) ) );
 		$( '.gdpr.gdpr-privacy-bar, .gdpr.gdpr-reconsent-bar' ).slideUp( 600 );
+
+		// If close means that accept all cookies
+		if ( '1' === GDPR.closeAccept ) {
+
+			$( '.gdpr-privacy-preferences-frm' ).submit();
+		}
+		Cookies.set( 'gdpr[privacy_bar]', GDPR.popUpVersion, { expires: 365 } );
 	} );
 
 	$( document ).on( 'click', '.gdpr.gdpr-general-confirmation .gdpr-close', function() {
 		$( '.gdpr-overlay' ).fadeOut();
-		$( 'body' ).removeClass( 'gdpr-noscroll' );
+		body.removeClass( 'gdpr-noscroll' );
 		$( '.gdpr.gdpr-general-confirmation .gdpr-wrapper' ).fadeOut();
+
+		Cookies.set( 'gdpr[privacy_bar]', GDPR.popUpVersion, { expires: 365 } );
 	} );
 
 	/**
 	 * Display the privacy preferences modal.
+	 * By default if check preferences all cookies must be dissabled
 	 */
 	$( document ).on( 'click', '.gdpr-preferences', function( e ) {
 		e.preventDefault();
 		const scrollDistance = $( window ).scrollTop();
 		const tab = $( this ).data( 'tab' );
 		$( '.gdpr-overlay' ).fadeIn();
-		$( 'body' ).addClass( 'gdpr-noscroll' ).css( 'top', -scrollDistance );
+		$( '.gdpr-cookie-category' ).prop( 'checked', false );
+		body.addClass( 'gdpr-noscroll' ).css( 'top', -scrollDistance );
 		$( '.gdpr.gdpr-privacy-preferences .gdpr-wrapper' ).fadeIn();
 		if ( tab ) {
 			$( '.gdpr.gdpr-privacy-preferences .gdpr-wrapper .gdpr-tabs [data-target="' + tab + '"]' ).click();
@@ -219,10 +237,10 @@ $( function() {
 	 */
 	$( document ).on( 'click', '.gdpr.gdpr-privacy-preferences .gdpr-close', function( e ) {
 		e.preventDefault();
-		const scrollDistance = $( 'body' ).css( 'top' );
+		const scrollDistance = body.css( 'top' );
 		if ( ! $( '.gdpr-reconsent .gdpr-wrapper' ).is( ':visible' ) ) {
 			$( '.gdpr-overlay' ).fadeOut();
-			$( 'body' ).removeClass( 'gdpr-noscroll' );
+			body.removeClass( 'gdpr-noscroll' );
 			$( window ).scrollTop( Math.abs( parseInt( scrollDistance, 10 ) ) );
 		}
 		$( '.gdpr.gdpr-privacy-preferences .gdpr-wrapper' ).fadeOut();
@@ -235,10 +253,9 @@ $( function() {
 		const target = '.' + $( this ).data( 'target' );
 		$( '.gdpr.gdpr-privacy-preferences .gdpr-tab-content > div, .gdpr.gdpr-reconsent .gdpr-tab-content > div' ).removeClass( 'gdpr-active' );
 		$( '.gdpr.gdpr-privacy-preferences .gdpr-tab-content ' + target + ', .gdpr.gdpr-reconsent .gdpr-tab-content ' + target ).addClass( 'gdpr-active' );
-
-		if ( $( '.gdpr.gdpr-privacy-preferences .gdpr-tabs, .gdpr.gdpr-reconsent .gdpr-tabs' ).hasClass( 'gdpr-mobile-expanded' ) ) {
+		if ( privacyPreferences.hasClass( 'gdpr-mobile-expanded' ) ) {
 			$( '.gdpr.gdpr-privacy-preferences .gdpr-mobile-menu button, .gdpr.gdpr-reconsent .gdpr-mobile-menu button' ).removeClass( 'gdpr-active' );
-			$( '.gdpr.gdpr-privacy-preferences .gdpr-tabs, .gdpr.gdpr-reconsent .gdpr-tabs' ).toggle();
+			privacyPreferences.toggle();
 		}
 
 		$( '.gdpr.gdpr-privacy-preferences .gdpr-tabs button, .gdpr.gdpr-reconsent .gdpr-tabs button' ).removeClass( 'gdpr-active' );
@@ -260,13 +277,13 @@ $( function() {
 	 */
 	$( document ).on( 'click', '.gdpr.gdpr-privacy-preferences .gdpr-mobile-menu button, .gdpr.gdpr-reconsent .gdpr-mobile-menu button', function( e ) {
 		$( this ).toggleClass( 'gdpr-active' );
-		$( '.gdpr.gdpr-privacy-preferences .gdpr-tabs, .gdpr.gdpr-reconsent .gdpr-tabs' ).toggle().addClass( 'gdpr-mobile-expanded' );
+		privacyPreferences.toggle().addClass( 'gdpr-mobile-expanded' );
 	} );
 
 	$( window ).resize( function() {
-		if ( 640 < $( window ).width() && $( '.gdpr.gdpr-privacy-preferences .gdpr-tabs, .gdpr.gdpr-reconsent .gdpr-tabs' ).hasClass( 'gdpr-mobile-expanded' ) ) {
+		if ( 640 < $( window ).width() && privacyPreferences.hasClass( 'gdpr-mobile-expanded' ) ) {
 			$( '.gdpr.gdpr-privacy-preferences .gdpr-mobile-menu button, .gdpr.gdpr-reconsent .gdpr-mobile-menu button' ).removeClass( 'gdpr-active' );
-			$( '.gdpr.gdpr-privacy-preferences .gdpr-tabs, .gdpr.gdpr-reconsent .gdpr-tabs' ).removeClass( 'gdpr-mobile-expanded' ).removeAttr( 'style' );
+			privacyPreferences.removeClass( 'gdpr-mobile-expanded' ).removeAttr( 'style' );
 		}
 	} );
 
@@ -289,13 +306,13 @@ $( function() {
 		}
 	} );
 
-	if ( $( 'body' ).hasClass( 'gdpr-notification' ) ) {
+	if ( body.hasClass( 'gdpr-notification' ) ) {
 		const scrollDistance = $( window ).scrollTop();
 		$( '.gdpr-overlay' ).fadeIn( 400, function() {
 			$( '.gdpr.gdpr-general-confirmation .gdpr-wrapper' ).css( {
 				'display': 'flex'
 			} ).hide().fadeIn();
-			$( 'body' ).addClass( 'gdpr-noscroll' ).css( 'top', -scrollDistance );
+			body.addClass( 'gdpr-noscroll' ).css( 'top', -scrollDistance );
 		} );
 	}
 
