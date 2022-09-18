@@ -51,7 +51,7 @@
 		line-height: 1.5;
 		display: block;
 		min-width: auto;
-		max-width: auto;
+		max-width: inherit;
 		cursor: pointer;
 		&::before, &::after {
 			display: inline-block;
@@ -96,7 +96,6 @@
 			align-items: center;
 			box-sizing: border-box;
 			flex-direction: column;
-			align-items: center;
 			@include breakpoint( xxlarge ) {
 				flex-direction: row;
 			}
@@ -118,9 +117,9 @@
 				flex: 2;
 				flex-direction: column;
 				flex-basis: 100%;
-				
+
 				@include breakpoint( xxlarge ) {
-					
+
 					padding: 0 100px 0 0;
 					text-align: left;
 				}
@@ -152,7 +151,7 @@
 				flex: 1;
 				flex-direction: column;
 				flex-basis: 100%;
-			
+
 				align-items: flex-end;
 				@include breakpoint( medium-small ) {
 					flex-direction: column;
@@ -304,7 +303,7 @@
 			text-decoration: none;
 			text-shadow: 0 -1px 1px #006799, 1px 0 1px #006799, 0 1px 1px #006799, -1px 0 1px #006799;
 			@include breakpoint(small-only) {
-				// padding: 7px 16px;
+				padding: inherit;
 			}
 			&:hover {
 				background: #008ec2;
@@ -712,10 +711,8 @@
 									span {
 										font-style: italic;
 									}
-									
+
 								}
-								
-								
 							}
 						}
 					}
