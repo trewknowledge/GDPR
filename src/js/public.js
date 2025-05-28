@@ -185,7 +185,7 @@ $( function() {
 	/**
 	 * Close the privacy/reconsent bar.
 	 */
-	$( document ).on( 'click', '.gdpr.gdpr-privacy-bar .gdpr-close, .gdpr.gdpr-reconsent-bar .gdpr-close', '.gdpr.gdpr-privacy-bar .gdpr-reject', function() {
+	$( document ).on( 'click', '.gdpr.gdpr-privacy-bar .gdpr-close, .gdpr.gdpr-reconsent-bar .gdpr-close, .gdpr.gdpr-privacy-bar .gdpr-reject',  function() {
 		const scrollDistance = $( 'body' ).css( 'top' );
 		$( '.gdpr-overlay' ).fadeOut();
 		$( 'body' ).removeClass( 'gdpr-noscroll' );

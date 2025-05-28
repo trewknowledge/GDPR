@@ -209,7 +209,7 @@
 								}
 							}
 						}
-						&.gdpr-agreement{
+						&.gdpr-agreement, &.gdpr-reject{
 							margin: 0 10px;
 							align-self: center;
 							@include breakpoint( xxlarge ) {
@@ -277,7 +277,7 @@
 				margin: 0;
 			}
 		}
-		.gdpr-agreement {
+		.gdpr-agreement, .gdpr-reject {
 			position: relative;
 			font-size: 13px;
 			font-weight: 400;
