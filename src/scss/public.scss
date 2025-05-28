@@ -117,7 +117,7 @@
 				text-align: center;
 				@include breakpoint( xxlarge ) {
 					flex: 1;
-					padding: 0 100px 0 0;
+					padding: 0 50px 0 0;
 					text-align: left;
 				}
 				p {
@@ -192,6 +192,7 @@
 					}
 				}
 				.gdpr-buttons {
+					display: flex;
 					@include breakpoint( small-only ) {
 						display: flex;
 						flex-direction: column;
