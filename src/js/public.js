@@ -315,4 +315,5 @@ $( function() {
 		];
 		displayNotification( GDPR.i18n.are_you_sure, GDPR.i18n.policy_disagree, actions, true );
 	} );
+
 } );

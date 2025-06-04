@@ -82,6 +82,7 @@
 			padding: 20px;
 		}
 	}
+
 	&.gdpr-privacy-bar, &.gdpr-reconsent-bar{
 		position: fixed;
 		bottom: 0;
@@ -311,6 +312,7 @@
 			}
 		}
 	}
+
 	&.gdpr-privacy-preferences, &.gdpr-reconsent, &.gdpr-general-confirmation {
 		.gdpr-wrapper {
 			position: fixed;
@@ -713,6 +715,7 @@
 			}
 		}
 	}
+
 	&.gdpr-general-confirmation {
 		.gdpr-wrapper {
 			flex-direction: column;
@@ -839,6 +842,7 @@
 			}
 		}
 	}
+
 }
 
 .gdpr-switch {
@@ -851,6 +855,7 @@
 		position: absolute;
 		left: -999em;
 	}
+
 	.gdpr-slider {
 		position: absolute;
 		cursor: pointer;
@@ -877,6 +882,7 @@
 			}
 		}
 	}
+
 	.gdpr-switch-indicator {
 		position: absolute;
 		bottom: 2px;
@@ -891,6 +897,7 @@
 			display: block;
 		}
 	}
+
 	input {
 		&:checked {
 			+ .gdpr-slider {
