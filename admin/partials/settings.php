@@ -36,6 +36,8 @@
 						<input type="checkbox" name="gdpr_deletion_needs_review" id="gdpr_deletion_needs_review" value="1"  <?php checked( $needs_review, true ); ?>><span class="description"><label for="gdpr_deletion_needs_review"><?php esc_html_e( 'Send all deletion requests to the review table.', 'gdpr' ); ?></label></span>
 					</td>
 				</tr>
+
+
 				<tr>
 					<th scope="row">
 						<label for="gdpr_refresh_after_preferences_update"><?php esc_html_e( 'Refresh page after updating preferences', 'gdpr' ); ?>:</label>
@@ -46,6 +48,20 @@
 						<span class="description"><?php esc_html_e( 'Useful for landing pages or to track a visit with Google Analytics.', 'gdpr' ); ?></span>
 					</td>
 				</tr>
+
+				<tr>
+					<th scope="row">
+						<label for="gdpr_popUpVersion"><?php esc_html_e( 'Popup var version', 'gdpr' ); ?>:</label>
+					</th>
+					<td>
+						<?php $popupVersion = get_option( 'gdpr_popUpVersion', 1 ); ?>
+						<input type="text" name="gdpr_popUpVersion" id="gdpr_popUpVersion" value="<?php echo esc_html($popupVersion,1)?> ">
+						<span class="description"><?php esc_html_e( 'Useful for reset bar consent', 'gdpr' ); ?></span>
+					</td>
+				</tr>
+
+gdpr_popUpVersion
+
 				<tr>
 					<th scope="row">
 						<label for="gdpr_disable_css"><?php esc_html_e( 'Disable CSS', 'gdpr' ); ?>:</label>
@@ -96,6 +112,22 @@
 						</select>
 					</td>
 				</tr>
+
+				<tr>
+					<th scope="row">
+						<label for="gdrp_closeAccept"><?php esc_html_e( 'If close modal means accept', 'gdpr' ); ?>:</label>
+						
+					</th>
+					<td>
+						<?php $close_accept = get_option( 'gdrp_closeAccept', 'modal' ); ?>
+						<select name="gdrp_closeAccept" id="gdrp_closeAccept">
+							<option value="1" <?php selected( '1', $close_accept ); ?>><?php esc_html_e( 'Accept', 'gdpr' ); ?></option>
+							<option value="0" <?php selected( '0', $close_accept ); ?>><?php esc_html_e( 'No Accept', 'gdpr' ); ?></option>
+						</select>
+					</td>
+				</tr>
+
+
 			</tbody>
 		</table>
 		<hr>
@@ -132,7 +164,8 @@
 					</th>
 					<td>
 						<?php $privacy_bar_content = get_option( 'gdpr_cookie_banner_content', '' ); ?>
-						<textarea name="gdpr_cookie_banner_content" id="gdpr_cookie_banner_content" cols="80" rows="6"><?php echo esc_html( $privacy_bar_content ); ?></textarea>
+						<textarea name="gdpr_cookie_banner_content" id="gdpr_cookie_banner_content" cols="80" rows="6"><?php echo esc_html( $privacy_bar_content ); ?></textarea></br>
+						<?php esc_html_e('This text is managed by translation. The translation key is [Privacy Text Bar]. If you don\'t have translations then textarea content is used ','gdpr')?>
 					</td>
 				</tr>
 				<tr>
@@ -146,9 +179,31 @@
 					<td>
 						<?php $privacy_excerpt = get_option( 'gdpr_cookie_privacy_excerpt', '' ); ?>
 						<textarea name="gdpr_cookie_privacy_excerpt" id="gdpr_cookie_privacy_excerpt" cols="80" rows="6"><?php echo esc_html( $privacy_excerpt ); ?></textarea>
+						
+						<?php esc_html_e('This text is managed by translation. The translation key is [Privacy Text Consent] .If you don\'t have translations then textarea content is used  ','gdpr')?> 
 						<p class="description"><?php esc_html_e( 'This will appear in the consent section of the privacy preference window.', 'gdpr' ); ?></p>
 					</td>
 				</tr>
+
+
+				<tr>
+					<th scope="row">
+						<label for="gdpr_cookie_privacy_button_help"><?php esc_html_e( 'Privacy button text help', 'gdpr' ); ?>:</label>
+						<span class="screen-reader-text"><?php esc_attr_e( 'This will show up in the privacy preferences window.', 'gdpr' ); ?></span>
+						<span data-gdprtooltip="<?php esc_attr_e( 'This will show up in the privacy preferences window.', 'gdpr' ); ?>">
+							<span class="dashicons dashicons-info"></span>
+						</span>
+					</th>
+					<td>
+						<?php $privacy_button_help= get_option( 'gdpr_cookie_privacy_button_help', '' ); ?>
+						<input type="text" name="gdpr_cookie_privacy_button_help" id="gdpr_cookie_privacy_button_help" value="<?php echo esc_html( $privacy_button_help ); ?>">
+					
+						
+						<?php esc_html_e('This text is managed by translation. The translation key is [Privacy Text Consent button help] .If you don\'t have translations then textarea content is used  ','gdpr')?> 
+						<p class="description"><?php esc_html_e( 'This will appear in the consent section of the privacy preference window.', 'gdpr' ); ?></p>
+					</td>
+				</tr>
+
 				<tr>
 					<th scope="row">
 						<label for="gdpr_privacy_bar_position"><?php esc_html_e( 'Privacy Bar Position', 'gdpr' ); ?>:</label>

@@ -3,3 +3,5 @@ node_modules/
 vendor/
 docs/
 dist/
+.idea/*
+composer.phar

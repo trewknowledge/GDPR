@@ -20,7 +20,7 @@
 			<header>
 				<div class="gdpr-box-title">
 					<h3><?php esc_html_e( 'Privacy Preference Center', 'gdpr' ); ?></h3>
-					<span class="gdpr-close"></span>
+					<!--<span class="gdpr-close"></span> -->
 				</div>
 			</header>
 			<div class="gdpr-mobile-menu">
@@ -65,7 +65,14 @@
 							<h4><?php esc_html_e( 'Consent Management', 'gdpr' ); ?></h4>
 						</header>
 						<div class="gdpr-info">
-							<p><?php echo nl2br( esc_html( $args['cookie_privacy_excerpt'] ) ); ?></p>
+							<p><?php 
+							if (__( 'Privacy Text Consent', 'gdpr' ) != 'Privacy Text Consent') {
+								nl2br(wp_kses(__( 'Privacy Text Consent', 'gdpr' ), $args['allowed_html'] ));
+							} else {
+								echo nl2br(wp_kses( $args['cookie_privacy_excerpt'], $args['allowed_html'] ));
+								
+							}
+							 ?></p>
 							<?php if ( ! empty( $args['consent_types'] ) ) : ?>
 								<?php foreach ( $args['consent_types'] as $consent_key => $gdpr_type ) : ?>
 									<div class="gdpr-cookies-used">
@@ -158,6 +165,16 @@
 			</div>
 			<footer>
 				<input type="submit" value="<?php esc_attr_e( 'Save Preferences', 'gdpr' ); ?>">
+				<span class="gdrp-cookie-footer-text">
+					
+				<?php 
+							if (__( 'Privacy Text Consent button help', 'gdpr' ) != 'Privacy Text Consent button help') {
+								esc_html_e( 'Privacy Text Consent button help', 'gdpr' );
+							} else {
+								echo nl2br( esc_html( $args['gdpr_cookie_privacy_button_help'] ) ); 
+							}
+							 ?>
+			</span>
 			</footer>
 		</form>
 	</div>
