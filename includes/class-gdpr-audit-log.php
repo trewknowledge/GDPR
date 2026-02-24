@@ -68,7 +68,7 @@ class GDPR_Audit_Log {
 	 */
 	public static function log( $user_id, $input ) {
 		$user      = get_user_by( 'ID', $user_id );
-		$date      = '[' . date( 'Y/m/d H:i:s' ) . '] ';
+		$date      = '[' . current_time( 'Y/m/d H:i:s' ) . '] ';
 		$encrypted = self::crypt( $user->user_email, $date . $input );
 		if ( defined( 'WPCOM_IS_VIP_ENV' ) && WPCOM_IS_VIP_ENV ) {
 			add_user_attribute( $user_id, 'gdpr_audit_log', $encrypted );
@@ -110,7 +110,7 @@ class GDPR_Audit_Log {
 			if ( ! $file_found ) {
 				return false;
 			} else {
-				$log = file_get_contents( $path . $filename );
+				$log = file_get_contents( $path . $filename ); // phpcs:ignore
 				return self::decrypt( $email, $log );
 			}
 		}

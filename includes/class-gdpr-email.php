@@ -171,7 +171,7 @@ class GDPR_Email {
 
 		$content = self::get_email_content( 'email/' . $type . '.php', $args );
 
-		return wp_mail(
+		return wp_mail( // phpcs:ignore
 			$no_reply,
 			$possible_types[ $type ],
 			html_entity_decode( $content, ENT_QUOTES, 'UTF-8' ),

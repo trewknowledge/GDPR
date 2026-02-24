@@ -43,13 +43,13 @@
 					</ul>
 					<ul class="gdpr-policies">
 						<?php if ( ! empty( $consent_types ) ) : ?>
-							<?php foreach ( $consent_types as $consent_key => $type ) : ?>
+							<?php foreach ( $consent_types as $consent_key => $consent_type ) : ?>
 								<?php
-								if ( ! $type['policy-page'] ) {
+								if ( ! $consent_type['policy-page'] ) {
 									continue;
 								}
 								?>
-								<li><a href="<?php echo esc_url( get_permalink( $type['policy-page'] ) ); ?>" target="_blank"><?php echo esc_html( $type['name'] ); ?></a></li>
+								<li><a href="<?php echo esc_url( get_permalink( $consent_type['policy-page'] ) ); ?>" target="_blank"><?php echo esc_html( $consent_type['name'] ); ?></a></li>
 							<?php endforeach; ?>
 						<?php endif; ?>
 					</ul>
@@ -66,9 +66,9 @@
 									<?php
 									$page_obj = get_post( $consent['policy-page'] );
 									if ( class_exists( 'SiteOrigin_Panels' ) && get_post_meta( $page_obj->ID, 'panels_data', true ) ) {
-										echo SiteOrigin_Panels::renderer()->render( $page_obj->ID );
+										echo wp_kses_post( SiteOrigin_Panels::renderer()->render( $page_obj->ID ) );
 									} else {
-										echo apply_filters( 'the_content', $page_obj->post_content );
+										echo wp_kses_post( apply_filters( 'the_content', $page_obj->post_content ) );
 									}
 									?>
 								</div>

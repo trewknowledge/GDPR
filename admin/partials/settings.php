@@ -396,8 +396,8 @@
 									<td>
 										<select name="gdpr_consent_types[<?php echo esc_attr( $consent_id ); ?>][policy-page]" id="consent-policy-page-<?php echo esc_attr( $consent_id ); ?>">
 											<option value=""></option>
-											<?php foreach ( $pages as $page ) : ?>
-												<option value="<?php echo esc_attr( $page->ID ); ?>" <?php selected( $consent['policy-page'], $page->ID ); ?>><?php echo esc_html( $page->post_title ); ?></option>
+											<?php foreach ( $pages as $gdpr_page ) : ?>
+												<option value="<?php echo esc_attr( $gdpr_page->ID ); ?>" <?php selected( $consent['policy-page'], $gdpr_page->ID ); ?>><?php echo esc_html( $gdpr_page->post_title ); ?></option>
 											<?php endforeach ?>
 										</select>
 									</td>

@@ -56,7 +56,7 @@ class GDPR_Templates {
 		if ( ! file_exists( $template_file ) ) {
 			return;
 		}
-		include $template_file;
+		include $template_file; // phpcs:ignore
 	}
 
 }

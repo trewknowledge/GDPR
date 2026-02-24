@@ -99,7 +99,7 @@ class GDPR_Requests {
 			if ( defined( 'WPCOM_IS_VIP_ENV' ) && WPCOM_IS_VIP_ENV ) {
 				$post_count = wpcom_vip_count_user_posts( $user->ID, $pt );
 			} else {
-				$post_count = count_user_posts( $user->ID, $pt );
+				$post_count = count_user_posts( $user->ID, $pt ); // phpcs:ignore
 			}
 			if ( $post_count > 0 ) {
 				return true;
@@ -267,7 +267,7 @@ class GDPR_Requests {
 		$key              = wp_generate_password( 20, false );
 		$requests[ $key ] = array(
 			'email'     => $email,
-			'date'      => date( 'F j, Y' ),
+			'date'      => current_time( 'F j, Y' ),
 			'type'      => $type,
 			'data'      => $data,
 			'confirmed' => $confirmed,
