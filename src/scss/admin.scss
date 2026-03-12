@@ -1,19 +1,20 @@
-@import 'helpers/breakpoints';
-@import 'components/tooltips';
+@use "helpers/breakpoints";
+@use "components/tooltips";
 
 .gdpr-required {
 	color: #f00;
 }
 
-.gdpr-settings-form{
-	#gdpr-cookie-categories, #consent-tabs{
+.gdpr-settings-form {
+	#gdpr-cookie-categories,
+	#consent-tabs {
 		margin-top: 20px;
-		.hndle{
+		.hndle {
 			font-size: 16px;
 			padding: 8px 12px;
 			margin: 0;
 			line-height: 1.4;
-			span{
+			span {
 				font-size: 12px;
 			}
 		}
@@ -21,10 +22,10 @@
 }
 
 .policy-page-updated-notice {
-	.spinner{
+	.spinner {
 		margin: 13px 0;
 	}
-	form{
+	form {
 		display: inline-block;
 		.button-secondary {
 			vertical-align: baseline;
@@ -51,34 +52,35 @@
 	line-height: 17px;
 	text-align: center;
 }
-.gdpr-request-table, .gdpr-manual-email-lookup {
-	.spinner{
+.gdpr-request-table,
+.gdpr-manual-email-lookup {
+	.spinner {
 		float: none;
 		display: none;
 	}
 }
 .gdpr-manual-email-lookup {
-	.inside{
+	.inside {
 		margin-bottom: 0;
 	}
 }
 
-.gdpr-request-table{
-	td{
+.gdpr-request-table {
+	td {
 		vertical-align: middle;
 	}
-	form{
+	form {
 		display: inline-block;
 	}
 	.text-center {
 		text-align: center;
 	}
 	tr.review {
-		> td{
+		> td {
 			padding-top: 0;
 			padding-bottom: 0;
 		}
-		table{
+		table {
 			margin-bottom: 10px;
 		}
 	}
@@ -90,19 +92,16 @@
 	display: inline-block;
 	width: 45px;
 	height: 24px;
-	input{
+	input {
 		display: none;
 	}
 	.gdpr-slider {
 		position: absolute;
 		cursor: pointer;
-		top: 0;
-		left: 0;
-		right: 0;
-		bottom: 0;
+		inset: 0;
 		background-color: #ccc;
 		transition: 0.4s;
-		&::before{
+		&::before {
 			position: absolute;
 			content: "";
 			height: 16px;
@@ -136,10 +135,11 @@
 	}
 }
 
+/* stylelint-disable-next-line selector-id-pattern */
 #TB_ajaxContent {
 	pre {
 		white-space: pre-wrap;
-		word-wrap: break-word;
+		overflow-wrap: break-word;
 	}
 }
 
@@ -158,7 +158,7 @@
 
 .gdpr .gdpr-access-data-result {
 	h2 {
-		span{
+		span {
 			font-size: 16px;
 		}
 	}
@@ -168,7 +168,7 @@
 	.postbox {
 		.inside {
 			margin: 0 !important;
-			padding: 0 20px 20px 20px;
+			padding: 0 20px 20px;
 			.form-table {
 				margin-top: 0;
 			}
@@ -184,12 +184,12 @@
 	}
 }
 
-@include breakpoint(medium-small) {
+@include breakpoints.breakpoint(medium-small) {
 	.tab-hosts {
 		.postbox {
 			margin-top: 15px;
 			.inside {
-				padding: 10px 20px 20px 20px !important;
+				padding: 10px 20px 20px !important;
 			}
 		}
 	}
@@ -204,14 +204,14 @@
 	}
 }
 
-@include breakpoint(small-only) {
+@include breakpoints.breakpoint(small-only) {
 	.postbox {
 		width: 100%;
 		.notice-dismiss {
 			padding: 8px;
 		}
 	}
-	.inside{
+	.inside {
 		.regular-text {
 			width: 100%;
 		}

@@ -1,5 +1,4 @@
 @mixin breakpoint($breakpoint) {
-
 	$bp-xxlarge: "(min-width:1440px)";
 	$bp-xlarge: "(min-width:1200px)";
 	$bp-large: "(min-width:1024px)";
@@ -12,17 +11,13 @@
 	}
 	@if  $breakpoint == xlarge {
 		@media screen and #{$bp-xlarge} { @content; }
-	}
-	@else if $breakpoint == large {
+	} @else if $breakpoint == large {
 		@media screen and #{$bp-large} { @content; }
-	}
-	@else if $breakpoint == medium {
+	} @else if $breakpoint == medium {
 		@media screen and #{$bp-medium} { @content; }
-	}
-	@else if $breakpoint == medium-small {
+	} @else if $breakpoint == medium-small {
 		@media screen and #{$bp-medium-small} { @content; }
-	}
-	@else if $breakpoint == small-only {
+	} @else if $breakpoint == small-only {
 		@media screen and #{$bp-small-only}  { @content; }
 	}
 

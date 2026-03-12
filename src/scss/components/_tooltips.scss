@@ -20,7 +20,7 @@
 		width: 160px;
 		border-radius: 3px;
 		background-color: #000;
-		background-color: hsla(0, 0%, 20%, 0.9);
+		background-color: hsl(0deg 0% 20% / 90%);
 		color: #fff;
 		content: attr(data-gdprtooltip);
 		text-align: center;
@@ -34,7 +34,7 @@
 		margin-left: -5px;
 		width: 0;
 		border-top: 5px solid #000;
-		border-top: 5px solid hsla(0, 0%, 20%, 0.9);
+		border-top: 5px solid hsl(0deg 0% 20% / 90%);
 		border-right: 5px solid transparent;
 		border-left: 5px solid transparent;
 		content: " ";
