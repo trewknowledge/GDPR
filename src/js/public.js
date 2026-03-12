@@ -7,6 +7,7 @@ import '../scss/public.scss';
 const queryArgs  = location.search;
 const baseUrl    = location.protocol + '//' + location.host + location.pathname;
 
+// eslint-disable-next-line
 window.has_consent = function( consent ) {
 	if ( Cookies.get( 'gdpr[consent_types]' ) ) {
 		const consentArray = JSON.parse( Cookies.get( 'gdpr[consent_types]' ) );
@@ -18,6 +19,7 @@ window.has_consent = function( consent ) {
 	return false;
 };
 
+// eslint-disable-next-line
 window.is_allowed_cookie = function ( cookie ) {
 	if ( Cookies.get( 'gdpr[allowed_cookies]' ) ) {
 		const cookiesArray = JSON.parse( Cookies.get( 'gdpr[allowed_cookies]' ) );
