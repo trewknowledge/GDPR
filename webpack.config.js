@@ -39,7 +39,8 @@ const plugins = ( argv ) => [
 	} ),
 
 	new StyleLintPlugin( {
-		'extends': 'stylelint-config-standard-scss'
+		files: 'src/**/*.scss',
+		extends: 'stylelint-config-standard-scss'
 	} ),
 
 	new ESLintPlugin( {
