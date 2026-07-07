@@ -1,5 +1,5 @@
 === GDPR ===
-Contributors: fclaussen, matthewfarlymn, trewknowledge
+Contributors: trewknowledge, fclaussen, matthewfarlymn
 Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=S3P8NHLF4DLZN&source=url
 Tags: gdpr, compliance, privacy, law, general data protection regulation
 Requires at least: 4.7
@@ -207,6 +207,7 @@ Activating this plugin does not guarantee that an organisation is successfully m
 == Changelog ==
 
 = 2.1.1 =
+Release Date: May 13, 2020
 * Updating dependencies.
 * Fixing some code standards errors.
 * Fix tooltip styles affecting other parts of the admin panel.
@@ -222,6 +223,7 @@ Activating this plugin does not guarantee that an organisation is successfully m
 
 
 = 2.1.0 =
+Release Date: June 5, 2018
 * Wrapping checkboxes in labels so they stay in the same line.
 * Adding initial WPML and Polylang translation config file.
 * A few text changes.
@@ -236,14 +238,17 @@ Activating this plugin does not guarantee that an organisation is successfully m
 * Minor bug fixes.
 
 = 2.0.10 =
+Release Date: June 5, 2018
 * Fix new re-consent bar not showing if users had no prior consent.
 * Added a PHP version check on activation.
 
 = 2.0.9 =
+Release Date: June 1, 2018
 * Fix a syntax error introduced after cleaning code with PHPCS.
 * Fix functions that were not checking if registered consents were empty before running.
 
 = 2.0.8 =
+Release Date: May 29, 2018
 * Adding a setting to hide plugin generated markup from bots such as Googlebot.
 * Fix cookie category dismiss button not showing up after adding a new category. A save was required before the button would appear.
 * Display cookie categories that do not have anything in the cookies used option.
