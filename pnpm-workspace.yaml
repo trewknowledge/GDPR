@@ -1,3 +1,7 @@
 allowBuilds:
   '@parcel/watcher': true
   unrs-resolver: true
+minimumReleaseAgeExclude:
+  - '@babel/core@7.29.1'
+  - js-yaml@3.15.0
+  - js-yaml@4.1.2

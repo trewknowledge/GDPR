@@ -21,7 +21,7 @@
 		"update-deps": "rm -rf node_modules && rm package-lock.json && npm install"
 	},
 	"devDependencies": {
-		"@babel/core": "^7.29.0",
+		"@babel/core": "^7.29.7",
 		"@babel/preset-env": "^7.29.5",
 		"@eslint/eslintrc": "^3.3.5",
 		"autoprefixer": "^10.5.0",
