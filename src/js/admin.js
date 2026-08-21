@@ -315,4 +315,14 @@ $( function() {
 		);
 	} );
 
+	$( document ).on( 'click', '.copy-settings', function( e ) {
+		e.preventDefault();
+		$( '#gdpr_settings_data' ).select();
+
+		//$( '#gdpr_settings_data' ).setSelectionRange( 0, 99999 ); /*For mobile devices*/
+
+		/* Copy the text inside the text field */
+		document.execCommand( 'copy' );
+	});
+
 } );
