@@ -216,6 +216,7 @@ class GDPR {
 		add_action( 'admin_post_gdpr_mark_resolved', array( $requests_admin, 'mark_resolved' ) );
 		add_action( 'wp_ajax_gdpr_anonymize_comments', array( $requests_admin, 'anonymize_comments' ) );
 		add_action( 'wp_ajax_gdpr_reassign_content', array( $requests_admin, 'reassign_content' ) );
+		add_action( 'wp_ajax_gdpr_reset_plugin_data', array( $requests_admin, 'reset_plugin_data' ) );
 
 		// CRON JOBS
 		add_action( 'clean_gdpr_requests', array( $requests, 'clean_requests' ) );

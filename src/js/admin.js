@@ -315,4 +315,22 @@ $( function() {
 		);
 	} );
 
+	$( document ).on( 'click', '.gdpr-reset-data', function( e ) { 
+		e.preventDefault();
+		if ( confirm( 'Are you sure! This action will delete all previous settings.' ) ) {
+			const nonce = $( this ).data( 'nonce' );
+			$.post(
+				ajaxurl,
+				{
+					action: 'gdpr_reset_plugin_data',
+					nonce: nonce
+				},
+				function( res ) {
+					alert( 'All data deleted successfully!' );
+					location.reload();
+				}
+			);
+
+		}
+	});
 } );
