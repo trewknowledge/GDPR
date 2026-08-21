@@ -15,6 +15,8 @@
 						</label>
 					</th>
 					<td>
+						<input type="text" placeholder="Policy Page URL" name="gdpr_consent_types[{{data.key}}][policy-page-url]" />
+						OR
 						<select name="gdpr_consent_types[{{data.key}}][policy-page]" id="consent-policy-page-{{data.key}}">
 							<option value=""></option>
 							<?php foreach ( $pages as $cpage ) : ?>
