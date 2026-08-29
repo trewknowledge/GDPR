@@ -14,11 +14,17 @@
  * Adds a button to re-open the cookie preferences modal.
  * @since  1.0.0
  * @author Fernando Claussen <fernandoclaussen@gmail.com>
- * @param  string $text The button text.
- * @param  string $type The type of preferences. Possible options are `cookies` or `consents`
+ * @param  array $atts Configurable attributes to specify text, tab and element type.
  */
-function gdpr_preferences( $text, $tab = 'gdpr-consent-management' ) {
-	echo '<button type="button" class="gdpr-preferences" data-tab="' . esc_attr( $tab ) . '">' . esc_html( $text ) . '</button>';
+function gdpr_preferences( $atts ) {
+	$tab = ( isset( $atts['tab'] ) ) ? $atts['tab'] : 'gdpr-consent-management';
+	$type = ( isset( $atts['type'] ) ) ? $atts['type'] : 'button';
+
+	if ( $type == 'link' ) {
+		echo '<a class="gdpr-preferences" data-tab="' . esc_attr( $tab ) . '">' . esc_html( $atts['text'] ) . '</a>';
+	} else {
+		echo '<button type="button" class="gdpr-preferences" data-tab="' . esc_attr( $tab ) . '">' . esc_html( $atts['text'] ) . '</button>';
+	}
 }
 
 function gdpr_preferences_shortcode( $atts ) {
@@ -26,11 +32,12 @@ function gdpr_preferences_shortcode( $atts ) {
 		array(
 			'text' => esc_html__( 'Privacy Preferences', 'gdpr' ),
 			'tab'  => 'gdpr-consent-management',
+			'type' => 'button',
 		), $atts, 'gdpr_preferences'
 	);
 
 	ob_start();
-	gdpr_preferences( $atts['text'], $atts['tab'] );
+	gdpr_preferences( $atts );
 	return ob_get_clean();
 }
 
