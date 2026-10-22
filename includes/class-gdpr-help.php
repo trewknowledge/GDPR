@@ -186,4 +186,22 @@ class GDPR_Help {
 			)
 		);
 	}
+
+	/**
+	 * Add the export data page help tabs.
+	 * @since  1.0.0
+	 * @author Moutushi Mandal <moutushi82n@gmail.com>
+	 * @static
+	 */
+	public static function add_export_help() {
+		$general_settings_help = '<h2>' . esc_html__( 'Export Data', 'gdpr' ) . '</h2>' .
+			'<p>' . esc_html__( 'Export plugin data.', 'gdpr' ) . '</p>';
+		get_current_screen()->add_help_tab(
+			array(
+				'id'      => 'export_data',
+				'title'   => esc_html__( 'Export Data', 'gdpr' ),
+				'content' => $general_export_data_help,
+			)
+		);
+	}
 }

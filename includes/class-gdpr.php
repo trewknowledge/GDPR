@@ -216,7 +216,8 @@ class GDPR {
 		add_action( 'admin_post_gdpr_mark_resolved', array( $requests_admin, 'mark_resolved' ) );
 		add_action( 'wp_ajax_gdpr_anonymize_comments', array( $requests_admin, 'anonymize_comments' ) );
 		add_action( 'wp_ajax_gdpr_reassign_content', array( $requests_admin, 'reassign_content' ) );
-
+		add_action( 'admin_post_gdpr_import_settings', array( $plugin_admin, 'gdpr_import_plugin_settings' ) );
+	
 		// CRON JOBS
 		add_action( 'clean_gdpr_requests', array( $requests, 'clean_requests' ) );
 		add_action( 'clean_gdpr_user_request_key', array( $requests, 'clean_user_request_key' ), 10, 2 );
