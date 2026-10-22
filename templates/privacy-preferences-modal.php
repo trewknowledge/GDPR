@@ -50,11 +50,12 @@
 						<?php if ( ! empty( $args['consent_types'] ) ) : ?>
 							<?php foreach ( $args['consent_types'] as $consent_key => $gdpr_type ) : ?>
 								<?php
-								if ( ! $gdpr_type['policy-page'] ) {
+								if ( ! $gdpr_type['policy-page'] && ! $gdpr_type['policy-page-url'] ) {
 									continue;
 								}
+								$policy_page = ( ! empty ( $gdpr_type['policy-page-url'] ) ) ? $gdpr_type['policy-page-url'] : get_permalink( $gdpr_type['policy-page'] );
 								?>
-								<li><a href="<?php echo esc_url( get_permalink( $gdpr_type['policy-page'] ) ); ?>" target="_blank"><?php echo esc_html( $gdpr_type['name'] ); ?></a></li>
+								<li><a href="<?php echo esc_url( $policy_page ); ?>" target="_blank"><?php echo esc_html( $gdpr_type['name'] ); ?></a></li>
 							<?php endforeach; ?>
 						<?php endif; ?>
 					</ul>
@@ -71,7 +72,7 @@
 									<div class="gdpr-cookies-used">
 										<div class="gdpr-cookie-title">
 											<p><?php echo esc_html( $gdpr_type['name'] ); ?></p>
-											<?php if ( $gdpr_type['policy-page'] ) : ?>
+											<?php if ( $gdpr_type['policy-page'] || $gdpr_type['policy-page-url'] ) : ?>
 												<span class="gdpr-always-active"><?php esc_html_e( 'Required', 'gdpr' ); ?></span>
 												<input type="hidden" name="user_consents[]" value="<?php echo esc_attr( $consent_key ); ?>" style="display:none;">
 											<?php else : ?>
