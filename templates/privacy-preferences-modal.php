@@ -71,12 +71,12 @@
 									<div class="gdpr-cookies-used">
 										<div class="gdpr-cookie-title">
 											<p><?php echo esc_html( $gdpr_type['name'] ); ?></p>
-											<?php if ( $gdpr_type['policy-page'] ) : ?>
+											<?php if ( $gdpr_type['policy-page'] || $gdpr_type['policy-page-url'] ) : ?>
 												<span class="gdpr-always-active"><?php esc_html_e( 'Required', 'gdpr' ); ?></span>
 												<input type="hidden" name="user_consents[]" value="<?php echo esc_attr( $consent_key ); ?>" style="display:none;">
 											<?php else : ?>
 												<label class="gdpr-switch">
-													<input type="checkbox" name="user_consents[]" value="<?php echo esc_attr( $consent_key ); ?>" <?php echo ! empty( $args['user_consents'] ) ? checked( in_array( $consent_key, $args['user_consents'], true ), 1, false ) : 'checked'; ?>>
+													<input type="checkbox" name="user_consents[]" value="<?php echo esc_attr( $consent_key ); ?>" >
 													<span class="gdpr-slider round"></span>
 													<span class="gdpr-switch-indicator-on"><?php echo esc_html__( 'ON', 'gdpr' ); ?></span>
 													<span class="gdpr-switch-indicator-off"><?php echo esc_html__( 'OFF', 'gdpr' ); ?></span>
